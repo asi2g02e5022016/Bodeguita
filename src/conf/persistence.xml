@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="RestaurantBDC-WebPU" transaction-type="JTA">
-    <jta-data-source>jdbc/sample</jta-data-source>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <jta-data-source>jdbc/mysql</jta-data-source>
+    <class>com.asi.restaurantbcd.modelo.Compania</class>
+    <class>com.asi.restaurantbcd.modelo.Departamento</class>
+    <class>com.asi.restaurantbcd.modelo.Empleado</class>
+    <class>com.asi.restaurantbcd.modelo.Perfil</class>
+    <class>com.asi.restaurantbcd.modelo.Puesto</class>
+    <class>com.asi.restaurantbcd.modelo.Sucursal</class>
+    <class>com.asi.restaurantbcd.modelo.Usuario</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>
 </persistence>
