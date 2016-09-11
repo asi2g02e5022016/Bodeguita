@@ -1,0 +1,147 @@
+/*Estilos del scheduler*/
+.schedCalendar {
+	width: 550px;
+	padding-left: 15px;
+	padding-top: 18px;
+}
+
+.schedCalendar td {
+	text-align: center;
+}
+
+.schedForm {
+	width: 200px;
+}
+
+.rich-modalpanel { /*position: absolute !important;
+	width: 800px !important;
+	height: 400px !important;
+	top: 50% !important;
+	left: 50% !important;
+	margin-top: -200px !important;
+	margin-left: -400px !important;*/
+	
+}
+
+.rich-mp-container { /*position: absolute !important;
+	width: 800px !important;
+	height: 400px !important;
+	top: 50% !important;
+	left: 50% !important;
+	margin-top: -200px !important;
+	margin-left: -400px !important;*/
+	
+}
+
+.selectRow {
+	background-color: #ffebda;
+	font-style: italic;
+}
+
+.canceled {
+	color: red;
+}
+
+.timeText {
+	font-weight: bold;
+}
+
+td {
+	vertical-align: top;
+	align: center;
+}
+
+/*Odontograma*/
+.odonto {
+	border: none;
+}
+
+.tooth {
+	display: block;
+	cursor: pointer;
+	text-align: center;
+}
+
+.tooth a {
+	font-size: 10px;
+	text-decoration: none;
+}
+
+.odonto td {
+	border: 1px #5C88C1 solid;
+}
+
+.odonto td.horizontal {
+	height: 8px;
+	width: 10px;
+	background-color: white;
+}
+
+.odonto td.vertical {
+	height: 10px;
+	width: 8px;
+	background-color: white;
+}
+
+.odonto td.center {
+	height: 10px;
+	width: 10px;
+	background-color: white;
+}
+
+.odonto .blank {
+	border: none;
+}
+
+/*Historias pasadas*/
+.pastHistories {
+	max-height: 250px;
+	overflow: auto;
+	font-size: 0.9em;
+}
+
+.pastHistories .item {
+	border: 2px solid #e5973e;
+	background-color: #fae6b0;
+	-moz-border-radius: 10px;
+	margin: 0 auto;
+	width: 90%;
+}
+
+.pastHistories .item a {
+	color: black;
+	font-weight: bold;
+}
+
+.pastHistories .item .label {
+	font-weight: bold;
+}
+
+.pastHistories .item td {
+	text-align: left;
+}
+
+/*Estilo de facturacion*/
+.billBolder {
+	font-weight: bolder;
+	font-size: 1.1em;
+}
+
+.billTotal {
+	font-style: italic;
+}
+
+/*otros estilos*/
+#notification-ch {
+	margin: 0 auto;
+	text-align: center;
+	font-size: 1.2em;
+	width: 400px;
+	font-weight: bold;
+	width: 400px;
+}
+
+.consecutive {
+	font-weight: bolder;
+	font-size: 1.4em;
+}

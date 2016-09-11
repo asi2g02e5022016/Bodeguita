@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:p="http://primefaces.org/ui" contentType="text/html"
+        locale="es">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>RestaurantSoft</title>
+	<link rel="shortcut icon"
+		href="#{request.contextPath}/images/miniKube.png" />
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/stylesheet/movisoft.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/stylesheet/styleBDC.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/stylesheet/estilo.css" />
+	<ui:insert name="head" />
+    </h:head>
+    <h:body>
+     <div id="container">
+		<div id="headBanner" style="vertical-align: middle;">
+			<table>
+				<tr>
+					<td><h:graphicImage value="/images/logoCli.png"
+							style="float:left; width:80px; height:80px;" /></td>
+					<td>
+						<div
+							style="font: 24px Tahoma, Helvetica, Arial, Sans-Serif; margin-top: 22px; text-align: center; color: #F3F3F3; text-shadow: 0px 2px 3px #222;">
+							Sistema de Gestionde de Inventario</div>
+					</td>
+				</tr>
+			</table>
+
+		</div>
+		<div id="body">
+			<div id="menu-bar" style="border-top: 1px solid #333333;">
+
+				<ui:include src="menu.xhtml" /> 
+
+			</div>
+			<ui:insert name="body" />
+		</div>
+	</div>
+	<div id="footer" class="ui-widget ui-widget-header ui-corner-all">
+		<p>Running PrimeFaces-3.3.1 on Mojarra-2.1.7</p>
+	</div>        
+        
+        
+    </h:body>
+</html>
+</f:view>

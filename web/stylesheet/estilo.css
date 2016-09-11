@@ -1,0 +1,205 @@
+/*estilos generales*/
+.title {
+	
+}
+
+input[disabled],select[disabled],textarea[disabled] {
+	color: black;
+	background-color: #f3f2f2;
+}
+
+input[disabled] label {
+	color: black;
+	background-color: #f3f2f2;
+}
+
+.closeBtn {
+	cursor: pointer;
+}
+
+.round {
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+a.linkWeb,a.linkWeb:hover,a.linkWeb:visited {
+	color: #5C88C1;
+	font-weight: bolder;
+}
+
+/*Estilos del dashboard*/
+.linksPane {
+	
+}
+
+.linksGrid {
+	
+}
+
+.miniLinkDiv {
+	width: 50px;
+	margin: 0 auto;
+}
+
+.linkDiv {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.linkDiv:hover {
+	background-color: #FAE6B0;
+}
+
+/*Estilo para crear dos divs conjuntos*/
+.panelMid {
+	overflow: auto;
+	width: 48%;
+	float: left;
+	max-heigth: 300px;
+	margin-left: 5px;
+}
+
+/*Estilo para crear un div con tama�o maximo scrollable*/
+.divOverTree {
+	height: 500px;
+	overflow: visible;
+	overflow-y: auto;
+	overflow-x: auto;
+	padding-bottom: 15px;
+}
+
+/*Crear tablas con divs*/
+div.tabla {
+	width: 100%;
+	margin: 0 auto;
+}
+
+div.fila {
+	clear: both;
+}
+
+div.col {
+	float: left;
+	vertical-align: top;
+}
+
+div.clear {
+	clear: both;
+}
+
+/*Estilos para mayuscula y minuscula*/
+.upper {
+	text-transform: uppercase;
+}
+
+.capital {
+	text-transform: capitalize;
+}
+
+.lower {
+	text-transform: lowercase;
+}
+
+/*Links de las tablas*/
+.linkAction {
+	
+}
+
+/*Estilo de dataTable*/
+.tableHeader {
+	text-align: center;
+}
+
+.tableRow1 {
+	text-align: center;
+}
+
+.tableRow2 {
+	text-align: center;
+}
+
+.tableScroll {
+	
+}
+
+/*Estilo para corregir error con los paneles de growl*/
+.ui-growl-item-container {
+	overflow: auto;
+	max-height: 100px;
+}
+
+/*Estilos de layouts*/
+.kAction {
+	
+}
+
+.kEdit {
+	
+}
+
+.kEdit .col1 {
+	width: 150px;
+	text-align: right;
+	font-weight: bold;
+}
+
+.kEdit .col2 {
+	
+}
+
+.kEdit .col3 {
+	width: 150px;
+}
+
+.kEdit .col4 {
+	padding-top: 5px;
+	padding-left: 160px;
+}
+
+.kEditSpace {
+	
+}
+
+.kEditSpace input {
+	width: 220px;
+}
+
+table.radioB input {
+	width: 80px;
+}
+
+.kEditSpace select {
+	width: 220px;
+}
+
+.kEditSpace textarea {
+	width: 220px;
+	height: 60px;
+}
+
+.kEditSpace .col1 {
+	width: 300px;
+	text-align: left;
+	font-weight: bold;
+}
+
+.kEditSpace .col2 {
+	padding-top: 5px;
+}
+
+.kEditSpace .col3 {
+	padding-top: 5px;
+}
+
+/*Estilo de mensajes de linea*/
+.message li.infomsg {
+	background-image: url(../img/msginfo.png);
+}
+
+.message li.errormsg {
+	background-image: url(../img/msgerror.png);
+}
+
+.message li.warnmsg {
+	background-image: url(../img/msgwarn.png);
+}
