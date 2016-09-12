@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.asi.restaurantbcd.controller.mtto;
+package com.asi.restaurantebcd.controller.mtto;
 
 import com.asi.restaurantbcd.modelo.Usuario;
 import java.util.ArrayList;
