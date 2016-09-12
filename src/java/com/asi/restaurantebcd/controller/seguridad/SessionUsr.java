@@ -14,7 +14,7 @@ import java.util.Objects;
 
 /**
  *
- * @author desaext1
+ * @author samael lopez
  */
 @Named(value = "sessionUsr")
 @SessionScoped
