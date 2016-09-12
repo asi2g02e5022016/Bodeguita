@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 /**
  * REST Web Service
  *
- * @author desaext1
+ * @author samael lopez
  */
 @Path("Maestros/")
 public class MaestrosWS {

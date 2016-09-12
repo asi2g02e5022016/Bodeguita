@@ -9,7 +9,7 @@ import javax.ejb.Stateless;
 
 /**
  *
- * @author desaext1
+ * @author Samael lopez
  */
 @Stateless
 public class BusquedasCompras implements BusquedasComprasLocal {

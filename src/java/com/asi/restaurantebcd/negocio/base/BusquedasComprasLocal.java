@@ -9,7 +9,7 @@ import javax.ejb.Local;
 
 /**
  *
- * @author desaext1
+ * @author samael  lopez
  */
 @Local
 public interface BusquedasComprasLocal {
