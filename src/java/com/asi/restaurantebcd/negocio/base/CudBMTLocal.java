@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.asi.restaurantbcd.negocio.utilidades;
+package com.asi.restaurantebcd.negocio.base;
 
 import java.util.List;
 import javax.ejb.Local;
@@ -13,18 +13,8 @@ import javax.ejb.Local;
  * @author Samaellopez
  */
 @Local
-public interface CrudBDCLocal {
-   /**
-     * Método que permite buscar una entidad del modelo del dominio, tanto en
-     * el contexto y base de datos.
-     * @param <T> Generico
-     * @param clazz Tipo de clase a retornar.
-     * @param key Objeto de llave primaria
-     * @return Entidad DTA
-     * @throws java.lang.Exception Error genérico.
-     */
-    < T > T buscarEntidad(final Class clazz, final Object key) throws Exception;
-    /**
+public interface CudBMTLocal {
+        /**
      * Permite persistir una entidad, esta operación solo permite hacer un
      * "INSERT" y no verifica la existencia de la entidad en la tabla. Por
      * tanto podría ocacionar un error de constraint de llave única.

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.asi.restaurantbcd.recursos.webservices;
+package com.asi.restaurantebcd.recursos.webservices;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
