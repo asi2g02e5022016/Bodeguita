@@ -51,7 +51,10 @@ public class UserMenu implements Serializable {
         item = new DefaultMenuItem("Usuario");
         item.setUrl("/mantenimientos/MttoUsuarios.xhtml");
         secondSubmenu.addElement(item);
-         
+        
+        item = new DefaultMenuItem("Perfil");
+        item.setUrl("/mantenimientos/admin/perfil/lista.xhtml");
+        secondSubmenu.addElement(item);
       
         model.addElement(secondSubmenu);
 
