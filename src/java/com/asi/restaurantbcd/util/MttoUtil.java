@@ -51,16 +51,4 @@ public abstract class MttoUtil<E> {
 		this.jpql = jpql;
 	}
         
-        public abstract boolean preSave();
-
-	public abstract boolean preModify();
-
-	public abstract boolean preDelete();
-
-	public abstract void posSave();
-
-	public abstract void posModify();
-
-	public abstract void posDelete();
-    
 }
