@@ -5,8 +5,12 @@
  */
 package com.asi.restaurantbcd.util;
 
+import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -24,7 +28,14 @@ public abstract class MttoUtil<E> {
     private List<E> resultList;
     private String jpql;
     
-    @SuppressWarnings("unchecked")
+    private E instance;
+    
+    private Object key;
+ 
+    @EJB
+    CrudBDCLocal ejbCrud;
+    
+     @SuppressWarnings("unchecked")
 	public List<E> getResultList() {
 		resultList = em.createQuery(jpql).getResultList();
 		return resultList;
@@ -50,5 +61,58 @@ public abstract class MttoUtil<E> {
 	public void setJpql(String jpql) {
 		this.jpql = jpql;
 	}
-        
+
+    /**
+     * @return the instance
+     */
+    public E getInstance() {
+        return instance;
+    }
+
+    /**
+     * @param instance the instance to set
+     */
+    public void setInstance(E instance) {
+        this.instance = instance;
+    }
+
+    /**
+     * @return the key
+     */
+    public Object getKey() {
+        return key;
+    }
+
+    /**
+     * @param key the key to set
+     */
+    public void setKey(Object key) {
+        this.key = key;
+    }
+    
+    public void loadInstance() {
+       if (instance == null && key != null) {
+           try {
+               System.out.println("Ejecutado loadInstance key = " + key + " ---");
+               instance = ejbCrud.buscarEntidad(this.getNew().getClass(), key);
+           } catch (Exception ex) {
+               Logger.getLogger(this.getClass().getName()).log(Level.INFO, null, ex);
+           }
+       } else{
+          instance = getNew();
+       }
+    }
+    
+    public void load(){
+         onLoad();
+         loadInstance();
+         System.out.println("Instance key = " + instance.toString() + " ---");
+    };
+    
+    protected abstract E getNew();
+    
+    protected abstract void onLoad();
+    
+    
+
 }

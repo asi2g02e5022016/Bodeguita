@@ -21,12 +21,22 @@ import javax.inject.Named;
 public class MttoPerfilMB extends MttoUtil<Perfil> {
    
 
-    public MttoPerfilMB() { 
+    public MttoPerfilMB() {
         setJpql("select p from Perfil p");
     }
 
     
-    
-    
+    @Override
+    protected Perfil getNew() {
+        return new Perfil();
+    }    
+
+    @Override
+    protected void onLoad() {
+        this.setKey(Integer.parseInt(this.getKey().toString()));
+        System.out.println("Ejecutado onLoad key = " + this.getKey() + " ---");
+    }
+
+
 }
 

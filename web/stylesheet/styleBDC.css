@@ -369,13 +369,6 @@ body {
 	font-size: 90%;
 }
 
-.ui-datatable-even {
-	background-color: blue;
-}
-
-.ui-datatable-odd {
-	background-color: gray;
-}
 
 .centered {
 	text-align: center;

@@ -12,10 +12,110 @@ and open the template in the editor.
 	xmlns:p="http://primefaces.org/ui"
         template="/layout/templateBDC.xhtml">
     <ui:define name="body">
+        <f:metadata>
+            <f:viewParam name="key" value="#{mttoPerfil.key}" />
+            <f:event type="preRenderView" listener="#{mttoPerfil.load}" />
+        </f:metadata>
       <br />
             <center>
-                <p:link  value="Lista Perfil" outcome="lista" />
+                <h:form id="formA">
+
+			<p:growl globalOnly="true" sticky="false" life="3000"
+				autoUpdate="true" />
+			<p:focus />
+
+			<p:fieldset style="width: 50%;margin:auto;"
+				legend="#{mttoPerfil.instance.idPerfil==null?'Nuevo Perfil':'Editar Perfil'}">
+				<p:layout id="layout" style="min-width:400px;min-height:300px;">
+
+					<p:layoutUnit position="center"
+						header="Perfil">
+						<center>
+							<h:panelGrid columns="4" cellpadding="5">
+
+								<h:outputLabel value="Codigo" />
+								<p:inputText value="#{mttoPerfil.instance.codigo}"
+									required="true" />
+
+								<h:outputLabel value="Nombre" />
+								<p:inputText value="#{mttoPerfil.instance.nombre}"
+                                                                             required="true" />
+
+
+							</h:panelGrid>
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:outputLabel value="Descripcion" />
+                                                                <p:inputTextarea value="#{mttoPerfil.instance.descripcion}"
+									 />
+							</h:panelGrid>
+
+							
+						</center>
+					    </p:layoutUnit>
+                                    					<p:layoutUnit position="north">
+						<center>
+							<h:panelGroup id="controles">
+                                                            <p:commandButton  action="lista"
+									 icon=" ui-icon-arrowreturnthick-1-w"
+                                                                         value="Lista" ajax="false">
+								</p:commandButton>
+								<p:commandButton action="mant" icon="	ui-icon-plusthick"
+									value="Nuevo" 
+                                                                        immediate="true" ajax="false" />
+								<p:commandButton action="lista"
+									rendered="#{mttoPerfil.instance.idPerfil==null}" icon="ui-icon-disk"
+									value="Guardar" ajax="false" />
+								<p:commandButton rendered="#{mttoPerfil.instance.idPerfil!=null}"
+									icon="ui-icon-disk" value="Guardar" onclick="PF('dlg').show();" />
+                                                                <p:commandButton type="button"
+									rendered="#{mttoPerfil.instance.idPerfil!=null}" icon="ui-icon-trash"
+									value="Eliminar" onclick="PF('dlgDelete').show();" />
+							</h:panelGroup>
+						</center>
+					</p:layoutUnit>
+				</p:layout>
+			</p:fieldset>
+		</h:form>
             </center>
       <br style="clear: both" />  
+      <p:dialog id="dialog" header="Eliminar"
+			widgetVar="dlgDelete" modal="true" resizable="false">
+			<h:form>
+				<p>Seguro de elimnar</p>
+				<h:panelGrid columns="2">
+					<p:commandButton icon="cancelBtn" value="Cancelar" type="button"
+						onclick="PF('dlgDelete').hide();">
+					</p:commandButton>
+					<p:commandButton action="list"
+                                                         icon="deleteBtn" 
+						ajax="false" value="Eliminar"
+						onclick="PF('dlgDelete').hide();">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+      
+      		<p:dialog id="confirmation" resizable="false" widgetVar="dlg">
+			<f:facet name="header">
+					Editar
+				</f:facet>
+			<f:facet name="controls">
+				<h:panelGroup>
+					<h:graphicImage value="/images/close.png"
+						onclick="PF('dlg').hide();" />
+				</h:panelGroup>
+			</f:facet>
+			<h:form id="fm1">
+				<p>Seguro de Editar</p>
+				<p:commandButton icon="cancelBtn" value="Cancelar"
+					onclick="PF('dlg').hide();">
+				</p:commandButton>
+				<p:commandButton action="list"
+					actionListener="#"
+					icon="modifyBtn" value="Continuar"
+					onclick="PF('dlg').hide();" ajax="false">
+				</p:commandButton>
+			</h:form>
+		</p:dialog>
      </ui:define>
 </ui:composition>

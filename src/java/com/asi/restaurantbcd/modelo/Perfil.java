@@ -144,7 +144,7 @@ public class Perfil implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Perfil[ idPerfil=" + idPerfil + " ]";
+        return nombre;
     }
     
 }
