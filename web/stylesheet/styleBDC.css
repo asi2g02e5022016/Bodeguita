@@ -369,6 +369,9 @@ body {
 	font-size: 90%;
 }
 
+.ui-fieldset-content {
+    overflow: hidden !important;
+}
 
 .centered {
 	text-align: center;
