@@ -14,6 +14,7 @@ and open the template in the editor.
     <ui:define name="body">
         <f:metadata>
             <f:viewParam name="key" value="#{mttoPerfil.key}" />
+            <f:viewParam name="accion" value="#{mttoPerfil.action}" />
             <f:event type="preRenderView" listener="#{mttoPerfil.load}" />
         </f:metadata>
       <br />
@@ -21,7 +22,7 @@ and open the template in the editor.
                 <h:form id="formA">
 
 			<p:growl globalOnly="true" sticky="false" life="3000"
-				autoUpdate="true" />
+                                 autoUpdate="true" id="growl"  showSummary="true" />
 			<p:focus />
 
 			<p:fieldset style="width: 50%;margin:auto;"
@@ -35,7 +36,7 @@ and open the template in the editor.
 
 								<h:outputLabel value="Codigo" />
 								<p:inputText value="#{mttoPerfil.instance.codigo}"
-									required="true" />
+									required="true"  />
 
 								<h:outputLabel value="Nombre" />
 								<p:inputText value="#{mttoPerfil.instance.nombre}"
@@ -55,18 +56,18 @@ and open the template in the editor.
                                     					<p:layoutUnit position="north">
 						<center>
 							<h:panelGroup id="controles">
-                                                            <p:commandButton  action="lista"
+                                                            <p:commandButton  action="lista" 
 									 icon=" ui-icon-arrowreturnthick-1-w"
-                                                                         value="Lista" ajax="false">
+                                                                         value="Lista" ajax="false" immediate="true"  >
 								</p:commandButton>
 								<p:commandButton action="mant" icon="	ui-icon-plusthick"
 									value="Nuevo" 
                                                                         immediate="true" ajax="false" />
-								<p:commandButton action="lista"
+                                                                <p:commandButton actionListener="#{mttoPerfil.save}" 
 									rendered="#{mttoPerfil.instance.idPerfil==null}" icon="ui-icon-disk"
-									value="Guardar" ajax="false" />
+                                                                        value="Guardar N"  ajax="true" update="growl" />
 								<p:commandButton rendered="#{mttoPerfil.instance.idPerfil!=null}"
-									icon="ui-icon-disk" value="Guardar" onclick="PF('dlg').show();" />
+									icon="ui-icon-disk" value="Guardar E" onclick="PF('dlg').show();" />
                                                                 <p:commandButton type="button"
 									rendered="#{mttoPerfil.instance.idPerfil!=null}" icon="ui-icon-trash"
 									value="Eliminar" onclick="PF('dlgDelete').show();" />

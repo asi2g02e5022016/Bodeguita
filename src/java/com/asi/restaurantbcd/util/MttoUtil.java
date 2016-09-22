@@ -9,8 +9,12 @@ import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -31,9 +35,23 @@ public abstract class MttoUtil<E> {
     private E instance;
     
     private Object key;
+    
+    private Object action;
+    
+    private FacesContext facesContext;
+    
+    protected final Severity ERROR = FacesMessage.SEVERITY_ERROR;
  
+    protected final Severity INFO = FacesMessage.SEVERITY_INFO;
+    
+    protected final Severity WARNING = FacesMessage.SEVERITY_WARN;
+    
     @EJB
     CrudBDCLocal ejbCrud;
+    
+    public MttoUtil(){
+        facesContext = FacesContext.getCurrentInstance();
+    }
     
      @SuppressWarnings("unchecked")
 	public List<E> getResultList() {
@@ -91,7 +109,7 @@ public abstract class MttoUtil<E> {
     }
     
     public void loadInstance() {
-       if (instance == null && key != null) {
+       if (action != null && key != null && "Editar".equals(action.toString())) {
            try {
                System.out.println("Ejecutado loadInstance key = " + key + " ---");
                instance = ejbCrud.buscarEntidad(this.getNew().getClass(), key);
@@ -103,15 +121,50 @@ public abstract class MttoUtil<E> {
        }
     }
     
+   public void save() {
+       System.out.println("Guardando----");
+       if (instance != null) {
+           try {
+               ejbCrud.persistirEntidad(instance);
+               postSave();
+           } catch (Exception ex) {
+               Logger.getLogger(this.getClass().getName()).log(Level.INFO, null, ex);
+               addMessage(ERROR, "Error", ex.getMessage());
+           }
+       }
+   }
+    
+   @PostConstruct
     public void load(){
+         System.out.println("Instance key = " + key + " ---");
          onLoad();
          loadInstance();
          System.out.println("Instance key = " + instance.toString() + " ---");
     };
     
+    protected void addMessage(Severity severity, String summary ,String message){
+       facesContext.addMessage(null, new FacesMessage(severity, summary, message));
+    };
+    
     protected abstract E getNew();
     
     protected abstract void onLoad();
+    
+    protected abstract void postSave();
+
+    /**
+     * @return the action
+     */
+    public Object getAction() {
+        return action;
+    }
+
+    /**
+     * @param action the action to set
+     */
+    public void setAction(Object action) {
+        this.action = action;
+    }
     
     
 

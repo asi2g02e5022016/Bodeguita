@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.asi.restaurantebcd.controller.mtto;
 
    
@@ -13,7 +8,6 @@ import javax.inject.Named;
 
 
 /**
- *
  * @author luis_portillo
  */
 @Named(value = "mttoPerfil")
@@ -21,22 +15,38 @@ import javax.inject.Named;
 public class MttoPerfilMB extends MttoUtil<Perfil> {
    
 
+   /**
+     * Creates una nueva instancia de MttoPerfilMB
+     * Es obligatorio el llamado a setJpql 
+     */
     public MttoPerfilMB() {
-        setJpql("select p from Perfil p");
+        super(); //Llama el constructor de la clase padre
+        setJpql("select p from Perfil p"); //Configura el Jpql a ejecutar para el listado de catalogo
     }
 
-    
+
+     /**
+     * Se ejecuta al realizar la carga del mantenimiento
+     */
+    @Override
+    protected void onLoad() {
+        if(this.getKey()!=null){
+        this.setKey(Integer.parseInt(this.getKey().toString())); //Conversión del Key a tipo numerico
+       } 
+    }
+
+    @Override
+    protected void postSave() {
+        addMessage(INFO, "Guardado", "Perfil guardado correctamente");
+    }
+
+    /**
+     * Retorna una nueva instancia de Perfil
+     */
     @Override
     protected Perfil getNew() {
         return new Perfil();
     }    
-
-    @Override
-    protected void onLoad() {
-        this.setKey(Integer.parseInt(this.getKey().toString()));
-        System.out.println("Ejecutado onLoad key = " + this.getKey() + " ---");
-    }
-
-
+    
 }
 

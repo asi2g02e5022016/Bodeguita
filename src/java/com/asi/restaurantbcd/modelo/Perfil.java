@@ -33,18 +33,15 @@ public class Perfil implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "idPerfil")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPerfil;
     
+    @NotEmpty
     @Column(name = "codigo", nullable = false, length = 8)
     @Length(max = 8)
-    @NotEmpty
     private String codigo;
     
-    @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "nombre")
