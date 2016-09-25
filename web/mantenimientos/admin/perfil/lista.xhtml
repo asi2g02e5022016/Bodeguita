@@ -15,8 +15,14 @@ and open the template in the editor.
       <br />
 
 		<h:form id="formA">
-			<p:growl />
+                    <p:growl showDetail="true" showSummary="true" />
+
 			<center>
+
+                    	<p:commandButton action="mant"
+					actionListener="#{mttoPerfil.startNew()}" icon="ui-icon-plusthick"
+					value="Registrar Nuevo" rendered="true" />
+                        
                            <p:dataTable var="res" value="#{mttoPerfil.resultList}"
 					paginator="true" rows="10" paginatorPosition="bottom"
 					style="width: 95%" id="perfiles">
