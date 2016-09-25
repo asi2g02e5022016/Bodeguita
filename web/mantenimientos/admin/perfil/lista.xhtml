@@ -44,12 +44,11 @@ and open the template in the editor.
 					</p:column>
 					<p:column styleClass="centered">
 						<f:facet name="header">Acciones</f:facet>
-						<h:link title="Modificar" rendered="true"
-							outcome="mant">
+                                                <p:commandLink title="Modificar" rendered="true"
+							action="mant"
+							actionListener="#{mttoPerfil.startModify(res.idPerfil)}">
 							<h:graphicImage value="/images/table_edit16.png" />
-                                                        <f:param name="key" value="#{res.idPerfil}" />
-                                                        <f:param name="accion" value="Editar" />
-						</h:link>
+						</p:commandLink>
 					</p:column>
 					<f:facet name="footer">
 					</f:facet>

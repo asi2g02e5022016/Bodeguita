@@ -41,10 +41,6 @@ public abstract class MttoUtil<E> {
     
     private E instance;
     
-    private Object key;
-    
-    private Object action;
-    
     private FacesContext facesContext;
 
     
@@ -99,42 +95,17 @@ public abstract class MttoUtil<E> {
         this.instance = instance;
     }
 
-    /**
-     * @return the key
-     */
-    public Object getKey() {
-        return key;
-    }
-
-    /**
-     * @param key the key to set
-     */
-    public void setKey(Object key) {
-        this.key = key;
-    }
-    
-    public void loadInstance() {
-       if (action != null && key != null && "Editar".equals(action.toString())) {
-           try {
-               System.out.println("Ejecutado loadInstance key = " + key + " ---");
-               this.beginConversation();
-               instance = ejbCrud.buscarEntidad(this.getNew().getClass(), key);
-           } catch (Exception ex) {
-               Logger.getLogger(this.getClass().getName()).log(Level.INFO, null, ex);
-           }
-       } else if(action != null && key != null && "Crear".equals(action.toString())){
-           this.beginConversation();   
-           instance = getNew();
-       }
-    }
-    
+        
    public void save() {
        facesContext = FacesContext.getCurrentInstance();
        System.out.println("Guardando----");
        if (instance != null) {
            try {
-               ejbCrud.persistirEntidad(instance);
-               postSave();
+               if(validateSave()){
+                        ejbCrud.persistirEntidad(instance);
+                        postSave();
+               }
+               this.endConversation();
            } catch (Exception ex) {
                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                beanValidations();
@@ -154,6 +125,7 @@ public abstract class MttoUtil<E> {
     }else{*/
                ejbCrud.eliminarEntidad(instance);
                postDelete();
+               this.endConversation();
        
     //}
 
@@ -170,13 +142,10 @@ public abstract class MttoUtil<E> {
        System.out.println("Actualizando----");
        if (instance != null) {
            try {
-/*      
-        return null;
-    }else{*/postUpdate();
+
                ejbCrud.guardarEntidad(instance);
-               
-       
-    //}
+               postUpdate();
+               this.endConversation();
 
            } catch (Exception ex) {
                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
@@ -186,15 +155,12 @@ public abstract class MttoUtil<E> {
        }
    }
    
-  
-    public void load(){
-         System.out.println("Instance Before key = " + key + " ---");
-         if(this.getInstance()== null) {
-         onLoad();
-         loadInstance();}
-         System.out.println("Instance After key = " + this.getInstance() + " ---");
-    };
-    
+    public void startModify(Object key){
+            this.beginConversation();
+            instance = this.select(key);
+    }
+   
+
     public void startNew(){
             this.beginConversation();
             this.instance=this.getNew();
@@ -207,27 +173,19 @@ public abstract class MttoUtil<E> {
     
     protected abstract E getNew();
     
-    protected abstract void onLoad();
+    protected abstract boolean validateSave();
+    
+    protected abstract boolean validateDelete();
+
+    protected abstract boolean validateUpdate();
     
     protected abstract void postSave();
     
     protected abstract void postDelete();
 
     protected abstract void postUpdate();
-    
-    /**
-     * @return the action
-     */
-    public Object getAction() {
-        return action;
-    }
 
-    /**
-     * @param action the action to set
-     */
-    public void setAction(Object action) {
-        this.action = action;
-    }
+    protected abstract E select(Object key);
     
     private void beanValidations(){
                 ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
