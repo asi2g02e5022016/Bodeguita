@@ -6,15 +6,20 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
-import javax.persistence.Basic;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -54,6 +59,12 @@ public class Perfil implements Serializable {
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPerfil", fetch = FetchType.LAZY)
     private List<Usuario> usuarioList;
+    
+    	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@JoinTable(name = "perfilOpcionMenu", 
+		joinColumns = @JoinColumn(name = "perfilId", referencedColumnName = "idPerfil"), 
+				inverseJoinColumns = @JoinColumn(name = "opcionMenuId", referencedColumnName = "id"))
+    private Set<OpcionMenu> opcionesDeMenu = new HashSet<OpcionMenu>();
 
     public Perfil() {
     }
@@ -109,6 +120,20 @@ public class Perfil implements Serializable {
      */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    /**
+     * @return the opcionesDeMenu
+     */
+    public Set<OpcionMenu> getOpcionesDeMenu() {
+        return opcionesDeMenu;
+    }
+
+    /**
+     * @param opcionesDeMenu the opcionesDeMenu to set
+     */
+    public void setOpcionesDeMenu(Set<OpcionMenu> opcionesDeMenu) {
+        this.opcionesDeMenu = opcionesDeMenu;
     }
 
     public List<Usuario> getUsuarioList() {
