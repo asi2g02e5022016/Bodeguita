@@ -1,15 +1,22 @@
 package com.asi.restaurantebcd.controller.mtto;
 
    
+import com.asi.restaurantbcd.modelo.OpcionMenu;
 import com.asi.restaurantbcd.modelo.Perfil;
 import com.asi.restaurantbcd.util.MttoUtil;
+import com.asi.restaurantbcd.util.UserNavigTreeFactory;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.model.TreeNode;
 
 
 /**
@@ -25,6 +32,16 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
     @EJB
     CrudBDCLocal ejbCrud;
     
+    	private List<OpcionMenu> menusDisponibles = new ArrayList<OpcionMenu>();
+	private List<OpcionMenu> menusAsociados = new ArrayList<OpcionMenu>();
+	private TreeNode[] menusAgregados;
+	private TreeNode menusTreeNode;
+        
+        private boolean check;
+	
+	@Inject
+	UserNavigTreeFactory perfilMenuTreeFactory;
+    
    /**
      * Creates una nueva instancia de MttoPerfilMB
      * Es obligatorio el llamado a setJpql 
@@ -34,6 +51,43 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
         setJpql("select p from Perfil p order by p.idPerfil desc"); 
            //Configura el Jpql a ejecutar para el listado de catalogo
     }
+    
+    	public void cargarMenusDisponibles(){
+		setMenusDisponibles((List<OpcionMenu>) getEntityManager().createQuery("select m from OpcionMenu m where " +
+				"m.estado like 'ACT' and m.menuPadre is not null ORDER BY m.menuPadre.etiqueta ASC ")
+				.getResultList());
+		check = true;
+		for(OpcionMenu opcionMenu : getMenusDisponibles()){
+			if(opcionMenu.getSubMenus().contains(getInstance())){
+				opcionMenu.setAsociado(true);
+			}else{
+				check = false;
+			}
+		}
+	}
+        
+        	public void changeAll(){
+		for(OpcionMenu opcionMenu : getMenusDisponibles()){
+			opcionMenu.setAsociado(check);
+		}
+	}
+	
+	public String guardarAsociacion(){
+		getInstance().setOpcionesDeMenu(new HashSet<OpcionMenu>());
+		for(OpcionMenu opcionMenu : getMenusDisponibles()){
+			if(opcionMenu.isAsociado()){
+				getInstance().getOpcionesDeMenu().add(opcionMenu);
+			}
+		}
+		return "save";
+//		if(this.modify()){
+//			return "save";
+//		}else{
+//			return "error";
+//		}
+		 
+	}
+	
     
     @Override
     protected boolean validateSave() {
@@ -71,7 +125,10 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
      */
     @Override
     protected Perfil getNew() {
-        return new Perfil();
+        Perfil result=new Perfil();
+        this.setMenusAsociados(new ArrayList<OpcionMenu>(result.getOpcionesDeMenu()));
+		loadMenusTree();
+        return result;
     }    
 
     @Override
@@ -80,12 +137,104 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
                 if(key!=null){
                         key = Integer.parseInt(key.toString()); //Conversión del Key a tipo numerico
                      } 
-               return ejbCrud.buscarEntidad(this.getNew().getClass(), key);
+              Perfil result =ejbCrud.buscarEntidad(this.getNew().getClass(), key);
+              if(result!=null){
+                  this.setMenusAsociados(new ArrayList<OpcionMenu>(result.getOpcionesDeMenu()));
+			loadMenusTree();
+		}
+		return result;
                } catch (Exception ex) {
                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                return null;
            }
         }
+    
+    public void loadMenusTree(){
+        this.setMenusTreeNode(perfilMenuTreeFactory.getNavigTree(this.getMenusAsociados()));
+	}
+	
+	public void guardarMenusTree(){
+		this.getInstance().setOpcionesDeMenu(new HashSet<OpcionMenu>());
+		for(OpcionMenu opcionMenu: this.getMenusAsociados()){
+			this.getInstance().getOpcionesDeMenu().add(opcionMenu);
+		}
+	}
+        public void actualizarMenusTree(){
+		this.setMenusAsociados(new ArrayList<OpcionMenu>());
+		for(TreeNode node:this.getMenusAgregados()){
+                    OpcionMenu menu=(OpcionMenu)node.getData();
+			
+			this.getMenusAsociados().add(menu);
+		}
+		guardarMenusTree();
+		loadMenusTree();
+	}
+
+    @Override
+    protected void prepareCreate() {
+        		cargarMenusDisponibles();
+    }
+
+    @Override
+    protected void prepareUpdate() {
+        		cargarMenusDisponibles();
+    }
+
+    /**
+     * @return the menusDisponibles
+     */
+    public List<OpcionMenu> getMenusDisponibles() {
+        return menusDisponibles;
+    }
+
+    /**
+     * @param menusDisponibles the menusDisponibles to set
+     */
+    public void setMenusDisponibles(List<OpcionMenu> menusDisponibles) {
+        this.menusDisponibles = menusDisponibles;
+    }
+
+    /**
+     * @return the menusAsociados
+     */
+    public List<OpcionMenu> getMenusAsociados() {
+        return menusAsociados;
+    }
+
+    /**
+     * @param menusAsociados the menusAsociados to set
+     */
+    public void setMenusAsociados(List<OpcionMenu> menusAsociados) {
+        this.menusAsociados = menusAsociados;
+    }
+
+    /**
+     * @return the menusAgregados
+     */
+    public TreeNode[] getMenusAgregados() {
+        return menusAgregados;
+    }
+
+    /**
+     * @param menusAgregados the menusAgregados to set
+     */
+    public void setMenusAgregados(TreeNode[] menusAgregados) {
+        this.menusAgregados = menusAgregados;
+    }
+
+    /**
+     * @return the menusTreeNode
+     */
+    public TreeNode getMenusTreeNode() {
+        return menusTreeNode;
+    }
+
+    /**
+     * @param menusTreeNode the menusTreeNode to set
+     */
+    public void setMenusTreeNode(TreeNode menusTreeNode) {
+        this.menusTreeNode = menusTreeNode;
+    }
 
     }
 

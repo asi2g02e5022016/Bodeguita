@@ -158,12 +158,14 @@ public abstract class MttoUtil<E> {
     public void startModify(Object key){
             this.beginConversation();
             instance = this.select(key);
+            prepareUpdate();
     }
    
 
     public void startNew(){
             this.beginConversation();
             this.instance=this.getNew();
+            prepareCreate();
     }
     
     protected void addMessage(Severity severity, String summary ,String message){
@@ -172,6 +174,10 @@ public abstract class MttoUtil<E> {
     };
     
     protected abstract E getNew();
+    
+    protected abstract void prepareCreate();
+    
+    protected abstract void prepareUpdate();
     
     protected abstract boolean validateSave();
     
@@ -212,5 +218,9 @@ public abstract class MttoUtil<E> {
 			conversation.end();
 		}
 	}
+        
+        protected EntityManager getEntityManager(){
+          return em;
+        }
 
 }
