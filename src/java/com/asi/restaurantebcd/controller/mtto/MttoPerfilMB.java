@@ -91,16 +91,22 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
     
     @Override
     protected boolean validateSave() {
+        actualizarMenusTree();
+        guardarMenusTree();
         return true;
     }
 
     @Override
     protected boolean validateDelete() {
+        actualizarMenusTree();
+        guardarMenusTree();
         return true;
     }
 
     @Override
     protected boolean validateUpdate() {
+        actualizarMenusTree();
+        guardarMenusTree();
         return true;
     }
 
@@ -137,11 +143,7 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
                 if(key!=null){
                         key = Integer.parseInt(key.toString()); //Conversión del Key a tipo numerico
                      } 
-              Perfil result =ejbCrud.buscarEntidad(this.getNew().getClass(), key);
-              if(result!=null){
-                  this.setMenusAsociados(new ArrayList<OpcionMenu>(result.getOpcionesDeMenu()));
-			loadMenusTree();
-		}
+                  Perfil result =ejbCrud.buscarEntidad(Perfil.class, key);
 		return result;
                } catch (Exception ex) {
                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
@@ -163,7 +165,6 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 		this.setMenusAsociados(new ArrayList<OpcionMenu>());
 		for(TreeNode node:this.getMenusAgregados()){
                     OpcionMenu menu=(OpcionMenu)node.getData();
-			
 			this.getMenusAsociados().add(menu);
 		}
 		guardarMenusTree();
@@ -172,11 +173,21 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 
     @Override
     protected void prepareCreate() {
+        this.setMenusAsociados(new ArrayList<OpcionMenu>(getInstance().getOpcionesDeMenu()));
+		for(OpcionMenu opcionMenu: getInstance().getOpcionesDeMenu()){
+			System.out.println("Menus prepare: " + opcionMenu.getEtiqueta());
+		}          
+			loadMenusTree();
         		cargarMenusDisponibles();
     }
 
     @Override
     protected void prepareUpdate() {
+                        this.setMenusAsociados(new ArrayList<OpcionMenu>(getInstance().getOpcionesDeMenu()));
+                      for(OpcionMenu opcionMenu: getInstance().getOpcionesDeMenu()){
+			System.out.println("Menus prepare: " + opcionMenu.getEtiqueta());
+                      }       
+			loadMenusTree();
         		cargarMenusDisponibles();
     }
 

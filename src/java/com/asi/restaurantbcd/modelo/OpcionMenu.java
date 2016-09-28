@@ -132,10 +132,11 @@ public class OpcionMenu implements Serializable {
 	public void setOrden(Integer orden) {
 		this.orden = orden;
 	}
-
-	public String toString() {
-		return this.etiqueta;
-	}
+    
+    @Override
+    public String toString() {
+        return this.etiqueta;
+    }
 	
     @Transient
     public boolean isParentMenu(){
@@ -167,5 +168,25 @@ public class OpcionMenu implements Serializable {
 	// public void setOpcionPerfil(OpcionPerfil opcionPerfil) {
 	// this.opcionPerfil = opcionPerfil;
 	// }
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the idPerfil fields are not set
+        if (!(object instanceof OpcionMenu)) {
+            return false;
+        }
+        OpcionMenu other = (OpcionMenu) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
 
 }

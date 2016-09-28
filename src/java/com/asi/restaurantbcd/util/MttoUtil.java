@@ -102,7 +102,7 @@ public abstract class MttoUtil<E> {
        if (instance != null) {
            try {
                if(validateSave()){
-                        ejbCrud.persistirEntidad(instance);
+                        ejbCrud.guardarEntidad(instance);
                         postSave();
                }
                this.endConversation();
@@ -120,15 +120,11 @@ public abstract class MttoUtil<E> {
        System.out.println("Eliminando----");
        if (instance != null) {
            try {
-/*      
-        return null;
-    }else{*/
+           if(validateDelete()) {
                ejbCrud.eliminarEntidad(instance);
                postDelete();
                this.endConversation();
-       
-    //}
-
+                    }
            } catch (Exception ex) {
                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                beanValidations();
@@ -142,10 +138,10 @@ public abstract class MttoUtil<E> {
        System.out.println("Actualizando----");
        if (instance != null) {
            try {
-
+               if(validateUpdate()) {
                ejbCrud.guardarEntidad(instance);
                postUpdate();
-               this.endConversation();
+               this.endConversation();}
 
            } catch (Exception ex) {
                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);

@@ -50,6 +50,17 @@ and open the template in the editor.
 							</h:panelGrid>
 
 							<p:messages id="messages" showDetail="false" autoUpdate="false" closable="true" />
+                                                        						<p:separator />
+							<!-- Navigation Tree -->
+							<p:panel header="Menus Asociados">
+								<p:tree value="#{mttoPerfil.menusTreeNode}" var="res"
+									id="checkboxTree" selectionMode="checkbox"
+									selection="#{mttoPerfil.menusAgregados}">
+									<p:treeNode>
+                                                                            <h:outputText value="#{res}" />
+									</p:treeNode>
+								</p:tree>
+							</p:panel>
 						</center>
 					    </p:layoutUnit>
                                     					<p:layoutUnit position="north">
