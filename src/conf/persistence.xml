@@ -9,6 +9,20 @@
     <class>com.asi.restaurantbcd.modelo.Puesto</class>
     <class>com.asi.restaurantbcd.modelo.Sucursal</class>
     <class>com.asi.restaurantbcd.modelo.Usuario</class>
+    <class>com.asi.restaurantbcd.modelo.Compra</class>
+    <class>com.asi.restaurantbcd.modelo.CompraDetalle</class>
+    <class>com.asi.restaurantbcd.modelo.Estado</class>
+    <class>com.asi.restaurantbcd.modelo.Existencia</class>
+    <class>com.asi.restaurantbcd.modelo.GrupoProducto</class>
+    <class>com.asi.restaurantbcd.modelo.Impuesto</class>
+    <class>com.asi.restaurantbcd.modelo.Kardex</class>
+    <class>com.asi.restaurantbcd.modelo.MarcaProducto</class>
+    <class>com.asi.restaurantbcd.modelo.Medida</class>
+    <class>com.asi.restaurantbcd.modelo.OpcionMenu</class>
+    <class>com.asi.restaurantbcd.modelo.Producto</class>
+    <class>com.asi.restaurantbcd.modelo.Proveedor</class>
+    <class>com.asi.restaurantbcd.modelo.TipoDocumento</class>
+    <class>com.asi.restaurantbcd.modelo.TipoProducto</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>

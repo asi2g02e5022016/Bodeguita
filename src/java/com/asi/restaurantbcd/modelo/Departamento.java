@@ -36,6 +36,10 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Departamento.findAll", query = "SELECT d FROM Departamento d")})
 public class Departamento implements Serializable {
 
+    @Column(name = "fechaCreacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaCreacion;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -134,6 +138,14 @@ public class Departamento implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Departamento[ idDepartamento=" + idDepartamento + " ]";
+    }
+
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
     
 }

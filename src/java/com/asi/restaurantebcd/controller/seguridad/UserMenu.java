@@ -55,9 +55,14 @@ public class UserMenu implements Serializable {
         item = new DefaultMenuItem("Perfil");
         item.setUrl("/mantenimientos/admin/perfil/lista.xhtml");
         secondSubmenu.addElement(item);
-      
-        model.addElement(secondSubmenu);
-
+         model.addElement(secondSubmenu);
+        
+        DefaultSubMenu terserSubmenu = new DefaultSubMenu("Compras");
+       
+        item = new DefaultMenuItem("Compras");
+        item.setUrl("/compras/Compras.xhtml");
+        terserSubmenu.addElement(item);
+        model.addElement(terserSubmenu);
 	}
 
     /**

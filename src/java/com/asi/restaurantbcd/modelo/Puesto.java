@@ -6,7 +6,9 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,6 +32,9 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Puesto.findAll", query = "SELECT p FROM Puesto p")})
 public class Puesto implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPuesto")
+    private List<Empleado> empleadoList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -104,6 +110,14 @@ public class Puesto implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Puesto[ idPuesto=" + idPuesto + " ]";
+    }
+
+    public List<Empleado> getEmpleadoList() {
+        return empleadoList;
+    }
+
+    public void setEmpleadoList(List<Empleado> empleadoList) {
+        this.empleadoList = empleadoList;
     }
     
 }

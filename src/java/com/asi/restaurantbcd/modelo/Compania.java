@@ -31,6 +31,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Compania.findAll", query = "SELECT c FROM Compania c")})
 public class Compania implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompania")
+    private List<Impuesto> impuestoList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -124,6 +127,14 @@ public class Compania implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Compania[ idCompania=" + idCompania + " ]";
+    }
+
+    public List<Impuesto> getImpuestoList() {
+        return impuestoList;
+    }
+
+    public void setImpuestoList(List<Impuesto> impuestoList) {
+        this.impuestoList = impuestoList;
     }
     
 }

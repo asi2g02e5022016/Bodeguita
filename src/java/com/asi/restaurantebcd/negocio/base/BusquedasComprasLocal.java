@@ -13,5 +13,11 @@ import javax.ejb.Local;
  */
 @Local
 public interface BusquedasComprasLocal {
+    /**
+     * Obtener el ultimovalor de la compra.
+     * @return Integrt.
+     * @throws Exception  Error gnerico.
+     */
+    public Integer obtenerCorreltivoCompra() throws Exception;
     
 }

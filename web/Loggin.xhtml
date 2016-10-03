@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+
+        <title>Loggin</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+
+    <h:body>
+        <center>
+            <h:form  style="margin-top: auto" title="loggign " target="sdsd">
+                
+                <p:growl id="msgs" showDetail="true" />
+                <p:panel id="basic" header="Loggin"  style="margin-top:20px;width: 300px">
+                    <h:panelGrid columns="2" cellpadding="4" width="40">
+                       
+                        <h:outputLabel  value="Usuario : "/>
+                        <p:inputText  style="width: 120px" value="#{logginBean.usuario}" />
+                        <h:outputLabel  value="Contraseña: "  />
+                        <p:password id="nonFeedback" value="#{logginBean.password}"  style="width: 120px"   />
+                       
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" >
+                        <p:commandButton  id="btnGuardar" action="#{logginBean.ingresarSistema()}" value="Ingresar"  style="margin-left: 100px"
+                                          />  
+                    </h:panelGrid>
+                </p:panel>
+         
+            </h:form>
+        </center>
+    </h:body>
+</html>

@@ -203,3 +203,8 @@ table.radioB input {
 .message li.warnmsg {
 	background-image: url(../img/msgwarn.png);
 }
+
+.labelText {
+    font-weight:bold;
+    font-size:  14px;
+}

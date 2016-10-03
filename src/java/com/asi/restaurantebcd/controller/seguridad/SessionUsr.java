@@ -5,6 +5,11 @@
  */
 package com.asi.restaurantebcd.controller.seguridad;
 
+import com.asi.restaurantbcd.modelo.Compania;
+import com.asi.restaurantbcd.modelo.Empleado;
+import com.asi.restaurantbcd.modelo.Perfil;
+import com.asi.restaurantbcd.modelo.Sucursal;
+import com.asi.restaurantbcd.modelo.Usuario;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -21,20 +26,17 @@ import java.util.Objects;
 public class SessionUsr implements Serializable {
     public SessionUsr() {
     }
-    private String codusr;
+    private Usuario usuario;
+    private Compania compania;
+    private Sucursal sucursal;
+    private Perfil perfil;
+    private Empleado EmpleSucursal;
     private String token;
     private BigInteger codPant;
     private Date fecha = new Date();
     private String url;
-    private BigInteger sucursal;
 
-    public String getCodusr() {
-        return codusr;
-    }
 
-    public void setCodusr(String codusr) {
-        this.codusr = codusr;
-    }
 
     public BigInteger getCodPant() {
         return codPant;
@@ -60,13 +62,6 @@ public class SessionUsr implements Serializable {
         this.url = url;
     }
 
-    public BigInteger getSucursal() {
-        return sucursal;
-    }
-
-    public void setSucursal(BigInteger sucursal) {
-        this.sucursal = sucursal;
-    }
 
     public String getToken() {
         return token;
@@ -76,10 +71,51 @@ public class SessionUsr implements Serializable {
         this.token = token;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Compania getCompania() {
+        return compania;
+    }
+
+    public void setCompania(Compania compania) {
+        this.compania = compania;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
+
+    public Empleado getEmpleSucursal() {
+        return EmpleSucursal;
+    }
+
+    public void setEmpleSucursal(Empleado EmpleSucursal) {
+        this.EmpleSucursal = EmpleSucursal;
+    }
+    
+
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 37 * hash + Objects.hashCode(this.codusr);
+        hash = 37 * hash + Objects.hashCode(this.usuario);
         hash = 37 * hash + Objects.hashCode(this.token);
         return hash;
     }
@@ -96,7 +132,7 @@ public class SessionUsr implements Serializable {
             return false;
         }
         final SessionUsr other = (SessionUsr) obj;
-        if (!Objects.equals(this.codusr, other.codusr)) {
+        if (!Objects.equals(this.usuario, other.usuario)) {
             return false;
         }
         if (!Objects.equals(this.token, other.token)) {

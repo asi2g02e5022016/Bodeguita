@@ -6,7 +6,9 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,6 +32,17 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Sucursal.findAll", query = "SELECT s FROM Sucursal s")})
 public class Sucursal implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSucursal")
+    private List<Compra> compraList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSucursal")
+    private List<Producto> productoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSucursal")
+    private List<Existencia> existenciaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSucursal")
+    private List<Empleado> empleadoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSucursal")
+    private List<Kardex> kardexList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -132,6 +146,46 @@ public class Sucursal implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Sucursal[ idSucursal=" + idSucursal + " ]";
+    }
+
+    public List<Compra> getCompraList() {
+        return compraList;
+    }
+
+    public void setCompraList(List<Compra> compraList) {
+        this.compraList = compraList;
+    }
+
+    public List<Producto> getProductoList() {
+        return productoList;
+    }
+
+    public void setProductoList(List<Producto> productoList) {
+        this.productoList = productoList;
+    }
+
+    public List<Existencia> getExistenciaList() {
+        return existenciaList;
+    }
+
+    public void setExistenciaList(List<Existencia> existenciaList) {
+        this.existenciaList = existenciaList;
+    }
+
+    public List<Empleado> getEmpleadoList() {
+        return empleadoList;
+    }
+
+    public void setEmpleadoList(List<Empleado> empleadoList) {
+        this.empleadoList = empleadoList;
+    }
+
+    public List<Kardex> getKardexList() {
+        return kardexList;
+    }
+
+    public void setKardexList(List<Kardex> kardexList) {
+        this.kardexList = kardexList;
     }
     
 }

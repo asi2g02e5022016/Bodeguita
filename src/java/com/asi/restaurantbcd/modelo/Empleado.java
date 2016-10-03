@@ -33,6 +33,17 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e")})
 public class Empleado implements Serializable {
 
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 50)
+    @Column(name = "email")
+    private String email;
+    @JoinColumn(name = "idPuesto", referencedColumnName = "idPuesto")
+    @ManyToOne(optional = false)
+    private Puesto idPuesto;
+    @JoinColumn(name = "idSucursal", referencedColumnName = "idSucursal")
+    @ManyToOne(optional = false)
+    private Sucursal idSucursal;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -159,6 +170,30 @@ public class Empleado implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Empleado[ idEmpleado=" + idEmpleado + " ]";
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Puesto getIdPuesto() {
+        return idPuesto;
+    }
+
+    public void setIdPuesto(Puesto idPuesto) {
+        this.idPuesto = idPuesto;
+    }
+
+    public Sucursal getIdSucursal() {
+        return idSucursal;
+    }
+
+    public void setIdSucursal(Sucursal idSucursal) {
+        this.idSucursal = idSucursal;
     }
     
 }
