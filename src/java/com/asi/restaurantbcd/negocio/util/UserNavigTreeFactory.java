@@ -1,4 +1,4 @@
-package com.asi.restaurantbcd.util;
+package com.asi.restaurantbcd.negocio.util;
 
 import com.asi.restaurantbcd.modelo.OpcionMenu;
 import com.asi.restaurantbcd.modelo.Usuario;

@@ -59,11 +59,11 @@ public class Perfil implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPerfil", fetch = FetchType.LAZY)
     private List<Usuario> usuarioList;
     
-//    	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-//	@JoinTable(name = "perfilOpcionMenu", 
-//		joinColumns = @JoinColumn(name = "perfilId", referencedColumnName = "idPerfil"), 
-//				inverseJoinColumns = @JoinColumn(name = "opcionMenuId", referencedColumnName = "id"))
-//    private Set<OpcionMenu> opcionesDeMenu = new HashSet<OpcionMenu>();
+    	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@JoinTable(name = "perfilOpcionMenu", 
+		joinColumns = @JoinColumn(name = "perfilId", referencedColumnName = "idPerfil"), 
+				inverseJoinColumns = @JoinColumn(name = "opcionMenuId", referencedColumnName = "id"))
+    private Set<OpcionMenu> opcionesDeMenu = new HashSet<OpcionMenu>();
 
     public Perfil() {
     }
@@ -121,19 +121,19 @@ public class Perfil implements Serializable {
         this.descripcion = descripcion;
     }
 
-//    /**
-//     * @return the opcionesDeMenu
-//     */
-//    public Set<OpcionMenu> getOpcionesDeMenu() {
-//        return opcionesDeMenu;
-//    }
-//
-//    /**
-//     * @param opcionesDeMenu the opcionesDeMenu to set
-//     */
-//    public void setOpcionesDeMenu(Set<OpcionMenu> opcionesDeMenu) {
-//        this.opcionesDeMenu = opcionesDeMenu;
-//    }
+    /**
+     * @return the opcionesDeMenu
+     */
+    public Set<OpcionMenu> getOpcionesDeMenu() {
+        return opcionesDeMenu;
+    }
+
+    /**
+     * @param opcionesDeMenu the opcionesDeMenu to set
+     */
+    public void setOpcionesDeMenu(Set<OpcionMenu> opcionesDeMenu) {
+        this.opcionesDeMenu = opcionesDeMenu;
+    }
 
     public List<Usuario> getUsuarioList() {
         return usuarioList;

@@ -1,4 +1,4 @@
-package com.asi.restaurantbcd.util;
+package com.asi.restaurantbcd.negocio.util;
 
 import java.util.List;
 

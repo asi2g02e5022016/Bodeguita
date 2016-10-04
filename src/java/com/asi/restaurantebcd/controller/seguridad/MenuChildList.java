@@ -1,7 +1,7 @@
 package com.asi.restaurantebcd.controller.seguridad;
 
 import com.asi.restaurantbcd.modelo.OpcionMenu;
-import com.asi.restaurantbcd.util.QueryUtil;
+import com.asi.restaurantbcd.negocio.util.QueryUtil;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 

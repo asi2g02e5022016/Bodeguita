@@ -3,8 +3,8 @@ package com.asi.restaurantebcd.controller.mtto;
    
 import com.asi.restaurantbcd.modelo.OpcionMenu;
 import com.asi.restaurantbcd.modelo.Perfil;
-import com.asi.restaurantbcd.util.MttoUtil;
-import com.asi.restaurantbcd.util.UserNavigTreeFactory;
+import com.asi.restaurantbcd.negocio.util.MttoUtil;
+import com.asi.restaurantbcd.negocio.util.UserNavigTreeFactory;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -73,10 +73,10 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 	}
 	
 	public String guardarAsociacion(){
-		//getInstance().setOpcionesDeMenu(new HashSet<OpcionMenu>());
+		getInstance().setOpcionesDeMenu(new HashSet<OpcionMenu>());
 		for(OpcionMenu opcionMenu : getMenusDisponibles()){
 			if(opcionMenu.isAsociado()){
-				//getInstance().getOpcionesDeMenu().add(opcionMenu);
+				getInstance().getOpcionesDeMenu().add(opcionMenu);
 			}
 		}
 		return "save";
@@ -132,8 +132,8 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
     @Override
     protected Perfil getNew() {
         Perfil result=new Perfil();
-//        this.setMenusAsociados(new ArrayList<OpcionMenu>(result.getOpcionesDeMenu()));
-//		loadMenusTree();
+        this.setMenusAsociados(new ArrayList<OpcionMenu>(result.getOpcionesDeMenu()));
+		loadMenusTree();
         return result;
     }    
 
@@ -156,10 +156,10 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 	}
 	
 	public void guardarMenusTree(){
-//		this.getInstance().setOpcionesDeMenu(new HashSet<OpcionMenu>());
-//		for(OpcionMenu opcionMenu: this.getMenusAsociados()){
-//			this.getInstance().getOpcionesDeMenu().add(opcionMenu);
-//		}
+		this.getInstance().setOpcionesDeMenu(new HashSet<OpcionMenu>());
+		for(OpcionMenu opcionMenu: this.getMenusAsociados()){
+			this.getInstance().getOpcionesDeMenu().add(opcionMenu);
+		}
 	}
         public void actualizarMenusTree(){
 		this.setMenusAsociados(new ArrayList<OpcionMenu>());
@@ -173,20 +173,20 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 
     @Override
     protected void prepareCreate() {
-//        this.setMenusAsociados(new ArrayList<OpcionMenu>(getInstance().getOpcionesDeMenu()));
-//		for(OpcionMenu opcionMenu: getInstance().getOpcionesDeMenu()){
-//			System.out.println("Menus prepare: " + opcionMenu.getEtiqueta());
-//		}          
+        this.setMenusAsociados(new ArrayList<OpcionMenu>(getInstance().getOpcionesDeMenu()));
+		for(OpcionMenu opcionMenu: getInstance().getOpcionesDeMenu()){
+			System.out.println("Menus prepare: " + opcionMenu.getEtiqueta());
+		}          
 			loadMenusTree();
         		cargarMenusDisponibles();
     }
 
     @Override
     protected void prepareUpdate() {
-//                        this.setMenusAsociados(new ArrayList<OpcionMenu>(getInstance().getOpcionesDeMenu()));
-//                      for(OpcionMenu opcionMenu: getInstance().getOpcionesDeMenu()){
-//			System.out.println("Menus prepare: " + opcionMenu.getEtiqueta());
-//                      }       
+                        this.setMenusAsociados(new ArrayList<OpcionMenu>(getInstance().getOpcionesDeMenu()));
+                      for(OpcionMenu opcionMenu: getInstance().getOpcionesDeMenu()){
+			System.out.println("Menus prepare: " + opcionMenu.getEtiqueta());
+                      }       
 			loadMenusTree();
         		cargarMenusDisponibles();
     }

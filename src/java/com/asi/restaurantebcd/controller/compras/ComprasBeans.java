@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.asi.restaurantebdc.controller.compras;
+package com.asi.restaurantebcd.controller.compras;
 
 import com.asi.restaurantbcd.modelo.Compra;
 import com.asi.restaurantbcd.modelo.CompraDetalle;
 import com.asi.restaurantbcd.modelo.Estado;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
-import com.asi.restaurantbcd.util.Utilidades;
+import com.asi.restaurantbcd.negocio.util.Utilidades;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
