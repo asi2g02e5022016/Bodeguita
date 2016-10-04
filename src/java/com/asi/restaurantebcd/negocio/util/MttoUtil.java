@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.asi.restaurantbcd.negocio.util;
+package com.asi.restaurantebcd.negocio.util;
 
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.util.Iterator;

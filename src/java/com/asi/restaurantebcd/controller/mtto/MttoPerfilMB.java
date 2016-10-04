@@ -3,8 +3,8 @@ package com.asi.restaurantebcd.controller.mtto;
    
 import com.asi.restaurantbcd.modelo.OpcionMenu;
 import com.asi.restaurantbcd.modelo.Perfil;
-import com.asi.restaurantbcd.negocio.util.MttoUtil;
-import com.asi.restaurantbcd.negocio.util.UserNavigTreeFactory;
+import com.asi.restaurantebcd.negocio.util.MttoUtil;
+import com.asi.restaurantebcd.negocio.util.UserNavigTreeFactory;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.io.Serializable;
 import java.util.ArrayList;

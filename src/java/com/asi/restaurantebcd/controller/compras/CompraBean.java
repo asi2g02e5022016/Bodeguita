@@ -10,7 +10,7 @@ import com.asi.restaurantbcd.modelo.CompraDetalle;
 import com.asi.restaurantbcd.modelo.Estado;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
-import com.asi.restaurantbcd.negocio.util.Utilidades;
+import com.asi.restaurantebcd.negocio.util.Utilidades;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;

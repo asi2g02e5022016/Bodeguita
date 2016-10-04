@@ -6,7 +6,7 @@
 package com.asi.restaurantebcd.controller.seguridad;
 
 import com.asi.restaurantbcd.modelo.Usuario;
-import com.asi.restaurantbcd.negocio.util.Utilidades;
+import com.asi.restaurantebcd.negocio.util.Utilidades;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import javax.enterprise.context.ConversationScoped;
 import java.io.Serializable;
