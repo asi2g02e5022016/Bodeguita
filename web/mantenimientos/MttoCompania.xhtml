@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
+Vista xhtl de Mantenimientos de companias.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml">
+    <ui:define name="body">
+        <center>
+        <h:form id="forprincipal" >
+            
+            <p:growl showDetail="true" showSummary="true" />
+            <p:panel id="basic" header="Mantenimientos companias" style="width: 50%"  >
+                <p:menubar>
+                    <p:menuitem value="Nuevo" action="#{mttoCompanias.limpiarPantalla()}"
+                                icon="ui-icon-plus" />
+                    <p:menuitem value="Guardar" action="#{mttoCompanias.guardarCompanias()}"
+                                icon="ui-icon-disk" />
+                    <p:menuitem value="Buscar" update="forprincipal" action="#{mttoCompanias.buscarCompanias()}"
+                                icon=" ui-icon-search" />
+                </p:menubar>
+                    <h:panelGrid columns="2" width="80%">
+                        <h:outputLabel  value="Id Compania : "/>
+                        <p:inputText value="#{mttoCompanias.idCompania}"
+                                     readonly="true" style="width: 40px" />
+                        <h:outputLabel  value="Nombre " />
+                        <p:inputText style="width: 100%"  value="#{mttoCompanias.nombreCompania}"  />
+                    </h:panelGrid>
+                    <h:panelGrid >
+                        <p:dataTable id="tablaProd" emptyMessage="" binding="#{mttoCompanias.tablaCompanias}"
+                                     value="#{mttoCompanias.lstCompanias}" 
+                                     var="dpro" rowKey="#{dpro.idCompania}"
+                                     selectionMode="single" rows="19"  >
+                            <p:column headerText="Id" width="40%">
+                                <h:outputText value="#{dpro.idCompania}"  />
+                            </p:column>
+                            <p:column headerText="Nombre" width="90%">
+                                <h:outputText value="#{dpro.compania}"  />
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:panelGrid>
+            </p:panel>
+        </h:form>
+            </center>
+    </ui:define>
+</ui:composition>

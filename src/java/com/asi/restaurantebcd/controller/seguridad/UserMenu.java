@@ -56,6 +56,25 @@ public class UserMenu implements Serializable {
         item.setUrl("/mantenimientos/admin/perfil/lista.xhtml");
         secondSubmenu.addElement(item);
          model.addElement(secondSubmenu);
+         
+                 // Menu de mantenimientos.
+        DefaultSubMenu menuMtto = new DefaultSubMenu("Mantenimientos");
+ 
+        item = new DefaultMenuItem("Companias");
+        item.setUrl("/mantenimientos/MttoCompania.xhtml");
+        menuMtto.addElement(item);
+        
+        item = new DefaultMenuItem("Sucursales");
+        item.setUrl("/mantenimientos/MttoSucursal.xhtml");
+        menuMtto.addElement(item);
+        
+        item = new DefaultMenuItem("Usuarios");
+        item.setUrl("/mantenimientos/MttoUsuarios.xhtml");
+        menuMtto.addElement(item);
+         model.addElement(menuMtto);
+         
+         ////////////
+         
         
         DefaultSubMenu terserSubmenu = new DefaultSubMenu("Compras");
        
@@ -63,6 +82,9 @@ public class UserMenu implements Serializable {
         item.setUrl("/compras/CompraProdustos.xhtml");
         terserSubmenu.addElement(item);
         model.addElement(terserSubmenu);
+        
+        
+        
 	}
 
     /**

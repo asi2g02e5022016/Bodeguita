@@ -6,17 +6,12 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,13 +22,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "compania")
-@NamedQueries({
-    @NamedQuery(name = "Compania.findAll", query = "SELECT c FROM Compania c")})
 public class Compania implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompania")
-    private List<Impuesto> impuestoList;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,12 +34,6 @@ public class Compania implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "compania")
     private String compania;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompania")
-    private List<Empleado> empleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompania")
-    private List<Sucursal> sucursalList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompania")
-    private List<Departamento> departamentoList;
 
     public Compania() {
     }
@@ -80,30 +63,7 @@ public class Compania implements Serializable {
         this.compania = compania;
     }
 
-    public List<Empleado> getEmpleadoList() {
-        return empleadoList;
-    }
-
-    public void setEmpleadoList(List<Empleado> empleadoList) {
-        this.empleadoList = empleadoList;
-    }
-
-    public List<Sucursal> getSucursalList() {
-        return sucursalList;
-    }
-
-    public void setSucursalList(List<Sucursal> sucursalList) {
-        this.sucursalList = sucursalList;
-    }
-
-    public List<Departamento> getDepartamentoList() {
-        return departamentoList;
-    }
-
-    public void setDepartamentoList(List<Departamento> departamentoList) {
-        this.departamentoList = departamentoList;
-    }
-
+ 
     @Override
     public int hashCode() {
         int hash = 0;
@@ -127,14 +87,6 @@ public class Compania implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Compania[ idCompania=" + idCompania + " ]";
-    }
-
-    public List<Impuesto> getImpuestoList() {
-        return impuestoList;
-    }
-
-    public void setImpuestoList(List<Impuesto> impuestoList) {
-        this.impuestoList = impuestoList;
     }
     
 }
