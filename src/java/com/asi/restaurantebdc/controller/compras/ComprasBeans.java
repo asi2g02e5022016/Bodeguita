@@ -24,9 +24,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.ManagedBean;
+import javax.inject.Named;
+import javax.faces.view.ViewScoped;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.context.RequestContext;
 
@@ -34,15 +36,15 @@ import org.primefaces.context.RequestContext;
  *
  * @author samaelopez
  */
-@Named(value = "s")
+@ManagedBean( name = "comprasBeans")
 @ViewScoped
-public class CompraBean implements  Serializable {
-    
+public class ComprasBeans implements  Serializable {
+   
       //<editor-fold  defaultstate="collapsed" desc="Constructor" >
     /**
      * Creates a new instance of CompraBean
      */
-    public CompraBean() {
+    public ComprasBeans() {
     }
        
 //      @PostConstruct
@@ -78,7 +80,7 @@ public class CompraBean implements  Serializable {
     private Date fecha;
     private String mensaje;
     private Compra compraEnca;
-    
+    private DataTable tablaProd  =  new DataTable();
     private List < Compra > lstCompraMonitor =  new ArrayList<>();
     private List < CompraDetalle > lstCompradeta =  new ArrayList<>();
     private List < Proveedor > lstProveedor =  new ArrayList<>();
@@ -127,6 +129,8 @@ public class CompraBean implements  Serializable {
             compraEnca.setIdSucursal(sesion.getSucursal());
             compraEnca.setIdUsuario(sesion.getUsuario());
             compraEnca.setSerieFactura(serie);
+            alert("El documento se guardo exitosamente", FacesMessage.SEVERITY_INFO);
+            
         } catch (Exception ex) {
             Logger.getLogger(CompraBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -191,19 +195,20 @@ public class CompraBean implements  Serializable {
       }
              //</editor-fold >
       
-      //<editor-fold  defaultstate="collapsed" desc="PopupProducto" >
+      //<editor-fold  defaultstate="collapsed" desc="PopupProveedor" >
       /**
        * 
        */
       public void buscarProducto() {
         try {
             Map filtro = new HashMap();
-            if (descripcionProducto != null && !descripcionProducto.equals("")) {
-                filtro.put("producto", descripcionProducto.trim().toUpperCase());
+            if (descripcionProducto != null) {
+                filtro.put("producto", descripcionProducto.trim());
                 
             }
             lstProducto = ejbBusProd.buscarProductos(filtro);
-            if (lstProveedor == null || lstProveedor.isEmpty()) {
+            System.out.println("lstProducto.." +lstProducto);
+            if (lstProducto == null || lstProducto.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
          } catch (Exception ex) {
@@ -258,6 +263,14 @@ public class CompraBean implements  Serializable {
 
     public Dialog getDialogProductos() {
         return dialogProductos;
+    }
+
+    public DataTable getTablaProd() {
+        return tablaProd;
+    }
+
+    public void setTablaProd(DataTable tablaProd) {
+        this.tablaProd = tablaProd;
     }
 
     public void setDialogProductos(Dialog dialogProductos) {
@@ -391,8 +404,21 @@ public class CompraBean implements  Serializable {
         this.compraEnca = compraEnca;
     }
     //</editor-fold >
-//    public void mostrarDialogProd() {
-//    dialogProductos.setVisible(true);
-//    }
+    public void mostrarDialogProd() {
+    dialogProductos.setVisible(true);
+     RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProducto').show();");
+    }
+        public void mostrarDialogProveedor() {
+     RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProveedor').show();");
+    }
+         public void selectProducto() {
+             if (tablaProd.getSelection() != null) {
+                 Producto pro = (Producto) tablaProd.getRowData();
+                 System.out.println("pro.." +pro);
+             }
+         }
     
 }
+

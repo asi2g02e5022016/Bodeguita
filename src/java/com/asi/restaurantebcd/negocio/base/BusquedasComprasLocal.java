@@ -5,6 +5,9 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Proveedor;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -19,5 +22,12 @@ public interface BusquedasComprasLocal {
      * @throws Exception  Error gnerico.
      */
     public Integer obtenerCorreltivoCompra() throws Exception;
+    /**
+     * Buscar Proveedores por medio de una MAP filtros.
+     * @param map Map.
+     * @return Lista de proveedores.
+     * @throws Exception  Error generico.
+     */
     
+    public List <Proveedor> buscarProveedores(Map map) throws Exception;
 }

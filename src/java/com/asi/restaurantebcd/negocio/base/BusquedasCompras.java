@@ -6,6 +6,10 @@
 package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Compra;
+import com.asi.restaurantbcd.modelo.Proveedor;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,4 +44,65 @@ public class BusquedasCompras implements BusquedasComprasLocal {
         valor   =  valor + 1;
         return valor;
     }
+    /**
+     * Buscar Proveedores por medio de una MAP filtros.
+     * @param map Map.
+     * @return Lista de proveedores.
+     * @throws Exception  Error generico.
+     */
+    @Override
+    public List <Proveedor> buscarProveedores(Map map) throws Exception {
+        if (map == null || map.isEmpty()){
+            return null;
+        }
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Proveedor a ");
+        if (map.containsKey("nombre") && map.get("nombre") != null) {
+            jpql.append(" WHERE a.proveedor = :nombre ");
+        }
+        Query query = em.createQuery(jpql.toString());
+        if (map.containsKey("nombre") && map.get("nombre") != null) {
+            query.setParameter("nombre", map.get("nombre").toString());
+        }
+        return query.getResultList();
+    }
+    
+    /**
+     * 
+     * @param map
+     * @return
+     * @throws Exception 
+     */
+    public List <Compra> buscarCompras(Map map) throws Exception {
+        if (map == null || map.isEmpty()){
+            return null;
+        }
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Compra a ");
+          jpql.append(" WHERE 1 = 1 ");
+        if (map.containsKey("idcompra") && map.get("idcompra") != null) {
+            jpql.append(" AND a.idcompra = :idcompra ");
+        }
+        if (map.containsKey("fechaInicial")
+                && map.get("fechaInicial") != null
+                && map.containsKey("fechaFinal")
+                && map.get("fechaFinal") != null) {
+            jpql.append(" AND o.fechacompra between :fechaInicial and :fechaFinal ");
+        }
+        Query query = em.createQuery(jpql.toString());
+        if (map.containsKey("idcompra") && map.get("idcompra") != null) {
+            query.setParameter("idcompra", Integer.parseInt(map.get("idcompra")
+                    .toString().trim()));
+        }
+        if (map.containsKey("fechaInicial")
+                && map.get("fechaInicial") != null
+                && map.containsKey("fechaFinal")
+                && map.get("fechaFinal") != null) {
+            query.setParameter("fechaInicial", (Date) map.get("fechaInicial"));
+            query.setParameter("fechaFinal", (Date) map.get("fechaFinal"));
+        }
+        return query.getResultList();
+    }
 }
+
+

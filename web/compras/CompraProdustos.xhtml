@@ -12,50 +12,50 @@ and open the template in the editor.
 	xmlns:p="http://primefaces.org/ui"
         template="/layout/templateBDC.xhtml">
     <ui:define name="body">
-        <h:form >
+        <h:form id="forprincipal" >
                   <p:growl showDetail="true" showSummary="true" />
             <p:panel id="basic" header="Compras a proveedores"  >
 
               <p:menubar>
-                  <p:menuitem value="Nuevo" action="#{compraBean.nuevaCompra()}"
+                  <p:menuitem value="Nuevo" action="#{comprasBeans.nuevaCompra()}"
                                 icon="ui-icon-plus" />
-                    <p:menuitem value="Guardar" action="#{compraBean.guardarCompra()}"
+                    <p:menuitem value="Guardar" action="#{comprasBeans.guardarCompra()}"
                                 icon="ui-icon-disk" />
-                    <p:menuitem value="Imprimir" action="#{compraBean.imprimitCompra()}"
+                    <p:menuitem value="Imprimir" action="#{comprasBeans.imprimitCompra()}"
                                 icon="ui-icon-print" />
-                    <p:menuitem value="Buscar" action="#{compraBean.buscarCompra()}"
+                    <p:menuitem value="Monitor" action="#{comprasBeans.buscarCompra()}"
                                 icon=" ui-icon-search" />
                 </p:menubar>
                 <h:panelGrid columns="2" width="100%">
                                    <h:panelGrid columns="6" width="80%">
                     <h:outputLabel  value="No Documento : "/>
-                    <p:inputText value="#{compraBean.nodocu}"  />
+                    <p:inputText value="#{comprasBeans.nodocu}"  />
                     <h:outputLabel  value="Usuario: "  />
-                    <p:inputText  value="#{compraBean.usr}"  />
+                    <p:inputText  value="#{comprasBeans.usr}"  />
                     <h:outputLabel  value="Observaciones "  />
-                    <p:inputText   value="#{compraBean.observacion}" />
+                    <p:inputText   value="#{comprasBeans.observacion}" />
             
                     <h:outputLabel  value="Fecha "  />
-                    <p:inputText  value="#{compraBean.fecha}"  />
+                    <p:inputText  value="#{comprasBeans.fecha}"  />
                     <h:outputLabel  value="Estado "  />
-                    <p:inputText   value="#{compraBean.estado}"  />
+                    <p:inputText   value="#{comprasBeans.estado}"  />
                     <h:outputLabel  value="Codigo "  />
-                    <p:inputText  value="#{compraBean.codigo}"  />
+                    <p:inputText  value="#{comprasBeans.codigo}"  />
                     <h:outputLabel  value="Serie "  />
-                    <p:inputText   value="#{compraBean.serie}"  />
+                    <p:inputText   value="#{comprasBeans.serie}"  />
       
                 </h:panelGrid>
                     <h:panelGrid columns="3" width="20%">
                                               <h:outputLabel  value="Proveedor "  />
-                    <p:inputText  value="#{compraBean.nombreProveedor}"  />
-                        <p:commandButton  
+                    <p:inputText  value="#{comprasBeans.nombreProveedor}"  />
+                    <p:commandButton   action="#{comprasBeans.mostrarDialogProveedor()}"
                                          id="iconOnly" 
                                          icon="ui-icon-search" title="Icon Only" />
                     </h:panelGrid>
                 </h:panelGrid>
  
                 <h:panelGrid >
-                    <p:dataTable value="#{compraBean.lstCompradeta}" var="det"  emptyMessage=""  >
+                    <p:dataTable value="#{comprasBeans.lstCompradeta}" var="det"  emptyMessage=""  >
                       
                         <p:column headerText="cod.">
                             <h:outputText value="#{det.idProducto}" />
@@ -87,8 +87,8 @@ and open the template in the editor.
                          <p:column style="width:32px">
                              <f:facet name="header">
                                  <p:commandButton  
-                                         id="iconOnly" 
-                                         icon="ui-icon-plus" title="Icon Only" />
+                                     id="iconOnly" action="#{comprasBeans.mostrarDialogProd()}"
+                                         icon="ui-icon-plus"  />
                              </f:facet>
                       <p:rowEditor />
                  </p:column>
@@ -99,18 +99,19 @@ and open the template in the editor.
             <p:dialog header="Buscar Proveedor" widgetVar="dialogoProveedor" minHeight="100">
                 <h:panelGrid columns="1" width="100%">
                 <p:menubar>
-                    <p:menuitem value="Nuevo" action="#{compraBean.limpiarProveedor()}"
+                    <p:menuitem value="Nuevo" action="#{comprasBeans.limpiarProveedor()}"
                                 icon="ui-icon-plus" />
-                    <p:menuitem value="Buscar" action="#{compraBean.buscarProveedor()}"
+                    <p:menuitem value="Buscar" update="forprincipal"
+                                action="#{comprasBeans.buscarProveedor()}"
                                 icon=" ui-icon-search" />
                 </p:menubar>
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
                     <h:outputLabel  value="Nombres "  />
-                    <p:inputText   value="#{compraBean.nombreProveedor}" />
+                    <p:inputText   value="#{comprasBeans.nombreProveedor}" />
                 </h:panelGrid>
                 <h:panelGrid >
-                    <p:dataTable value="#{compraBean.lstProveedor}" var="dpro"  emptyMessage=""  >
+                    <p:dataTable value="#{comprasBeans.lstProveedor}"  var="dpro"  emptyMessage=""  >
                         <p:column headerText="nombre">
                             <h:outputText value="#{dpro.proveedor}"  />
                         </p:column>
@@ -122,22 +123,33 @@ and open the template in the editor.
                         </p:column>
                     </p:dataTable>
                 </h:panelGrid>
-            </p:dialog>
-            <p:dialog header="Buscar producto" widgetVar="dialogoProducto" minHeight="100">
+         </p:dialog>
+                <p:dialog header="Buscar producto" widgetVar="dialogoProducto"
+                          width="50%"
+                          binding="#{comprasBeans.dialogProductos}">
                 <h:panelGrid columns="1" width="100%">
                 <p:menubar>
-                    <p:menuitem value="Limpiar" action="#{compraBean.limpiarProducto()}"
+                    <p:menuitem value="Limpiar" action="#{comprasBeans.limpiarProducto()}"
                                 icon="ui-icon-plus" />
-                    <p:menuitem value="Buscar" action="#{compraBean.buscarProducto()}"
-                                icon=" ui-icon-search" />
+                    <p:menuitem id="idBuscarPro" value="Buscar" update="forprincipal"
+                                ajax="true" action="#{comprasBeans.buscarProducto()}"
+                                icon=" ui-icon-search" > 
+                    </p:menuitem>
+                     
                 </p:menubar>
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
                     <h:outputLabel  value="Descripcion "  />
-                    <p:inputText   value="#{compraBean.descripcionProducto}" />
+                    <p:inputText   value="#{comprasBeans.descripcionProducto}" />
                 </h:panelGrid>
+
                 <h:panelGrid >
-                    <p:dataTable value="#{compraBean.lstProducto}" var="dpro"  emptyMessage=""  >
+                    <p:dataTable id="tablaProd" binding="#{comprasBeans.tablaProd}"
+                                 value="#{comprasBeans.lstProducto}" 
+                                 
+                                 var="dpro" rowKey="#{dpro.idProducto}"
+                                 selectionMode="single" rows="19"  >
+                        
                         <p:column headerText="descripcion">
                             <h:outputText value="#{dpro.producto}"  />
                         </p:column>
@@ -152,38 +164,7 @@ and open the template in the editor.
                         </p:column>
                     </p:dataTable>
                 </h:panelGrid>
-            </p:dialog>
-            
-                <p:dialog header="Monitor" widgetVar="dialogoMonitor" minHeight="100">
-                <h:panelGrid columns="1" width="100%">
-                <p:menubar>
-                    <p:menuitem value="Limpiar" 
-                                icon="ui-icon-plus" />
-                    <p:menuitem value="Buscar" 
-                                icon=" ui-icon-search" />
-                </p:menubar>
-                </h:panelGrid>
-                <h:panelGrid columns="2" width="80%">
-                    <h:outputLabel  value="Descripcion "  />
-                    <p:inputText    />
-                </h:panelGrid>
-                <h:panelGrid >
-                    <p:dataTable  var="dpro"  emptyMessage=""  >
-                        <p:column headerText="descripcion">
-                            <h:outputText  />
-                        </p:column>
-                        <p:column headerText="medida">
-                            <h:outputText  />
-                        </p:column>
-                          <p:column headerText="tipo">
-                              <h:outputText  />
-                        </p:column>
-                           <p:column headerText="tipo">
-                               <h:outputText  />
-                        </p:column>
-                    </p:dataTable>
-                </h:panelGrid>
-            </p:dialog>
+       </p:dialog>
 
         </h:form>
     </ui:define>

@@ -60,7 +60,7 @@ public class UserMenu implements Serializable {
         DefaultSubMenu terserSubmenu = new DefaultSubMenu("Compras");
        
         item = new DefaultMenuItem("Compras");
-        item.setUrl("/compras/Compras.xhtml");
+        item.setUrl("/compras/CompraProdustos.xhtml");
         terserSubmenu.addElement(item);
         model.addElement(terserSubmenu);
 	}

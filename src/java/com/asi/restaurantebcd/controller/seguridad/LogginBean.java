@@ -8,7 +8,6 @@ package com.asi.restaurantebcd.controller.seguridad;
 import com.asi.restaurantbcd.modelo.Usuario;
 import com.asi.restaurantbcd.util.Utilidades;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
-import javax.inject.Named;
 import javax.enterprise.context.ConversationScoped;
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +16,7 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
+import javax.faces.bean.ManagedBean;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.context.RequestContext;
 
@@ -24,7 +24,9 @@ import org.primefaces.context.RequestContext;
  *
  * @author samaelopez
  */
-@Named(value = "logginBean")
+
+
+@ManagedBean( name = "logginBean")
 @ConversationScoped
 public class LogginBean implements Serializable {
 
