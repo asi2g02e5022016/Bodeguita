@@ -61,6 +61,7 @@ public class Estado implements Serializable {
         return idEstado;
     }
 
+    
     public void setIdEstado(Integer idEstado) {
         this.idEstado = idEstado;
     }
