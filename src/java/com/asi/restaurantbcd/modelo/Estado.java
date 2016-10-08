@@ -42,8 +42,8 @@ public class Estado implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "estado")
     private String estado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
-    private List<Compra> compraList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstado")
+//    private List<Estado> listEstado;
 
     public Estado() {
     }
@@ -73,13 +73,13 @@ public class Estado implements Serializable {
         this.estado = estado;
     }
 
-    public List<Compra> getCompraList() {
-        return compraList;
-    }
-
-    public void setCompraList(List<Compra> compraList) {
-        this.compraList = compraList;
-    }
+//    public List<Estado> getListEstado() {
+//        return listEstado;
+//    }
+//
+//    public void setListEstado(List<Estado> listEstado) {
+//        this.listEstado = listEstado;
+//    }
 
     @Override
     public int hashCode() {

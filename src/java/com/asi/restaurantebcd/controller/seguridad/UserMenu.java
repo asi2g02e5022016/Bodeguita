@@ -59,7 +59,11 @@ public class UserMenu implements Serializable {
          
                  // Menu de mantenimientos.
         DefaultSubMenu menuMtto = new DefaultSubMenu("Mantenimientos");
- 
+        
+        item = new DefaultMenuItem("Estado");
+        item.setUrl("/mantenimientos/MttoEstado.xhtml");
+        menuMtto.addElement(item);
+        
         item = new DefaultMenuItem("Companias");
         item.setUrl("/mantenimientos/MttoCompania.xhtml");
         menuMtto.addElement(item);
@@ -71,6 +75,7 @@ public class UserMenu implements Serializable {
         item = new DefaultMenuItem("Usuarios");
         item.setUrl("/mantenimientos/MttoUsuarios.xhtml");
         menuMtto.addElement(item);
+                     
          model.addElement(menuMtto);
          
          ////////////
