@@ -6,7 +6,7 @@
 package com.asi.restaurantebcd.controller.compras;
 
 import com.asi.restaurantbcd.modelo.Compra;
-import com.asi.restaurantbcd.modelo.CompraDetalle;
+import com.asi.restaurantbcd.modelo.Compradetalle;
 import com.asi.restaurantbcd.modelo.Estado;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
@@ -80,7 +80,7 @@ public class CompraBean implements  Serializable {
     private Compra compraEnca;
     
     private List < Compra > lstCompraMonitor =  new ArrayList<>();
-    private List < CompraDetalle > lstCompradeta =  new ArrayList<>();
+    private List < Compradetalle > lstCompradeta =  new ArrayList<>();
     private List < Proveedor > lstProveedor =  new ArrayList<>();
       private List < Producto > lstProducto =  new ArrayList<>();
     @EJB
@@ -117,16 +117,16 @@ public class CompraBean implements  Serializable {
             
             compraEnca = new Compra();
             
-            compraEnca.setCodigoFactura(codigo);
-            compraEnca.setCompraDetalleList(lstCompradeta);
-            compraEnca.setFechaCompra(new Date());
-            compraEnca.setIdCompra(ejbBusComp.obtenerCorreltivoCompra());
+//            compraEnca.setCodigoFactura(codigo);
+//            compraEnca.setCompraDetalleList(lstCompradeta);
+//            compraEnca.setFechaCompra(new Date());
+//            compraEnca.setIdCompra(ejbBusComp.obtenerCorreltivoCompra());
             Estado est = crud.buscarEntidad(Estado.class, 2);
-            compraEnca.setIdEstado(est);
-            compraEnca.setIdProveedor(proveedor);
-            compraEnca.setIdSucursal(sesion.getSucursal());
-            compraEnca.setIdUsuario(sesion.getUsuario());
-            compraEnca.setSerieFactura(serie);
+//            compraEnca.setIdEstado(est);
+//            compraEnca.setIdProveedor(proveedor);
+//            compraEnca.setIdSucursal(sesion.getSucursal());
+//            compraEnca.setIdUsuario(sesion.getUsuario());
+//            compraEnca.setSerieFactura(serie);
         } catch (Exception ex) {
             Logger.getLogger(CompraBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -350,11 +350,11 @@ public class CompraBean implements  Serializable {
         this.lstProveedor = lstProveedor;
     }
 
-    public List<CompraDetalle> getLstCompradeta() {
+    public List<Compradetalle> getLstCompradeta() {
         return lstCompradeta;
     }
 
-    public void setLstCompradeta(List<CompraDetalle> lstCompradeta) {
+    public void setLstCompradeta(List<Compradetalle> lstCompradeta) {
         this.lstCompradeta = lstCompradeta;
     }
 

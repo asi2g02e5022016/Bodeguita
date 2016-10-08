@@ -1,7 +1,7 @@
 package com.asi.restaurantebcd.controller.mtto;
 
    
-import com.asi.restaurantbcd.modelo.OpcionMenu;
+import com.asi.restaurantbcd.modelo.Opcionmenu;
 import com.asi.restaurantbcd.modelo.Perfil;
 import com.asi.restaurantebcd.negocio.util.MttoUtil;
 import com.asi.restaurantebcd.negocio.util.UserNavigTreeFactory;
@@ -32,8 +32,8 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
     @EJB
     CrudBDCLocal ejbCrud;
     
-    	private List<OpcionMenu> menusDisponibles = new ArrayList<OpcionMenu>();
-	private List<OpcionMenu> menusAsociados = new ArrayList<OpcionMenu>();
+    	private List<Opcionmenu> menusDisponibles = new ArrayList<Opcionmenu>();
+	private List<Opcionmenu> menusAsociados = new ArrayList<Opcionmenu>();
 	private TreeNode[] menusAgregados;
 	private TreeNode menusTreeNode;
         
@@ -53,11 +53,11 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
     }
     
     	public void cargarMenusDisponibles(){
-		setMenusDisponibles((List<OpcionMenu>) getEntityManager().createQuery("select m from OpcionMenu m where " +
+		setMenusDisponibles((List<Opcionmenu>) getEntityManager().createQuery("select m from OpcionMenu m where " +
 				"m.estado like 'ACT' and m.menuPadre is not null ORDER BY m.menuPadre.etiqueta ASC ")
 				.getResultList());
 		check = true;
-		for(OpcionMenu opcionMenu : getMenusDisponibles()){
+		for(Opcionmenu opcionMenu : getMenusDisponibles()){
 			if(opcionMenu.getSubMenus().contains(getInstance())){
 				opcionMenu.setAsociado(true);
 			}else{
@@ -67,16 +67,16 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 	}
         
         	public void changeAll(){
-		for(OpcionMenu opcionMenu : getMenusDisponibles()){
+		for(Opcionmenu opcionMenu : getMenusDisponibles()){
 			opcionMenu.setAsociado(check);
 		}
 	}
 	
 	public String guardarAsociacion(){
-		getInstance().setOpcionesDeMenu(new HashSet<OpcionMenu>());
-		for(OpcionMenu opcionMenu : getMenusDisponibles()){
+		//getInstance().setOpcionmenuList(new HashSet<Opcionmenu>());
+		for(Opcionmenu opcionMenu : getMenusDisponibles()){
 			if(opcionMenu.isAsociado()){
-				getInstance().getOpcionesDeMenu().add(opcionMenu);
+				getInstance().getOpcionmenuList().add(opcionMenu);
 			}
 		}
 		return "save";
@@ -132,7 +132,7 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
     @Override
     protected Perfil getNew() {
         Perfil result=new Perfil();
-        this.setMenusAsociados(new ArrayList<OpcionMenu>(result.getOpcionesDeMenu()));
+        this.setMenusAsociados(new ArrayList<Opcionmenu>(result.getOpcionmenuList()));
 		loadMenusTree();
         return result;
     }    
@@ -156,16 +156,16 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 	}
 	
 	public void guardarMenusTree(){
-		this.getInstance().setOpcionesDeMenu(new HashSet<OpcionMenu>());
-		for(OpcionMenu opcionMenu: this.getMenusAsociados()){
-			this.getInstance().getOpcionesDeMenu().add(opcionMenu);
+		//this.getInstance().setOpcionmenuList(new HashSet<Opcionmenu>());
+		for(Opcionmenu opcionMenu: this.getMenusAsociados()){
+			this.getInstance().getOpcionmenuList().add(opcionMenu);
 		}
 	}
         public void actualizarMenusTree(){
-		this.setMenusAsociados(new ArrayList<OpcionMenu>());
+		this.setMenusAsociados(new ArrayList<Opcionmenu>());
 		for(TreeNode node:this.getMenusAgregados()){
-                    OpcionMenu menu=(OpcionMenu)node.getData();
-			this.getMenusAsociados().add(menu);
+                    Opcionmenu menu=(Opcionmenu)node.getData();
+			//this.getMenusAsociados().add(menu);
 		}
 		guardarMenusTree();
 		loadMenusTree();
@@ -173,8 +173,8 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 
     @Override
     protected void prepareCreate() {
-        this.setMenusAsociados(new ArrayList<OpcionMenu>(getInstance().getOpcionesDeMenu()));
-		for(OpcionMenu opcionMenu: getInstance().getOpcionesDeMenu()){
+        this.setMenusAsociados(new ArrayList<Opcionmenu>(getInstance().getOpcionmenuList()));
+		for(Opcionmenu opcionMenu: getInstance().getOpcionmenuList()){
 			System.out.println("Menus prepare: " + opcionMenu.getEtiqueta());
 		}          
 			loadMenusTree();
@@ -183,8 +183,8 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 
     @Override
     protected void prepareUpdate() {
-                        this.setMenusAsociados(new ArrayList<OpcionMenu>(getInstance().getOpcionesDeMenu()));
-                      for(OpcionMenu opcionMenu: getInstance().getOpcionesDeMenu()){
+                        this.setMenusAsociados(new ArrayList<Opcionmenu>(getInstance().getOpcionmenuList()));
+                      for(Opcionmenu opcionMenu: getInstance().getOpcionmenuList()){
 			System.out.println("Menus prepare: " + opcionMenu.getEtiqueta());
                       }       
 			loadMenusTree();
@@ -194,28 +194,28 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
     /**
      * @return the menusDisponibles
      */
-    public List<OpcionMenu> getMenusDisponibles() {
+    public List<Opcionmenu> getMenusDisponibles() {
         return menusDisponibles;
     }
 
     /**
      * @param menusDisponibles the menusDisponibles to set
      */
-    public void setMenusDisponibles(List<OpcionMenu> menusDisponibles) {
+    public void setMenusDisponibles(List<Opcionmenu> menusDisponibles) {
         this.menusDisponibles = menusDisponibles;
     }
 
     /**
      * @return the menusAsociados
      */
-    public List<OpcionMenu> getMenusAsociados() {
+    public List<Opcionmenu> getMenusAsociados() {
         return menusAsociados;
     }
 
     /**
      * @param menusAsociados the menusAsociados to set
      */
-    public void setMenusAsociados(List<OpcionMenu> menusAsociados) {
+    public void setMenusAsociados(List<Opcionmenu> menusAsociados) {
         this.menusAsociados = menusAsociados;
     }
 

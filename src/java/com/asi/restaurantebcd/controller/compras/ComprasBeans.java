@@ -6,7 +6,7 @@
 package com.asi.restaurantebcd.controller.compras;
 
 import com.asi.restaurantbcd.modelo.Compra;
-import com.asi.restaurantbcd.modelo.CompraDetalle;
+import com.asi.restaurantbcd.modelo.Compradetalle;
 import com.asi.restaurantbcd.modelo.Estado;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
@@ -85,7 +85,7 @@ public class ComprasBeans implements  Serializable {
     private Compra compraEnca;
     private DataTable tablaProd  =  new DataTable();
     private List < Compra > lstCompraMonitor =  new ArrayList<>();
-    private List < CompraDetalle > lstCompradeta =  new ArrayList<>();
+    private List < Compradetalle > lstCompradeta =  new ArrayList<>();
     private List < Proveedor > lstProveedor =  new ArrayList<>();
       private List < Producto > lstProducto =  new ArrayList<>();
     @EJB
@@ -122,16 +122,16 @@ public class ComprasBeans implements  Serializable {
             
             compraEnca = new Compra();
             
-            compraEnca.setCodigoFactura(codigo);
-            compraEnca.setCompraDetalleList(lstCompradeta);
-            compraEnca.setFechaCompra(new Date());
-            compraEnca.setIdCompra(ejbBusComp.obtenerCorreltivoCompra());
-            Estado est = crud.buscarEntidad(Estado.class, 2);
-            compraEnca.setIdEstado(est);
-            compraEnca.setIdProveedor(proveedor);
-            compraEnca.setIdSucursal(sesion.getSucursal());
-            compraEnca.setIdUsuario(sesion.getUsuario());
-            compraEnca.setSerieFactura(serie);
+//            compraEnca.setCodigoFactura(codigo);
+//            compraEnca.setCompraDetalleList(lstCompradeta);
+//            compraEnca.setFechaCompra(new Date());
+//            compraEnca.setIdCompra(ejbBusComp.obtenerCorreltivoCompra());
+//            Estado est = crud.buscarEntidad(Estado.class, 2);
+//            compraEnca.setIdEstado(est);
+//            compraEnca.setIdProveedor(proveedor);
+//            compraEnca.setIdSucursal(sesion.getSucursal());
+//            compraEnca.setIdUsuario(sesion.getUsuario());
+//            compraEnca.setSerieFactura(serie);
             alert("El documento se guardo exitosamente", FacesMessage.SEVERITY_INFO);
             
         } catch (Exception ex) {
@@ -365,14 +365,14 @@ public class ComprasBeans implements  Serializable {
     public void setLstProveedor(List<Proveedor> lstProveedor) {
         this.lstProveedor = lstProveedor;
     }
-
-    public List<CompraDetalle> getLstCompradeta() {
-        return lstCompradeta;
-    }
-
-    public void setLstCompradeta(List<CompraDetalle> lstCompradeta) {
-        this.lstCompradeta = lstCompradeta;
-    }
+//
+//    public List<CompraDetalle> getLstCompradeta() {
+//        return lstCompradeta;
+//    }
+//
+//    public void setLstCompradeta(List<CompraDetalle> lstCompradeta) {
+//        this.lstCompradeta = lstCompradeta;
+//    }
 
 
     public String getObservacion() {

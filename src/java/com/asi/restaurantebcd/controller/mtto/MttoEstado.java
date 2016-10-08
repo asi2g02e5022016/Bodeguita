@@ -114,7 +114,7 @@ public class MttoEstado implements Serializable {
             Integer codigo = ejbBusqEstLocal.obtenerCorreltivoEstado();
             estado = new Estado();
             estado.setEstado(nombreEstado.trim().toUpperCase());
-            estado.setIdEstado(codigo);
+            estado.setIdestado(codigo);
             
             crud.guardarEntidad(estado);
             alert("El estado documento se guardo exitosamente.", 

@@ -114,7 +114,7 @@ public class MttoCompanias implements Serializable {
             Integer codigo = ejbBusqMtto.obtenerCorreltivoCompanias();
             compania = new Compania();
             compania.setCompania(nombreCompania.trim().toUpperCase());
-            compania.setIdCompania(codigo);
+           // compania.setIdCompania(codigo);
             
             crud.guardarEntidad(compania);
             alert("La compania se guardo exitosamente.", 

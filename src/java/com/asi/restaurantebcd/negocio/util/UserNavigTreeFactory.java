@@ -1,6 +1,6 @@
 package com.asi.restaurantebcd.negocio.util;
 
-import com.asi.restaurantbcd.modelo.OpcionMenu;
+import com.asi.restaurantbcd.modelo.Opcionmenu;
 import com.asi.restaurantbcd.modelo.Usuario;
 import com.asi.restaurantebcd.controller.seguridad.MenuChildList;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
@@ -33,15 +33,15 @@ public class UserNavigTreeFactory implements Serializable{
 	private TreeNode root;
 	HashMap<Integer,TreeNode> addedNodes;
 	Usuario user;
-	List<OpcionMenu> seleccionados=new ArrayList<OpcionMenu>();
+	List<Opcionmenu> seleccionados=new ArrayList<Opcionmenu>();
 	
 	public UserNavigTreeFactory(){}
 	
-	public List<OpcionMenu> getSeleccionados() {
+	public List<Opcionmenu> getSeleccionados() {
 		return seleccionados;
 	}
 
-	public void setSeleccionados(List<OpcionMenu> seleccionados) {
+	public void setSeleccionados(List<Opcionmenu> seleccionados) {
 		this.seleccionados = seleccionados;
 	}
 
@@ -53,7 +53,7 @@ public class UserNavigTreeFactory implements Serializable{
 		this.user = user;
 	}
 	
-	public TreeNode getNavigTree(List<OpcionMenu> seleccionados){
+	public TreeNode getNavigTree(List<Opcionmenu> seleccionados){
 		this.seleccionados=seleccionados;
 		return getNavigTree();
 	}
@@ -86,7 +86,7 @@ public class UserNavigTreeFactory implements Serializable{
 		}*/
 		
 		//TreeNode logout_node = new DefaultTreeNode(RESOURCE_BUNDLE.getString("logout"), root);
-		this.seleccionados=new ArrayList<OpcionMenu>();
+		this.seleccionados=new ArrayList<Opcionmenu>();
 		return root;
 	}
 	
@@ -102,17 +102,17 @@ public class UserNavigTreeFactory implements Serializable{
 		//TreeNode home_node = new DefaultTreeNode(RESOURCE_BUNDLE.getString("home"), root);
 		
 		
-		for (OpcionMenu om : childList.getResultList()) {
+		for (Opcionmenu om : childList.getResultList()) {
 						TreeNode node = loadUserNode(om, root);
 			}
 		
 		//TreeNode logout_node = new DefaultTreeNode(RESOURCE_BUNDLE.getString("logout"), root);
-		this.seleccionados=new ArrayList<OpcionMenu>();
+		this.seleccionados=new ArrayList<Opcionmenu>();
 		return root;
 	}
 	
 	
-	private TreeNode loadUserNode(OpcionMenu om,TreeNode node) {	
+	private TreeNode loadUserNode(Opcionmenu om,TreeNode node) {	
 		
 		TreeNode new_node;
 		
@@ -134,8 +134,8 @@ public class UserNavigTreeFactory implements Serializable{
 		return new_node;
 	}
 	
-	private boolean isContained(OpcionMenu om, Set<OpcionMenu> subMenus){
-		for(OpcionMenu sm: subMenus){
+	private boolean isContained(Opcionmenu om, Set<Opcionmenu> subMenus){
+		for(Opcionmenu sm: subMenus){
 			if(sm.getId()==om.getId())
 				return true;
 		}

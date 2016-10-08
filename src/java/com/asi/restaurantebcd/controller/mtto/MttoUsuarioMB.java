@@ -59,7 +59,7 @@ public class MttoUsuarioMB implements Serializable {
                 System.out.println("");
             }
             Usuario usr =  new Usuario();
-            usr.setIdUsuario(codigoUsr);
+            usr.setIdusuario(codigoUsr);
             usr.setClave(codigoUsr);
             ejbCrud.guardarEntidad(usr);
         } catch (Exception ex) {

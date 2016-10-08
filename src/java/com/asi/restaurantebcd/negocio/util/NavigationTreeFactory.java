@@ -1,6 +1,6 @@
 package com.asi.restaurantebcd.negocio.util;
 
-import com.asi.restaurantbcd.modelo.OpcionMenu;
+import com.asi.restaurantbcd.modelo.Opcionmenu;
 import com.asi.restaurantebcd.controller.seguridad.MenuChildList;
 import com.asi.restaurantebcd.controller.seguridad.MenuParentList;
 import java.io.Serializable;
@@ -36,7 +36,7 @@ public class NavigationTreeFactory implements Serializable {
 	
 	private TreeNode root;
 	
-	private List<OpcionMenu> menusUsuario = new ArrayList<OpcionMenu>();
+	private List<Opcionmenu> menusUsuario = new ArrayList<Opcionmenu>();
 	
 	public NavigationTreeFactory(){
 		
@@ -55,16 +55,16 @@ public class NavigationTreeFactory implements Serializable {
 	public TreeNode getNavigationTree() {
 
 		root = new DefaultTreeNode("Root", null);
-		for (OpcionMenu om : parentList.getResultList()) {
+		for (Opcionmenu om : parentList.getResultList()) {
 			TreeNode node = loadParentNode(om, root);
 		}
 		return this.root;
 	}
 
-	private TreeNode loadParentNode(OpcionMenu om, TreeNode node) {
+	private TreeNode loadParentNode(Opcionmenu om, TreeNode node) {
 		TreeNode new_node = new DefaultTreeNode(om, node);
 		new_node.setSelectable(false);
-		for (OpcionMenu sm : om.getSubMenus()) {
+		for (Opcionmenu sm : om.getSubMenus()) {
 			if (sm.getSubMenus().size() == 0) {
 				TreeNode sub_node = new DefaultTreeNode(sm, new_node);
 				sub_node.setSelectable(true);

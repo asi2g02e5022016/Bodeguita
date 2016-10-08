@@ -6,10 +6,13 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +23,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -33,7 +38,9 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Opcionmenu.findAll", query = "SELECT o FROM Opcionmenu o")})
 public class Opcionmenu implements Serializable {
-
+private Opcionmenu menuPadre;
+	private boolean asociado;
+private Set<Opcionmenu> subMenus = new HashSet<Opcionmenu>();
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,6 +75,25 @@ public class Opcionmenu implements Serializable {
     @ManyToOne
     private Opcionmenu menupadreid;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "menuPadreId", nullable = true)
+	public Opcionmenu getMenuPadre() {
+		return menuPadre;
+	}
+
+	public void setMenuPadre(Opcionmenu menuPadre) {
+		this.menuPadre = menuPadre;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "menuPadre")
+	@OrderBy("orden")
+	public Set<Opcionmenu> getSubMenus() {
+		return subMenus;
+	}
+
+	public void setSubMenus(Set<Opcionmenu> subMenus) {
+		this.subMenus = subMenus;
+	}
     public Opcionmenu() {
     }
 
@@ -152,7 +178,14 @@ public class Opcionmenu implements Serializable {
     public void setMenupadreid(Opcionmenu menupadreid) {
         this.menupadreid = menupadreid;
     }
+	@Transient
+	public boolean isAsociado() {
+		return asociado;
+	}
 
+	public void setAsociado(boolean asociado) {
+		this.asociado = asociado;
+	}
     @Override
     public int hashCode() {
         int hash = 0;
