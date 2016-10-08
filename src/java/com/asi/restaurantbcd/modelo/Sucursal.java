@@ -34,6 +34,9 @@ import javax.validation.constraints.Size;
 public class Sucursal implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSucursal")
+    private List<Caja> cajaList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSucursal")
     private List<Compra> compraList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSucursal")
     private List<Producto> productoList;
@@ -186,6 +189,14 @@ public class Sucursal implements Serializable {
 
     public void setKardexList(List<Kardex> kardexList) {
         this.kardexList = kardexList;
+    }
+
+    public List<Caja> getCajaList() {
+        return cajaList;
+    }
+
+    public void setCajaList(List<Caja> cajaList) {
+        this.cajaList = cajaList;
     }
     
 }
