@@ -52,6 +52,10 @@ and open the template in the editor.
                                          id="iconOnly" 
                                          icon="ui-icon-search" title="Icon Only" />
                     </h:panelGrid>
+                     <p:outputLabel value="Select Event:" for="event" />
+        <p:autoComplete id="event" value="#{autoCompleteView.txt8}" completeMethod="#{autoCompleteView.completeText}">
+            <p:ajax event="itemSelect" listener="#{autoCompleteView.onItemSelect}" update="msgs" />
+        </p:autoComplete>
                 </h:panelGrid>
  
                 <h:panelGrid >
@@ -139,6 +143,8 @@ and open the template in the editor.
                 </p:menubar>
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
+                    <h:outputLabel  value="Cantidad "  />
+                    <p:inputText    />
                     <h:outputLabel  value="Descripcion "  />
                     <p:inputText   value="#{comprasBeans.descripcionProducto}" />
                 </h:panelGrid>
@@ -159,8 +165,11 @@ and open the template in the editor.
                           <p:column headerText="tipo">
                               <h:outputText value="#{dpro.idTipoProducto.tipoProducto}"  />
                         </p:column>
-                           <p:column headerText="tipo">
+                           <p:column headerText="grupo">
                                <h:outputText value="#{dpro.idGrupoProducto.grupoProducto}"  />
+                        <p:column headerText="maras">
+                            <h:outputText value="#{dpro.idMarcaProducto.marcaProducto}"  />
+                        </p:column>
                         </p:column>
                     </p:dataTable>
                 </h:panelGrid>

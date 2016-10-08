@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -152,6 +153,7 @@ public class MttoCompanias implements Serializable {
             if (tablaCompanias.getRowData() != null) {
                 compania =  (Compania) tablaCompanias.getRowData();
                 System.out.println("compania.." +compania);
+                crud.eliminarEntidad(compania);
             }
         } catch (Exception ex) {
             Logger.getLogger(MttoCompanias.class.getName())
@@ -165,10 +167,11 @@ public class MttoCompanias implements Serializable {
       */
      public void eliminarCompanias() {
         try {
-            lstCompanias =  ejbBusqMtto.buscarCompania();
          if (tablaCompanias.getRowData() != null) {
-                compania =  lstCompanias.get(tablaCompanias.getRowIndex());
-                System.out.println("compania.." +compania);
+                compania =  lstCompanias.remove(tablaCompanias.getRowIndex());
+                crud.eliminarEntidad(compania);
+                lstCompanias.remove(compania);
+                
             }
         } catch (Exception ex) {
             Logger.getLogger(MttoCompanias.class.getName())
@@ -176,6 +179,13 @@ public class MttoCompanias implements Serializable {
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
+   public void onEdit(RowEditEvent event) {  
+        System.out.println("event.getObject().." +event.getObject());    
+    }  
+       
+    public void onCancel(RowEditEvent event) {  
+        System.out.println("event.getObject().." +event.getObject());
+    } 
      /**
       * Mensaje de alerta que se muestra en pantalla.
       * @param mensaje Mensaje que quiere mostrar.

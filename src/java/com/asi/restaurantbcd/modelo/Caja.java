@@ -45,9 +45,6 @@ public class Caja implements Serializable {
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-    @JoinColumn(name = "idSucursal", referencedColumnName = "idSucursal")
-    @ManyToOne(optional = false)
-    private Sucursal idSucursal;
 
     public Caja() {
     }
@@ -86,13 +83,6 @@ public class Caja implements Serializable {
         this.activo = activo;
     }
 
-    public Sucursal getIdSucursal() {
-        return idSucursal;
-    }
-
-    public void setIdSucursal(Sucursal idSucursal) {
-        this.idSucursal = idSucursal;
-    }
 
     @Override
     public int hashCode() {

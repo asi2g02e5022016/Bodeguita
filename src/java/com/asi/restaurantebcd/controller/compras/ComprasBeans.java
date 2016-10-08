@@ -16,6 +16,7 @@ import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -74,7 +75,9 @@ public class ComprasBeans implements  Serializable {
     private String codigo;
     private String serie;
     private String nombreProveedor;
-   private String descripcionProducto;
+    private String descripcionProducto;
+    private BigDecimal cantidadSolic;
+    private BigDecimal cantidadConfirmada;
     private Proveedor proveedor;
             SessionUsr sesion = Utilidades.findBean("sessionBean");
     private Date fecha;
@@ -388,6 +391,22 @@ public class ComprasBeans implements  Serializable {
         this.mensaje = mensaje;
     }
 
+    public BigDecimal getCantidadSolic() {
+        return cantidadSolic;
+    }
+
+    public void setCantidadSolic(BigDecimal cantidadSolic) {
+        this.cantidadSolic = cantidadSolic;
+    }
+
+    public BigDecimal getCantidadConfirmada() {
+        return cantidadConfirmada;
+    }
+
+    public void setCantidadConfirmada(BigDecimal cantidadConfirmada) {
+        this.cantidadConfirmada = cantidadConfirmada;
+    }
+
     public Compra getCompraEnca() {
         return compraEnca;
     }
@@ -404,6 +423,7 @@ public class ComprasBeans implements  Serializable {
         this.compraEnca = compraEnca;
     }
     //</editor-fold >
+    
     public void mostrarDialogProd() {
     dialogProductos.setVisible(true);
      RequestContext requestContext = RequestContext.getCurrentInstance();
