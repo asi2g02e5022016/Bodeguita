@@ -2,27 +2,45 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="RestaurantBDC-WebPU" transaction-type="JTA">
     <jta-data-source>jdbc/mysql</jta-data-source>
+    <class>com.asi.restaurantbcd.modelo.Caja</class>
+    <class>com.asi.restaurantbcd.modelo.Cliente</class>
     <class>com.asi.restaurantbcd.modelo.Compania</class>
+    <class>com.asi.restaurantbcd.modelo.Compra</class>
+    <class>com.asi.restaurantbcd.modelo.Compradetalle</class>
+    <class>com.asi.restaurantbcd.modelo.Condicionpago</class>
+    <class>com.asi.restaurantbcd.modelo.Conversionmedida</class>
     <class>com.asi.restaurantbcd.modelo.Departamento</class>
     <class>com.asi.restaurantbcd.modelo.Empleado</class>
-    <class>com.asi.restaurantbcd.modelo.Perfil</class>
-    <class>com.asi.restaurantbcd.modelo.Puesto</class>
-    <class>com.asi.restaurantbcd.modelo.Sucursal</class>
-    <class>com.asi.restaurantbcd.modelo.Usuario</class>
-    <class>com.asi.restaurantbcd.modelo.Compra</class>
-    <class>com.asi.restaurantbcd.modelo.CompraDetalle</class>
     <class>com.asi.restaurantbcd.modelo.Estado</class>
     <class>com.asi.restaurantbcd.modelo.Existencia</class>
-    <class>com.asi.restaurantbcd.modelo.GrupoProducto</class>
+    <class>com.asi.restaurantbcd.modelo.Facturaanulada</class>
+    <class>com.asi.restaurantbcd.modelo.Facturadetalle</class>
+    <class>com.asi.restaurantbcd.modelo.Facturaencabezado</class>
+    <class>com.asi.restaurantbcd.modelo.Formapago</class>
+    <class>com.asi.restaurantbcd.modelo.Giro</class>
+    <class>com.asi.restaurantbcd.modelo.Grupoproducto</class>
     <class>com.asi.restaurantbcd.modelo.Impuesto</class>
     <class>com.asi.restaurantbcd.modelo.Kardex</class>
-    <class>com.asi.restaurantbcd.modelo.MarcaProducto</class>
+    <class>com.asi.restaurantbcd.modelo.Marcaproducto</class>
     <class>com.asi.restaurantbcd.modelo.Medida</class>
-    <class>com.asi.restaurantbcd.modelo.OpcionMenu</class>
+    <class>com.asi.restaurantbcd.modelo.Notapedido</class>
+    <class>com.asi.restaurantbcd.modelo.Notapedidodetalle</class>
+    <class>com.asi.restaurantbcd.modelo.Numerofiscal</class>
+    <class>com.asi.restaurantbcd.modelo.Opcionmenu</class>
+    <class>com.asi.restaurantbcd.modelo.Ordenpedido</class>
+    <class>com.asi.restaurantbcd.modelo.Ordenpedidodetalle</class>
+    <class>com.asi.restaurantbcd.modelo.Ordenproduccion</class>
+    <class>com.asi.restaurantbcd.modelo.Ordenproducciondetalle</class>
+    <class>com.asi.restaurantbcd.modelo.Pedidodetalle</class>
+    <class>com.asi.restaurantbcd.modelo.Pedidoencabezado</class>
+    <class>com.asi.restaurantbcd.modelo.Perfil</class>
     <class>com.asi.restaurantbcd.modelo.Producto</class>
     <class>com.asi.restaurantbcd.modelo.Proveedor</class>
-    <class>com.asi.restaurantbcd.modelo.TipoDocumento</class>
-    <class>com.asi.restaurantbcd.modelo.TipoProducto</class>
+    <class>com.asi.restaurantbcd.modelo.Puesto</class>
+    <class>com.asi.restaurantbcd.modelo.Sucursal</class>
+    <class>com.asi.restaurantbcd.modelo.Tipodocumento</class>
+    <class>com.asi.restaurantbcd.modelo.Tipoproducto</class>
+    <class>com.asi.restaurantbcd.modelo.Usuario</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>

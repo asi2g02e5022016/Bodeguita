@@ -42,8 +42,6 @@ public class Tipoproducto implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "tipoproducto")
     private String tipoproducto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idtipoproducto")
-    private List<Producto> productoList;
 
     public Tipoproducto() {
     }
@@ -73,13 +71,7 @@ public class Tipoproducto implements Serializable {
         this.tipoproducto = tipoproducto;
     }
 
-    public List<Producto> getProductoList() {
-        return productoList;
-    }
 
-    public void setProductoList(List<Producto> productoList) {
-        this.productoList = productoList;
-    }
 
     @Override
     public int hashCode() {
