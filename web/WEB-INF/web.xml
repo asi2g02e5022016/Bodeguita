@@ -4,6 +4,17 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+        <!-- Login filter -->
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.asi.restaurantebcd.controller.seguridad.LoginFilter</filter-class>
+    </filter>
+    <!-- Set the login filter to secure all the pages in the /secured/* path of the application  -->
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/mantenimientos/*</url-pattern>
+        <url-pattern>/compras/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -19,6 +30,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>Loggin.xhtml</welcome-file>
+        <welcome-file>home.xhtml</welcome-file>
     </welcome-file-list>
 </web-app>

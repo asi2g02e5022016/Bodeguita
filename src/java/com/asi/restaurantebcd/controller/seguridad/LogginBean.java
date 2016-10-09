@@ -17,6 +17,8 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
+import javax.inject.Inject;
+import javax.inject.Named;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.context.RequestContext;
 
@@ -26,7 +28,7 @@ import org.primefaces.context.RequestContext;
  */
 
 
-@ManagedBean( name = "logginBean")
+@Named( value = "logginBean")
 @ConversationScoped
 public class LogginBean implements Serializable {
 
@@ -36,7 +38,10 @@ public class LogginBean implements Serializable {
    private String usuario;
    private String password;
    private Dialog dialogo;
-    SessionUsr sesion = Utilidades.findBean("sessionBean");
+   
+   @Inject
+   SessionUsr sesion;
+   
    private String mensaje;
    @EJB
    private CrudBDCLocal crud;
