@@ -10,6 +10,7 @@ import java.util.HashMap;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import javax.inject.Named;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -20,7 +21,7 @@ import org.primefaces.model.menu.Submenu;
  *
  * @author luis_portillo
  */
-@ManagedBean(name = "userMenu")
+@Named(value = "userMenu")
 @SessionScoped
 public class UserMenu implements Serializable {
     private static final long serialVersionUID = 1L;
