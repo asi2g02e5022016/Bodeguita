@@ -11,6 +11,6 @@ import javax.inject.Named;
 public class MenuParentList extends QueryUtil<Opcionmenu> {
 
 	public MenuParentList() {
-		setJpql("select m from OpcionMenu m where m.menuPadre is null order by m.orden");
+		setJpql("select m from Opcionmenu m where m.menuPadre is null order by m.orden");
 	}
 }

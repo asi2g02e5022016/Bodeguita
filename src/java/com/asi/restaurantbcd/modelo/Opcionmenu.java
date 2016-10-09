@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import javax.persistence.Basic;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,63 +11,63 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.UniqueConstraint;
 
-/**
- *
- * @author samaelopez
- */
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
-@Table(name = "opcionmenu")
-@NamedQueries({
-    @NamedQuery(name = "Opcionmenu.findAll", query = "SELECT o FROM Opcionmenu o")})
+@Table(name = "opcionmenu", uniqueConstraints = @UniqueConstraint(columnNames = { "etiqueta" }))
 public class Opcionmenu implements Serializable {
-private Opcionmenu menuPadre;
+
+	private static final long serialVersionUID = 1L;
+	private Integer id;
+	private String etiqueta;
+	private String url;
+	private Integer orden;
+	private boolean visible;
+	private Opcionmenu menuPadre;
+	private Set<Opcionmenu> subMenus = new HashSet<Opcionmenu>();
 	private boolean asociado;
-private Set<Opcionmenu> subMenus = new HashSet<Opcionmenu>();
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 3)
-    @Column(name = "estado")
-    private String estado;
-    @Size(max = 50)
-    @Column(name = "etiqueta")
-    private String etiqueta;
-    @Column(name = "orden")
-    private Integer orden;
-    @Size(max = 100)
-    @Column(name = "url")
-    private String url;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "visible")
-    private boolean visible;
-    @JoinTable(name = "perfilopcionmenu", joinColumns = {
-        @JoinColumn(name = "opcionmenuid", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "perfilid", referencedColumnName = "idperfil")})
-    @ManyToMany
-    private List<Perfil> perfilList;
-    @OneToMany(mappedBy = "menupadreid")
-    private List<Opcionmenu> opcionmenuList;
-    @JoinColumn(name = "menupadreid", referencedColumnName = "id")
-    @ManyToOne
-    private Opcionmenu menupadreid;
+
+	public Opcionmenu() {
+		this.visible = true;
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Column(name = "url", nullable = true, length = 100)
+	@Length(max = 100)
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	@Column(name = "visible", nullable = false)
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "menuPadreId", nullable = true)
@@ -94,90 +88,7 @@ private Set<Opcionmenu> subMenus = new HashSet<Opcionmenu>();
 	public void setSubMenus(Set<Opcionmenu> subMenus) {
 		this.subMenus = subMenus;
 	}
-    public Opcionmenu() {
-    }
 
-    public Opcionmenu(Integer id) {
-        this.id = id;
-    }
-
-    public Opcionmenu(Integer id, String estado, boolean visible) {
-        this.id = id;
-        this.estado = estado;
-        this.visible = visible;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getEtiqueta() {
-        return etiqueta;
-    }
-
-    public void setEtiqueta(String etiqueta) {
-        this.etiqueta = etiqueta;
-    }
-
-    public Integer getOrden() {
-        return orden;
-    }
-
-    public void setOrden(Integer orden) {
-        this.orden = orden;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public boolean getVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
-    public List<Perfil> getPerfilList() {
-        return perfilList;
-    }
-
-    public void setPerfilList(List<Perfil> perfilList) {
-        this.perfilList = perfilList;
-    }
-
-    public List<Opcionmenu> getOpcionmenuList() {
-        return opcionmenuList;
-    }
-
-    public void setOpcionmenuList(List<Opcionmenu> opcionmenuList) {
-        this.opcionmenuList = opcionmenuList;
-    }
-
-    public Opcionmenu getMenupadreid() {
-        return menupadreid;
-    }
-
-    public void setMenupadreid(Opcionmenu menupadreid) {
-        this.menupadreid = menupadreid;
-    }
 	@Transient
 	public boolean isAsociado() {
 		return asociado;
@@ -186,6 +97,74 @@ private Set<Opcionmenu> subMenus = new HashSet<Opcionmenu>();
 	public void setAsociado(boolean asociado) {
 		this.asociado = asociado;
 	}
+
+	@Column(name = "etiqueta", nullable = true, length = 50)
+	@Length(max = 100)
+	@NotEmpty
+	public String getEtiqueta() {
+		return etiqueta;
+	}
+
+	public void setEtiqueta(String etiqueta) {
+		this.etiqueta = etiqueta;
+	}
+	
+	
+
+	@Column(name = "orden", nullable = true)
+	public Integer getOrden() {
+		return orden;
+	}
+
+	public void setOrden(Integer orden) {
+		this.orden = orden;
+	}
+    
+    @Override
+    public String toString() {
+        return this.etiqueta;
+    }
+	
+    @Transient
+    public boolean isParentMenu(){
+    	if(this.getSubMenus().size()>0){
+    		return true;
+    	}
+    	if(this.getSubMenus().size()==0 && (this.getUrl()==null || this.getUrl().length()<5)){
+    		return false;
+    	}
+    	return false;
+    }
+    
+    @Transient
+    public boolean isRootMenu(){
+    	if(this.getMenuPadre()==null){
+    		return true;
+    	}
+        	return false;
+    }
+    
+    @Transient
+    public String getBreadcumb(){
+        if(getMenuPadre()==null){
+        return "Root -> "+this.etiqueta;
+       }else {
+           return this.getMenuPadre().getBreadcumb() + " -> " + this.getEtiqueta();
+        }
+    }
+
+	//
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "opcion_perfil_id", nullable = true)
+	// @ForeignKey(name = "fk_opcion_perfil_id")
+	// public OpcionPerfil getOpcionPerfil() {
+	// return opcionPerfil;
+	// }
+	//
+	// public void setOpcionPerfil(OpcionPerfil opcionPerfil) {
+	// this.opcionPerfil = opcionPerfil;
+	// }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -195,7 +174,7 @@ private Set<Opcionmenu> subMenus = new HashSet<Opcionmenu>();
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the idPerfil fields are not set
         if (!(object instanceof Opcionmenu)) {
             return false;
         }
@@ -205,10 +184,7 @@ private Set<Opcionmenu> subMenus = new HashSet<Opcionmenu>();
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "com.asi.restaurantbcd.modelo.Opcionmenu[ id=" + id + " ]";
-    }
     
+    
+
 }

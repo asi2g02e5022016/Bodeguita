@@ -6,84 +6,90 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.Basic;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
- * @author samaelopez
+ * @author JAEM
  */
 @Entity
 @Table(name = "perfil")
-@NamedQueries({
-    @NamedQuery(name = "Perfil.findAll", query = "SELECT p FROM Perfil p")})
 public class Perfil implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
+    @Column(name = "idPerfil")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idperfil")
-    private Integer idperfil;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "codigo")
+    private Integer idPerfil;
+    
+    @NotEmpty
+    @Column(name = "codigo", nullable = false, length = 8)
+    @Length(max = 8)
     private String codigo;
-    @Basic(optional = false)
+    
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 240)
-    @Column(name = "descripcion")
+    
+    
+    @Column(name = "descripcion", nullable = true, length = 200)
+    @Length(max = 200)
     private String descripcion;
-    @ManyToMany(mappedBy = "perfilList")
-    private List<Opcionmenu> opcionmenuList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idperfil")
-    private List<Usuario> usuarioList;
+        
+    	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@JoinTable(name = "perfilOpcionMenu", 
+		joinColumns = @JoinColumn(name = "perfilId", referencedColumnName = "idPerfil"), 
+				inverseJoinColumns = @JoinColumn(name = "opcionMenuId", referencedColumnName = "id"))
+    private Set<Opcionmenu> opcionesDeMenu = new HashSet<Opcionmenu>();
 
     public Perfil() {
     }
 
-    public Perfil(Integer idperfil) {
-        this.idperfil = idperfil;
+    public Perfil(Integer idPerfil) {
+        this.idPerfil = idPerfil;
     }
 
-    public Perfil(Integer idperfil, String codigo, String nombre, String descripcion) {
-        this.idperfil = idperfil;
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
+    public Perfil(Integer idPerfil, String perfil) {
+        this.idPerfil = idPerfil;
+        this.nombre = perfil;
     }
 
-    public Integer getIdperfil() {
-        return idperfil;
+    public Integer getIdPerfil() {
+        return idPerfil;
     }
 
-    public void setIdperfil(Integer idperfil) {
-        this.idperfil = idperfil;
+    public void setIdPerfil(Integer idPerfil) {
+        this.idPerfil = idPerfil;
     }
 
+    /**
+     * @return the codigo
+     */
     public String getCodigo() {
         return codigo;
     }
 
+    /**
+     * @param codigo the codigo to set
+     */
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
@@ -96,45 +102,50 @@ public class Perfil implements Serializable {
         this.nombre = nombre;
     }
 
+    /**
+     * @return the descripcion
+     */
     public String getDescripcion() {
         return descripcion;
     }
 
+    /**
+     * @param descripcion the descripcion to set
+     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    public List<Opcionmenu> getOpcionmenuList() {
-        return opcionmenuList;
+    /**
+     * @return the opcionesDeMenu
+     */
+    public Set<Opcionmenu> getOpcionesDeMenu() {
+        return opcionesDeMenu;
     }
 
-    public void setOpcionmenuList(List<Opcionmenu> opcionmenuList) {
-        this.opcionmenuList = opcionmenuList;
+    /**
+     * @param opcionesDeMenu the opcionesDeMenu to set
+     */
+    public void setOpcionesDeMenu(Set<Opcionmenu> opcionesDeMenu) {
+        this.opcionesDeMenu = opcionesDeMenu;
     }
 
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
-    }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idperfil != null ? idperfil.hashCode() : 0);
+        hash += (idPerfil != null ? idPerfil.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the idPerfil fields are not set
         if (!(object instanceof Perfil)) {
             return false;
         }
         Perfil other = (Perfil) object;
-        if ((this.idperfil == null && other.idperfil != null) || (this.idperfil != null && !this.idperfil.equals(other.idperfil))) {
+        if ((this.idPerfil == null && other.idPerfil != null) || (this.idPerfil != null && !this.idPerfil.equals(other.idPerfil))) {
             return false;
         }
         return true;
@@ -142,7 +153,7 @@ public class Perfil implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Perfil[ idperfil=" + idperfil + " ]";
+        return nombre;
     }
     
 }

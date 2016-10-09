@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -15,11 +10,86 @@ and open the template in the editor.
       <br />
 
 		<h:form id="formA">
-			<p:growl />
+                    
+                    
+                    
+                    <p:growl id="msgs" showDetail="true" showSummary="true" />
+
 			<center>
-                           <p:link outcome="mant" value="Mantenimiento Menu">
-                                    <f:param name="menuId" value="10" />
-                            </p:link>
+                 <p:panel id="basic" header="Mantenimientos companias" style="width: 80%"  >
+                    <p:panelGrid columns="2"  >
+                        <p:outputLabel for="menuPadre" value="Menu Padre: " />
+                        <p:inputText value="#{mttoMenu.parentMenu.breadcumb}" disabled="true" id="menuPadre" style="width: 280px" />
+                        
+                    </p:panelGrid>
+
+                    	<p:commandButton action="mant"
+					actionListener="#{mttoMenu.startNew()}" icon="ui-icon-plusthick"
+					value="Registrar Nuevo" rendered="true" />
+                        
+                        <p:dataTable var="res" value="#{mttoMenu.menuList}" sortBy="#{res.orden}"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					style="width: 95%" id="menus" editable="true"
+                                         draggableRows="true">
+					<f:facet name="header">Menus</f:facet>
+                                        <p:ajax event="rowEdit" listener="#{mttoMenu.onRowEdit}" />
+					<p:column filterBy="#{res.etiqueta}" 
+                                                  styleClass="centered" headerText="Etiqueta">
+                                             <p:cellEditor>
+                                                 <f:facet name="output">
+						   <h:outputText value="#{res.etiqueta}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+						   <p:inputText id="modelInput" value="#{res.etiqueta}" style="width:70%"/>
+                                                </f:facet>
+                                             </p:cellEditor>
+					</p:column>
+					<p:column filterBy="#{res.url}" 
+                                                  styleClass="centered" headerText="Url">
+					     <p:cellEditor>
+                                                 <f:facet name="output">
+						   <h:outputText value="#{res.url}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+						   <p:inputText  value="#{res.url}" style="width:70%"/>
+                                                </f:facet>
+                                             </p:cellEditor>
+					</p:column>
+					<p:column filterBy="#{res.orden}" 
+                                                  styleClass="centered" headerText="Orden">
+					     <p:cellEditor>
+                                                 <f:facet name="output">
+						   <h:outputText value="#{res.orden}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+						   <p:inputText  value="#{res.orden}" style="width:70%"/>
+                                                </f:facet>
+                                             </p:cellEditor>
+					</p:column>
+                                        <p:column styleClass="centered" headerText="Visible">
+					     <p:cellEditor>
+                                                 <f:facet name="output">
+                                                     <p:selectBooleanCheckbox value="#{res.visible}" disabled="true"  />
+                                                </f:facet>
+                                                <f:facet name="input">
+						   <p:selectBooleanCheckbox  value="#{res.visible}" style="width:70%"/>
+                                                </f:facet>
+                                             </p:cellEditor>
+					</p:column>
+                                        <p:column styleClass="centered" headerText="Hijos">
+					    <p:commandLink title="Modificar" rendered="#{res.parentMenu}"
+							action="lista"
+                                                        actionListener="#{mttoMenu.startModify(res.id)}" ajax="false"  >
+							<h:graphicImage value="/images/table_detail3.png" />
+						</p:commandLink> 
+					</p:column>
+					<p:column styleClass="centered" style="width:32px">
+						<p:rowEditor />
+					</p:column>
+					<f:facet name="footer">
+					</f:facet>
+				</p:dataTable>
+                        </p:panel>
                         </center>
 
 
