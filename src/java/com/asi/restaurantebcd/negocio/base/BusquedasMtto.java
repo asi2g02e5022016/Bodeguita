@@ -7,6 +7,7 @@ package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Compania;
 import com.asi.restaurantbcd.modelo.Proveedor;
+import com.asi.restaurantbcd.modelo.Sucursal;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -54,6 +55,18 @@ public class BusquedasMtto implements BusquedasMttoLocal {
     public List <Compania> buscarCompania() throws Exception {
         StringBuilder jpql = new StringBuilder();
         jpql.append("SELECT a FROM Compania a ");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+    }
+   /**
+     * Obtiene la lista de Sucursales.
+     * @return List Sucursales.
+     * @throws Exception Error generico.
+     */
+    @Override
+    public List <Sucursal> buscarSucursales() throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Sucursal a ");
         Query query = em.createQuery(jpql.toString());
         return query.getResultList();
     }

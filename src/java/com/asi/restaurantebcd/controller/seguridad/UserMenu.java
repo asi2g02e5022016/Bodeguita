@@ -69,17 +69,12 @@ public class UserMenu implements Serializable {
         menuMtto.addElement(item);
         
         item = new DefaultMenuItem("Sucursales");
-        item.setUrl("/mantenimientos/MttoSucursal.xhtml");
-        menuMtto.addElement(item);
-        
-        item = new DefaultMenuItem("Usuarios");
-        item.setUrl("/mantenimientos/MttoUsuarios.xhtml");
+        item.setUrl("/mantenimientos/MttoSucursales.xhtml");
         menuMtto.addElement(item);
                      
          model.addElement(menuMtto);
          
          ////////////
-         
         
         DefaultSubMenu terserSubmenu = new DefaultSubMenu("Compras");
        
@@ -87,9 +82,7 @@ public class UserMenu implements Serializable {
         item.setUrl("/compras/CompraProductos.xhtml");
         terserSubmenu.addElement(item);
         model.addElement(terserSubmenu);
-        
-        
-        
+
 	}
 
     /**
