@@ -64,8 +64,6 @@ public class Proveedor implements Serializable {
     @Size(max = 25)
     @Column(name = "email")
     private String email;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproveedor")
-    private List<Compra> compraList;
 
     public Proveedor() {
     }
@@ -136,14 +134,6 @@ public class Proveedor implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public List<Compra> getCompraList() {
-        return compraList;
-    }
-
-    public void setCompraList(List<Compra> compraList) {
-        this.compraList = compraList;
     }
 
     @Override

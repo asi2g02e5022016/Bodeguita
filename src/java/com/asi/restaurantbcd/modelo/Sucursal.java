@@ -54,33 +54,10 @@ public class Sucursal implements Serializable {
     @Size(min = 1, max = 9)
     @Column(name = "telefono")
     private String telefono;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsucursal")
-    private List<Compra> compraList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsucursal")
-    private List<Pedidoencabezado> pedidoencabezadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsucursal")
-    private List<Pedidodetalle> pedidodetalleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsucursal")
-    private List<Producto> productoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsucursal")
-    private List<Existencia> existenciaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsucursal")
-    private List<Ordenproduccion> ordenproduccionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsucursal")
-    private List<Empleado> empleadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsucursal")
-    private List<Kardex> kardexList;
-    @OneToMany(mappedBy = "idsucursal")
-    private List<Numerofiscal> numerofiscalList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsucursal")
-    private List<Notapedido> notapedidoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsucursal")
-    private List<Ordenpedido> ordenpedidoList;
     @JoinColumn(name = "idcompania", referencedColumnName = "idcompania")
     @ManyToOne(optional = false)
     private Compania idcompania;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsucursal")
-    private List<Caja> cajaList;
+   
 
     public Sucursal() {
     }
@@ -128,108 +105,13 @@ public class Sucursal implements Serializable {
         this.telefono = telefono;
     }
 
-    public List<Compra> getCompraList() {
-        return compraList;
-    }
-
-    public void setCompraList(List<Compra> compraList) {
-        this.compraList = compraList;
-    }
-
-    public List<Pedidoencabezado> getPedidoencabezadoList() {
-        return pedidoencabezadoList;
-    }
-
-    public void setPedidoencabezadoList(List<Pedidoencabezado> pedidoencabezadoList) {
-        this.pedidoencabezadoList = pedidoencabezadoList;
-    }
-
-    public List<Pedidodetalle> getPedidodetalleList() {
-        return pedidodetalleList;
-    }
-
-    public void setPedidodetalleList(List<Pedidodetalle> pedidodetalleList) {
-        this.pedidodetalleList = pedidodetalleList;
-    }
-
-    public List<Producto> getProductoList() {
-        return productoList;
-    }
-
-    public void setProductoList(List<Producto> productoList) {
-        this.productoList = productoList;
-    }
-
-    public List<Existencia> getExistenciaList() {
-        return existenciaList;
-    }
-
-    public void setExistenciaList(List<Existencia> existenciaList) {
-        this.existenciaList = existenciaList;
-    }
-
-    public List<Ordenproduccion> getOrdenproduccionList() {
-        return ordenproduccionList;
-    }
-
-    public void setOrdenproduccionList(List<Ordenproduccion> ordenproduccionList) {
-        this.ordenproduccionList = ordenproduccionList;
-    }
-
-    public List<Empleado> getEmpleadoList() {
-        return empleadoList;
-    }
-
-    public void setEmpleadoList(List<Empleado> empleadoList) {
-        this.empleadoList = empleadoList;
-    }
-
-    public List<Kardex> getKardexList() {
-        return kardexList;
-    }
-
-    public void setKardexList(List<Kardex> kardexList) {
-        this.kardexList = kardexList;
-    }
-
-    public List<Numerofiscal> getNumerofiscalList() {
-        return numerofiscalList;
-    }
-
-    public void setNumerofiscalList(List<Numerofiscal> numerofiscalList) {
-        this.numerofiscalList = numerofiscalList;
-    }
-
-    public List<Notapedido> getNotapedidoList() {
-        return notapedidoList;
-    }
-
-    public void setNotapedidoList(List<Notapedido> notapedidoList) {
-        this.notapedidoList = notapedidoList;
-    }
-
-    public List<Ordenpedido> getOrdenpedidoList() {
-        return ordenpedidoList;
-    }
-
-    public void setOrdenpedidoList(List<Ordenpedido> ordenpedidoList) {
-        this.ordenpedidoList = ordenpedidoList;
-    }
-
+    
     public Compania getIdcompania() {
         return idcompania;
     }
 
     public void setIdcompania(Compania idcompania) {
         this.idcompania = idcompania;
-    }
-
-    public List<Caja> getCajaList() {
-        return cajaList;
-    }
-
-    public void setCajaList(List<Caja> cajaList) {
-        this.cajaList = cajaList;
     }
 
     @Override

@@ -41,8 +41,6 @@ public class Giro implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "giro")
     private String giro;
-    @OneToMany(mappedBy = "idgiro")
-    private List<Cliente> clienteList;
 
     public Giro() {
     }
@@ -70,14 +68,6 @@ public class Giro implements Serializable {
 
     public void setGiro(String giro) {
         this.giro = giro;
-    }
-
-    public List<Cliente> getClienteList() {
-        return clienteList;
-    }
-
-    public void setClienteList(List<Cliente> clienteList) {
-        this.clienteList = clienteList;
     }
 
     @Override

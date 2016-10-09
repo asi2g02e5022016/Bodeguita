@@ -7,9 +7,7 @@ package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -52,8 +49,6 @@ public class Departamento implements Serializable {
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iddepartamento")
-    private List<Puesto> puestoList;
     @JoinColumn(name = "idcompania", referencedColumnName = "idcompania")
     @ManyToOne(optional = false)
     private Compania idcompania;
@@ -93,14 +88,6 @@ public class Departamento implements Serializable {
 
     public void setFechacreacion(Date fechacreacion) {
         this.fechacreacion = fechacreacion;
-    }
-
-    public List<Puesto> getPuestoList() {
-        return puestoList;
-    }
-
-    public void setPuestoList(List<Puesto> puestoList) {
-        this.puestoList = puestoList;
     }
 
     public Compania getIdcompania() {

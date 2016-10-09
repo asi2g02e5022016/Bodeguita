@@ -76,20 +76,6 @@ public class Producto implements Serializable {
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idusuario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
-    private List<Existencia> existenciaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
-    private List<Kardex> kardexList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
-    private List<Ordenpedidodetalle> ordenpedidodetalleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
-    private List<Compradetalle> compradetalleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
-    private List<Notapedidodetalle> notapedidodetalleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
-    private List<Facturadetalle> facturadetalleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
-    private List<Ordenproducciondetalle> ordenproducciondetalleList;
 
     public Producto() {
     }
@@ -192,63 +178,6 @@ public class Producto implements Serializable {
     public void setIdusuario(Usuario idusuario) {
         this.idusuario = idusuario;
     }
-
-    public List<Existencia> getExistenciaList() {
-        return existenciaList;
-    }
-
-    public void setExistenciaList(List<Existencia> existenciaList) {
-        this.existenciaList = existenciaList;
-    }
-
-    public List<Kardex> getKardexList() {
-        return kardexList;
-    }
-
-    public void setKardexList(List<Kardex> kardexList) {
-        this.kardexList = kardexList;
-    }
-
-    public List<Ordenpedidodetalle> getOrdenpedidodetalleList() {
-        return ordenpedidodetalleList;
-    }
-
-    public void setOrdenpedidodetalleList(List<Ordenpedidodetalle> ordenpedidodetalleList) {
-        this.ordenpedidodetalleList = ordenpedidodetalleList;
-    }
-
-    public List<Compradetalle> getCompradetalleList() {
-        return compradetalleList;
-    }
-
-    public void setCompradetalleList(List<Compradetalle> compradetalleList) {
-        this.compradetalleList = compradetalleList;
-    }
-
-    public List<Notapedidodetalle> getNotapedidodetalleList() {
-        return notapedidodetalleList;
-    }
-
-    public void setNotapedidodetalleList(List<Notapedidodetalle> notapedidodetalleList) {
-        this.notapedidodetalleList = notapedidodetalleList;
-    }
-
-    public List<Facturadetalle> getFacturadetalleList() {
-        return facturadetalleList;
-    }
-
-    public void setFacturadetalleList(List<Facturadetalle> facturadetalleList) {
-        this.facturadetalleList = facturadetalleList;
-    }
-
-    public List<Ordenproducciondetalle> getOrdenproducciondetalleList() {
-        return ordenproducciondetalleList;
-    }
-
-    public void setOrdenproducciondetalleList(List<Ordenproducciondetalle> ordenproducciondetalleList) {
-        this.ordenproducciondetalleList = ordenproducciondetalleList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;

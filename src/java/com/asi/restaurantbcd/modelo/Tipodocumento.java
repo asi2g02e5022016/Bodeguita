@@ -42,8 +42,6 @@ public class Tipodocumento implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "tipodocumento")
     private String tipodocumento;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idtipodocumento")
-    private List<Facturaencabezado> facturaencabezadoList;
 
     public Tipodocumento() {
     }
@@ -73,13 +71,6 @@ public class Tipodocumento implements Serializable {
         this.tipodocumento = tipodocumento;
     }
 
-    public List<Facturaencabezado> getFacturaencabezadoList() {
-        return facturaencabezadoList;
-    }
-
-    public void setFacturaencabezadoList(List<Facturaencabezado> facturaencabezadoList) {
-        this.facturaencabezadoList = facturaencabezadoList;
-    }
 
     @Override
     public int hashCode() {

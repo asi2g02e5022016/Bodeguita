@@ -47,9 +47,6 @@ public class Puesto implements Serializable {
     @JoinColumn(name = "iddepartamento", referencedColumnName = "iddepartamento")
     @ManyToOne(optional = false)
     private Departamento iddepartamento;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpuesto")
-    private List<Empleado> empleadoList;
-
     public Puesto() {
     }
 
@@ -85,15 +82,6 @@ public class Puesto implements Serializable {
     public void setIddepartamento(Departamento iddepartamento) {
         this.iddepartamento = iddepartamento;
     }
-
-    public List<Empleado> getEmpleadoList() {
-        return empleadoList;
-    }
-
-    public void setEmpleadoList(List<Empleado> empleadoList) {
-        this.empleadoList = empleadoList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;

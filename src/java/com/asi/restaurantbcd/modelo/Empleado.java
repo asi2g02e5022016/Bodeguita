@@ -69,8 +69,6 @@ public class Empleado implements Serializable {
     @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")
     @ManyToOne(optional = false)
     private Sucursal idsucursal;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
-    private List<Usuario> usuarioList;
 
     public Empleado() {
     }
@@ -151,13 +149,6 @@ public class Empleado implements Serializable {
         this.idsucursal = idsucursal;
     }
 
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
-    }
 
     @Override
     public int hashCode() {
