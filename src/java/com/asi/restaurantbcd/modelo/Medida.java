@@ -39,10 +39,6 @@ public class Medida implements Serializable {
     @Size(max = 25)
     @Column(name = "medida")
     private String medida;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idmedida")
-    private List<Producto> productoList;
-    @OneToMany(mappedBy = "idmedida")
-    private List<Conversionmedida> conversionmedidaList;
 
     public Medida() {
     }
@@ -65,22 +61,6 @@ public class Medida implements Serializable {
 
     public void setMedida(String medida) {
         this.medida = medida;
-    }
-
-    public List<Producto> getProductoList() {
-        return productoList;
-    }
-
-    public void setProductoList(List<Producto> productoList) {
-        this.productoList = productoList;
-    }
-
-    public List<Conversionmedida> getConversionmedidaList() {
-        return conversionmedidaList;
-    }
-
-    public void setConversionmedidaList(List<Conversionmedida> conversionmedidaList) {
-        this.conversionmedidaList = conversionmedidaList;
     }
 
     @Override

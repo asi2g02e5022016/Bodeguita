@@ -47,24 +47,7 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-    @OneToMany(mappedBy = "idusuario")
-    private List<Compra> compraList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
-    private List<Pedidoencabezado> pedidoencabezadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
-    private List<Producto> productoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
-    private List<Ordenproduccion> ordenproduccionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
-    private List<Facturaencabezado> facturaencabezadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
-    private List<Kardex> kardexList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
-    private List<Facturaanulada> facturaanuladaList;
-    @OneToMany(mappedBy = "idusuariod")
-    private List<Notapedido> notapedidoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
-    private List<Ordenpedido> ordenpedidoList;
+    
     @JoinColumn(name = "idempleado", referencedColumnName = "idempleado")
     @ManyToOne(optional = false)
     private Empleado idempleado;
@@ -107,78 +90,6 @@ public class Usuario implements Serializable {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
-    }
-
-    public List<Compra> getCompraList() {
-        return compraList;
-    }
-
-    public void setCompraList(List<Compra> compraList) {
-        this.compraList = compraList;
-    }
-
-    public List<Pedidoencabezado> getPedidoencabezadoList() {
-        return pedidoencabezadoList;
-    }
-
-    public void setPedidoencabezadoList(List<Pedidoencabezado> pedidoencabezadoList) {
-        this.pedidoencabezadoList = pedidoencabezadoList;
-    }
-
-    public List<Producto> getProductoList() {
-        return productoList;
-    }
-
-    public void setProductoList(List<Producto> productoList) {
-        this.productoList = productoList;
-    }
-
-    public List<Ordenproduccion> getOrdenproduccionList() {
-        return ordenproduccionList;
-    }
-
-    public void setOrdenproduccionList(List<Ordenproduccion> ordenproduccionList) {
-        this.ordenproduccionList = ordenproduccionList;
-    }
-
-    public List<Facturaencabezado> getFacturaencabezadoList() {
-        return facturaencabezadoList;
-    }
-
-    public void setFacturaencabezadoList(List<Facturaencabezado> facturaencabezadoList) {
-        this.facturaencabezadoList = facturaencabezadoList;
-    }
-
-    public List<Kardex> getKardexList() {
-        return kardexList;
-    }
-
-    public void setKardexList(List<Kardex> kardexList) {
-        this.kardexList = kardexList;
-    }
-
-    public List<Facturaanulada> getFacturaanuladaList() {
-        return facturaanuladaList;
-    }
-
-    public void setFacturaanuladaList(List<Facturaanulada> facturaanuladaList) {
-        this.facturaanuladaList = facturaanuladaList;
-    }
-
-    public List<Notapedido> getNotapedidoList() {
-        return notapedidoList;
-    }
-
-    public void setNotapedidoList(List<Notapedido> notapedidoList) {
-        this.notapedidoList = notapedidoList;
-    }
-
-    public List<Ordenpedido> getOrdenpedidoList() {
-        return ordenpedidoList;
-    }
-
-    public void setOrdenpedidoList(List<Ordenpedido> ordenpedidoList) {
-        this.ordenpedidoList = ordenpedidoList;
     }
 
     public Empleado getIdempleado() {

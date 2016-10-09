@@ -42,8 +42,6 @@ public class Condicionpago implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "condicionpago")
     private String condicionpago;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcondicionpago")
-    private List<Facturaencabezado> facturaencabezadoList;
 
     public Condicionpago() {
     }
@@ -71,14 +69,6 @@ public class Condicionpago implements Serializable {
 
     public void setCondicionpago(String condicionpago) {
         this.condicionpago = condicionpago;
-    }
-
-    public List<Facturaencabezado> getFacturaencabezadoList() {
-        return facturaencabezadoList;
-    }
-
-    public void setFacturaencabezadoList(List<Facturaencabezado> facturaencabezadoList) {
-        this.facturaencabezadoList = facturaencabezadoList;
     }
 
     @Override

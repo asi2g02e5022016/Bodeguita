@@ -42,12 +42,6 @@ public class Compania implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "compania")
     private String compania;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcompania")
-    private List<Impuesto> impuestoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcompania")
-    private List<Sucursal> sucursalList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcompania")
-    private List<Departamento> departamentoList;
 
     public Compania() {
     }
@@ -77,29 +71,6 @@ public class Compania implements Serializable {
         this.compania = compania;
     }
 
-    public List<Impuesto> getImpuestoList() {
-        return impuestoList;
-    }
-
-    public void setImpuestoList(List<Impuesto> impuestoList) {
-        this.impuestoList = impuestoList;
-    }
-
-    public List<Sucursal> getSucursalList() {
-        return sucursalList;
-    }
-
-    public void setSucursalList(List<Sucursal> sucursalList) {
-        this.sucursalList = sucursalList;
-    }
-
-    public List<Departamento> getDepartamentoList() {
-        return departamentoList;
-    }
-
-    public void setDepartamentoList(List<Departamento> departamentoList) {
-        this.departamentoList = departamentoList;
-    }
 
     @Override
     public int hashCode() {

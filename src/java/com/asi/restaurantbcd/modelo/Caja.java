@@ -48,10 +48,6 @@ public class Caja implements Serializable {
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcaja")
-    private List<Facturaencabezado> facturaencabezadoList;
-    @OneToMany(mappedBy = "idcaja")
-    private List<Numerofiscal> numerofiscalList;
     @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")
     @ManyToOne(optional = false)
     private Sucursal idsucursal;
@@ -91,22 +87,6 @@ public class Caja implements Serializable {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
-    }
-
-    public List<Facturaencabezado> getFacturaencabezadoList() {
-        return facturaencabezadoList;
-    }
-
-    public void setFacturaencabezadoList(List<Facturaencabezado> facturaencabezadoList) {
-        this.facturaencabezadoList = facturaencabezadoList;
-    }
-
-    public List<Numerofiscal> getNumerofiscalList() {
-        return numerofiscalList;
-    }
-
-    public void setNumerofiscalList(List<Numerofiscal> numerofiscalList) {
-        this.numerofiscalList = numerofiscalList;
     }
 
     public Sucursal getIdsucursal() {

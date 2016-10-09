@@ -68,13 +68,6 @@ public class Cliente implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "dui")
     private String dui;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcliente")
-    private List<Facturaencabezado> facturaencabezadoList;
-    @JoinColumn(name = "idgiro", referencedColumnName = "idgiro")
-    @ManyToOne
-    private Giro idgiro;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcliente")
-    private List<Ordenpedido> ordenpedidoList;
 
     public Cliente() {
     }
@@ -153,30 +146,6 @@ public class Cliente implements Serializable {
 
     public void setDui(String dui) {
         this.dui = dui;
-    }
-
-    public List<Facturaencabezado> getFacturaencabezadoList() {
-        return facturaencabezadoList;
-    }
-
-    public void setFacturaencabezadoList(List<Facturaencabezado> facturaencabezadoList) {
-        this.facturaencabezadoList = facturaencabezadoList;
-    }
-
-    public Giro getIdgiro() {
-        return idgiro;
-    }
-
-    public void setIdgiro(Giro idgiro) {
-        this.idgiro = idgiro;
-    }
-
-    public List<Ordenpedido> getOrdenpedidoList() {
-        return ordenpedidoList;
-    }
-
-    public void setOrdenpedidoList(List<Ordenpedido> ordenpedidoList) {
-        this.ordenpedidoList = ordenpedidoList;
     }
 
     @Override

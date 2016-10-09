@@ -42,8 +42,6 @@ public class Formapago implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "formapago")
     private String formapago;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idformapago")
-    private List<Facturaencabezado> facturaencabezadoList;
 
     public Formapago() {
     }
@@ -73,13 +71,6 @@ public class Formapago implements Serializable {
         this.formapago = formapago;
     }
 
-    public List<Facturaencabezado> getFacturaencabezadoList() {
-        return facturaencabezadoList;
-    }
-
-    public void setFacturaencabezadoList(List<Facturaencabezado> facturaencabezadoList) {
-        this.facturaencabezadoList = facturaencabezadoList;
-    }
 
     @Override
     public int hashCode() {

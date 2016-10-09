@@ -42,16 +42,6 @@ public class Estado implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "estado")
     private String estado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idestado")
-    private List<Compra> compraList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idestado")
-    private List<Pedidoencabezado> pedidoencabezadoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idestado")
-    private List<Ordenproduccion> ordenproduccionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idestado")
-    private List<Notapedido> notapedidoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idestado")
-    private List<Ordenpedido> ordenpedidoList;
 
     public Estado() {
     }
@@ -79,46 +69,6 @@ public class Estado implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public List<Compra> getCompraList() {
-        return compraList;
-    }
-
-    public void setCompraList(List<Compra> compraList) {
-        this.compraList = compraList;
-    }
-
-    public List<Pedidoencabezado> getPedidoencabezadoList() {
-        return pedidoencabezadoList;
-    }
-
-    public void setPedidoencabezadoList(List<Pedidoencabezado> pedidoencabezadoList) {
-        this.pedidoencabezadoList = pedidoencabezadoList;
-    }
-
-    public List<Ordenproduccion> getOrdenproduccionList() {
-        return ordenproduccionList;
-    }
-
-    public void setOrdenproduccionList(List<Ordenproduccion> ordenproduccionList) {
-        this.ordenproduccionList = ordenproduccionList;
-    }
-
-    public List<Notapedido> getNotapedidoList() {
-        return notapedidoList;
-    }
-
-    public void setNotapedidoList(List<Notapedido> notapedidoList) {
-        this.notapedidoList = notapedidoList;
-    }
-
-    public List<Ordenpedido> getOrdenpedidoList() {
-        return ordenpedidoList;
-    }
-
-    public void setOrdenpedidoList(List<Ordenpedido> ordenpedidoList) {
-        this.ordenpedidoList = ordenpedidoList;
     }
 
     @Override
