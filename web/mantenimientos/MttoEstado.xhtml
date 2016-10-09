@@ -17,9 +17,9 @@ and open the template in the editor.
             <p:growl showDetail="true" showSummary="true" />
             <p:panel id="basic" header="Mantenimientos estado documento" style="width: 50%"  >
                 <p:menubar>
-                    <p:menuitem value="Nuevo" action="#{mttoEstado.limpiarPantalla()}"
+                    <p:menuitem value="Nuevo"  update="forprincipal"  action="#{mttoEstado.limpiarPantalla()}"
                                 icon="ui-icon-plus" />
-                    <p:menuitem value="Guardar" action="#{mttoEstado.guardarEstado()}"
+                    <p:menuitem value="Guardar"  update="forprincipal"  action="#{mttoEstado.guardarEstado()}"
                                 icon="ui-icon-disk" />
                     <p:menuitem value="Buscar" update="forprincipal" action="#{mttoEstado.buscarEstados()}"
                                 icon=" ui-icon-search" />
@@ -34,10 +34,10 @@ and open the template in the editor.
                     <h:panelGrid >
                         <p:dataTable id="tablaProd" emptyMessage="" binding="#{mttoEstado.dtEstado}"
                                      value="#{mttoEstado.listEstado}" 
-                                     var="dpro" rowKey="#{dpro.idEstado}"
+                                     var="dpro" rowKey="#{dpro.idestado}"
                                      selectionMode="single" rows="19"  >
                             <p:column headerText="Id" width="40%">
-                                <h:outputText value="#{dpro.idEstado}"  />
+                                <h:outputText value="#{dpro.idestado}"  />
                             </p:column>
                             <p:column headerText="Nombre" width="90%">
                                 <h:outputText value="#{dpro.estado}"  />

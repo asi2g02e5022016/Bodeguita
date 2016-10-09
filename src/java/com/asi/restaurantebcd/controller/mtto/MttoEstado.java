@@ -97,6 +97,7 @@ public class MttoEstado implements Serializable {
          estado = null;
          nombreEstado = null;
          idEstado = null;
+         dtEstado = new DataTable();
     }
      
      /**
