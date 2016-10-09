@@ -32,13 +32,13 @@ Vista xhtl de Mantenimientos de companias.
                     <h:panelGrid >
                         <p:dataTable id="tablaProd" emptyMessage="" binding="#{mttoCompanias.tablaCompanias}"
                                      value="#{mttoCompanias.lstCompanias}" 
-                                     var="dpro" rowKey="#{dpro.idCompania}"
+                                     var="dpro" rowKey="#{dpro.idcompania}"
                                      selectionMode="single" rows="19"  >
                             <p:ajax event="rowEdit" listener="#{mttoCompanias.onEdit}"  />  
                     <p:ajax event="rowEditCancel" listener="#{mttoCompanias.onCancel}"  /> 
 
                             <p:column headerText="Id" width="10%">
-                                <h:outputText value="#{dpro.idCompania}"  />
+                                <h:outputText value="#{dpro.idcompania}"  />
                             </p:column>
                             <p:column headerText="Nombre" width="80%">
                  
