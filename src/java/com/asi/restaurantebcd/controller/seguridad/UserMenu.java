@@ -82,6 +82,16 @@ public class UserMenu implements Serializable {
         item.setUrl("/compras/CompraProductos.xhtml");
         terserSubmenu.addElement(item);
         model.addElement(terserSubmenu);
+        
+        
+        
+        //INVENTARIO
+        DefaultSubMenu invExistencia = new DefaultSubMenu("Inventario");
+       
+        item = new DefaultMenuItem("Inventario");
+        item.setUrl("/inventario/InvExistenciaBean.xhtml");
+        invExistencia.addElement(item);
+        model.addElement(invExistencia);
 
 	}
 

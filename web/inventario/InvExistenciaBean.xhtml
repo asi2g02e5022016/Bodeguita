@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="body">
+        <center>
+        <h:form id="forprincipal" >
+            
+            <p:growl showDetail="true" showSummary="true" />
+            <p:panel id="basic" header="Existencias de productos" style="width: 50%"  >
+                <p:menubar>
+                    <p:menuitem value="Buscar" update="forprincipal" action="#{invExistenciaBean.buscarInvExistencia()}"
+                                icon=" ui-icon-search" />
+                </p:menubar>
+                    <h:panelGrid columns="2"  style="margin-bottom:10px" cellpadding="5" width="80%">
+                        <h:outputLabel  value="Producto: " />
+                        <!--<p:selectOneListbox value="#{invExistenciaBean.listExistencia}"  /> -->
+                        <p:selectOneListbox id="IdPrueba" value="#{selectOneView.option}">
+                         <f:selectItem itemLabel="CARNE" itemValue="1" />
+                         <f:selectItem itemLabel="TOMATE" itemValue="2" />
+                         <f:selectItem itemLabel="POLLO" itemValue="3" />
+                        </p:selectOneListbox>
+                        
+                        
+                    </h:panelGrid>
+                    
+                    <h:panelGrid>
+                        <p:dataTable id="tablaProd" emptyMessage="" binding="#{invExistenciaBean.dtExistencia}"
+                                     value="#{invExistenciaBean.listExistencia}" 
+                                     var="dpro" rowKey="#{dpro.idexistencia}"
+                                     selectionMode="single" rows="19"  >
+                            <p:column headerText="Id" width="40%">
+                                <h:outputText value="#{dpro.idexistencia}"  />
+                            </p:column>
+                            <p:column headerText="Sucursal" width="80%">
+                                <h:outputText value="#{dpro.idsucursal}"  />
+                            </p:column>
+                            <p:column headerText="Valor" width="90%">
+                                <h:outputText value="#{dpro.valor}"  />
+                            </p:column>
+                            <p:column headerText="Costo unitario" width="90%">
+                                <h:outputText value="#{dpro.costounitario}"  />
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+            </p:panel>
+        </h:form>
+            </center>
+    </ui:define>
+</ui:composition>
+
+
