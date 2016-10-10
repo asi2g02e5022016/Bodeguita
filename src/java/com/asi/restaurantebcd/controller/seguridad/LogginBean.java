@@ -21,6 +21,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.context.RequestContext;
+import javax.servlet.http.HttpSession;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -41,6 +43,9 @@ public class LogginBean implements Serializable {
    
    @Inject
    SessionUsr sesion;
+   
+   @Inject
+   UserMenu userMenu;
    
    private String mensaje;
    @EJB
@@ -98,8 +103,8 @@ public class LogginBean implements Serializable {
                System.out.println("usr.getIdEmpleado().."+usr.getIdempleado());
                //sesion.setSucursal(usr.get);
                sesion.setUsuario(usr);
-           
-           
+               userMenu.loadUserMenus();
+               
            } else {
                mensaje = "No existe usuario.";
                  alert(mensaje,FacesMessage.SEVERITY_INFO );
@@ -156,6 +161,11 @@ public class LogginBean implements Serializable {
         this.mensaje = mensaje;
     }
     
-    
+    public String logOut(){
+       HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(false);
+        session.invalidate();
+      return "/home?faces-redirect=true";
+    }
     
 }

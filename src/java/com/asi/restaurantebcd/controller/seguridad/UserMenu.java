@@ -9,13 +9,15 @@ import java.io.Serializable;
 import java.util.HashMap;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
+import javax.inject.Inject;
+import com.asi.restaurantbcd.modelo.Opcionmenu;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
-import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
-import org.primefaces.model.menu.Submenu;
+import org.primefaces.model.menu.DefaultSubMenu;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -28,9 +30,15 @@ public class UserMenu implements Serializable {
 
     private MenuModel model;
     
-    	
+    private List<Opcionmenu> menusUsuario = new ArrayList<Opcionmenu>();
+    
+    @Inject
+    SessionUsr sesion;
+    
+    @Inject
+    private MenuChildList childList;
 
-    HashMap<Integer, Submenu> addedMenus;
+    HashMap<Integer, DefaultSubMenu> addedMenus;
     
     @PostConstruct
     public void loadUserMenus() {
@@ -40,59 +48,32 @@ public class UserMenu implements Serializable {
         item.setUrl("/home.xhtml");
          
         model.addElement(item);
+        
+        if(sesion==null || sesion.getToken()==null){
+        item = new DefaultMenuItem("Log In");
+        item.setUrl("/Loggin.xhtml");
+        model.addElement(item);
+        } 
+        else {  
+           for (Opcionmenu om : sesion.getUsuario().getIdperfil().getOpcionesDeMenu()) {
+				if (!menusUsuario.contains(om))
+					menusUsuario.add(om);
+          }
+           
+          for (Opcionmenu om : childList.getResultList()) {
+				if (menusUsuario.contains(om)) {
+					buildMenuItem(om);
+			}
+		}
+        item = new DefaultMenuItem("Log Out");
+        item.setCommand("{logginBean.logOut()}");
+        item.setAjax(false);
+        item.setImmediate(true);
+        model.addElement(item);    
+        }
          
-        //Second submenu
-        DefaultSubMenu secondSubmenu = new DefaultSubMenu("Seguridad");
- 
-        item = new DefaultMenuItem("Menu");
-        item.setUrl("/mantenimientos/admin/opcionMenu/lista.xhtml");
-        secondSubmenu.addElement(item);
-        
-        
-        item = new DefaultMenuItem("Usuario");
-        item.setUrl("/mantenimientos/MttoUsuarios.xhtml");
-        secondSubmenu.addElement(item);
-        
-        item = new DefaultMenuItem("Perfil");
-        item.setUrl("/mantenimientos/admin/perfil/lista.xhtml");
-        secondSubmenu.addElement(item);
-         model.addElement(secondSubmenu);
-         
-                 // Menu de mantenimientos.
-        DefaultSubMenu menuMtto = new DefaultSubMenu("Mantenimientos");
-        
-        item = new DefaultMenuItem("Estado");
-        item.setUrl("/mantenimientos/MttoEstado.xhtml");
-        menuMtto.addElement(item);
-        
-        item = new DefaultMenuItem("Companias");
-        item.setUrl("/mantenimientos/MttoCompania.xhtml");
-        menuMtto.addElement(item);
-        
-        item = new DefaultMenuItem("Sucursales");
-        item.setUrl("/mantenimientos/MttoSucursales.xhtml");
-        menuMtto.addElement(item);
-                     
-         model.addElement(menuMtto);
-         
-         ////////////
-        
-        DefaultSubMenu terserSubmenu = new DefaultSubMenu("Compras");
        
-        item = new DefaultMenuItem("Compras");
-        item.setUrl("/compras/CompraProductos.xhtml");
-        terserSubmenu.addElement(item);
-        model.addElement(terserSubmenu);
         
-        
-        
-        //INVENTARIO
-        DefaultSubMenu invExistencia = new DefaultSubMenu("Inventario");
-       
-        item = new DefaultMenuItem("Inventario");
-        item.setUrl("/inventario/InvExistenciaBean.xhtml");
-        invExistencia.addElement(item);
-        model.addElement(invExistencia);
 
 	}
 
@@ -110,6 +91,30 @@ public class UserMenu implements Serializable {
         this.model = model;
     }
     
+    	private void buildMenuItem(Opcionmenu om) {
+		
+		if (!om.isRootMenu() && !addedMenus.containsKey(om.getMenuPadre().getId()))
+			buildMenuItem(om.getMenuPadre());
+		
+		if (om.isParentMenu()) {
+			DefaultSubMenu submenu = new DefaultSubMenu();
+			submenu.setLabel(om.getEtiqueta());
+			if (om.isRootMenu()) {
+				model.addElement(submenu);
+				submenu.setStyleClass("ui-root-menu-item");
+			}else{				
+				addedMenus.get(om.getMenuPadre().getId()).getElements().add(submenu);
+			}			
+			addedMenus.put(om.getId(), submenu);
+		} else {
+			DefaultMenuItem item = new DefaultMenuItem();
+			item.setUrl(om.getUrl());
+			item.setValue(om.getEtiqueta());
+			addedMenus.get(om.getMenuPadre().getId()).getElements().add(item);
+		}
+
+	}
+
     
     
 }
