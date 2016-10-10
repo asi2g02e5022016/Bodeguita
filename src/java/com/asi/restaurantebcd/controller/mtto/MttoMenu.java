@@ -34,6 +34,8 @@ public class MttoMenu extends MttoUtil<Opcionmenu>implements Serializable{
     
     private Opcionmenu parentMenu;
     
+    private boolean newInstance;
+    
     @EJB
     CrudBDCLocal ejbCrud;
 
@@ -44,6 +46,7 @@ public class MttoMenu extends MttoUtil<Opcionmenu>implements Serializable{
     @PostConstruct
     public void load(){
        System.out.println("postConstruct");
+       this.setNewInstance(false);
       if(this.getMenuList()==null){
            this.setMenuList(this.getResultList());
       }
@@ -56,7 +59,7 @@ public class MttoMenu extends MttoUtil<Opcionmenu>implements Serializable{
 
     @Override
     protected void prepareCreate() {
-        
+       this.setNewInstance(true);
     }
 
     @Override
@@ -68,14 +71,17 @@ public class MttoMenu extends MttoUtil<Opcionmenu>implements Serializable{
                                 .createQuery("select m from Opcionmenu m where m.menuPadre = :p order by m.orden")
                                 .setParameter("p", this.getInstance())
                                 .getResultList();
+            this.setNewInstance(false);
+            this.setInstance(null);
         }
     }
 
     @Override
     protected boolean validateSave() {
-        if(this.getInstance().getUrl()!=null&&!this.getInstance().getUrl().endsWith(".xhtml")){
-            addMessage(ERROR, "Error", "URL Invalida");
-            return false;
+        if(this.getParentMenu()==null){
+            this.getInstance().setMenuPadre(null);
+        }else{
+          this.getInstance().setMenuPadre(this.getParentMenu());
         }
         return true;
     }
@@ -124,7 +130,18 @@ public class MttoMenu extends MttoUtil<Opcionmenu>implements Serializable{
 
     @Override
     protected void postSave() {
-        
+        this.setNewInstance(false);
+         if(this.getParentMenu()==null){
+            this.menuList = this.getEntityManager()
+                                .createQuery("select m from Opcionmenu m where m.menuPadre is null order by m.orden")
+                                .getResultList();
+            
+        }else{
+            this.menuList = this.getEntityManager()
+                                .createQuery("select m from Opcionmenu m where m.menuPadre = :p order by m.orden")
+                                .setParameter("p", this.getParentMenu())
+                                .getResultList();
+        }
     }
 
     @Override
@@ -170,5 +187,52 @@ public class MttoMenu extends MttoUtil<Opcionmenu>implements Serializable{
 
     }
     }
+
+    /**
+     * @return the newInstance
+     */
+    public boolean isNewInstance() {
+        return newInstance;
+    }
+
+    /**
+     * @param newInstance the newInstance to set
+     */
+    public void setNewInstance(boolean newInstance) {
+        this.newInstance = newInstance;
+    }
     
+    public void goToParent(){
+         this.setNewInstance(false);
+         this.setParentMenu(this.getParentMenu().getMenuPadre());
+         
+       if(this.getParentMenu()==null){
+            this.menuList = this.getEntityManager()
+                                .createQuery("select m from Opcionmenu m where m.menuPadre is null order by m.orden")
+                                .getResultList();
+            
+        }else{
+            this.menuList = this.getEntityManager()
+                                .createQuery("select m from Opcionmenu m where m.menuPadre = :p order by m.orden")
+                                .setParameter("p", this.getParentMenu())
+                                .getResultList();
+        }
+    }
+    
+    public void immediateDelete(Opcionmenu menu){
+      this.setInstance(menu);
+      this.delete();
+             if(this.getParentMenu()==null){
+            this.menuList = this.getEntityManager()
+                                .createQuery("select m from Opcionmenu m where m.menuPadre is null order by m.orden")
+                                .getResultList();
+            
+        }else{
+            this.menuList = this.getEntityManager()
+                                .createQuery("select m from Opcionmenu m where m.menuPadre = :p order by m.orden")
+                                .setParameter("p", this.getParentMenu())
+                                .getResultList();
+        }
+      
+    }
 }

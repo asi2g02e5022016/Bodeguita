@@ -131,7 +131,7 @@ public class Opcionmenu implements Serializable {
     		return true;
     	}
     	if(this.getSubMenus().size()==0 && (this.getUrl()==null || this.getUrl().length()<5)){
-    		return false;
+    		return true;
     	}
     	return false;
     }

@@ -11,24 +11,34 @@
 
 		<h:form id="formA">
                     
-                    
-                    
                     <p:growl id="msgs" showDetail="true" showSummary="true" />
 
 			<center>
-                 <p:panel id="basic" header="Mantenimientos companias" style="width: 80%"  >
-                    <p:panelGrid columns="2"  >
+                            <p:panel id="panelPrincipal" header="Mantenimientos companias" style="width: 80%"  >
+             <p:menubar>
+                 <p:menuitem value="Regresar" actionListener="#{mttoMenu.goToParent()}"
+                             icon="ui-icon-arrowreturnthick-1-w" update="@all" disabled="#{mttoMenu.parentMenu==null}" />
+                 <p:menuitem value="Agregar" actionListener="#{mttoMenu.startNew()}"
+                             icon="ui-icon-plus" update="@all" disabled="#{mttoMenu.newInstance}" />
+                 <p:menuitem value="Guardar" actionListener="#{mttoMenu.save()}"
+                             icon="ui-icon-disk" update="@all" disabled="#{!mttoMenu.newInstance}" />
+                    </p:menubar>
+                                <h:panelGrid columns="2" id="gridAdicion"  >
                         <p:outputLabel for="menuPadre" value="Menu Padre: " />
                         <p:inputText value="#{mttoMenu.parentMenu.breadcumb}" disabled="true" id="menuPadre" style="width: 280px" />
-                        
-                    </p:panelGrid>
+                        <p:outputLabel for="etiqueta" value="Etiqueta:" />
+                        <p:inputText value="#{mttoMenu.instance.etiqueta}"  id="etiqueta" disabled="#{!mttoMenu.newInstance}" />
+                        <p:outputLabel for="url" value="URL " />
+                        <p:inputText value="#{mttoMenu.instance.url}"  id="url" disabled="#{!mttoMenu.newInstance}" />
+                        <p:outputLabel for="orden" value="Orden:" />
+                        <p:spinner id="orden" value="#{mttoMenu.instance.orden}" min="0" max="30" disabled="#{!mttoMenu.newInstance}" />
+                        <p:outputLabel for="visible" value="Visible:" />
+                        <p:selectBooleanCheckbox  value="#{mttoMenu.instance.visible}" id="visible" disabled="#{!mttoMenu.newInstance}" />
+                    </h:panelGrid>
 
-                    	<p:commandButton action="mant"
-					actionListener="#{mttoMenu.startNew()}" icon="ui-icon-plusthick"
-					value="Registrar Nuevo" rendered="true" />
                         
                         <p:dataTable var="res" value="#{mttoMenu.menuList}" sortBy="#{res.orden}"
-					paginator="true" rows="10" paginatorPosition="bottom"
+					paginator="true" rows="3" paginatorPosition="bottom"
 					style="width: 95%" id="menus" editable="true"
                                          draggableRows="true">
 					<f:facet name="header">Menus</f:facet>
@@ -83,8 +93,14 @@
 							<h:graphicImage value="/images/table_detail3.png" />
 						</p:commandLink> 
 					</p:column>
-					<p:column styleClass="centered" style="width:32px">
-						<p:rowEditor />
+					<p:column width="10%">
+                                            <h:panelGrid >
+                                            <p:rowEditor />
+                                     <p:commandButton  style="width: 12px; height: 12px;"
+                                                    
+                                                       id="iconOnly" action="#{mttoMenu.immediateDelete(res)}"
+                                                       icon="ui-icon-trash" update="@all"  /> 
+                                            </h:panelGrid>
 					</p:column>
 					<f:facet name="footer">
 					</f:facet>
