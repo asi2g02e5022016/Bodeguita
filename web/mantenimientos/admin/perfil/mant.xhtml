@@ -20,9 +20,9 @@ and open the template in the editor.
                                  autoUpdate="true" id="growl"  showSummary="true" showDetail="true" />
 			<p:focus />
 
-			<p:fieldset style="width: 50%;margin:auto;"
+			<p:fieldset style="width: 70%;margin:auto;"
 				legend="#{mttoPerfil.instance.idPerfil==null?'Perfil Nuevo':'Editar Perfil'}">
-				<p:layout id="layout" style="min-width:500px;min-height:400px;">
+				<p:layout id="layout" style="min-width:700px;min-height:400px;">
 
 					<p:layoutUnit position="center"
 						header="Perfil">
@@ -52,7 +52,13 @@ and open the template in the editor.
 							<p:messages id="messages" showDetail="false" autoUpdate="false" closable="true" />
                                                         						<p:separator />
 							<!-- Navigation Tree -->
-							<p:panel header="Menus Asociados">
+						
+						</center>
+					    </p:layoutUnit>
+                                            
+                                    <p:layoutUnit position="east" >
+                                        
+                                        	<p:panel header="Menus Asociados">
 								<p:tree value="#{mttoPerfil.menusTreeNode}" var="res"
 									id="checkboxTree" selectionMode="checkbox"
 									selection="#{mttoPerfil.menusAgregados}">
@@ -61,9 +67,9 @@ and open the template in the editor.
 									</p:treeNode>
 								</p:tree>
 							</p:panel>
-						</center>
-					    </p:layoutUnit>
-                                    					<p:layoutUnit position="north">
+                                    </p:layoutUnit>
+                                    					
+                                             <p:layoutUnit position="north">
 						<center>
 							<h:panelGroup id="controles">
                                                             <p:commandButton  action="lista?faces-redirect=true" 

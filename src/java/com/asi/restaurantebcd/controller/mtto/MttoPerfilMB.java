@@ -8,10 +8,10 @@ import com.asi.restaurantebcd.negocio.util.UserNavigTreeFactory;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.HashSet;
 import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
@@ -92,8 +92,7 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 
     @Override
     protected boolean validateDelete() {
-        actualizarMenusTree();
-        guardarMenusTree();
+        this.getInstance().setOpcionesDeMenu(new HashSet<Opcionmenu>());
         return true;
     }
 
@@ -150,8 +149,9 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 	}
 	
 	public void guardarMenusTree(){
-		//this.getInstance().setOpcionmenuList(new HashSet<Opcionmenu>());
+		this.getInstance().setOpcionesDeMenu(new HashSet<Opcionmenu>());
 		for(Opcionmenu opcionMenu: this.getMenusAsociados()){
+                        System.out.println("actualizando:  " + opcionMenu.getEtiqueta());
 			this.getInstance().getOpcionesDeMenu().add(opcionMenu);
 		}
 	}
@@ -159,7 +159,8 @@ public class MttoPerfilMB extends MttoUtil<Perfil> implements Serializable{
 		this.setMenusAsociados(new ArrayList<Opcionmenu>());
 		for(TreeNode node:this.getMenusAgregados()){
                     Opcionmenu menu=(Opcionmenu)node.getData();
-			//this.getMenusAsociados().add(menu);
+	            this.getMenusAsociados().add(menu);
+                    System.out.println("Added: " + menu.getEtiqueta());
 		}
 		guardarMenusTree();
 		loadMenusTree();

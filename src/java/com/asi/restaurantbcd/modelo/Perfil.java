@@ -55,7 +55,7 @@ public class Perfil implements Serializable {
     private String descripcion;
         
     	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	@JoinTable(name = "perfilOpcionMenu", 
+	@JoinTable(name = "perfilopcionmenu", 
 		joinColumns = @JoinColumn(name = "perfilId", referencedColumnName = "idPerfil"), 
 				inverseJoinColumns = @JoinColumn(name = "opcionMenuId", referencedColumnName = "id"))
     private Set<Opcionmenu> opcionesDeMenu = new HashSet<Opcionmenu>();

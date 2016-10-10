@@ -141,7 +141,9 @@ public abstract class MttoUtil<E> {
                if(validateUpdate()) {
                ejbCrud.guardarEntidad(instance);
                postUpdate();
-               this.endConversation();}
+               this.endConversation();
+               System.out.println("Actualiado----");
+               }
 
            } catch (Exception ex) {
                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
