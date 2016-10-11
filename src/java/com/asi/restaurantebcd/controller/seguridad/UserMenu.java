@@ -42,6 +42,7 @@ public class UserMenu implements Serializable {
     
     @PostConstruct
     public void loadUserMenus() {
+        System.out.println("Load Menus");
 	model = new DefaultMenuModel();
            
         DefaultMenuItem item = new DefaultMenuItem("Inicio");
@@ -54,19 +55,25 @@ public class UserMenu implements Serializable {
         item.setUrl("/Loggin.xhtml");
         model.addElement(item);
         } 
-        else {  
+        else {
+            System.out.println("Start build menu");
+            addedMenus=new HashMap<Integer, DefaultSubMenu>();
            for (Opcionmenu om : sesion.getUsuario().getIdperfil().getOpcionesDeMenu()) {
+                 System.out.println("Opcion encontrada:  " + om.getEtiqueta());
 				if (!menusUsuario.contains(om))
 					menusUsuario.add(om);
           }
            
           for (Opcionmenu om : childList.getResultList()) {
+              System.out.println("Evaluando:  " + om.getEtiqueta());
 				if (menusUsuario.contains(om)) {
+                                        System.out.println("Agregando Opcion:  " + om.getEtiqueta());
 					buildMenuItem(om);
 			}
 		}
+        System.out.println("Creando log out  ");
         item = new DefaultMenuItem("Log Out");
-        item.setCommand("{logginBean.logOut()}");
+        item.setCommand("#{logginBean.logOut()}");
         item.setAjax(false);
         item.setImmediate(true);
         model.addElement(item);    
@@ -100,6 +107,7 @@ public class UserMenu implements Serializable {
 			DefaultSubMenu submenu = new DefaultSubMenu();
 			submenu.setLabel(om.getEtiqueta());
 			if (om.isRootMenu()) {
+                                System.out.println("Agregando Padre:  " + om.getEtiqueta());
 				model.addElement(submenu);
 				submenu.setStyleClass("ui-root-menu-item");
 			}else{				
@@ -107,6 +115,7 @@ public class UserMenu implements Serializable {
 			}			
 			addedMenus.put(om.getId(), submenu);
 		} else {
+                        System.out.println("Agregando Hijo:  " + om.getEtiqueta());
 			DefaultMenuItem item = new DefaultMenuItem();
 			item.setUrl(om.getUrl());
 			item.setValue(om.getEtiqueta());
