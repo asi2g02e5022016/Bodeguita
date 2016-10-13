@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package com.asi.restaurantebcd.controller.mtto;
-
+ 
 import com.asi.restaurantbcd.modelo.Marcaproducto;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasMarcaProductoLocal;

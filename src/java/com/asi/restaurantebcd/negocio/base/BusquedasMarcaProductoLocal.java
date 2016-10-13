@@ -7,8 +7,9 @@ package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Marcaproducto;
 import java.util.List;
-
-/**
+ 
+/** 
+ * 
  *
  * @author Melendez
  */
