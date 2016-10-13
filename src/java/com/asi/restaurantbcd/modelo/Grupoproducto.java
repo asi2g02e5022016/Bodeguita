@@ -20,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -53,7 +54,7 @@ public class Grupoproducto implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupodependencia")
     private List<Grupoproducto> grupoproductoList;
     @JoinColumn(name = "grupodependencia", referencedColumnName = "idgrupoproducto")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Grupoproducto grupodependencia;
 
     public Grupoproducto() {
@@ -140,6 +141,15 @@ public class Grupoproducto implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Grupoproducto[ idgrupoproducto=" + idgrupoproducto + " ]";
+    }
+    
+        @Transient
+    public String getBreadcumb(){
+        if(getGrupodependencia()==null){
+        return "Root -> "+this.getGrupoproducto();
+       }else {
+           return this.getGrupodependencia().getBreadcumb() + " -> " + this.getGrupoproducto();
+        }
     }
     
 }

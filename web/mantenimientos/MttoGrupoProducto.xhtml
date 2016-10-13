@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+        template="/layout/templateBDC.xhtml">
+    <ui:define name="body">
+      <br />
+
+		<h:form id="formA">
+                    
+                    <p:growl id="msgs" showDetail="true" showSummary="true" />
+
+			<center>
+                            <p:panel id="panelPrincipal" header="Mantenimientos Grupo Producto" style="width: 80%"  >
+             <p:menubar>
+                 <p:menuitem value="Regresar" actionListener="#{mttoGrupo.goToParent()}"
+                             icon="ui-icon-arrowreturnthick-1-w" update="@all" disabled="#{mttoGrupo.parentGroup==null}" />
+                 <p:menuitem value="Agregar" actionListener="#{mttoGrupo.startNew()}"
+                             icon="ui-icon-plus" update="@all" disabled="#{mttoGrupo.newInstance}" />
+                 <p:menuitem value="Guardar" actionListener="#{mttoGrupo.save()}"
+                             icon="ui-icon-disk" update="@all" disabled="#{!mttoGrupo.newInstance}" />
+                    </p:menubar>
+                     <h:panelGrid columns="2" id="gridAdicion"  >
+                        <p:outputLabel for="menuPadre" value="Grupo Padre: " />
+                        <p:inputText value="#{mttoGrupo.parentGroup.breadcumb}" disabled="true" id="menuPadre" style="width: 280px" />
+                        <p:outputLabel for="grupoproducto" value="Grupo:" />
+                        <p:inputText value="#{mttoGrupo.instance.grupoproducto}"  id="grupoproducto" disabled="#{!mttoGrupo.newInstance}" />
+                    </h:panelGrid>
+
+                        
+                        <p:dataTable var="res" value="#{mttoGrupo.grupoList}" sortBy="#{res.nivel}"
+					paginator="true" rows="3" paginatorPosition="bottom"
+					style="width: 95%" id="menus" editable="true"
+                                         draggableRows="true">
+					<f:facet name="header">Grupos</f:facet>
+                                        <p:ajax event="rowEdit" listener="#{mttoGrupo.onRowEdit}" />
+					<p:column filterBy="#{res.grupoproducto}" 
+                                                  styleClass="centered" headerText="Grupo">
+                                             <p:cellEditor>
+                                                 <f:facet name="output">
+						   <h:outputText value="#{res.grupoproducto}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+						   <p:inputText id="modelInput" value="#{res.grupoproducto}" style="width:70%"/>
+                                                </f:facet>
+                                             </p:cellEditor>
+					</p:column>
+                                        <p:column styleClass="centered" headerText="Grupos Hijos">
+					    <p:commandLink title="Modificar"
+							action="lista"
+                                                        actionListener="#{mttoGrupo.startModify(res.idgrupoproducto)}" ajax="false"  >
+							<h:graphicImage value="/images/table_detail3.png" />
+						</p:commandLink> 
+					</p:column>
+					<p:column width="10%">
+                                            <p:rowEditor />
+                            		</p:column>
+					<f:facet name="footer">
+					</f:facet>
+				</p:dataTable>
+                        </p:panel>
+                        </center>
+
+
+		</h:form>
+		<br style="clear: both" />  
+     </ui:define>
+</ui:composition>
