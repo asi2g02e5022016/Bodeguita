@@ -31,7 +31,7 @@ public class BusquedasMarcaProducto implements BusquedasMarcaProductoLocal{
  public Integer obtenerCorreltivoMarcaProductos() throws Exception {
         Integer valor;
         StringBuilder slq = new StringBuilder();
-        slq.append("SELECT MAX(idMarcaProducto) FROM marcaproducto ");
+        slq.append("SELECT MAX(idmarcaproducto) FROM Marcaproducto ");
         Query query = em.createNativeQuery(slq.toString());
         valor = (Integer) query.getSingleResult();
         if (valor == null) {
@@ -44,7 +44,7 @@ public class BusquedasMarcaProducto implements BusquedasMarcaProductoLocal{
     @Override
     public List<Marcaproducto> buscarMarcaProductos() throws Exception {
       StringBuilder jpql = new StringBuilder();
-        jpql.append("SELECT a FROM marcaproducto a ");
+        jpql.append("SELECT a FROM Marcaproducto a ");
         Query query = em.createQuery(jpql.toString());
         return query.getResultList(); 
     }
