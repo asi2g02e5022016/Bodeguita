@@ -7,6 +7,7 @@ package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Compania;
 import com.asi.restaurantbcd.modelo.Proveedor;
+import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,19 @@ public class BusquedasMtto implements BusquedasMttoLocal {
     public List <Sucursal> buscarSucursales() throws Exception {
         StringBuilder jpql = new StringBuilder();
         jpql.append("SELECT a FROM Sucursal a ");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+    }
+    
+    /**
+     * Obtiene la lista de Impuestos.
+     * @return List Impuesto.
+     * @throws Exception Error generico.
+     */
+    @Override
+    public List <Impuesto> buscarImpuesto() throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Impuesto a ");
         Query query = em.createQuery(jpql.toString());
         return query.getResultList();
     }

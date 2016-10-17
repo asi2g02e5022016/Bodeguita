@@ -7,6 +7,7 @@ package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Compania;
 import com.asi.restaurantbcd.modelo.Sucursal;
+import com.asi.restaurantbcd.modelo.Impuesto;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -34,4 +35,10 @@ public interface BusquedasMttoLocal {
      * @throws Exception Error generico.
      */
     public List <Sucursal> buscarSucursales() throws Exception;
+    /**
+     * Obtiene la lista de Impuestos.
+     * @return List Impuestos.
+     * @throws Exception Error generico.
+     */
+    public List <Impuesto> buscarImpuesto() throws Exception;
 }
