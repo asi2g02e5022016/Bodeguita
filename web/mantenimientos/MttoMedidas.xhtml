@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Vista xhtl de Mantenimientos de companias.
+-->
+<!DOCTYPE html>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                    
+    <ui:define name="body">
+        <center>
+            <h:form id="forprincipal" >
+                <p:growl showDetail="true" showSummary="true" />
+                 <p:panel id="basic" header="Mantenimientos medidas" style="width: 50%"  >
+                    <p:menubar>
+                        <p:menuitem value="Nuevo" 
+                                    icon="ui-icon-plus" />
+                        <p:menuitem value="Guardar" 
+                                    icon="ui-icon-disk" />
+                        <p:menuitem value="Buscar" update="forprincipal" 
+                                    
+                                        icon=" ui-icon-search" />
+                    </p:menubar>
+                    <h:panelGrid columns="2" width="80%">
+                        <h:outputLabel  value="Id Medida: "/>
+                        <p:inputText 
+                                     readonly="true" style="width: 40px" />
+                        <h:outputLabel  value="Medida " />
+                        <p:inputText style="width: 100%"   />
+                    </h:panelGrid>
+                    <h:panelGrid >
+                        <p:dataTable id="tablaProd" emptyMessage="" 
+                                     selectionMode="single" rows="19"  >
+                            <p:ajax event="rowEdit" />  
+                    <p:ajax event="rowEditCancel"   /> 
+
+                            <p:column headerText="Id" width="10%">
+                                <h:outputText   />
+                            </p:column>
+                            <p:column headerText="Medida" width="80%">
+                 
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText  />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor>
+                            </p:column>
+                                <p:column width="10%">
+                                    <h:panelGrid >
+                                  <p:rowEditor/>
+                                  <p:commandButton  style="width: 12px; height: 12px;"
+                                                    
+                                     id="iconOnly" 
+                                         icon="ui-icon-plus"  />
+                                   </h:panelGrid>
+                                </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:panel>
+                
+            </h:form>
+        </center>
+        
+    </ui:define>
+    
+    
+    
+</ui:composition>
