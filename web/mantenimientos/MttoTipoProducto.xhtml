@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="body">
+        <center>
+        <h:form id="forprincipal" >
+            
+            <p:growl showDetail="true" showSummary="true" />
+            <p:panel id="basic" header="Mantenimiento Tipo de Producto" style="width: 50%"  >
+                <p:menubar>
+                    <p:menuitem value="Nuevo"  update="forprincipal"  action="#{mttoTipoProd.limpiarPantalla()}"
+                                icon="ui-icon-plus" />
+                    <p:menuitem value="Guardar"  update="forprincipal"  action="#{mttoTipoProd.guardarTipoProducto()}"
+                                icon="ui-icon-disk" />
+                    <p:menuitem value="Buscar" update="forprincipal" action="#{mttoTipoProd.buscarTipoProducto()}"
+                                icon=" ui-icon-search" />  
+                </p:menubar>
+                
+                    <h:panelGrid columns="2" width="50%">
+                        <h:outputLabel  value="Id Tipo Producto : "/>
+                        <p:inputText value="#{mttoTipoProd.idTipoProducto}"
+                                     readonly="true" style="width: 40px" />
+                        <h:outputLabel  value="Nombre " />
+                        <p:inputText style="width: 100%"  value="#{mttoTipoProd.tipoProducto}"  />
+                    </h:panelGrid>
+                
+                    <h:panelGrid >
+                        <p:dataTable id="tablaProd" emptyMessage=""
+                                     binding="#{mttoTipoProd.tablaTipoProducto}"
+                                     value="#{mttoTipoProd.lstTipoProducto}" 
+                                     var="dpro" rowKey="#{dpro.idtipoproducto}"
+                                     selectionMode="single" rows="19" 
+                                     editable="true">
+                        <!--Botones de edicion probar  Botones de edicion probar-->
+                        
+                        <p:ajax event="rowEdit" listener="#{mttoTipoProd.actualizarTipoProducto()}"  />  
+                        <p:ajax event="rowEditCancel" listener="#{mttoTipoProd.onCancel}"  /> 
+                      
+                         
+                            <p:column headerText="Id" width="3%">
+                                <h:outputText value="#{dpro.idtipoproducto}"  />
+                            </p:column>
+                            <p:column headerText="Nombre" width="20%">
+                                 <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dpro.tipoproducto}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dpro.tipoproducto}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor> 
+                            </p:column>
+                        
+                        <p:column  headerText="Modificar" width="5%" style="align-content: center">
+                                <p:rowEditor />
+                            </p:column>
+
+                            <p:column style="width:10px; align-content: center" headerText="Eliminar">                               
+                                  
+                                    <p:commandButton   value="Eliminar" 
+                                                       action="#{mttoTipoProd.eliminarTipoProducto()}"
+                                                      />
+                               
+                            </p:column >
+                       
+                  </p:dataTable>
+                    </h:panelGrid>
+            </p:panel>
+        </h:form>
+            </center>
+    </ui:define>
+</ui:composition>
+
