@@ -4,7 +4,7 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
-        <!-- Login filter -->
+    <!-- Login filter -->
     <filter>
         <filter-name>LoginFilter</filter-name>
         <filter-class>com.asi.restaurantebcd.controller.seguridad.LoginFilter</filter-class>

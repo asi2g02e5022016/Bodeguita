@@ -14,6 +14,7 @@ import com.asi.restaurantebcd.negocio.util.Utilidades;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
+import com.asi.restaurantebcd.negocio.base.BusquedasProveedoresLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,19 +25,25 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
  * @author samaelopez
  */
-@Named(value = "s")
+@ManagedBean(name = "compraBean")
 @ViewScoped
 public class CompraBean implements  Serializable {
+
+    @EJB
+    private BusquedasProveedoresLocal busquedasProveedores;
     
       //<editor-fold  defaultstate="collapsed" desc="Constructor" >
     /**
@@ -89,6 +96,7 @@ public class CompraBean implements  Serializable {
     private BusquedasComprasLocal ejbBusComp;
     @EJB
     private BusquedasProductosLocal ejbBusProd;
+    
    
     //</editor-fold >
 
@@ -394,5 +402,23 @@ public class CompraBean implements  Serializable {
 //    public void mostrarDialogProd() {
 //    dialogProductos.setVisible(true);
 //    }
+    
+      public List<Proveedor> completeTheme(String query) {
+          Map filtros = new HashMap();
+          filtros.put("nombre", query);
+        List<Proveedor> allThemes =
+                busquedasProveedores.buscarProveedors(filtros);
+         if (allThemes == null || allThemes.isEmpty()) {
+             alert("No se encontraron resultados.", FacesMessage.SEVERITY_WARN);
+         }
+        return allThemes;
+    }
+    
+     public void onItemSelect(SelectEvent event) {
+         System.out.println(event.getObject());
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage("Item Selected", event.getObject().toString()));
+    }
+ 
     
 }
