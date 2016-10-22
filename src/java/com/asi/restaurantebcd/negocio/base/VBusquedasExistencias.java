@@ -5,59 +5,44 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
-import javax.persistence.Entity;
+import com.asi.restaurantbcd.modelo.Vexistxsucsal;
+import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
  * @author PROGRAMADOR
  */
-@Entity
+@Stateless
 public class VBusquedasExistencias implements VBusquedasExistenciasLocal {
     
     @PersistenceContext(unitName = "RestaurantBDC-WebPU")
     private EntityManager em; 
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof VBusquedasExistencias)) {
-            return false;
-        }
-        VBusquedasExistencias other = (VBusquedasExistencias) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.asi.restaurantebcd.negocio.base.VBusquedasExistencias[ id=" + id + " ]";
+    public List <Vexistxsucsal> buscarExistencia() throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Vexistxsucsal a ");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
     }
     
+    @Override
+    public List <Vexistxsucsal> buscarExistenciaxSucsal(String _sucsal) throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Vexistxsucsal a where sucursal like '%" + _sucsal + "%'" );
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+    }
+    
+    @Override
+    public List <Vexistxsucsal> buscarExistenciaxProducto(String _producto) throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Vexistxsucsal a where producto like '%" + _producto + "%'" );
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+    }    
 }
