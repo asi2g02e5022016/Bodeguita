@@ -114,7 +114,14 @@ public class MttoFormaPago implements Serializable {
         }
     }
     
-    
+     private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
+        if (mensaje == null) {
+            mensaje =  "No existen formas de Pago";
+        }
+        FacesMessage message = new FacesMessage(faces,
+                "Mensaje", mensaje.toString());
+        RequestContext.getCurrentInstance().showMessageInDialog(message);
+    }
     
     public Integer getIdformapago() {
         return idformapago;
@@ -158,14 +165,7 @@ public class MttoFormaPago implements Serializable {
     
     
     
-    private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
-        if (mensaje == null) {
-            mensaje =  "-";
-        }
-        FacesMessage message = new FacesMessage(faces,
-                "Mensaje", mensaje.toString());
-        RequestContext.getCurrentInstance().showMessageInDialog(message);
-    }
+   
     
     
 }
