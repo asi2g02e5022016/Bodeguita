@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -33,6 +34,8 @@ public class Medida implements Serializable {
     @Basic(optional = false)
     @Column(name = "idmedida")
     private Integer idmedida;
+    @Basic(optional = false)
+    @NotNull
     @Size(max = 25)
     @Column(name = "medida")
     private String medida;
