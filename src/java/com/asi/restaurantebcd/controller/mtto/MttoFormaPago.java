@@ -6,14 +6,19 @@
 package com.asi.restaurantebcd.controller.mtto;
 
 import com.asi.restaurantbcd.modelo.Formapago;
+import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
+import com.asi.restaurantebcd.negocio.base.BusquedasMttoLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
@@ -28,6 +33,27 @@ public class MttoFormaPago implements Serializable {
 
     @EJB
     private CrudBDCLocal crudBDC;
+    
+    @EJB
+    private BusquedasMttoLocal ejbBusqMtto;
+    
+    @PostConstruct
+    public void postConstruction(){
+        try{
+            sesion = Utilidades.findBean("sessionUsr");
+            if(sesion == null){
+                alert("Debe Iniciar Sesion",FacesMessage.SEVERITY_FATAL);
+                FacesContext.getCurrentInstance().getViewRoot().
+                        getViewMap().clear();
+            String url = "http://localhost:8080/RestaurantBDC";
+            FacesContext.getCurrentInstance().getExternalContext().
+                    redirect(url);
+            } 
+            buscarFormaPago();
+        } catch (Exception e) {
+                alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
+        }
+    }
 
     //<editor-fold  defaultstate="collapsed" desc="Inializar" >
 
@@ -43,10 +69,21 @@ public class MttoFormaPago implements Serializable {
     
     private Formapago formapago;
     
+    private SessionUsr sesion ;
+    
     private List <Formapago> listFormapago;
     
     private DataTable dtFormapago = new DataTable();
 
+    public void limpiarpantalla(){
+        idformapago = null;
+        descformapago = null;
+        formapago = null;
+        listFormapago = null;
+        dtFormapago = new DataTable();
+    }
+    
+    
     public void guardarFormaPago(){
         try {
             if(descformapago == null || descformapago.equals("")){
@@ -59,6 +96,18 @@ public class MttoFormaPago implements Serializable {
             formapago.setFormapago(descformapago);
             crudBDC.guardarEntidad(formapago);
             alert("La descripción de forma de pago se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(MttoFormaPago.class.getName()).log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
+    
+    public void buscarFormaPago(){
+        try {
+            listFormapago  = ejbBusqMtto.buscarFormapago();
+            if (listFormapago == null || listFormapago.isEmpty()){
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+            }
         } catch (Exception ex) {
             Logger.getLogger(MttoFormaPago.class.getName()).log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
