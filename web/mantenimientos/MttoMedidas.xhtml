@@ -17,50 +17,32 @@ Vista xhtl de Mantenimientos de companias.
                 <p:growl showDetail="true" showSummary="true" />
                  <p:panel id="basic" header="Mantenimientos medidas" style="width: 50%"  >
                     <p:menubar>
-                        <p:menuitem value="Nuevo" 
+                        <p:menuitem value="Nuevo"  update="forprincipal" action="#{mttoMedidas.limpiarPantalla()}"
                                     icon="ui-icon-plus" />
-                        <p:menuitem value="Guardar" 
+                        <p:menuitem value="Guardar" action ="#{mttoMedidas.guardarMedidas()}"
                                     icon="ui-icon-disk" />
-                        <p:menuitem value="Buscar" update="forprincipal" 
-                                    
-                                        icon=" ui-icon-search" />
+                        <p:menuitem value="Buscar" update="forprincipal" action= "#{mttoMedidas.buscarMedidas()}"
+                                        icon="ui-icon-search" />
                     </p:menubar>
                     <h:panelGrid columns="2" width="80%">
                         <h:outputLabel  value="Id Medida: "/>
                         <p:inputText 
-                                     readonly="true" style="width: 40px" />
+                            readonly="true" value="#{mttoMedidas.idMedida}" style="width: 40px" />
                         <h:outputLabel  value="Medida " />
-                        <p:inputText style="width: 100%"   />
+                        <p:inputText value="#{mttoMedidas.nombreMedida}" style="width: 100%"   />
                     </h:panelGrid>
                     <h:panelGrid >
                         <p:dataTable id="tablaProd" emptyMessage="" 
-                                     selectionMode="single" rows="19"  >
-                            <p:ajax event="rowEdit" />  
-                    <p:ajax event="rowEditCancel"   /> 
+                                     value="#{mttoMedidas.listaMedidas}"
+                                     var="p" 
+                                     rows="19"  >
 
                             <p:column headerText="Id" width="10%">
-                                <h:outputText   />
-                            </p:column>
-                            <p:column headerText="Medida" width="80%">
-                 
-                        <p:cellEditor>  
-                            <f:facet name="output">  
-                                <h:outputText  />  
-                            </f:facet>  
-                            <f:facet name="input">  
-                                <p:inputText style="width:100%"/>  
-                            </f:facet>  
-                        </p:cellEditor>
-                            </p:column>
-                                <p:column width="10%">
-                                    <h:panelGrid >
-                                  <p:rowEditor/>
-                                  <p:commandButton  style="width: 12px; height: 12px;"
-                                                    
-                                     id="iconOnly" 
-                                         icon="ui-icon-plus"  />
-                                   </h:panelGrid>
-                                </p:column>
+                                <h:outputText value="#{p.idmedida}"  />
+                            </p:column> 
+                                <p:column headerText="medida" width="10%">
+                                    <h:outputText value="#{p.medida}"  />
+                            </p:column> 
                         </p:dataTable>
                     </h:panelGrid>
                 </p:panel>

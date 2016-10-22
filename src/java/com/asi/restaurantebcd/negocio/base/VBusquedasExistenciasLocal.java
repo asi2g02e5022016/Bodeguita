@@ -1,6 +1,6 @@
 package com.asi.restaurantebcd.negocio.base;
 
-import com.asi.restaurantbcd.inventario.InvExistenciaBean;
+import com.asi.restaurantbcd.modelo.Vexistxsucsal;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -8,8 +8,9 @@ import javax.ejb.Local;
  *
  * @author PROGRAMADOR
  */
-public interface VBusquedasExistenciasLocal {
-    
-    
-    
+@Local
+public interface VBusquedasExistenciasLocal {       
+     List <Vexistxsucsal> buscarExistencia() throws Exception;
+     List <Vexistxsucsal> buscarExistenciaxSucsal(String _sucsal) throws Exception;
+     List <Vexistxsucsal> buscarExistenciaxProducto(String _producto) throws Exception;
 }
