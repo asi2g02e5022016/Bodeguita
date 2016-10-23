@@ -38,7 +38,7 @@
                             <p:column headerText="Id" width="10%">
                                 <h:outputText   />
                             </p:column>
-                            <p:column headerText="Medida" width="80%">
+                            <p:column headerText="Puesto" width="80%">
                  
                         <p:cellEditor>  
                             <f:facet name="output">  
@@ -48,6 +48,20 @@
                                 <p:inputText style="width:100%"/>  
                             </f:facet>  
                         </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Departamento" width="100%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu id=""  value ="" style="width: 100%"  >
+                                            <f:selectItems value=""
+                                                           var="" itemLabel="" itemValue=""/>                                       
+                                        </p:selectOneMenu> 
+                                    </f:facet> 
+                                </p:cellEditor>
+
                             </p:column>
                                 <p:column width="10%">
                                     <h:panelGrid >
