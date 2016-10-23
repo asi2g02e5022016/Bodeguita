@@ -5,59 +5,66 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
-import javax.persistence.Entity;
+import com.asi.restaurantbcd.modelo.Vexistxsucsal;
+import java.util.List;
+import java.util.Map;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
  * @author PROGRAMADOR
  */
-@Entity
+@Stateless
 public class VBusquedasExistencias implements VBusquedasExistenciasLocal {
     
     @PersistenceContext(unitName = "RestaurantBDC-WebPU")
     private EntityManager em; 
-
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    /**
+     * 
+     * @param filtro
+     * @return
+     * @throws Exception 
+     */
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof VBusquedasExistencias)) {
-            return false;
-        }
-        VBusquedasExistencias other = (VBusquedasExistencias) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.asi.restaurantebcd.negocio.base.VBusquedasExistencias[ id=" + id + " ]";
-    }
-    
+    public List <Vexistxsucsal> buscarExistenciaFiltros(Map filtro) 
+                throws Exception {
+            if (filtro == null){
+                return null;
+            }
+            Integer codcia = (Integer) filtro.get("codcia");
+            Integer codsuc = (Integer) filtro.get("codsuc");
+            String producto = (String) filtro.get("producto");
+            String tipo = (String) filtro.get("tipo");
+            StringBuilder jpql = new StringBuilder();
+            jpql.append("SELECT a FROM Vexistxsucsal a where 1 = 1");
+            if (codcia != null) {
+                jpql.append(" AND a.idcompania = :codcia");
+            }
+            if (codsuc != null) {
+                jpql.append(" AND a.idsucursal = :codsuc");
+            }
+            if (producto != null) {
+                jpql.append(" AND a.idproducto = :producto");
+            }
+             if (tipo != null) {
+                jpql.append(" AND a.idtipoproducto = :tipo");
+            }
+            Query query = em.createQuery(jpql.toString());
+            if (codcia != null) {
+                query.setParameter("codcia", codcia);
+            }
+            if (codsuc != null) {
+                query.setParameter("codsuc", codsuc);
+            }
+            if (producto != null) {
+               query.setParameter("producto", producto);
+            }
+             if (tipo != null) {
+                query.setParameter("tipo", tipo);
+            }
+        return query.getResultList();
+    }   
 }

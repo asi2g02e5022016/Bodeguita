@@ -39,6 +39,8 @@
     <class>com.asi.restaurantbcd.modelo.Tipodocumento</class>
     <class>com.asi.restaurantbcd.modelo.Tipoproducto</class>
     <class>com.asi.restaurantbcd.modelo.Usuario</class>
+    <class>com.asi.restaurantbcd.modelo.Vexistxsucsal</class>
+    <class>com.asi.restaurantbcd.modelo.Vwexistencias</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>
