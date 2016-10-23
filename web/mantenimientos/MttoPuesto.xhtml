@@ -22,12 +22,20 @@
                                     
                                         icon=" ui-icon-search" />
                     </p:menubar>
-                    <h:panelGrid columns="2" width="80%">
-                        <h:outputLabel  value="Id Medida: "/>
-                        <p:inputText 
-                                     readonly="true" style="width: 40px" />
-                        <h:outputLabel  value="Medida " />
-                        <p:inputText style="width: 100%"   />
+                    <h:panelGrid columns="1" width="80%">
+                        <h:outputLabel value="Id Puesto: "/>
+                        <p:inputText value =""
+                                     readonly ="true" style ="width: 40px"/>
+                        <h:outputLabel value ="Puesto: "/>
+                        <p:inputText style="width: 70%" value =""/>
+                        <h:outputLabel value ="Departamento:" />
+                        <p:selectOneMenu id="ListPuesto"  value ="" >
+                            <f:selectItems value=""
+                                           var="" itemLabel="" itemValue=""/>                                       
+                        </p:selectOneMenu> 
+                        
+
+
                     </h:panelGrid>
                     <h:panelGrid >
                         <p:dataTable id="tablaProd" emptyMessage="" 
@@ -49,29 +57,29 @@
                             </f:facet>  
                         </p:cellEditor>
                             </p:column>
-                            <p:column headerText="Departamento" width="100%">
-                                <p:cellEditor>
-                                    <f:facet  name="output">
-                                        <h:outputText value="" />  
-                                    </f:facet>
-                                    <f:facet name="input">  
-                                        <p:selectOneMenu id=""  value ="" style="width: 100%"  >
-                                            <f:selectItems value=""
-                                                           var="" itemLabel="" itemValue=""/>                                       
-                                        </p:selectOneMenu> 
-                                    </f:facet> 
-                                </p:cellEditor>
-
+                            <p:column headerText="Departamento" width="80%">
+                 
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText  />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor>
                             </p:column>
-                                <p:column width="10%">
-                                    <h:panelGrid >
-                                  <p:rowEditor/>
-                                  <p:commandButton  style="width: 12px; height: 12px;"
-                                                    
-                                     id="iconOnly" 
-                                         icon="ui-icon-plus"  />
-                                   </h:panelGrid>
-                                </p:column>
+                          
+                          
+                            <p:column style="width:50px; align-content: center" headerText="Modificar">
+                                <p:rowEditor />
+                            </p:column>
+
+                            <p:column style="width:60px; align-content: center" headerText="Eliminar">                               
+                                  
+                            <p:commandButton   value="Eliminar" 
+                                               action="#{mttoImp.eliminarPuesto()}"
+                                               />
+                            </p:column>
                         </p:dataTable>
                     </h:panelGrid>
                 </p:panel>
