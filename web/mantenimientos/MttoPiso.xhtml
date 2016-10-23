@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="body"    >
+        <center>
+            <h:form id="forprincipal">
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="basic" header="Mantenimiento de pisos" style="width: 50%"  >
+                    <p:menubar>
+                        <p:menuitem value="Nuevo" action="#{mttoPiso.limpiarPantalla()}"
+                                    icon="ui-icon-plus" />
+                        <p:menuitem value="Guardar" update="forprincipal" action="#{mttoPiso.guardarPiso()}"
+                                    icon="ui-icon-disk" />
+                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoPiso.buscarPiso()}"
+                                    icon=" ui-icon-search" />
+                    </p:menubar>
+
+                    <h:panelGrid columns="4" width="80%">
+                        <h:outputLabel value="Id Piso: "/>
+                        <p:inputText value ="#{mttoPiso.idPiso}"
+                                     readonly ="true" style ="width: 40px"/>
+                        <h:outputLabel value ="Piso: "/>
+                        <p:inputText style="width: 100%" value ="#{mttoPiso.nombre}"/>
+                        <h:outputLabel value ="Sucursal:" />
+                        <p:selectOneMenu id="listSucursal"  value ="#{mttoPiso.idSucursal}" >
+                            <f:selectItems value="#{mttoPiso.lstSucursal}"
+                                           var="inp" itemLabel="#{inp.sucursal}" itemValue="#{inp.idsucursal}"/>                                       
+                        </p:selectOneMenu> 
+
+
+                    </h:panelGrid>
+                    <h:panelGrid >
+                        <p:dataTable id="tablaImp" emptyMessage="" binding="#{mttoPiso.tablaPiso}"
+                                     value="#{mttoPiso.lstPiso}"
+                                     var="dimp" rowKey="#{dimp.idpiso}"
+                                     selectionMode="single" rows="19" 
+                                     editable="true">
+
+                            <p:ajax event="rowEdit" listener="#{mttoPiso.actualizarPiso()}" />
+                            <p:ajax event="rowEditCancel" listener="#{mttoPiso.onCancel}"  />
+
+                            <p:column headerText="Id" width="10%">
+                                <h:outputText value="#{dimp.idpiso}"  />                                
+                            </p:column>
+
+                            <p:column headerText="Piso" width="20%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.nombre}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.nombre}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+
+                            <p:column headerText="Sucursal" width="100%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.idsucursal.sucursal}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu id="listSucursal"  value ="#{mttoPiso.idSucursal}" style="width: 100%"  >
+                                            <f:selectItems value="#{mttoPiso.lstSucursal}"
+                                                           var="inp" itemLabel="#{inp.sucursal}" itemValue="#{inp.idsucursal}"/>                                       
+                                        </p:selectOneMenu> 
+                                    </f:facet> 
+                                </p:cellEditor>
+
+                            </p:column>
+                            <p:column style="width:50px; align-content: center" headerText="Modificar">
+                                <p:rowEditor />
+                            </p:column>
+
+                            <p:column style="width:60px; align-content: center" headerText="Eliminar">                               
+                                  
+                                    <p:commandButton   value="Eliminar" 
+                                                      action="#{mttoPiso.eliminarPiso()}"
+                                                      />
+                               
+                            </p:column >
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+
+        </center>
+    </ui:define>
+
+</ui:composition>
