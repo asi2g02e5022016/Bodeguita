@@ -3,15 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.asi.restaurantbcd.inventario;
+package com.asi.restaurantebcd.controller.inventario;
 
 import com.asi.restaurantbcd.modelo.Existencia;
+import com.asi.restaurantbcd.modelo.Vexistxsucsal;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
-import com.asi.restaurantebcd.negocio.base.BusquedasInvExistenciaLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.base.VBusquedasExistenciasLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -30,6 +33,9 @@ import org.primefaces.context.RequestContext;
 @ManagedBean(name = "invExistenciaBean")
 @ViewScoped
 public class InvExistenciaBean implements Serializable {
+
+    @EJB
+    private VBusquedasExistenciasLocal vBusquedasExistencias;
     
     //<editor-fold  defaultstate="collapsed" desc="Inializar" >
     public InvExistenciaBean(){
@@ -66,7 +72,7 @@ public class InvExistenciaBean implements Serializable {
       /**Entidad que buscará las existencias.*/
     private Existencia existencia;
       /**Atributo que se muestra en pantalla la lista de existencias.*/
-    private List <Existencia> listExistencia;
+    private List <Vexistxsucsal> listExistencia;
     /**Bindin de DataTable que muestra las existencias.*/
     private DataTable dtExistencia  =  new DataTable();
      /**
@@ -75,12 +81,9 @@ public class InvExistenciaBean implements Serializable {
       */
      @EJB
     private CrudBDCLocal crud;
-     /**
-      * EJB 
-      * de busquedas  de mantenimiento.
-      */
-     @EJB
-    private BusquedasInvExistenciaLocal ejbBusqInvExstLocal;
+     
+     
+
     //</editor-fold>
     
     //<editor-fold  defaultstate="collapsed" desc="Metodos" >
@@ -95,7 +98,17 @@ public class InvExistenciaBean implements Serializable {
      
      public void buscarInvExistencia() {
         try {
-            listExistencia =  ejbBusqInvExstLocal.buscarInvExistencia();
+            Map filtros = new HashMap();
+            filtros.put("codcia", sesion.getCompania().getIdcompania());
+//            //aqui capturar el valor de establecimieto eleccionado.
+//             if (true) {
+//                 filtros.put("codsuc", valor);
+//             }
+//             //
+//             if (true) {
+//                 filtros.put("codsuc", valor);
+//             }
+            listExistencia =  vBusquedasExistencias.buscarExistenciaFiltros(filtros);
             if (listExistencia == null || listExistencia.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
@@ -156,13 +169,15 @@ public class InvExistenciaBean implements Serializable {
         this.existencia = existencia;
     }
 
-    public List<Existencia> getListExistencia() {
+    public List<Vexistxsucsal> getListExistencia() {
         return listExistencia;
     }
 
-    public void setListExistencia(List<Existencia> listExistencia) {
+    public void setListExistencia(List<Vexistxsucsal> listExistencia) {
         this.listExistencia = listExistencia;
     }
+
+
 
     public DataTable getDtExistencia() {
         return dtExistencia;
@@ -180,13 +195,6 @@ public class InvExistenciaBean implements Serializable {
         this.crud = crud;
     }
 
-    public BusquedasInvExistenciaLocal getEjbBusqInvExstLocal() {
-        return ejbBusqInvExstLocal;
-    }
-
-    public void setEjbBusqInvExstLocal(BusquedasInvExistenciaLocal ejbBusqInvExstLocal) {
-        this.ejbBusqInvExstLocal = ejbBusqInvExstLocal;
-    }
     //</editor-fold>
     
 }
