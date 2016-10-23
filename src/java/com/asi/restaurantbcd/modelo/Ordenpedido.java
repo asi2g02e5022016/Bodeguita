@@ -11,10 +11,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -23,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -36,21 +33,16 @@ import javax.validation.constraints.NotNull;
 public class Ordenpedido implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EmbeddedId
+    protected OrdenpedidoPK ordenpedidoPK;
     @Basic(optional = false)
-    @Column(name = "idordenpedido")
-    private Integer idordenpedido;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "fechapedido")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechapedido;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "mesa")
     private int mesa;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idordenpedido")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordenpedido")
     private List<Ordenpedidodetalle> ordenpedidodetalleList;
     @JoinColumn(name = "idcliente", referencedColumnName = "idcliente")
     @ManyToOne(optional = false)
@@ -58,9 +50,9 @@ public class Ordenpedido implements Serializable {
     @JoinColumn(name = "idestado", referencedColumnName = "idestado")
     @ManyToOne(optional = false)
     private Estado idestado;
-    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")
+    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Sucursal idsucursal;
+    private Sucursal sucursal;
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idusuario;
@@ -68,22 +60,26 @@ public class Ordenpedido implements Serializable {
     public Ordenpedido() {
     }
 
-    public Ordenpedido(Integer idordenpedido) {
-        this.idordenpedido = idordenpedido;
+    public Ordenpedido(OrdenpedidoPK ordenpedidoPK) {
+        this.ordenpedidoPK = ordenpedidoPK;
     }
 
-    public Ordenpedido(Integer idordenpedido, Date fechapedido, int mesa) {
-        this.idordenpedido = idordenpedido;
+    public Ordenpedido(OrdenpedidoPK ordenpedidoPK, Date fechapedido, int mesa) {
+        this.ordenpedidoPK = ordenpedidoPK;
         this.fechapedido = fechapedido;
         this.mesa = mesa;
     }
 
-    public Integer getIdordenpedido() {
-        return idordenpedido;
+    public Ordenpedido(int idordenpedido, int idsucursal) {
+        this.ordenpedidoPK = new OrdenpedidoPK(idordenpedido, idsucursal);
     }
 
-    public void setIdordenpedido(Integer idordenpedido) {
-        this.idordenpedido = idordenpedido;
+    public OrdenpedidoPK getOrdenpedidoPK() {
+        return ordenpedidoPK;
+    }
+
+    public void setOrdenpedidoPK(OrdenpedidoPK ordenpedidoPK) {
+        this.ordenpedidoPK = ordenpedidoPK;
     }
 
     public Date getFechapedido() {
@@ -126,12 +122,12 @@ public class Ordenpedido implements Serializable {
         this.idestado = idestado;
     }
 
-    public Sucursal getIdsucursal() {
-        return idsucursal;
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 
-    public void setIdsucursal(Sucursal idsucursal) {
-        this.idsucursal = idsucursal;
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     public Usuario getIdusuario() {
@@ -145,7 +141,7 @@ public class Ordenpedido implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idordenpedido != null ? idordenpedido.hashCode() : 0);
+        hash += (ordenpedidoPK != null ? ordenpedidoPK.hashCode() : 0);
         return hash;
     }
 
@@ -156,7 +152,7 @@ public class Ordenpedido implements Serializable {
             return false;
         }
         Ordenpedido other = (Ordenpedido) object;
-        if ((this.idordenpedido == null && other.idordenpedido != null) || (this.idordenpedido != null && !this.idordenpedido.equals(other.idordenpedido))) {
+        if ((this.ordenpedidoPK == null && other.ordenpedidoPK != null) || (this.ordenpedidoPK != null && !this.ordenpedidoPK.equals(other.ordenpedidoPK))) {
             return false;
         }
         return true;
@@ -164,7 +160,7 @@ public class Ordenpedido implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Ordenpedido[ idordenpedido=" + idordenpedido + " ]";
+        return "com.asi.restaurantbcd.modelo.Ordenpedido[ ordenpedidoPK=" + ordenpedidoPK + " ]";
     }
     
 }

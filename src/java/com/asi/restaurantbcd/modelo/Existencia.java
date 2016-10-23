@@ -8,16 +8,13 @@ package com.asi.restaurantbcd.modelo;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -30,45 +27,44 @@ import javax.validation.constraints.NotNull;
 public class Existencia implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EmbeddedId
+    protected ExistenciaPK existenciaPK;
     @Basic(optional = false)
-    @Column(name = "idexistencia")
-    private Integer idexistencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "valor")
     private float valor;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "costounitario")
     private float costounitario;
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
     private Producto idproducto;
-    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")
+    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Sucursal idsucursal;
+    private Sucursal sucursal;
 
     public Existencia() {
     }
 
-    public Existencia(Integer idexistencia) {
-        this.idexistencia = idexistencia;
+    public Existencia(ExistenciaPK existenciaPK) {
+        this.existenciaPK = existenciaPK;
     }
 
-    public Existencia(Integer idexistencia, float valor, float costounitario) {
-        this.idexistencia = idexistencia;
+    public Existencia(ExistenciaPK existenciaPK, float valor, float costounitario) {
+        this.existenciaPK = existenciaPK;
         this.valor = valor;
         this.costounitario = costounitario;
     }
 
-    public Integer getIdexistencia() {
-        return idexistencia;
+    public Existencia(int idexistencia, int idsucursal) {
+        this.existenciaPK = new ExistenciaPK(idexistencia, idsucursal);
     }
 
-    public void setIdexistencia(Integer idexistencia) {
-        this.idexistencia = idexistencia;
+    public ExistenciaPK getExistenciaPK() {
+        return existenciaPK;
+    }
+
+    public void setExistenciaPK(ExistenciaPK existenciaPK) {
+        this.existenciaPK = existenciaPK;
     }
 
     public float getValor() {
@@ -95,18 +91,18 @@ public class Existencia implements Serializable {
         this.idproducto = idproducto;
     }
 
-    public Sucursal getIdsucursal() {
-        return idsucursal;
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 
-    public void setIdsucursal(Sucursal idsucursal) {
-        this.idsucursal = idsucursal;
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idexistencia != null ? idexistencia.hashCode() : 0);
+        hash += (existenciaPK != null ? existenciaPK.hashCode() : 0);
         return hash;
     }
 
@@ -117,7 +113,7 @@ public class Existencia implements Serializable {
             return false;
         }
         Existencia other = (Existencia) object;
-        if ((this.idexistencia == null && other.idexistencia != null) || (this.idexistencia != null && !this.idexistencia.equals(other.idexistencia))) {
+        if ((this.existenciaPK == null && other.existenciaPK != null) || (this.existenciaPK != null && !this.existenciaPK.equals(other.existenciaPK))) {
             return false;
         }
         return true;
@@ -125,7 +121,7 @@ public class Existencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Existencia[ idexistencia=" + idexistencia + " ]";
+        return "com.asi.restaurantbcd.modelo.Existencia[ existenciaPK=" + existenciaPK + " ]";
     }
     
 }

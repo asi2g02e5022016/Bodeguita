@@ -9,10 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -20,8 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -34,52 +30,39 @@ import javax.validation.constraints.Size;
 public class Kardex implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EmbeddedId
+    protected KardexPK kardexPK;
     @Basic(optional = false)
-    @Column(name = "idkardex")
-    private Integer idkardex;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidad")
     private int cantidad;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
     @Column(name = "numdocumento")
     private String numdocumento;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "tipodocumento")
     private String tipodocumento;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "fechatransicion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechatransicion;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "existenciaanterior")
     private int existenciaanterior;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "existencianueva")
     private int existencianueva;
-    @Size(max = 50)
     @Column(name = "productoformula")
     private String productoformula;
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
     private Producto idproducto;
-    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")
+    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Sucursal idsucursal;
+    private Sucursal sucursal;
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idusuario;
@@ -87,12 +70,12 @@ public class Kardex implements Serializable {
     public Kardex() {
     }
 
-    public Kardex(Integer idkardex) {
-        this.idkardex = idkardex;
+    public Kardex(KardexPK kardexPK) {
+        this.kardexPK = kardexPK;
     }
 
-    public Kardex(Integer idkardex, int cantidad, String numdocumento, String tipodocumento, Date fechatransicion, Date fechacreacion, int existenciaanterior, int existencianueva) {
-        this.idkardex = idkardex;
+    public Kardex(KardexPK kardexPK, int cantidad, String numdocumento, String tipodocumento, Date fechatransicion, Date fechacreacion, int existenciaanterior, int existencianueva) {
+        this.kardexPK = kardexPK;
         this.cantidad = cantidad;
         this.numdocumento = numdocumento;
         this.tipodocumento = tipodocumento;
@@ -102,12 +85,16 @@ public class Kardex implements Serializable {
         this.existencianueva = existencianueva;
     }
 
-    public Integer getIdkardex() {
-        return idkardex;
+    public Kardex(int idkardex, int idsucursal) {
+        this.kardexPK = new KardexPK(idkardex, idsucursal);
     }
 
-    public void setIdkardex(Integer idkardex) {
-        this.idkardex = idkardex;
+    public KardexPK getKardexPK() {
+        return kardexPK;
+    }
+
+    public void setKardexPK(KardexPK kardexPK) {
+        this.kardexPK = kardexPK;
     }
 
     public int getCantidad() {
@@ -182,12 +169,12 @@ public class Kardex implements Serializable {
         this.idproducto = idproducto;
     }
 
-    public Sucursal getIdsucursal() {
-        return idsucursal;
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 
-    public void setIdsucursal(Sucursal idsucursal) {
-        this.idsucursal = idsucursal;
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     public Usuario getIdusuario() {
@@ -201,7 +188,7 @@ public class Kardex implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idkardex != null ? idkardex.hashCode() : 0);
+        hash += (kardexPK != null ? kardexPK.hashCode() : 0);
         return hash;
     }
 
@@ -212,7 +199,7 @@ public class Kardex implements Serializable {
             return false;
         }
         Kardex other = (Kardex) object;
-        if ((this.idkardex == null && other.idkardex != null) || (this.idkardex != null && !this.idkardex.equals(other.idkardex))) {
+        if ((this.kardexPK == null && other.kardexPK != null) || (this.kardexPK != null && !this.kardexPK.equals(other.kardexPK))) {
             return false;
         }
         return true;
@@ -220,7 +207,7 @@ public class Kardex implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Kardex[ idkardex=" + idkardex + " ]";
+        return "com.asi.restaurantbcd.modelo.Kardex[ kardexPK=" + kardexPK + " ]";
     }
     
 }

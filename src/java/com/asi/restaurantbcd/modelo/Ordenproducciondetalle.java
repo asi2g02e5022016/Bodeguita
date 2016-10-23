@@ -8,16 +8,14 @@ package com.asi.restaurantbcd.modelo;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -30,34 +28,28 @@ import javax.validation.constraints.NotNull;
 public class Ordenproducciondetalle implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EmbeddedId
+    protected OrdenproducciondetallePK ordenproducciondetallePK;
     @Basic(optional = false)
-    @Column(name = "idordenproducciondetalle")
-    private Integer idordenproducciondetalle;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidadsolicitada")
     private int cantidadsolicitada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidadconfirmada")
     private int cantidadconfirmada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "precio")
     private float precio;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "costo")
     private float costo;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "iva")
     private float iva;
-    @JoinColumn(name = "idordenproduccion", referencedColumnName = "idordenproduccion")
+    @JoinColumns({
+        @JoinColumn(name = "idordenproduccion", referencedColumnName = "idordenproduccion", insertable = false, updatable = false),
+        @JoinColumn(name = "idSucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Ordenproduccion idordenproduccion;
+    private Ordenproduccion ordenproduccion;
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
     private Producto idproducto;
@@ -65,12 +57,12 @@ public class Ordenproducciondetalle implements Serializable {
     public Ordenproducciondetalle() {
     }
 
-    public Ordenproducciondetalle(Integer idordenproducciondetalle) {
-        this.idordenproducciondetalle = idordenproducciondetalle;
+    public Ordenproducciondetalle(OrdenproducciondetallePK ordenproducciondetallePK) {
+        this.ordenproducciondetallePK = ordenproducciondetallePK;
     }
 
-    public Ordenproducciondetalle(Integer idordenproducciondetalle, int cantidadsolicitada, int cantidadconfirmada, float precio, float costo, float iva) {
-        this.idordenproducciondetalle = idordenproducciondetalle;
+    public Ordenproducciondetalle(OrdenproducciondetallePK ordenproducciondetallePK, int cantidadsolicitada, int cantidadconfirmada, float precio, float costo, float iva) {
+        this.ordenproducciondetallePK = ordenproducciondetallePK;
         this.cantidadsolicitada = cantidadsolicitada;
         this.cantidadconfirmada = cantidadconfirmada;
         this.precio = precio;
@@ -78,12 +70,16 @@ public class Ordenproducciondetalle implements Serializable {
         this.iva = iva;
     }
 
-    public Integer getIdordenproducciondetalle() {
-        return idordenproducciondetalle;
+    public Ordenproducciondetalle(int idordenproducciondetalle, int idordenproduccion, int idSucursal) {
+        this.ordenproducciondetallePK = new OrdenproducciondetallePK(idordenproducciondetalle, idordenproduccion, idSucursal);
     }
 
-    public void setIdordenproducciondetalle(Integer idordenproducciondetalle) {
-        this.idordenproducciondetalle = idordenproducciondetalle;
+    public OrdenproducciondetallePK getOrdenproducciondetallePK() {
+        return ordenproducciondetallePK;
+    }
+
+    public void setOrdenproducciondetallePK(OrdenproducciondetallePK ordenproducciondetallePK) {
+        this.ordenproducciondetallePK = ordenproducciondetallePK;
     }
 
     public int getCantidadsolicitada() {
@@ -126,12 +122,12 @@ public class Ordenproducciondetalle implements Serializable {
         this.iva = iva;
     }
 
-    public Ordenproduccion getIdordenproduccion() {
-        return idordenproduccion;
+    public Ordenproduccion getOrdenproduccion() {
+        return ordenproduccion;
     }
 
-    public void setIdordenproduccion(Ordenproduccion idordenproduccion) {
-        this.idordenproduccion = idordenproduccion;
+    public void setOrdenproduccion(Ordenproduccion ordenproduccion) {
+        this.ordenproduccion = ordenproduccion;
     }
 
     public Producto getIdproducto() {
@@ -145,7 +141,7 @@ public class Ordenproducciondetalle implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idordenproducciondetalle != null ? idordenproducciondetalle.hashCode() : 0);
+        hash += (ordenproducciondetallePK != null ? ordenproducciondetallePK.hashCode() : 0);
         return hash;
     }
 
@@ -156,7 +152,7 @@ public class Ordenproducciondetalle implements Serializable {
             return false;
         }
         Ordenproducciondetalle other = (Ordenproducciondetalle) object;
-        if ((this.idordenproducciondetalle == null && other.idordenproducciondetalle != null) || (this.idordenproducciondetalle != null && !this.idordenproducciondetalle.equals(other.idordenproducciondetalle))) {
+        if ((this.ordenproducciondetallePK == null && other.ordenproducciondetallePK != null) || (this.ordenproducciondetallePK != null && !this.ordenproducciondetallePK.equals(other.ordenproducciondetallePK))) {
             return false;
         }
         return true;
@@ -164,7 +160,7 @@ public class Ordenproducciondetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Ordenproducciondetalle[ idordenproducciondetalle=" + idordenproducciondetalle + " ]";
+        return "com.asi.restaurantbcd.modelo.Ordenproducciondetalle[ ordenproducciondetallePK=" + ordenproducciondetallePK + " ]";
     }
     
 }

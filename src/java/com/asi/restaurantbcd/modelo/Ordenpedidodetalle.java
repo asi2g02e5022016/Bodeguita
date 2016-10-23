@@ -8,16 +8,14 @@ package com.asi.restaurantbcd.modelo;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -30,47 +28,41 @@ import javax.validation.constraints.NotNull;
 public class Ordenpedidodetalle implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EmbeddedId
+    protected OrdenpedidodetallePK ordenpedidodetallePK;
     @Basic(optional = false)
-    @Column(name = "idordenpedidodet")
-    private Integer idordenpedidodet;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidadsolicitada")
     private int cantidadsolicitada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidadconfirmada")
     private int cantidadconfirmada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "precio")
     private float precio;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "costo")
     private float costo;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "iva")
     private float iva;
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
     private Producto idproducto;
-    @JoinColumn(name = "idordenpedido", referencedColumnName = "idordenpedido")
+    @JoinColumns({
+        @JoinColumn(name = "idordenpedido", referencedColumnName = "idordenpedido", insertable = false, updatable = false),
+        @JoinColumn(name = "idSucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Ordenpedido idordenpedido;
+    private Ordenpedido ordenpedido;
 
     public Ordenpedidodetalle() {
     }
 
-    public Ordenpedidodetalle(Integer idordenpedidodet) {
-        this.idordenpedidodet = idordenpedidodet;
+    public Ordenpedidodetalle(OrdenpedidodetallePK ordenpedidodetallePK) {
+        this.ordenpedidodetallePK = ordenpedidodetallePK;
     }
 
-    public Ordenpedidodetalle(Integer idordenpedidodet, int cantidadsolicitada, int cantidadconfirmada, float precio, float costo, float iva) {
-        this.idordenpedidodet = idordenpedidodet;
+    public Ordenpedidodetalle(OrdenpedidodetallePK ordenpedidodetallePK, int cantidadsolicitada, int cantidadconfirmada, float precio, float costo, float iva) {
+        this.ordenpedidodetallePK = ordenpedidodetallePK;
         this.cantidadsolicitada = cantidadsolicitada;
         this.cantidadconfirmada = cantidadconfirmada;
         this.precio = precio;
@@ -78,12 +70,16 @@ public class Ordenpedidodetalle implements Serializable {
         this.iva = iva;
     }
 
-    public Integer getIdordenpedidodet() {
-        return idordenpedidodet;
+    public Ordenpedidodetalle(int idordenpedidodet, int idordenpedido, int idSucursal) {
+        this.ordenpedidodetallePK = new OrdenpedidodetallePK(idordenpedidodet, idordenpedido, idSucursal);
     }
 
-    public void setIdordenpedidodet(Integer idordenpedidodet) {
-        this.idordenpedidodet = idordenpedidodet;
+    public OrdenpedidodetallePK getOrdenpedidodetallePK() {
+        return ordenpedidodetallePK;
+    }
+
+    public void setOrdenpedidodetallePK(OrdenpedidodetallePK ordenpedidodetallePK) {
+        this.ordenpedidodetallePK = ordenpedidodetallePK;
     }
 
     public int getCantidadsolicitada() {
@@ -134,18 +130,18 @@ public class Ordenpedidodetalle implements Serializable {
         this.idproducto = idproducto;
     }
 
-    public Ordenpedido getIdordenpedido() {
-        return idordenpedido;
+    public Ordenpedido getOrdenpedido() {
+        return ordenpedido;
     }
 
-    public void setIdordenpedido(Ordenpedido idordenpedido) {
-        this.idordenpedido = idordenpedido;
+    public void setOrdenpedido(Ordenpedido ordenpedido) {
+        this.ordenpedido = ordenpedido;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idordenpedidodet != null ? idordenpedidodet.hashCode() : 0);
+        hash += (ordenpedidodetallePK != null ? ordenpedidodetallePK.hashCode() : 0);
         return hash;
     }
 
@@ -156,7 +152,7 @@ public class Ordenpedidodetalle implements Serializable {
             return false;
         }
         Ordenpedidodetalle other = (Ordenpedidodetalle) object;
-        if ((this.idordenpedidodet == null && other.idordenpedidodet != null) || (this.idordenpedidodet != null && !this.idordenpedidodet.equals(other.idordenpedidodet))) {
+        if ((this.ordenpedidodetallePK == null && other.ordenpedidodetallePK != null) || (this.ordenpedidodetallePK != null && !this.ordenpedidodetallePK.equals(other.ordenpedidodetallePK))) {
             return false;
         }
         return true;
@@ -164,7 +160,7 @@ public class Ordenpedidodetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Ordenpedidodetalle[ idordenpedidodet=" + idordenpedidodet + " ]";
+        return "com.asi.restaurantbcd.modelo.Ordenpedidodetalle[ ordenpedidodetallePK=" + ordenpedidodetallePK + " ]";
     }
     
 }

@@ -11,10 +11,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -23,8 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -37,13 +33,9 @@ import javax.validation.constraints.Size;
 public class Notapedido implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EmbeddedId
+    protected NotapedidoPK notapedidoPK;
     @Basic(optional = false)
-    @Column(name = "idnotapedido")
-    private Integer idnotapedido;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "fechageneracion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechageneracion;
@@ -51,18 +43,16 @@ public class Notapedido implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaingreso;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "idusuarios")
     private String idusuarios;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idnotapedido")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "notapedido")
     private List<Notapedidodetalle> notapedidodetalleList;
     @JoinColumn(name = "idestado", referencedColumnName = "idestado")
     @ManyToOne(optional = false)
     private Estado idestado;
-    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")
+    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Sucursal idsucursal;
+    private Sucursal sucursal;
     @JoinColumn(name = "idusuariod", referencedColumnName = "idusuario")
     @ManyToOne
     private Usuario idusuariod;
@@ -70,22 +60,26 @@ public class Notapedido implements Serializable {
     public Notapedido() {
     }
 
-    public Notapedido(Integer idnotapedido) {
-        this.idnotapedido = idnotapedido;
+    public Notapedido(NotapedidoPK notapedidoPK) {
+        this.notapedidoPK = notapedidoPK;
     }
 
-    public Notapedido(Integer idnotapedido, Date fechageneracion, String idusuarios) {
-        this.idnotapedido = idnotapedido;
+    public Notapedido(NotapedidoPK notapedidoPK, Date fechageneracion, String idusuarios) {
+        this.notapedidoPK = notapedidoPK;
         this.fechageneracion = fechageneracion;
         this.idusuarios = idusuarios;
     }
 
-    public Integer getIdnotapedido() {
-        return idnotapedido;
+    public Notapedido(int idnotapedido, int idsucursal) {
+        this.notapedidoPK = new NotapedidoPK(idnotapedido, idsucursal);
     }
 
-    public void setIdnotapedido(Integer idnotapedido) {
-        this.idnotapedido = idnotapedido;
+    public NotapedidoPK getNotapedidoPK() {
+        return notapedidoPK;
+    }
+
+    public void setNotapedidoPK(NotapedidoPK notapedidoPK) {
+        this.notapedidoPK = notapedidoPK;
     }
 
     public Date getFechageneracion() {
@@ -128,12 +122,12 @@ public class Notapedido implements Serializable {
         this.idestado = idestado;
     }
 
-    public Sucursal getIdsucursal() {
-        return idsucursal;
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 
-    public void setIdsucursal(Sucursal idsucursal) {
-        this.idsucursal = idsucursal;
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     public Usuario getIdusuariod() {
@@ -147,7 +141,7 @@ public class Notapedido implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idnotapedido != null ? idnotapedido.hashCode() : 0);
+        hash += (notapedidoPK != null ? notapedidoPK.hashCode() : 0);
         return hash;
     }
 
@@ -158,7 +152,7 @@ public class Notapedido implements Serializable {
             return false;
         }
         Notapedido other = (Notapedido) object;
-        if ((this.idnotapedido == null && other.idnotapedido != null) || (this.idnotapedido != null && !this.idnotapedido.equals(other.idnotapedido))) {
+        if ((this.notapedidoPK == null && other.notapedidoPK != null) || (this.notapedidoPK != null && !this.notapedidoPK.equals(other.notapedidoPK))) {
             return false;
         }
         return true;
@@ -166,7 +160,7 @@ public class Notapedido implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Notapedido[ idnotapedido=" + idnotapedido + " ]";
+        return "com.asi.restaurantbcd.modelo.Notapedido[ notapedidoPK=" + notapedidoPK + " ]";
     }
     
 }
