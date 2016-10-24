@@ -15,7 +15,11 @@ import com.asi.restaurantebcd.negocio.base.BusquedasPisosLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -107,6 +111,8 @@ public class MttoPiso implements Serializable {
         idPiso = null;
         idSucursal = null;
         nombre = null;
+        tablaPiso = new DataTable();
+        this.lstPiso = new ArrayList<Piso>();
 
     }
 
@@ -142,7 +148,7 @@ public class MttoPiso implements Serializable {
     }
 
     //metodo para actualizar un impuesto
-    public void actualizarImpuesto() {
+    public void actualizarPiso() {
         try {
             if (this.tablaPiso.getRowData() != null) {
                 Piso imp = this.lstPiso.get(this.tablaPiso.getRowIndex());                
@@ -168,7 +174,7 @@ public class MttoPiso implements Serializable {
         }
     }
 
-    public void eliminarImpuesto() {
+    public void eliminarPiso() {
         try {
             if (tablaPiso.getRowData() != null) {
 
@@ -272,7 +278,7 @@ public class MttoPiso implements Serializable {
         return idSucursal;
     }
 
-    public void setIdCompania(Integer idSucursal) {
+    public void setIdSucursal(Integer idSucursal) {
         this.idSucursal = idSucursal;
     }
 

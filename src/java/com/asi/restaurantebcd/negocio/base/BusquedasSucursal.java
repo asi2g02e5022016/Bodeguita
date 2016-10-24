@@ -26,7 +26,7 @@ public class BusquedasSucursal implements BusquedasSucursalLocal{
     public List<Sucursal> buscarSucursal(Compania idCompania) throws Exception {
         
         StringBuilder jpql = new StringBuilder();
-        jpql.append("SELECT a FROM Sucursal a where idcompania = :c");
+        jpql.append("SELECT a FROM Sucursal a where a.idcompania = :c");
         Query query = em.createQuery(jpql.toString()).setParameter("c", idCompania);
         return query.getResultList();   
     }

@@ -18,8 +18,8 @@ and open the template in the editor.
                 <p:growl showDetail="true" showSummary="true" />
                 <p:panel id="basic" header="Mantenimiento de pisos" style="width: 50%"  >
                     <p:menubar>
-                        <p:menuitem value="Nuevo" action="#{mttoPiso.limpiarPantalla()}"
-                                    icon="ui-icon-plus" />
+                        <p:menuitem value="Nuevo" actionListener="#{mttoPiso.limpiarPantalla()}"
+                                    icon="ui-icon-plus" update="tablaImp" />
                         <p:menuitem value="Guardar" update="forprincipal" action="#{mttoPiso.guardarPiso()}"
                                     icon="ui-icon-disk" />
                         <p:menuitem value="Buscar" update="forprincipal" action="#{mttoPiso.buscarPiso()}"
@@ -34,6 +34,8 @@ and open the template in the editor.
                         <p:inputText style="width: 100%" value ="#{mttoPiso.nombre}"/>
                         <h:outputLabel value ="Sucursal:" />
                         <p:selectOneMenu id="listSucursal"  value ="#{mttoPiso.idSucursal}" >
+                            <f:selectItem 
+                                           itemLabel="" itemValue=""/>
                             <f:selectItems value="#{mttoPiso.lstSucursal}"
                                            var="inp" itemLabel="#{inp.sucursal}" itemValue="#{inp.idsucursal}"/>                                       
                         </p:selectOneMenu> 
