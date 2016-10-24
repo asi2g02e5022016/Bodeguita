@@ -8,16 +8,14 @@ package com.asi.restaurantbcd.modelo;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -30,50 +28,44 @@ import javax.validation.constraints.NotNull;
 public class Pedidodetalle implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EmbeddedId
+    protected PedidodetallePK pedidodetallePK;
     @Basic(optional = false)
-    @Column(name = "idpedidodetalle")
-    private Integer idpedidodetalle;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidadsolicitada")
     private int cantidadsolicitada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidadconfirmada")
     private int cantidadconfirmada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "precio")
     private float precio;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "costo")
     private float costo;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "iva")
     private float iva;
-    @JoinColumn(name = "idpedido", referencedColumnName = "idpedido")
+    @JoinColumns({
+        @JoinColumn(name = "idpedido", referencedColumnName = "idpedido", insertable = false, updatable = false),
+        @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Pedidoencabezado idpedido;
+    private Pedidoencabezado pedidoencabezado;
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
     private Producto idproducto;
-    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")
+    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Sucursal idsucursal;
+    private Sucursal sucursal;
 
     public Pedidodetalle() {
     }
 
-    public Pedidodetalle(Integer idpedidodetalle) {
-        this.idpedidodetalle = idpedidodetalle;
+    public Pedidodetalle(PedidodetallePK pedidodetallePK) {
+        this.pedidodetallePK = pedidodetallePK;
     }
 
-    public Pedidodetalle(Integer idpedidodetalle, int cantidadsolicitada, int cantidadconfirmada, float precio, float costo, float iva) {
-        this.idpedidodetalle = idpedidodetalle;
+    public Pedidodetalle(PedidodetallePK pedidodetallePK, int cantidadsolicitada, int cantidadconfirmada, float precio, float costo, float iva) {
+        this.pedidodetallePK = pedidodetallePK;
         this.cantidadsolicitada = cantidadsolicitada;
         this.cantidadconfirmada = cantidadconfirmada;
         this.precio = precio;
@@ -81,12 +73,16 @@ public class Pedidodetalle implements Serializable {
         this.iva = iva;
     }
 
-    public Integer getIdpedidodetalle() {
-        return idpedidodetalle;
+    public Pedidodetalle(int idpedidodetalle, int idpedido, int idsucursal) {
+        this.pedidodetallePK = new PedidodetallePK(idpedidodetalle, idpedido, idsucursal);
     }
 
-    public void setIdpedidodetalle(Integer idpedidodetalle) {
-        this.idpedidodetalle = idpedidodetalle;
+    public PedidodetallePK getPedidodetallePK() {
+        return pedidodetallePK;
+    }
+
+    public void setPedidodetallePK(PedidodetallePK pedidodetallePK) {
+        this.pedidodetallePK = pedidodetallePK;
     }
 
     public int getCantidadsolicitada() {
@@ -129,12 +125,12 @@ public class Pedidodetalle implements Serializable {
         this.iva = iva;
     }
 
-    public Pedidoencabezado getIdpedido() {
-        return idpedido;
+    public Pedidoencabezado getPedidoencabezado() {
+        return pedidoencabezado;
     }
 
-    public void setIdpedido(Pedidoencabezado idpedido) {
-        this.idpedido = idpedido;
+    public void setPedidoencabezado(Pedidoencabezado pedidoencabezado) {
+        this.pedidoencabezado = pedidoencabezado;
     }
 
     public Producto getIdproducto() {
@@ -145,18 +141,18 @@ public class Pedidodetalle implements Serializable {
         this.idproducto = idproducto;
     }
 
-    public Sucursal getIdsucursal() {
-        return idsucursal;
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 
-    public void setIdsucursal(Sucursal idsucursal) {
-        this.idsucursal = idsucursal;
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idpedidodetalle != null ? idpedidodetalle.hashCode() : 0);
+        hash += (pedidodetallePK != null ? pedidodetallePK.hashCode() : 0);
         return hash;
     }
 
@@ -167,7 +163,7 @@ public class Pedidodetalle implements Serializable {
             return false;
         }
         Pedidodetalle other = (Pedidodetalle) object;
-        if ((this.idpedidodetalle == null && other.idpedidodetalle != null) || (this.idpedidodetalle != null && !this.idpedidodetalle.equals(other.idpedidodetalle))) {
+        if ((this.pedidodetallePK == null && other.pedidodetallePK != null) || (this.pedidodetallePK != null && !this.pedidodetallePK.equals(other.pedidodetallePK))) {
             return false;
         }
         return true;
@@ -175,7 +171,7 @@ public class Pedidodetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Pedidodetalle[ idpedidodetalle=" + idpedidodetalle + " ]";
+        return "com.asi.restaurantbcd.modelo.Pedidodetalle[ pedidodetallePK=" + pedidodetallePK + " ]";
     }
     
 }

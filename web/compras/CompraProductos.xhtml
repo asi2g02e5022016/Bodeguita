@@ -52,14 +52,12 @@ and open the template in the editor.
                                          id="iconOnly" 
                                          icon="ui-icon-search" title="Icon Only" />
                     </h:panelGrid>
-                     <p:outputLabel value="Select Event:" for="event" />
-        <p:autoComplete id="event" value="#{autoCompleteView.txt8}" completeMethod="#{autoCompleteView.completeText}">
-            <p:ajax event="itemSelect" listener="#{autoCompleteView.onItemSelect}" update="msgs" />
-        </p:autoComplete>
+   
                 </h:panelGrid>
  
                 <h:panelGrid >
-                    <p:dataTable value="#{comprasBeans.lstCompradeta}" var="det"  emptyMessage=""  >
+                    <p:dataTable value="#{comprasBeans.compraEnca.compradetalleList}" 
+                                 var="det"  emptyMessage=""  >
                       
                         <p:column headerText="cod.">
                             <h:outputText value="#{det.idProducto}" />
@@ -153,22 +151,22 @@ and open the template in the editor.
                     <p:dataTable id="tablaProd" binding="#{comprasBeans.tablaProd}"
                                  value="#{comprasBeans.lstProducto}" 
                                  
-                                 var="dpro" rowKey="#{dpro.idProducto}"
+                                 var="dpro" rowKey="#{dpro.idproducto}"
                                  selectionMode="single" rows="19"  >
                         
                         <p:column headerText="descripcion">
                             <h:outputText value="#{dpro.producto}"  />
                         </p:column>
                         <p:column headerText="medida">
-                            <h:outputText value="#{dpro.idMedida.medida}"  />
+                            <h:outputText value="#{dpro.idmedida.medida}"  />
                         </p:column>
                           <p:column headerText="tipo">
-                              <h:outputText value="#{dpro.idTipoProducto.tipoProducto}"  />
+                              <h:outputText value="#{dpro.idtipoproducto.idtipoproducto}"  />
                         </p:column>
                            <p:column headerText="grupo">
-                               <h:outputText value="#{dpro.idGrupoProducto.grupoProducto}"  />
+                               <h:outputText value="#{dpro.idgrupoproducto.grupoproducto}"  />
                         <p:column headerText="maras">
-                            <h:outputText value="#{dpro.idMarcaProducto.marcaProducto}"  />
+                            <h:outputText value="#{dpro.idmarcaproducto.idmarcaproducto}"  />
                         </p:column>
                         </p:column>
                     </p:dataTable>

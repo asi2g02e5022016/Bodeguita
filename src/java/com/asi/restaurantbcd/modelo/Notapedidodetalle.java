@@ -8,16 +8,14 @@ package com.asi.restaurantbcd.modelo;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -30,26 +28,22 @@ import javax.validation.constraints.NotNull;
 public class Notapedidodetalle implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EmbeddedId
+    protected NotapedidodetallePK notapedidodetallePK;
     @Basic(optional = false)
-    @Column(name = "idnotapeddet")
-    private Integer idnotapeddet;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidadsolicitada")
     private int cantidadsolicitada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidadconfirmada")
     private int cantidadconfirmada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "precio")
     private float precio;
-    @JoinColumn(name = "idnotapedido", referencedColumnName = "idnotapedido")
+    @JoinColumns({
+        @JoinColumn(name = "idnotapedido", referencedColumnName = "idnotapedido", insertable = false, updatable = false),
+        @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Notapedido idnotapedido;
+    private Notapedido notapedido;
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
     private Producto idproducto;
@@ -57,23 +51,27 @@ public class Notapedidodetalle implements Serializable {
     public Notapedidodetalle() {
     }
 
-    public Notapedidodetalle(Integer idnotapeddet) {
-        this.idnotapeddet = idnotapeddet;
+    public Notapedidodetalle(NotapedidodetallePK notapedidodetallePK) {
+        this.notapedidodetallePK = notapedidodetallePK;
     }
 
-    public Notapedidodetalle(Integer idnotapeddet, int cantidadsolicitada, int cantidadconfirmada, float precio) {
-        this.idnotapeddet = idnotapeddet;
+    public Notapedidodetalle(NotapedidodetallePK notapedidodetallePK, int cantidadsolicitada, int cantidadconfirmada, float precio) {
+        this.notapedidodetallePK = notapedidodetallePK;
         this.cantidadsolicitada = cantidadsolicitada;
         this.cantidadconfirmada = cantidadconfirmada;
         this.precio = precio;
     }
 
-    public Integer getIdnotapeddet() {
-        return idnotapeddet;
+    public Notapedidodetalle(int idnotapeddet, int idnotapedido, int idsucursal) {
+        this.notapedidodetallePK = new NotapedidodetallePK(idnotapeddet, idnotapedido, idsucursal);
     }
 
-    public void setIdnotapeddet(Integer idnotapeddet) {
-        this.idnotapeddet = idnotapeddet;
+    public NotapedidodetallePK getNotapedidodetallePK() {
+        return notapedidodetallePK;
+    }
+
+    public void setNotapedidodetallePK(NotapedidodetallePK notapedidodetallePK) {
+        this.notapedidodetallePK = notapedidodetallePK;
     }
 
     public int getCantidadsolicitada() {
@@ -100,12 +98,12 @@ public class Notapedidodetalle implements Serializable {
         this.precio = precio;
     }
 
-    public Notapedido getIdnotapedido() {
-        return idnotapedido;
+    public Notapedido getNotapedido() {
+        return notapedido;
     }
 
-    public void setIdnotapedido(Notapedido idnotapedido) {
-        this.idnotapedido = idnotapedido;
+    public void setNotapedido(Notapedido notapedido) {
+        this.notapedido = notapedido;
     }
 
     public Producto getIdproducto() {
@@ -119,7 +117,7 @@ public class Notapedidodetalle implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idnotapeddet != null ? idnotapeddet.hashCode() : 0);
+        hash += (notapedidodetallePK != null ? notapedidodetallePK.hashCode() : 0);
         return hash;
     }
 
@@ -130,7 +128,7 @@ public class Notapedidodetalle implements Serializable {
             return false;
         }
         Notapedidodetalle other = (Notapedidodetalle) object;
-        if ((this.idnotapeddet == null && other.idnotapeddet != null) || (this.idnotapeddet != null && !this.idnotapeddet.equals(other.idnotapeddet))) {
+        if ((this.notapedidodetallePK == null && other.notapedidodetallePK != null) || (this.notapedidodetallePK != null && !this.notapedidodetallePK.equals(other.notapedidodetallePK))) {
             return false;
         }
         return true;
@@ -138,7 +136,7 @@ public class Notapedidodetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Notapedidodetalle[ idnotapeddet=" + idnotapeddet + " ]";
+        return "com.asi.restaurantbcd.modelo.Notapedidodetalle[ notapedidodetallePK=" + notapedidodetallePK + " ]";
     }
     
 }

@@ -7,8 +7,11 @@ package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -30,14 +33,9 @@ import javax.validation.constraints.Size;
 public class Vexistxsucsal implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idsucursal")
-    private int idsucursal;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idcompania")
-    private int idcompania;
+   @EmbeddedId
+    private VexistsucursalPK vexistsucursalPK;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -60,9 +58,7 @@ public class Vexistxsucsal implements Serializable {
     private Float valor;
     @Column(name = "costounitario")
     private Float costounitario;
-    @Column(name = "idproducto")
-    @Id
-    private Integer idproducto;
+
     @Column(name = "idmarcaproducto")
     private Integer idmarcaproducto;
     @Column(name = "idgrupoproducto")
@@ -85,23 +81,6 @@ public class Vexistxsucsal implements Serializable {
 
     public Vexistxsucsal() {
     }
-
-    public int getIdsucursal() {
-        return idsucursal;
-    }
-
-    public void setIdsucursal(int idsucursal) {
-        this.idsucursal = idsucursal;
-    }
-
-    public int getIdcompania() {
-        return idcompania;
-    }
-
-    public void setIdcompania(int idcompania) {
-        this.idcompania = idcompania;
-    }
-
     public String getSucursal() {
         return sucursal;
     }
@@ -150,14 +129,7 @@ public class Vexistxsucsal implements Serializable {
         this.costounitario = costounitario;
     }
 
-    public Integer getIdproducto() {
-        return idproducto;
-    }
-
-    public void setIdproducto(Integer idproducto) {
-        this.idproducto = idproducto;
-    }
-
+   
     public Integer getIdmarcaproducto() {
         return idmarcaproducto;
     }
@@ -221,5 +193,46 @@ public class Vexistxsucsal implements Serializable {
     public void setActivo(Boolean activo) {
         this.activo = activo;
     }
+
+    public VexistsucursalPK getVexistsucursalPK() {
+        return vexistsucursalPK;
+    }
+
+    public void setVexistsucursalPK(VexistsucursalPK vexistsucursalPK) {
+        this.vexistsucursalPK = vexistsucursalPK;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.vexistsucursalPK);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vexistxsucsal other = (Vexistxsucsal) obj;
+        if (!Objects.equals(this.vexistsucursalPK, other.vexistsucursalPK)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Vexistxsucsal{" + "vexistsucursalPK=" + vexistsucursalPK + '}';
+    }
+    
+            
+            
     
 }

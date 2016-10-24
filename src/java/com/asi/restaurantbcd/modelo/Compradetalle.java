@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -51,9 +52,11 @@ public class Compradetalle implements Serializable {
     @NotNull
     @Column(name = "iva")
     private float iva;
-    @JoinColumn(name = "idcompra", referencedColumnName = "idcompra")
-    @ManyToOne(optional = false)
-    private Compra idcompra;
+        @JoinColumns({
+        @JoinColumn(name = "idcompra", referencedColumnName = "idcompra"),
+        @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")})
+    @ManyToOne
+    private Compra compra;
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
     private Producto idproducto;
@@ -65,7 +68,8 @@ public class Compradetalle implements Serializable {
         this.idcompradetalle = idcompradetalle;
     }
 
-    public Compradetalle(Integer idcompradetalle, int cantidadsolicitada, int cantidadconfirmada, float precio, float iva) {
+    public Compradetalle(Integer idcompradetalle, int cantidadsolicitada, 
+            int cantidadconfirmada, float precio, float iva) {
         this.idcompradetalle = idcompradetalle;
         this.cantidadsolicitada = cantidadsolicitada;
         this.cantidadconfirmada = cantidadconfirmada;
@@ -113,13 +117,14 @@ public class Compradetalle implements Serializable {
         this.iva = iva;
     }
 
-    public Compra getIdcompra() {
-        return idcompra;
+    public Compra getCompra() {
+        return compra;
     }
 
-    public void setIdcompra(Compra idcompra) {
-        this.idcompra = idcompra;
+    public void setCompra(Compra compra) {
+        this.compra = compra;
     }
+
 
     public Producto getIdproducto() {
         return idproducto;

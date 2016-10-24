@@ -11,10 +11,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -23,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -36,46 +33,46 @@ import javax.validation.constraints.NotNull;
 public class Ordenproduccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EmbeddedId
+    protected OrdenproduccionPK ordenproduccionPK;
     @Basic(optional = false)
-    @Column(name = "idordenproduccion")
-    private Integer idordenproduccion;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "fechapedido")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechapedido;
     @JoinColumn(name = "idestado", referencedColumnName = "idestado")
     @ManyToOne(optional = false)
     private Estado idestado;
-    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")
+    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Sucursal idsucursal;
+    private Sucursal sucursal;
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idusuario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idordenproduccion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordenproduccion")
     private List<Ordenproducciondetalle> ordenproducciondetalleList;
 
     public Ordenproduccion() {
     }
 
-    public Ordenproduccion(Integer idordenproduccion) {
-        this.idordenproduccion = idordenproduccion;
+    public Ordenproduccion(OrdenproduccionPK ordenproduccionPK) {
+        this.ordenproduccionPK = ordenproduccionPK;
     }
 
-    public Ordenproduccion(Integer idordenproduccion, Date fechapedido) {
-        this.idordenproduccion = idordenproduccion;
+    public Ordenproduccion(OrdenproduccionPK ordenproduccionPK, Date fechapedido) {
+        this.ordenproduccionPK = ordenproduccionPK;
         this.fechapedido = fechapedido;
     }
 
-    public Integer getIdordenproduccion() {
-        return idordenproduccion;
+    public Ordenproduccion(int idordenproduccion, int idsucursal) {
+        this.ordenproduccionPK = new OrdenproduccionPK(idordenproduccion, idsucursal);
     }
 
-    public void setIdordenproduccion(Integer idordenproduccion) {
-        this.idordenproduccion = idordenproduccion;
+    public OrdenproduccionPK getOrdenproduccionPK() {
+        return ordenproduccionPK;
+    }
+
+    public void setOrdenproduccionPK(OrdenproduccionPK ordenproduccionPK) {
+        this.ordenproduccionPK = ordenproduccionPK;
     }
 
     public Date getFechapedido() {
@@ -94,12 +91,12 @@ public class Ordenproduccion implements Serializable {
         this.idestado = idestado;
     }
 
-    public Sucursal getIdsucursal() {
-        return idsucursal;
+    public Sucursal getSucursal() {
+        return sucursal;
     }
 
-    public void setIdsucursal(Sucursal idsucursal) {
-        this.idsucursal = idsucursal;
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 
     public Usuario getIdusuario() {
@@ -121,7 +118,7 @@ public class Ordenproduccion implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idordenproduccion != null ? idordenproduccion.hashCode() : 0);
+        hash += (ordenproduccionPK != null ? ordenproduccionPK.hashCode() : 0);
         return hash;
     }
 
@@ -132,7 +129,7 @@ public class Ordenproduccion implements Serializable {
             return false;
         }
         Ordenproduccion other = (Ordenproduccion) object;
-        if ((this.idordenproduccion == null && other.idordenproduccion != null) || (this.idordenproduccion != null && !this.idordenproduccion.equals(other.idordenproduccion))) {
+        if ((this.ordenproduccionPK == null && other.ordenproduccionPK != null) || (this.ordenproduccionPK != null && !this.ordenproduccionPK.equals(other.ordenproduccionPK))) {
             return false;
         }
         return true;
@@ -140,7 +137,7 @@ public class Ordenproduccion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Ordenproduccion[ idordenproduccion=" + idordenproduccion + " ]";
+        return "com.asi.restaurantbcd.modelo.Ordenproduccion[ ordenproduccionPK=" + ordenproduccionPK + " ]";
     }
     
 }

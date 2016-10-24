@@ -12,7 +12,6 @@
     <class>com.asi.restaurantbcd.modelo.Departamento</class>
     <class>com.asi.restaurantbcd.modelo.Empleado</class>
     <class>com.asi.restaurantbcd.modelo.Estado</class>
-    <class>com.asi.restaurantbcd.modelo.Existencia</class>
     <class>com.asi.restaurantbcd.modelo.Facturaanulada</class>
     <class>com.asi.restaurantbcd.modelo.Facturadetalle</class>
     <class>com.asi.restaurantbcd.modelo.Facturaencabezado</class>
@@ -20,7 +19,6 @@
     <class>com.asi.restaurantbcd.modelo.Giro</class>
     <class>com.asi.restaurantbcd.modelo.Grupoproducto</class>
     <class>com.asi.restaurantbcd.modelo.Impuesto</class>
-    <class>com.asi.restaurantbcd.modelo.Kardex</class>
     <class>com.asi.restaurantbcd.modelo.Marcaproducto</class>
     <class>com.asi.restaurantbcd.modelo.Medida</class>
     <class>com.asi.restaurantbcd.modelo.Notapedido</class>
@@ -41,6 +39,10 @@
     <class>com.asi.restaurantbcd.modelo.Tipodocumento</class>
     <class>com.asi.restaurantbcd.modelo.Tipoproducto</class>
     <class>com.asi.restaurantbcd.modelo.Usuario</class>
+    <class>com.asi.restaurantbcd.modelo.Vexistxsucsal</class>
+    <class>com.asi.restaurantbcd.modelo.Vwexistencias</class>
+    <class>com.asi.restaurantbcd.modelo.Mesa</class>
+    <class>com.asi.restaurantbcd.modelo.Piso</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>
