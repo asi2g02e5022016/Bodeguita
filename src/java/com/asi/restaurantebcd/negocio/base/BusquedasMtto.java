@@ -9,6 +9,7 @@ import com.asi.restaurantbcd.modelo.Compania;
 import com.asi.restaurantbcd.modelo.Proveedor;
 import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantbcd.modelo.Sucursal;
+import com.asi.restaurantbcd.modelo.Formapago;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -84,5 +85,19 @@ public class BusquedasMtto implements BusquedasMttoLocal {
         Query query = em.createQuery(jpql.toString());
         return query.getResultList();
     }
+    
+    /**
+     * Obtiene la lista de Forma de Pago.
+     * @return List Formapago.
+     * @throws Exception Error generico.
+     */
+    
+    /**@Override
+    public List <Formapago> buscarFormapago() throws Exception{
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("Select a From formapago a");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+    }*/
     
 }

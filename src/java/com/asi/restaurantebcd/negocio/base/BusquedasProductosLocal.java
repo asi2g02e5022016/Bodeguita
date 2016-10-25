@@ -6,6 +6,7 @@
 package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Producto;
+import com.asi.restaurantbcd.modelo.Vwproductos;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Local;
@@ -17,11 +18,11 @@ import javax.ejb.Local;
 @Local
 public interface BusquedasProductosLocal {
     
-   /**
-     * 
-     * @param map
-     * @return
-     * @throws Exception 
+    /**
+     * Mwtodo que de busqueda de productos por medio de filtros.
+     * @param filtros Map de filtros, si el mapa es vacio devuelve 
+     * todo los productos.
+     * @return Lista de productos de la vista Vwproductos.
      */
-    public List<Producto> buscarProductos(Map map) throws Exception;
+    public List < Vwproductos > buscarProducto(Map filtros);
 }

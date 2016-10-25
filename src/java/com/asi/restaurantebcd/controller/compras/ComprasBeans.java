@@ -10,6 +10,7 @@ import com.asi.restaurantbcd.modelo.Compradetalle;
 import com.asi.restaurantbcd.modelo.Estado;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
+import com.asi.restaurantbcd.modelo.Vwproductos;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
@@ -87,7 +88,7 @@ public class ComprasBeans implements  Serializable {
     private List < Compra > lstCompraMonitor =  new ArrayList<>();
     private List < Compradetalle > lstCompradeta =  new ArrayList<>();
     private List < Proveedor > lstProveedor =  new ArrayList<>();
-      private List < Producto > lstProducto =  new ArrayList<>();
+      private List < Vwproductos > lstProducto =  new ArrayList<>();
     @EJB
     private CrudBDCLocal crud;
     @EJB
@@ -135,7 +136,7 @@ public class ComprasBeans implements  Serializable {
             alert("El documento se guardo exitosamente", FacesMessage.SEVERITY_INFO);
             
         } catch (Exception ex) {
-            Logger.getLogger(CompraBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ComprasBeans.class.getName()).log(Level.SEVERE, null, ex);
         }
      }
       public void ActualizarExistenciaCompra() {
@@ -184,7 +185,7 @@ public class ComprasBeans implements  Serializable {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
          } catch (Exception ex) {
-            Logger.getLogger(CompraBean.class.getName()).log(
+            Logger.getLogger(ComprasBeans.class.getName()).log(
                     Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
         }
@@ -209,13 +210,16 @@ public class ComprasBeans implements  Serializable {
                 filtro.put("producto", descripcionProducto.trim());
                 
             }
-            lstProducto = ejbBusProd.buscarProductos(filtro);
+            filtro.put("activo", 1);
+            filtro.put("tipo", 1);
+            
+            lstProducto = ejbBusProd.buscarProducto(filtro);
             System.out.println("lstProducto.." +lstProducto);
             if (lstProducto == null || lstProducto.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
          } catch (Exception ex) {
-            Logger.getLogger(CompraBean.class.getName()).log(
+            Logger.getLogger(ComprasBeans.class.getName()).log(
                     Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
         }
@@ -240,12 +244,12 @@ public class ComprasBeans implements  Serializable {
                 filtro.put("producto", descripcionProducto.trim());
                 
             }
-            lstProducto = ejbBusProd.buscarProductos(filtro);
+            lstProducto = ejbBusProd.buscarProducto(filtro);
             if (lstProveedor == null || lstProveedor.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
          } catch (Exception ex) {
-            Logger.getLogger(CompraBean.class.getName()).log(
+            Logger.getLogger(ComprasBeans.class.getName()).log(
                     Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
         }
@@ -411,13 +415,23 @@ public class ComprasBeans implements  Serializable {
         return compraEnca;
     }
 
-    public List<Producto> getLstProducto() {
+    public List<Compradetalle> getLstCompradeta() {
+        return lstCompradeta;
+    }
+    
+
+    public void setLstCompradeta(List<Compradetalle> lstCompradeta) {
+        this.lstCompradeta = lstCompradeta;
+    }
+
+    public List<Vwproductos> getLstProducto() {
         return lstProducto;
     }
 
-    public void setLstProducto(List<Producto> lstProducto) {
+    public void setLstProducto(List<Vwproductos> lstProducto) {
         this.lstProducto = lstProducto;
     }
+
 
     public void setCompraEnca(Compra compraEnca) {
         this.compraEnca = compraEnca;

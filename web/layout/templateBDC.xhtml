@@ -52,6 +52,11 @@ and open the template in the editor.
 				<ui:include src="menu.xhtml" /> 
 
 			</div>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+ 
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <h:graphicImage value="/images/loading5.gif" alt="Procesando..." />
+                        </p:dialog>
 			<ui:insert name="body" />
 		</div>
 	</div>

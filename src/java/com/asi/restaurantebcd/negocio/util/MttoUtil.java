@@ -98,7 +98,6 @@ public abstract class MttoUtil<E> {
         
    public void save() {
        facesContext = FacesContext.getCurrentInstance();
-       System.out.println("Guardando----");
        if (instance != null) {
            try {
                if(validateSave()){
@@ -117,7 +116,6 @@ public abstract class MttoUtil<E> {
    
    public void delete() {
               facesContext = FacesContext.getCurrentInstance();
-       System.out.println("Eliminando----");
        if (instance != null) {
            try {
            if(validateDelete()) {
@@ -135,14 +133,13 @@ public abstract class MttoUtil<E> {
 
    public void update() {
               facesContext = FacesContext.getCurrentInstance();
-       System.out.println("Actualizando----");
+     
        if (instance != null) {
            try {
                if(validateUpdate()) {
                ejbCrud.guardarEntidad(instance);
                postUpdate();
                this.endConversation();
-               System.out.println("Actualiado----");
                }
 
            } catch (Exception ex) {

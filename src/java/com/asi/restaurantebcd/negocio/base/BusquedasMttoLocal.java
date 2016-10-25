@@ -6,6 +6,7 @@
 package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Compania;
+import com.asi.restaurantbcd.modelo.Formapago;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Impuesto;
 import java.util.List;
@@ -41,4 +42,10 @@ public interface BusquedasMttoLocal {
      * @throws Exception Error generico.
      */
     public List <Impuesto> buscarImpuesto() throws Exception;
+    /**
+     * Obtiene la lista de Formas de Pago.
+     * @return List forma pago.
+     * @throws Exception Error generico.
+     */
+    /**public List <Formapago> buscarFormapago() throws Exception;*/
 }

@@ -6,14 +6,17 @@
 package com.asi.restaurantebcd.controller.mtto;
 
 import com.asi.restaurantbcd.modelo.Formapago;
+import com.asi.restaurantebcd.negocio.base.BusquedasFormaPagoLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
@@ -28,6 +31,18 @@ public class MttoFormaPago implements Serializable {
 
     @EJB
     private CrudBDCLocal crudBDC;
+    
+    @EJB
+    private BusquedasFormaPagoLocal busquedasFormaPago;
+    
+    @PostConstruct
+    public void postConstruction(){
+        try{
+            buscarFormaPago();
+           } catch (Exception e) {
+                alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
+        }
+    }
 
     //<editor-fold  defaultstate="collapsed" desc="Inializar" >
 
@@ -43,10 +58,19 @@ public class MttoFormaPago implements Serializable {
     
     private Formapago formapago;
     
-    private List <Formapago> listFormapago;
+    private List <Formapago> listaFormapago;
     
     private DataTable dtFormapago = new DataTable();
 
+    public void limpiarpantalla(){
+        idformapago = null;
+        descformapago = null;
+        formapago = null;
+        listaFormapago = null;
+        dtFormapago = new DataTable();
+    }
+    
+    
     public void guardarFormaPago(){
         try {
             if(descformapago == null || descformapago.equals("")){
@@ -65,7 +89,26 @@ public class MttoFormaPago implements Serializable {
         }
     }
     
+    public void buscarFormaPago(){
+        try {
+            listaFormapago  = busquedasFormaPago.buscarFormapago();
+            if (listaFormapago == null || listaFormapago.isEmpty()){
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MttoFormaPago.class.getName()).log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
     
+     private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
+        if (mensaje == null) {
+            mensaje =  "No existen formas de Pago";
+        }
+        FacesMessage message = new FacesMessage(faces,
+                "Mensaje", mensaje.toString());
+        RequestContext.getCurrentInstance().showMessageInDialog(message);
+    }
     
     public Integer getIdformapago() {
         return idformapago;
@@ -91,12 +134,12 @@ public class MttoFormaPago implements Serializable {
         this.formapago = formapago;
     }
 
-    public List<Formapago> getListFormapago() {
-        return listFormapago;
+    public List<Formapago> getListaFormapago() {
+        return listaFormapago;
     }
 
-    public void setListFormapago(List<Formapago> listFormapago) {
-        this.listFormapago = listFormapago;
+    public void setListaFormapago(List<Formapago> listaFormapago) {
+        this.listaFormapago = listaFormapago;
     }
 
     public DataTable getDtFormapago() {
@@ -106,17 +149,4 @@ public class MttoFormaPago implements Serializable {
     public void setDtFormapago(DataTable dtFormapago) {
         this.dtFormapago = dtFormapago;
     }
-    
-    
-    
-    private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
-        if (mensaje == null) {
-            mensaje =  "-";
-        }
-        FacesMessage message = new FacesMessage(faces,
-                "Mensaje", mensaje.toString());
-        RequestContext.getCurrentInstance().showMessageInDialog(message);
-    }
-    
-    
 }
