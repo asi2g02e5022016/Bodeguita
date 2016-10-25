@@ -47,5 +47,5 @@ public interface BusquedasMttoLocal {
      * @return List forma pago.
      * @throws Exception Error generico.
      */
-    public List <Formapago> buscarFormapago() throws Exception;
+    /**public List <Formapago> buscarFormapago() throws Exception;*/
 }
