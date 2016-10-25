@@ -29,10 +29,10 @@ and open the template in the editor.
                         <p:inputText style="width: 100%"  value="#{mttoFormaPago.descformapago}" />
                     </h:panelGrid>
                     <h:panelGrid >
-                        <p:dataTable id="tablaProd" emptyMessage="" binding="#{mttoFormaPago.dtFormapago}"
-                                     value="#{mttoFormaPago.listFormapago}"
-                                     var="dpro" rowKey="#{dpro.idformapago}"
-                                     selectionMode="single" rows="19"  >
+                        <p:dataTable id="tablaFpago" emptyMessage="" 
+                                     value="#{mttoFormaPago.listaFormapago}"
+                                     var="dpro"
+                                     rows="19"  >
                             <p:column headerText="Id" width="40%">
                                 <h:outputText value="#{dpro.idformapago}" />
                             </p:column>
