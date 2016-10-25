@@ -1,0 +1,405 @@
+import com.sherwinca.reportes.ImpresionRpt;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+public class Reporte extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+//        response.setContentType("text/html;charset=UTF-8");
+//        PrintWriter out = response.getWriter();
+        ImpresionRpt imprpt = new ImpresionRpt();
+        byte[] reporteByte = null;
+
+        String ds = (String) request.getSession().getAttribute("ds");
+        String url = (String) request.getSession().getAttribute("url");
+        String format = (String) request.getSession().getAttribute("format");
+        Map parameters = (Map) request.getSession().getAttribute("parameters");
+        Map pJREP = (Map) request.getSession()
+                .getAttribute("JRExporterParameters");
+        Map pJRXLSEP = (Map) request.getSession()
+                .getAttribute("JRXlsExporterParameters");
+        Map pJRXLSAEP = (Map) request.getSession()
+                .getAttribute("JRXlsAbstractExporterParameters");
+         if (ds == null || ds.equals("")){
+             PrintWriter out = response.getWriter();
+             out.println("<h2>El parametro del Data Source no es valida</h2>");
+             out.close();
+             return;
+         }
+
+        if (url == null || url.equals("")){
+            PrintWriter out = response.getWriter();
+            out.println("<h2>El parametro URL del reporte no es valida </h2>");
+            out.close();
+            return;
+        }
+
+        if (format == null || format.equals("")){
+            PrintWriter out = response.getWriter();
+            out.println("<h2>El formato del reporte no fue especificado</h2>");
+            out.close();
+            return;
+        }
+
+        if (parameters == null){
+            PrintWriter out = response.getWriter();
+            out.println("<h2>Los parametro del reporte no son validos </h2>");
+            out.close();
+            return;
+        }
+        try {
+            if (format.equals("PDF")) {
+                reporteByte = imprpt.ImprimeReportePDF(ds, url, parameters);
+                response.setContentType("application/pdf");
+                response.setContentLength(reporteByte.length);
+                response.getOutputStream().write(reporteByte);
+                response.getOutputStream().flush();
+                response.getOutputStream().close();
+            } else {
+                String rptxls = "";
+
+                if ((pJREP != null && !pJREP.isEmpty())
+                    || (pJRXLSEP != null && !pJRXLSEP.isEmpty())
+                    || (pJRXLSAEP != null && !pJRXLSAEP.isEmpty())) {
+                  rptxls = imprpt.imprimeReporteXLS(
+                           ds, url, parameters, pJREP, pJRXLSEP, pJRXLSAEP);
+                } else {
+                  rptxls = imprpt.ImprimeReporteXLS(ds, url, parameters);
+                }
+                response.reset();
+                response.setHeader("Content-Disposition",
+                        "attachment; filename=\"" + "rpt.xls" + "\"");
+                InputStream in = null;
+                ServletOutputStream bufferSalida = null;
+                in = new FileInputStream(rptxls);
+                bufferSalida = response.getOutputStream();
+                //se transfieren los bytes
+                byte[] buf = new byte[256];//256
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    bufferSalida.write(buf, 0, len);
+                }
+                //vaciamos el buffer de salida y se envia el resultado
+                in.close();
+                bufferSalida.flush();
+                bufferSalida.close();
+            }
+        } catch (NamingException ex) {
+            Logger.getLogger(ImpRpts.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            PrintWriter out = response.getWriter();
+            out.println("<H2> Error: " + ex.getMessage() + "</H2>");
+            out.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ImpRpts.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            PrintWriter out = response.getWriter();
+            out.println("<H2> Error: " + ex.getMessage() + "</H2>");
+            out.close();
+        } catch (Exception ex) {
+            Logger.getLogger(ImpRpts.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            PrintWriter out = response.getWriter();
+            out.println("<H2> Error: " + ex.getMessage() + "</H2>");
+            out.close();
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+
+}
+
+
+
+
+
+
+/////////////////////
+
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+
+
+
+
+
+public class ImpresionRpt {
+    public String ImprimeReporteXLS(String datSource, String url,
+            Map parameters) throws IOException, NamingException,
+            SQLException, Exception {
+        Connection connection = null;
+        String archJasper;
+        URI uriObj = null;
+        try {
+            InitialContext initialContext = new InitialContext();
+            DataSource ds = (DataSource) initialContext.lookup(datSource);
+            connection = ds.getConnection();
+            uriObj = getClass().getResource(url).toURI();
+            File reporte = new File(uriObj);
+            archJasper = reporte.getAbsolutePath();
+            JasperPrint jasperPrint = null;
+
+            jasperPrint = JasperFillManager
+                    .fillReport(archJasper, parameters, connection);
+            String xlsPath = archJasper;
+            String xlsFileName = "";
+            xlsFileName = "rpt.xls";
+
+            JRXlsExporter exporter = new JRXlsExporter();
+         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+         exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                 xlsPath + xlsFileName);
+         exporter.setParameter(JRExporterParameter.IGNORE_PAGE_MARGINS, true);
+         //exporter.setParameter(JRXlsAbstractExporterParameter
+         //.IS_WHITE_PAGE_BACKGROUND, false);
+         exporter.setParameter(JRXlsAbstractExporterParameter
+                 .IS_IGNORE_CELL_BORDER, false);
+         exporter.setParameter(JRXlsAbstractExporterParameter
+                 .IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS,true);
+         exporter.setParameter(JRXlsAbstractExporterParameter
+                 .IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS,true);
+         exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE,true);
+         exporter.exportReport();
+         connection.close();
+         return xlsPath + xlsFileName;
+        } catch (NamingException ne) {
+            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
+                    null, ne);
+            ne.printStackTrace();
+            throw new Exception("Error al accededer al DataSource "
+                    + ne.getMessage());
+        } catch (SQLException sqle) {
+            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
+                    null, sqle);
+            sqle.printStackTrace();
+            throw new Exception("SQL Exception " + sqle.getMessage());
+        } catch (JRException ex) {
+            Logger.getLogger(ImpresionRpt.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+            throw new Exception("JRException " + ex.getMessage());
+        } catch (Exception e) {
+            Logger.getLogger(ImpresionRpt.class.getName())
+                    .log(Level.SEVERE, null, e);
+            e.printStackTrace();
+            throw new Exception("Exception " + e.getMessage());
+        } finally {
+            connection.close();
+        }
+    }
+
+     /**
+     * Metodo que ejecuta un reporte y lo exporta en pdf.
+     * @param datSource String nombre del DataSource.
+     * @param url Direccion uri donde esta el jsaper.
+     * @param parameters map de los parametros del reporte.
+     * @throws java.lang.Exception error general.
+     */
+    
+    public byte[] ImprimeReportePDF(String datSource, String url,
+            Map parameters) throws IOException, NamingException,
+            SQLException, Exception {
+        Connection connection = null;
+        String archJasper;
+        URI uriObj = null;
+        byte[] reporteByte = null;
+        try {
+            InitialContext initialContext = new InitialContext();
+            DataSource ds = (DataSource) initialContext.lookup(datSource);
+            connection = ds.getConnection();
+            uriObj = getClass().getResource(url).toURI();
+            File reporte = new File(uriObj);
+            archJasper = reporte.getAbsolutePath();
+            JasperPrint impresion = null;
+            JRExporter exporter = new JRPdfExporter();
+            ByteArrayOutputStream reportePDF = new ByteArrayOutputStream();
+            reporteByte = JasperRunManager.runReportToPdf(reporte.getPath(),
+                    parameters, connection);
+            impresion =
+               JasperFillManager.fillReport(archJasper, parameters, connection);
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, impresion);
+           exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, reportePDF);
+           connection.close();
+        } catch (NamingException ne) {
+            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
+                    null, ne);
+            ne.printStackTrace();
+            throw new Exception("Error al accededer al DataSource "
+                    + ne.getMessage());
+        } catch (SQLException sqle) {
+            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
+                    null, sqle);
+            sqle.printStackTrace();
+            throw new Exception("SQL Exception " + sqle.getMessage());
+        } catch (JRException ex) {
+            Logger.getLogger(ImpresionRpt.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+            throw new Exception("JRException " + ex.getMessage());
+        } catch (Exception e) {
+            Logger.getLogger(ImpresionRpt.class.getName())
+                    .log(Level.SEVERE, null, e);
+            e.printStackTrace();
+            throw new Exception("Exception " + e.getMessage());
+        } finally {
+            connection.close();
+        }
+        return reporteByte;
+    }
+
+
+        /**
+     * MÃ©todo que permite imprimir un reporte en formato para excel.
+     * @param dSource nombre del DataSource.
+     * @param url direcciÃ³n donde se encuentra el reporte.
+     * @param params parÃ¡metros para el reporte.
+     * @param pJREP parÃ¡metros de tipo JRExporterParameter.
+     * @param pJRXLSEP parÃ¡metros de tipo JRXlsExporterParameter.
+     * @param pJRXLSAEP parÃ¡metros de tipo JRXlsAbstractExporterParameter.
+     * @return String. Ruta de archivo donde se genera el reporte.
+     * @throws java.lang.Exception Error genÃ©rico.
+     */
+    public final String imprimeReporteXLS(final String dSource,
+           final String url, final Map params,
+           final Map < JRExporterParameter, Object > pJREP,
+           final Map < JRXlsExporterParameter, Object > pJRXLSEP,
+           final Map < JRXlsAbstractExporterParameter, Object > pJRXLSAEP)
+           throws Exception {
+        Connection connection = null;
+        String archJasper;
+        URI uriObj = null;
+        try {
+          InitialContext initialContext = new InitialContext();
+          DataSource ds = (DataSource) initialContext.lookup(dSource);
+          connection = ds.getConnection();
+          uriObj = getClass().getResource(url).toURI();
+          File reporte = new File(uriObj);
+          archJasper = reporte.getAbsolutePath();
+          JasperPrint jasperPrint = JasperFillManager.fillReport(
+                                    archJasper, params, connection);
+          String xlsPath = archJasper;
+          String xlsFileName = "rpt.xls";
+          JRXlsExporter exporter = new JRXlsExporter();
+          exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+          exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                                xlsPath + xlsFileName);
+          if (pJREP != null && !pJREP.isEmpty()) {
+              for (Map.Entry < JRExporterParameter, Object > data
+                   : pJREP.entrySet()) {
+                   exporter.setParameter(data.getKey(), data.getValue());
+              }
+          }
+          if (pJRXLSEP != null && !pJRXLSEP.isEmpty()) {
+              for (Map.Entry < JRXlsExporterParameter, Object > data
+                   : pJRXLSEP.entrySet()) {
+                   exporter.setParameter(data.getKey(), data.getValue());
+              }
+          }
+          if (pJRXLSAEP != null && !pJRXLSAEP.isEmpty()) {
+              for (Map.Entry < JRXlsAbstractExporterParameter, Object > data
+                   : pJRXLSAEP.entrySet()) {
+                   exporter.setParameter(data.getKey(), data.getValue());
+              }
+          }
+          exporter.exportReport();
+          connection.close();
+          return xlsPath + xlsFileName;
+        } catch (Exception e) {
+          throw e;
+        } finally {
+          if (connection != null) {
+              connection.close();
+          }
+        }
+    }
+    
+}
+
+
+
+
+
+
+
