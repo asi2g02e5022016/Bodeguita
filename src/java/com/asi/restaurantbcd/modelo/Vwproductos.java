@@ -10,13 +10,14 @@ import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -29,9 +30,11 @@ import javax.persistence.TemporalType;
 public class Vwproductos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected VwproductosPK vwproductosPK; 
-    
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "idproducto")
+    private Integer idproducto;
     @Basic(optional = false)
     @Column(name = "producto")
     private String producto;
@@ -212,18 +215,18 @@ public class Vwproductos implements Serializable {
         this.excento = excento;
     }
 
-    public VwproductosPK getVwproductosPK() {
-        return vwproductosPK;
+    public Integer getIdproducto() {
+        return idproducto;
     }
 
-    public void setVwproductosPK(VwproductosPK vwproductosPK) {
-        this.vwproductosPK = vwproductosPK;
+    public void setIdproducto(Integer idproducto) {
+        this.idproducto = idproducto;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 31 * hash + Objects.hashCode(this.vwproductosPK);
+        int hash = 3;
+        hash = 41 * hash + Objects.hashCode(this.idproducto);
         return hash;
     }
 
@@ -239,7 +242,7 @@ public class Vwproductos implements Serializable {
             return false;
         }
         final Vwproductos other = (Vwproductos) obj;
-        if (!Objects.equals(this.vwproductosPK, other.vwproductosPK)) {
+        if (!Objects.equals(this.idproducto, other.idproducto)) {
             return false;
         }
         return true;
@@ -247,9 +250,8 @@ public class Vwproductos implements Serializable {
 
     @Override
     public String toString() {
-        return "Vwproductos{" + "vwproductosPK=" + vwproductosPK + '}';
+        return "Vwproductos{" + "idproducto=" + idproducto + '}';
     }
-    
     
     
     

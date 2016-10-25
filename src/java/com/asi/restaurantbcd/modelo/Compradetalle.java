@@ -8,10 +8,8 @@ package com.asi.restaurantbcd.modelo;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -31,11 +29,8 @@ import javax.validation.constraints.NotNull;
 public class Compradetalle implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idcompradetalle")
-    private Integer idcompradetalle;
+    @EmbeddedId
+    protected CompradetallePK compradetallePK;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidadsolicitada")
@@ -52,10 +47,10 @@ public class Compradetalle implements Serializable {
     @NotNull
     @Column(name = "iva")
     private float iva;
-        @JoinColumns({
-        @JoinColumn(name = "idcompra", referencedColumnName = "idcompra"),
-        @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")})
-    @ManyToOne
+    @JoinColumns({
+        @JoinColumn(name = "idcompra", referencedColumnName = "idcompra", insertable = false, updatable = false),
+        @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
     private Compra compra;
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
@@ -64,25 +59,28 @@ public class Compradetalle implements Serializable {
     public Compradetalle() {
     }
 
-    public Compradetalle(Integer idcompradetalle) {
-        this.idcompradetalle = idcompradetalle;
+    public Compradetalle(CompradetallePK compradetallePK) {
+        this.compradetallePK = compradetallePK;
     }
 
-    public Compradetalle(Integer idcompradetalle, int cantidadsolicitada, 
-            int cantidadconfirmada, float precio, float iva) {
-        this.idcompradetalle = idcompradetalle;
+    public Compradetalle(CompradetallePK compradetallePK, int cantidadsolicitada, int cantidadconfirmada, float precio, float iva) {
+        this.compradetallePK = compradetallePK;
         this.cantidadsolicitada = cantidadsolicitada;
         this.cantidadconfirmada = cantidadconfirmada;
         this.precio = precio;
         this.iva = iva;
     }
 
-    public Integer getIdcompradetalle() {
-        return idcompradetalle;
+    public Compradetalle(int idcompradetalle, int idcompra, int idsucursal) {
+        this.compradetallePK = new CompradetallePK(idcompradetalle, idcompra, idsucursal);
     }
 
-    public void setIdcompradetalle(Integer idcompradetalle) {
-        this.idcompradetalle = idcompradetalle;
+    public CompradetallePK getCompradetallePK() {
+        return compradetallePK;
+    }
+
+    public void setCompradetallePK(CompradetallePK compradetallePK) {
+        this.compradetallePK = compradetallePK;
     }
 
     public int getCantidadsolicitada() {
@@ -125,7 +123,6 @@ public class Compradetalle implements Serializable {
         this.compra = compra;
     }
 
-
     public Producto getIdproducto() {
         return idproducto;
     }
@@ -137,7 +134,7 @@ public class Compradetalle implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idcompradetalle != null ? idcompradetalle.hashCode() : 0);
+        hash += (compradetallePK != null ? compradetallePK.hashCode() : 0);
         return hash;
     }
 
@@ -148,7 +145,7 @@ public class Compradetalle implements Serializable {
             return false;
         }
         Compradetalle other = (Compradetalle) object;
-        if ((this.idcompradetalle == null && other.idcompradetalle != null) || (this.idcompradetalle != null && !this.idcompradetalle.equals(other.idcompradetalle))) {
+        if ((this.compradetallePK == null && other.compradetallePK != null) || (this.compradetallePK != null && !this.compradetallePK.equals(other.compradetallePK))) {
             return false;
         }
         return true;
@@ -156,7 +153,7 @@ public class Compradetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.Compradetalle[ idcompradetalle=" + idcompradetalle + " ]";
+        return "com.asi.restaurantbcd.modelo.Compradetalle[ compradetallePK=" + compradetallePK + " ]";
     }
     
 }

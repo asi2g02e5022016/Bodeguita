@@ -128,7 +128,12 @@ public class JasperRpt {
             InitialContext initialContext = new InitialContext();
             DataSource ds = (DataSource) initialContext.lookup(datSource);
             connection = ds.getConnection();
+            System.out.println("url.. " +url);
+            if (getClass().getResource(url) == null) {
+                throw new Exception("La URL de el reporte no es valida.");
+            }
             uriObj = getClass().getResource(url).toURI();
+            System.out.println("uriObj,,... " +uriObj);
             File reporte = new File(uriObj);
             archJasper = reporte.getAbsolutePath();
             JasperPrint impresion;

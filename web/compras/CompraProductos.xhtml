@@ -22,7 +22,7 @@ and open the template in the editor.
                                 icon="ui-icon-disk" />
                     <p:menuitem value="Ingreso a compra" 
                                 icon=" ui-icon-refresh" />
-                    <p:menuitem value="Imprimir" action="#{comprasBeans.imprimitCompra()}"
+                    <p:menuitem value="Imprimir" action="#{comprasBeans.imprimirReporteCompra()}"
                                 icon="ui-icon-print" />
                      <p:menuitem value="Exportar"
                                 icon="fa fa-file-excel-o" />
@@ -155,11 +155,14 @@ and open the template in the editor.
                     <p:inputText   value="#{comprasBeans.descripcionProducto}" />
                 </h:panelGrid>
                 <h:panelGrid >
-                    <p:dataTable id="tablaProd" binding="#{comprasBeans.tablaProd}"
+                    <p:dataTable id="tablaProdd" 
                                  value="#{comprasBeans.lstProducto}" 
 
-                                 var="dpro" rowKey="#{dpro.vwproductosPK.idproducto}"
+                                 var="dpro" rowKey="#{dpro.idproducto}"
                                  selectionMode="single" rows="19"  >
+                        
+                        <p:ajax event="rowSelect" listener="#{comprasBeans.onRowSelect}" 
+                        />
 
                         <p:column headerText="descripcion">
                             <h:outputText value="#{dpro.producto}"  />

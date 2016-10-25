@@ -7,7 +7,6 @@ package com.asi.restaurantebcd.controller.compras;
 
 import com.asi.restaurantbcd.modelo.Compra;
 import com.asi.restaurantbcd.modelo.Compradetalle;
-import com.asi.restaurantbcd.modelo.Estado;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
 import com.asi.restaurantbcd.modelo.Vwproductos;
@@ -16,7 +15,6 @@ import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
-import com.google.gson.Gson;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -29,11 +27,13 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.inject.Named;
-import javax.faces.view.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.bean.ViewScoped;
+import javax.servlet.http.HttpServletRequest;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -81,10 +81,12 @@ public class ComprasBeans implements  Serializable {
     private BigDecimal cantidadSolic;
     private BigDecimal cantidadConfirmada;
     private Proveedor proveedor;
+    private Vwproductos producto;
             SessionUsr sesion = Utilidades.findBean("sessionBean");
     private Date fecha;
     private String mensaje;
     private Compra compraEnca;
+    private Compradetalle compraDeta;
     private DataTable tablaProd  =  new DataTable();
     private List < Compra > lstCompraMonitor =  new ArrayList<>();
     private List < Compradetalle > lstCompradeta =  new ArrayList<>();
@@ -155,12 +157,38 @@ public class ComprasBeans implements  Serializable {
    public void buscarCompra() {
        
    }
-  /**
-    * 
-    */
-   public void imprimitCompra() {
-       
-   }
+//  /**
+//    * 
+//    */
+//   public void imprimitCompra() {
+//       try {
+//            Map param = new HashMap();
+//                    
+//            FacesContext fc = FacesContext.getCurrentInstance();
+//            HttpServletRequest request = (HttpServletRequest) fc
+//                               .getExternalContext().getRequest();
+//            String url = request.getContextPath() + "/Reporte";
+//             request.getSession().setAttribute("datasourse","jdbc/ifbc");
+//            request.getSession().setAttribute("url",
+//              "/com/asi/estarurantebcd/reportes"
+//                    +"Compra.jasper");
+//            request.getSession().setAttribute("format","PDF");
+//            request.getSession().setAttribute("parameters", param);
+////            RequestContext context = RequestContext.getCurrentInstance();
+////             context.execute("window.open('resource.jsp', '_newtab')");
+//                        RequestContext context = RequestContext.getCurrentInstance();
+//             context.execute(             "window.open('" + url
+//                   + "','Rpt','location=0,menubar=0,resizable=1,"
+//                   + "status=0,toolbar=0');");
+////            JavascriptContext.addJavascriptCall(
+////                    FacesContext.getCurrentInstance(),
+////                    "window.open('" + url
+////                   + "','Rpt','location=0,menubar=0,resizable=1,"
+////                   + "status=0,toolbar=0');");
+//        } catch (Exception e) {
+//            alert(e.getMessage(), FacesMessage.SEVERITY_ERROR);
+//        }
+//   }
          public void alert(String mensaje, FacesMessage.Severity faces) {
         FacesMessage message = new FacesMessage(faces,
                 "Mensaje", mensaje);
@@ -233,6 +261,36 @@ public class ComprasBeans implements  Serializable {
        descripcionProducto = null;
       
       }
+      public void imprimirReporteCompra() {
+
+       try {
+            Map param = new HashMap();
+                    
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpServletRequest request = (HttpServletRequest) fc
+                               .getExternalContext().getRequest();
+            String url = request.getContextPath() + "/Reporte";
+             request.getSession().setAttribute("datasourse","jdbc/ifbc");
+            request.getSession().setAttribute("url",
+              "/com/asi/restaurantebcd/reportes/compra/"
+                    +"RptCompras.jasper");
+            request.getSession().setAttribute("format","PDF");
+            request.getSession().setAttribute("parameters", param);
+//            RequestContext context = RequestContext.getCurrentInstance();
+//             context.execute("window.open('resource.jsp', '_newtab')");
+                        RequestContext context = RequestContext.getCurrentInstance();
+             context.execute(             "window.open('" + url
+                   + "','Rpt','location=0,menubar=0,resizable=1,"
+                   + "status=0,toolbar=0');");
+//            JavascriptContext.addJavascriptCall(
+//                    FacesContext.getCurrentInstance(),
+//                    "window.open('" + url
+//                   + "','Rpt','location=0,menubar=0,resizable=1,"
+//                   + "status=0,toolbar=0');");
+        } catch (Exception e) {
+            alert(e.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
              //</editor-fold >
       
       //<editor-fold  defaultstate="collapsed" desc="Monitor" >
@@ -455,6 +513,38 @@ public class ComprasBeans implements  Serializable {
                  System.out.println("pro.." +pro);
              }
          }
+       
+       public void onRowSelect(SelectEvent event) {
+        try {
+            Vwproductos idP  =  ((Vwproductos) event.getObject());
+            System.out.println("yd.,,, " + idP);
+            producto = ((Vwproductos) event.getObject());
+            
+            System.out.println("producto,.. " +producto);
+            System.out.println("u..");
+            Producto pro = crud.buscarEntidad(Producto.class,
+                    producto.getIdproducto());
+            if (lstCompradeta == null ) {
+                lstCompradeta = new ArrayList<>();
+            }
+            compraDeta = new Compradetalle();
+            compraDeta.setIdproducto(pro);
+            
+            lstCompradeta.add(0, compraDeta);
+        } catch (Exception ex) {
+            Logger.getLogger(ComprasBeans.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        
+    }
+      public void onRowSelectProveedor(SelectEvent event) {
+       proveedor  =  (Proveedor) event.getObject();
+       if (proveedor != null ) {
+           nombreProveedor = proveedor.getProveedor();
+       }
+        
+    }
     
 }
 

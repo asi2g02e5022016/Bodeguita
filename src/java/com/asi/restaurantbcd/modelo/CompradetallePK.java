@@ -16,9 +16,13 @@ import javax.validation.constraints.NotNull;
  * @author samaelopez
  */
 @Embeddable
-public class CompraPK implements Serializable {
+public class CompradetallePK implements Serializable {
 
     @Basic(optional = false)
+    @Column(name = "idcompradetalle")
+    private int idcompradetalle;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "idcompra")
     private int idcompra;
     @Basic(optional = false)
@@ -26,12 +30,21 @@ public class CompraPK implements Serializable {
     @Column(name = "idsucursal")
     private int idsucursal;
 
-    public CompraPK() {
+    public CompradetallePK() {
     }
 
-    public CompraPK(int idcompra, int idsucursal) {
+    public CompradetallePK(int idcompradetalle, int idcompra, int idsucursal) {
+        this.idcompradetalle = idcompradetalle;
         this.idcompra = idcompra;
         this.idsucursal = idsucursal;
+    }
+
+    public int getIdcompradetalle() {
+        return idcompradetalle;
+    }
+
+    public void setIdcompradetalle(int idcompradetalle) {
+        this.idcompradetalle = idcompradetalle;
     }
 
     public int getIdcompra() {
@@ -53,6 +66,7 @@ public class CompraPK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
+        hash += (int) idcompradetalle;
         hash += (int) idcompra;
         hash += (int) idsucursal;
         return hash;
@@ -61,10 +75,13 @@ public class CompraPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CompraPK)) {
+        if (!(object instanceof CompradetallePK)) {
             return false;
         }
-        CompraPK other = (CompraPK) object;
+        CompradetallePK other = (CompradetallePK) object;
+        if (this.idcompradetalle != other.idcompradetalle) {
+            return false;
+        }
         if (this.idcompra != other.idcompra) {
             return false;
         }
@@ -76,7 +93,7 @@ public class CompraPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.CompraPK[ idcompra=" + idcompra + ", idsucursal=" + idsucursal + " ]";
+        return "com.asi.restaurantbcd.modelo.CompradetallePK[ idcompradetalle=" + idcompradetalle + ", idcompra=" + idcompra + ", idsucursal=" + idsucursal + " ]";
     }
     
 }

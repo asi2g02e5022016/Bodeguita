@@ -35,7 +35,7 @@ public class Reporte extends HttpServlet {
         JasperRpt imprpt = new JasperRpt();
         byte[] reporteByte;
 
-        String ds = (String) request.getSession().getAttribute("ds");
+        String ds = (String) request.getSession().getAttribute("datasourse");
         String url = (String) request.getSession().getAttribute("url");
         String format = (String) request.getSession().getAttribute("format");
         Map parameters = (Map) request.getSession().getAttribute("parameters");

@@ -5,10 +5,8 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
-import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Vwproductos;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -50,7 +48,7 @@ public class BusquedasProductos implements BusquedasProductosLocal {
         Integer vendible = Utilidades.getParemetro("vendible", filtros);
         jpql.append(" SELECT p FROM Vwproductos p WHERE 1 = 1 ");
         if (codigoProducto != null) {
-            jpql.append(" AND p.vwproductosPK.idproducto = :codigoProducto ");
+            jpql.append(" AND p.idproducto = :codigoProducto ");
         }
         if (descripcion != null) {
             jpql.append(" AND p.producto = :descripcion ");

@@ -8,19 +8,16 @@ package com.asi.restaurantbcd.modelo;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,9 +35,8 @@ import javax.validation.constraints.Size;
 public class Compra implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId 
+    @EmbeddedId
     protected CompraPK compraPK;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechacompra")
@@ -61,13 +57,14 @@ public class Compra implements Serializable {
     @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor")
     @ManyToOne(optional = false)
     private Proveedor idproveedor;
-  
+    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Sucursal sucursal;
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne
     private Usuario idusuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compra")
     private List<Compradetalle> compradetalleList;
-
 
     public Compra() {
     }
@@ -76,6 +73,24 @@ public class Compra implements Serializable {
         this.compraPK = compraPK;
     }
 
+    public Compra(CompraPK compraPK, Date fechacompra, String codigofactura, int seriefactura) {
+        this.compraPK = compraPK;
+        this.fechacompra = fechacompra;
+        this.codigofactura = codigofactura;
+        this.seriefactura = seriefactura;
+    }
+
+    public Compra(int idcompra, int idsucursal) {
+        this.compraPK = new CompraPK(idcompra, idsucursal);
+    }
+
+    public CompraPK getCompraPK() {
+        return compraPK;
+    }
+
+    public void setCompraPK(CompraPK compraPK) {
+        this.compraPK = compraPK;
+    }
 
     public Date getFechacompra() {
         return fechacompra;
@@ -117,6 +132,14 @@ public class Compra implements Serializable {
         this.idproveedor = idproveedor;
     }
 
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
     public Usuario getIdusuario() {
         return idusuario;
     }
@@ -133,34 +156,22 @@ public class Compra implements Serializable {
         this.compradetalleList = compradetalleList;
     }
 
-    public CompraPK getCompraPK() {
-        return compraPK;
-    }
-
-    public void setCompraPK(CompraPK compraPK) {
-        this.compraPK = compraPK;
-    }
-
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.compraPK);
+        int hash = 0;
+        hash += (compraPK != null ? compraPK.hashCode() : 0);
         return hash;
     }
+    
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Compra)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Compra other = (Compra) obj;
-        if (!Objects.equals(this.compraPK, other.compraPK)) {
+        Compra other = (Compra) object;
+        if ((this.compraPK == null && other.compraPK != null) || (this.compraPK != null && !this.compraPK.equals(other.compraPK))) {
             return false;
         }
         return true;
@@ -168,10 +179,7 @@ public class Compra implements Serializable {
 
     @Override
     public String toString() {
-        return "Compra{" + "compraPK=" + compraPK + '}';
+        return "com.asi.restaurantbcd.modelo.Compra[ compraPK=" + compraPK + " ]";
     }
-
-
-
     
 }
