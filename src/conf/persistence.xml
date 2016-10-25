@@ -41,6 +41,8 @@
     <class>com.asi.restaurantbcd.modelo.Usuario</class>
     <class>com.asi.restaurantbcd.modelo.Vexistxsucsal</class>
     <class>com.asi.restaurantbcd.modelo.Vwexistencias</class>
+    <class>com.asi.restaurantbcd.modelo.Mesa</class>
+    <class>com.asi.restaurantbcd.modelo.Piso</class>
     <class>com.asi.restaurantbcd.modelo.Existencia</class>
     <class>com.asi.restaurantbcd.modelo.Kardex</class>
     <class>com.asi.restaurantbcd.modelo.Vwproductos</class>
