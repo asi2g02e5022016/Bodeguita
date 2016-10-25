@@ -19,7 +19,7 @@ Descargar netbeans de: [Netbeans](https://netbeans.org/)
 * Glassfish 4.0
 * JDK 8
 * JSF 2.2
-* Primefaces 5
+* Primefaces 6
 
 
 
