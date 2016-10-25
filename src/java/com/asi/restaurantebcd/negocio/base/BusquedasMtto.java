@@ -92,12 +92,12 @@ public class BusquedasMtto implements BusquedasMttoLocal {
      * @throws Exception Error generico.
      */
     
-    @Override
+    /**@Override
     public List <Formapago> buscarFormapago() throws Exception{
         StringBuilder jpql = new StringBuilder();
         jpql.append("Select a From formapago a");
         Query query = em.createQuery(jpql.toString());
         return query.getResultList();
-    }
+    }*/
     
 }
