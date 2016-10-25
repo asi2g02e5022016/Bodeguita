@@ -41,6 +41,9 @@
     <class>com.asi.restaurantbcd.modelo.Usuario</class>
     <class>com.asi.restaurantbcd.modelo.Vexistxsucsal</class>
     <class>com.asi.restaurantbcd.modelo.Vwexistencias</class>
+    <class>com.asi.restaurantbcd.modelo.Existencia</class>
+    <class>com.asi.restaurantbcd.modelo.Kardex</class>
+    <class>com.asi.restaurantbcd.modelo.Vwproductos</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>
