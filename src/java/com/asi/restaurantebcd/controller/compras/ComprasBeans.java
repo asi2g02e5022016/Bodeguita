@@ -16,6 +16,7 @@ import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.google.gson.Gson;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -230,6 +231,7 @@ public class ComprasBeans implements  Serializable {
       public void limpiarProducto() {
        lstProducto = null;
        descripcionProducto = null;
+      
       }
              //</editor-fold >
       
