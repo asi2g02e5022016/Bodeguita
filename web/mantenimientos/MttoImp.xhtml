@@ -19,11 +19,10 @@ and open the template in the editor.
                 <p:panel id="basic" header="Mantenimiento de impuestos" style="width: 50%"  >
                     <p:menubar>
                         <p:menuitem value="Nuevo" action="#{mttoImp.limpiarPantalla()}"
-                                    icon="ui-icon-plus" />
+                                    icon="ui-icon-plus" update="@all" />
                         <p:menuitem value="Guardar" update="forprincipal" action="#{mttoImp.guardarImpuesto()}"
                                     icon="ui-icon-disk" />
-                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoImp.buscarImpuesto()}"
-                                    icon=" ui-icon-search" />
+                       
                     </p:menubar>
 
                     <h:panelGrid columns="4" width="80%">
@@ -48,17 +47,17 @@ and open the template in the editor.
                         <p:dataTable id="tablaImp" emptyMessage="" binding="#{mttoImp.tablaImpuesto}"
                                      value="#{mttoImp.lstImpuesto}"
                                      var="dimp" rowKey="#{dimp.idimpuesto}"
-                                     selectionMode="single" rows="19" 
+                                     selectionMode="single" rows="5" 
                                      editable="true">
 
-                            <p:ajax event="rowEdit" listener="#{mttoImp.actualizarImpuesto()}" />
+                            <p:ajax event="rowEdit" listener="#{mttoImp.actualizarImpuesto()}" update="@all" />
                             <p:ajax event="rowEditCancel" listener="#{mttoImp.onCancel}"  />
 
-                            <p:column headerText="Id" width="10%">
+                            <p:column headerText="Id" width="25">
                                 <h:outputText value="#{dimp.idimpuesto}"  />                                
                             </p:column>
 
-                            <p:column headerText="Impuesto" width="20%">
+                            <p:column headerText="Impuesto" width="75" filterBy="#{dimp.impuesto}" >
                                 <p:cellEditor>
                                     <f:facet  name="output">
                                         <h:outputText value="#{dimp.impuesto}" />  
@@ -69,7 +68,7 @@ and open the template in the editor.
                                 </p:cellEditor>   
                             </p:column>
 
-                            <p:column headerText="Compañia" width="100%">
+                            <p:column headerText="Compañia" width="125" filterBy="#{dimp.idcompania.compania}">
                                 <p:cellEditor>
                                     <f:facet  name="output">
                                         <h:outputText value="#{dimp.idcompania.compania}" />  
@@ -83,7 +82,7 @@ and open the template in the editor.
                                 </p:cellEditor>
 
                             </p:column>
-                            <p:column headerText="Porcentaje" width="30%">
+                            <p:column headerText="Porcentaje" width="50"  >
                                 <p:cellEditor>
                                     <f:facet  name="output">
                                         <h:outputText value="#{dimp.porcentaje}" />  
@@ -96,15 +95,15 @@ and open the template in the editor.
                             </p:column>
 
 
-                            <p:column style="width:50px; align-content: center" headerText="Modificar">
+                            <p:column style="width:50px; align-content: center" headerText="Modificar" >
                                 <p:rowEditor />
                             </p:column>
 
-                            <p:column style="width:60px; align-content: center" headerText="Eliminar">                               
+                            <p:column style="width:50px; align-content: center" headerText="Eliminar">                               
                                   
                                     <p:commandButton   value="Eliminar" 
                                                       action="#{mttoImp.eliminarImpuesto()}"
-                                                      />
+                                                      update="tablaImp"/>
                                
                             </p:column >
                         </p:dataTable>

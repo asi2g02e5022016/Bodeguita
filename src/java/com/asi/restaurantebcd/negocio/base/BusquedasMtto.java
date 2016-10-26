@@ -6,10 +6,12 @@
 package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Compania;
+import com.asi.restaurantbcd.modelo.Empleado;
 import com.asi.restaurantbcd.modelo.Proveedor;
 import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Formapago;
+import com.asi.restaurantbcd.modelo.Puesto;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -85,7 +87,32 @@ public class BusquedasMtto implements BusquedasMttoLocal {
         Query query = em.createQuery(jpql.toString());
         return query.getResultList();
     }
+     /**
+     * Obtiene la lista de Empleados.
+     * @return List Empleado.
+     * @throws Exception Error generico.
+     */
+    @Override
+    public List <Empleado> buscarEmpleado() throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Empleado a ");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+    }
     
+      /**
+     * Obtiene la lista de Empleados.
+     * @return List Empleado.
+     * @throws Exception Error generico.
+     */
+    @Override
+    public List <Puesto> buscarPuesto() throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Puesto a ");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+    }
+
     /**
      * Obtiene la lista de Forma de Pago.
      * @return List Formapago.

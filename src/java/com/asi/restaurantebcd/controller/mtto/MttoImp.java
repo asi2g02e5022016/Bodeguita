@@ -10,6 +10,7 @@ import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasMttoLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -19,6 +20,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
@@ -42,15 +44,15 @@ public class MttoImp implements Serializable {
     @PostConstruct
     public void postContruction() {
         try {
-//            sesion = Utilidades.findBean("sessionUsr");
-//            if (sesion == null) {
-//                alert("Debe Iniciar Sesion", FacesMessage.SEVERITY_FATAL);
-//                FacesContext.getCurrentInstance().getViewRoot().
-//                        getViewMap().clear();
-//                String url = "http://localhost:8080/RestaurantBDC";
-//                FacesContext.getCurrentInstance().getExternalContext().
-//                        redirect(url);
-//            }
+            sesion = Utilidades.findBean("sessionUsr");
+            if (sesion == null) {
+                alert("Debe Iniciar Sesion", FacesMessage.SEVERITY_FATAL);
+                FacesContext.getCurrentInstance().getViewRoot().
+                        getViewMap().clear();
+                String url = "http://localhost:8080/RestaurantBDC";
+                FacesContext.getCurrentInstance().getExternalContext().
+                        redirect(url);
+            }
             lstImpuesto = this.ejbBusqMtto.buscarImpuesto();
             lstCompania = this.ejbBusqMtto.buscarCompania();
 //           System.out.println(lstCompania);            
@@ -135,9 +137,10 @@ public class MttoImp implements Serializable {
                     FacesMessage.SEVERITY_INFO);
             this.lstImpuesto = this.ejbBusqMtto.buscarImpuesto();
             this.impuestoConstructor = null;
+            this.limpiarPantalla();
         } catch (Exception ex) {
 
-            Logger.getLogger(MttoCompanias.class.getName())
+            Logger.getLogger(MttoImp.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
 
@@ -148,19 +151,17 @@ public class MttoImp implements Serializable {
     public void actualizarImpuesto() {
         try {
             if (this.tablaImpuesto.getRowData() != null) {
-                Impuesto imp = this.lstImpuesto.get(this.tablaImpuesto.getRowIndex());                
-//                this.impuestoConstructor = (Impuesto) tablaImpuesto.getRowData();
+                Impuesto imp = this.lstImpuesto.get(this.tablaImpuesto.getRowIndex());
                 companiaConstructor = new Compania();
                 companiaConstructor.setIdcompania(idCompania);
                 imp.setIdcompania(companiaConstructor);
-//                this.impuestoConstructor.setIdcompania(companiaConstructor);
-//                System.out.println(this.impuestoConstructor);
                 crud.guardarEntidad(imp);
                 alert("Impuesto actualizado exitosamente.",
                         FacesMessage.SEVERITY_INFO);
                 this.impuestoConstructor = null;
                 this.companiaConstructor = null;
                 imp = null;
+                this.tablaImpuesto = null;
                 this.lstImpuesto = this.ejbBusqMtto.buscarImpuesto();
 
             }
@@ -174,7 +175,6 @@ public class MttoImp implements Serializable {
     public void eliminarImpuesto() {
         try {
             if (tablaImpuesto.getRowData() != null) {
-
                 Impuesto imp = this.lstImpuesto.get(this.tablaImpuesto.getRowIndex());
                 if (crud.eliminarEntidad(imp) == true) {
                     lstImpuesto.remove(this.tablaImpuesto.getRowIndex());
@@ -211,8 +211,6 @@ public class MttoImp implements Serializable {
         this.guardarImpuesto();
         alert("Registro modificado exitosamente.",
                 FacesMessage.SEVERITY_INFO);
-//        System.out.println("entro");
-//        System.out.println("event.getObject().." + event.getObject());
     }
 
     public void onCancel(RowEditEvent event) {
