@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml">
+    <ui:define name="body">
+        <center>
+        <h:form id="forprincipal" >
+            
+            <p:growl showDetail="true" showSummary="true" />
+            <p:panel id="basic" header="Mantenimientos Forma de Pago" style="width: 50%"  >
+                <p:menubar>
+                    <p:menuitem value="Nuevo"  update="forprincipal" icon="ui-icon-plus" />
+                    <p:menuitem value="Guardar"  update="forprincipal" icon="ui-icon-disk" />
+                    <p:menuitem value="Buscar" update="forprincipal" icon=" ui-icon-search" />
+                    
+                </p:menubar>
+                    <h:panelGrid columns="2" width="80%">
+                        <h:outputLabel  value="Id de Cliente : "/>
+                        <p:inputText readonly="true" style="width: 100%" />
+                        
+                        <h:outputLabel  value="Nombre de Cliente : "/>
+                        <p:inputText readonly="true" style="width: 100%" />
+                        
+                        <h:outputLabel  value="Apellido de Cliente : "/>
+                        <p:inputText readonly="true" style="width: 100%" />
+                        
+                        <h:outputLabel  value="Direccion de Cliente : "/>
+                        <p:inputText readonly="true" style="width: 100%" />
+                        
+                        <h:outputLabel  value="Telefono de Cliente : "/>
+                        <p:inputText readonly="true" style="width: 100%" />
+                        
+                        <h:outputLabel  value="NIT Cliente : "/>
+                        <p:inputText readonly="true" style="width: 100%" />
+                        
+                        <h:outputLabel  value="NRC Cliente : "/>
+                        <p:inputText readonly="true" style="width: 100%" />
+                                                
+                        <h:outputLabel  value="DUI Cliente : " />
+                        <p:inputText style="width: 40px" />
+                        
+                        <h:outputLabel  value="Excento : " />
+                        <p:inputText style="width: 40px" />
+                    </h:panelGrid>
+                    <h:panelGrid >
+                        <p:dataTable id="tablaFpago" emptyMessage="" 
+                                     
+                                     var="dpro"
+                                     rows="19"  >
+                            <p:column headerText="Id" width="40%">
+                                <h:outputText  />
+                            </p:column>
+                            <p:column headerText="Nombre Forma de Pago" width="90%">
+                                <h:outputText />
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:panelGrid>
+            </p:panel>
+        </h:form>
+            </center>
+    </ui:define>
+</ui:composition>
+
+
