@@ -65,11 +65,10 @@ and open the template in the editor.
                 </h:panelGrid>
 
                 <h:panelGrid >
-                    <p:dataTable value="#{comprasBeans.compraEnca.compradetalleList}" 
-                                 var="det"  emptyMessage=""  >
-
-                        <p:column headerText="cod.">
-                            <h:outputText value="#{det.idproducto}" />
+                    <p:dataTable value="#{comprasBeans.lstCompradeta}" 
+                                 var="det"   emptyMessage=""  >
+                        <p:ajax event="rowEdit" listener="#{comprasBeans.onRowEdit}" />                      <p:column headerText="cod.">
+                            <h:outputText value="#{det.idproducto.idproducto}" />
                         </p:column>
 
                         <p:column headerText="Descripcion">
@@ -77,23 +76,36 @@ and open the template in the editor.
                         </p:column>
 
                         <p:column headerText="Cantidad Solic.">
-                            <h:outputText value="#{det.cantidadsolicitada}"  />
+                             <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{det.cantidadsolicitada}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput" value="#{det.cantidadsolicitada}" style="width:70%"/>
+                                </f:facet>
+                            </p:cellEditor>
                         </p:column>
-
-                        <p:column headerText="Cantidad Conf.">
-                            <h:outputText value="#{det.cantidadconfirmada}"  />
+                        <p:column headerText="Cantidad Conf. " rendered="#{comprasBeans.mostrarCantConfirmada}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{det.cantidadconfirmada}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText  value="#{det.cantidadconfirmada}" style="width:70%"/>
+                                </f:facet>
+                            </p:cellEditor>
                         </p:column>
                         <p:column headerText="Precio">
                             <h:outputText value="#{det.precio}"  />
                         </p:column>
                         <p:column headerText="Monto">
-                            <h:outputText value="#{det.precio}"  />
+                            <h:outputText value="#{det.monto}"  />
                         </p:column>
                         <p:column headerText="Imp">
-                            <h:outputText value="#{det.precio}" />
+                            <h:outputText value="#{det.iva}" />
                         </p:column>
                         <p:column headerText="Total">
-                            <h:outputText value="#{det.precio}" />
+                            <h:outputText value="#{det.total}" />
                         </p:column>
                         <p:column style="width:32px">
                             <f:facet name="header">
@@ -123,6 +135,10 @@ and open the template in the editor.
                 </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable value="#{comprasBeans.lstProveedor}"  var="dpro"  emptyMessage=""  >
+                               
+                        <p:ajax event="rowSelect" update="forprincipal" 
+                                listener="#{comprasBeans.onRowSelectProveedor}" 
+                        />
                         <p:column headerText="nombre">
                             <h:outputText value="#{dpro.proveedor}"  />
                         </p:column>
@@ -149,34 +165,29 @@ and open the template in the editor.
                     </p:menubar>
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
-                    <h:outputLabel  value="Cantidad "  />
-                    <p:inputText    />
-                    <h:outputLabel  value="Descripcion "  />
+                    <h:outputLabel  value="Producto "  />
                     <p:inputText   value="#{comprasBeans.descripcionProducto}" />
                 </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable id="tablaProdd" 
-                                 value="#{comprasBeans.lstProducto}" 
-
+                                 value="#{comprasBeans.lstProducto}"
                                  var="dpro" rowKey="#{dpro.idproducto}"
-                                 selectionMode="single" rows="19"  >
-                        
-                        <p:ajax event="rowSelect" listener="#{comprasBeans.onRowSelect}" 
-                        />
-
-                        <p:column headerText="descripcion">
+                                 selectionMode="single" rows="19"  >                        
+                        <p:ajax event="rowSelect" update="forprincipal" 
+                                listener="#{comprasBeans.onRowSelect}"/>
+                        <p:column filterBy="#{dpro.producto}" headerText="descripcion">
                             <h:outputText value="#{dpro.producto}"  />
                         </p:column>
-                        <p:column headerText="medida">
+                        <p:column headerText="medida" filterBy="#{dpro.medida}" >
                             <h:outputText value="#{dpro.medida}"  />
                         </p:column>
-                        <p:column headerText="tipo">
-                            <h:outputText value="#{dpro.idtipoproducto}"  />
+                        <p:column headerText="tipo" filterBy="#{dpro.tipoproducto}">
+                            <h:outputText value="#{dpro.tipoproducto}"  />
                         </p:column>
-                        <p:column headerText="grupo">
+                        <p:column headerText="grupo" filterBy="#{dpro.grupoproducto}">
                             <h:outputText value="#{dpro.grupoproducto}"  />
-                            <p:column headerText="marca">
-                                <h:outputText value="#{dpro.idmarcaproducto}"  />
+                            <p:column headerText="marca"  filterBy="#{dpro.marcaproducto}">
+                                <h:outputText value="#{dpro.marcaproducto}"  />
                             </p:column>
                         </p:column>
                     </p:dataTable>

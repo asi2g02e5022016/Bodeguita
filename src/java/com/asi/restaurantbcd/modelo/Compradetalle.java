@@ -6,6 +6,7 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -55,7 +57,14 @@ public class Compradetalle implements Serializable {
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
     private Producto idproducto;
-
+    
+    @Transient
+    private BigDecimal monto;
+    @Transient
+    private  BigDecimal total;
+    @Transient
+    private boolean editar;
+    
     public Compradetalle() {
     }
 
@@ -130,6 +139,31 @@ public class Compradetalle implements Serializable {
     public void setIdproducto(Producto idproducto) {
         this.idproducto = idproducto;
     }
+
+    public BigDecimal getMonto() {
+        return monto;
+    }
+
+    public void setMonto(BigDecimal monto) {
+        this.monto = monto;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public boolean isEditar() {
+        return editar;
+    }
+
+    public void setEditar(boolean editar) {
+        this.editar = editar;
+    }
+    
 
     @Override
     public int hashCode() {

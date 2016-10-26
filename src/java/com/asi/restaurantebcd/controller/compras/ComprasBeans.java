@@ -6,7 +6,11 @@
 package com.asi.restaurantebcd.controller.compras;
 
 import com.asi.restaurantbcd.modelo.Compra;
+import com.asi.restaurantbcd.modelo.CompraPK;
 import com.asi.restaurantbcd.modelo.Compradetalle;
+import com.asi.restaurantbcd.modelo.CompradetallePK;
+import com.asi.restaurantbcd.modelo.Estado;
+import com.asi.restaurantbcd.modelo.Opcionmenu;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
 import com.asi.restaurantbcd.modelo.Vwproductos;
@@ -15,6 +19,7 @@ import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.util.EstadoEnum;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -33,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -78,6 +84,7 @@ public class ComprasBeans implements  Serializable {
     private String serie;
     private String nombreProveedor;
     private String descripcionProducto;
+    private boolean mostrarCantConfirmada = false;
     private BigDecimal cantidadSolic;
     private BigDecimal cantidadConfirmada;
     private Proveedor proveedor;
@@ -106,6 +113,7 @@ public class ComprasBeans implements  Serializable {
     * 
     */
    public void nuevaCompra() {
+       compraEnca = null;
        lstCompradeta.clear();
        nodocu = null;
        estado = null;
@@ -123,27 +131,60 @@ public class ComprasBeans implements  Serializable {
    public void guardarCompra() {
        
         try {
-            
+            if (lstCompradeta == null || lstCompradeta.isEmpty()) {
+                alert("El documento no tiene detalle.", FacesMessage.SEVERITY_FATAL);
+                return;
+            }
+            if (codigo != null && !codigo.equals("")) {
+            compraEnca.setCodigofactura(codigo);
+            }
+             if (serie != null && !serie.equals("")) {
+            compraEnca.setCodigofactura(codigo);
+            }
+            Integer codigoCom =  ejbBusComp.obtenerCorreltivoCompra();
+                        
             compraEnca = new Compra();
-            
-//            compraEnca.setCodigoFactura(codigo);
-//            compraEnca.setCompraDetalleList(lstCompradeta);
-//            compraEnca.setFechaCompra(new Date());
-//            compraEnca.setIdCompra(ejbBusComp.obtenerCorreltivoCompra());
-//            Estado est = crud.buscarEntidad(Estado.class, 2);
-//            compraEnca.setIdEstado(est);
-//            compraEnca.setIdProveedor(proveedor);
-//            compraEnca.setIdSucursal(sesion.getSucursal());
-//            compraEnca.setIdUsuario(sesion.getUsuario());
-//            compraEnca.setSerieFactura(serie);
+            CompraPK idCompra = new CompraPK();
+            idCompra.setIdcompra(codigoCom);
+            idCompra.setIdsucursal(sesion.getSucursal().getIdsucursal());
+            compraEnca.setCompraPK(idCompra);
+             int correl = 0;
+            for (Compradetalle cmDet : lstCompradeta) {
+                correl++;
+                CompradetallePK idDePK  = new CompradetallePK();
+                idDePK.setIdcompra(idCompra.getIdcompra());
+                idDePK.setIdcompradetalle(correl);
+                idDePK.setIdsucursal(idCompra.getIdsucursal());
+                cmDet.setCompradetallePK(idDePK);
+            }
+            compraEnca.setCompradetalleList(lstCompradeta);
+            compraEnca.setFechacompra(new Date());
+            Estado est = crud.buscarEntidad(Estado.class, EstadoEnum.PENDIENTE_ALMACENAMIENTO);
+            compraEnca.setIdestado(est);
+            compraEnca.setIdproveedor(proveedor);
+            compraEnca.setSucursal(sesion.getSucursal());
+            compraEnca.setIdusuario(sesion.getUsuario());
             alert("El documento se guardo exitosamente", FacesMessage.SEVERITY_INFO);
             
         } catch (Exception ex) {
             Logger.getLogger(ComprasBeans.class.getName()).log(Level.SEVERE, null, ex);
+            alert("Error: " +ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
      }
       public void ActualizarExistenciaCompra() {
+          if (compraEnca == null) {
+              alert("El documento de  compra es obligtorio.", FacesMessage.SEVERITY_WARN);
+              return;
+          }
+          if (lstCompradeta == null || lstCompradeta.isEmpty()) {
+              alert("El documento no tiene detalle.", FacesMessage.SEVERITY_WARN);
+              return;
+              
+          }
           
+          for (Compra compra : lstCompraMonitor) {
+              
+          }
       }
   /**
     * 
@@ -529,9 +570,14 @@ public class ComprasBeans implements  Serializable {
             }
             compraDeta = new Compradetalle();
             compraDeta.setIdproducto(pro);
+            compraDeta.setEditar(true);
             
             lstCompradeta.add(0, compraDeta);
+            System.out.println("lstCompradeta.." +lstCompradeta);
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProducto').hide();");
         } catch (Exception ex) {
+            ex.printStackTrace();
             Logger.getLogger(ComprasBeans.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
@@ -543,8 +589,33 @@ public class ComprasBeans implements  Serializable {
        if (proveedor != null ) {
            nombreProveedor = proveedor.getProveedor();
        }
+       
+       RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProveedor').hide();");
         
     }
+
+    public boolean isMostrarCantConfirmada() {
+        return mostrarCantConfirmada;
+    }
+
+    public void setMostrarCantConfirmada(boolean mostrarCantConfirmada) {
+        this.mostrarCantConfirmada = mostrarCantConfirmada;
+    }
     
+    
+    
+      public void onRowEdit(RowEditEvent event) {
+        try {
+            compraDeta =  (Compradetalle) event.getObject();
+            crud.guardarEntidad(compraDeta);
+        } catch (Exception ex) {
+            Logger.getLogger(ComprasBeans.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert("Error: " + ex.getMessage(), FacesMessage.SEVERITY_FATAL);
+        }
+
+    }
+      
 }
 

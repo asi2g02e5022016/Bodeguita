@@ -50,7 +50,7 @@ public class Compra implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "seriefactura")
-    private int seriefactura;
+    private String seriefactura;
     @JoinColumn(name = "idestado", referencedColumnName = "idestado")
     @ManyToOne(optional = false)
     private Estado idestado;
@@ -73,7 +73,7 @@ public class Compra implements Serializable {
         this.compraPK = compraPK;
     }
 
-    public Compra(CompraPK compraPK, Date fechacompra, String codigofactura, int seriefactura) {
+    public Compra(CompraPK compraPK, Date fechacompra, String codigofactura, String seriefactura) {
         this.compraPK = compraPK;
         this.fechacompra = fechacompra;
         this.codigofactura = codigofactura;
@@ -108,13 +108,14 @@ public class Compra implements Serializable {
         this.codigofactura = codigofactura;
     }
 
-    public int getSeriefactura() {
+    public String getSeriefactura() {
         return seriefactura;
     }
 
-    public void setSeriefactura(int seriefactura) {
+    public void setSeriefactura(String seriefactura) {
         this.seriefactura = seriefactura;
     }
+
 
     public Estado getIdestado() {
         return idestado;

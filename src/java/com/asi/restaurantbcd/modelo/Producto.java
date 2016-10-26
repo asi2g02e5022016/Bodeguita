@@ -67,9 +67,6 @@ public class Producto implements Serializable {
     @JoinColumn(name = "idmedida", referencedColumnName = "idmedida")
     @ManyToOne(optional = false)
     private Medida idmedida;
-    @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")
-    @ManyToOne(optional = false)
-    private Sucursal idsucursal;
     @JoinColumn(name = "idtipoproducto", referencedColumnName = "idtipoproducto")
     @ManyToOne(optional = false)
     private Tipoproducto idtipoproducto;
@@ -153,14 +150,6 @@ public class Producto implements Serializable {
 
     public void setIdmedida(Medida idmedida) {
         this.idmedida = idmedida;
-    }
-
-    public Sucursal getIdsucursal() {
-        return idsucursal;
-    }
-
-    public void setIdsucursal(Sucursal idsucursal) {
-        this.idsucursal = idsucursal;
     }
 
     public Tipoproducto getIdtipoproducto() {
