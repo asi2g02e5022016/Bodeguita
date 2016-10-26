@@ -44,7 +44,7 @@ public class Impuesto implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "porcentaje")
-    private float porcentaje;
+    private Double porcentaje;
     @JoinColumn(name = "idcompania", referencedColumnName = "idcompania")
     @ManyToOne(optional = false)
     private Compania idcompania;
@@ -56,7 +56,7 @@ public class Impuesto implements Serializable {
         this.idimpuesto = idimpuesto;
     }
 
-    public Impuesto(Integer idimpuesto, String impuesto, float porcentaje) {
+    public Impuesto(Integer idimpuesto, String impuesto, Double porcentaje) {
         this.idimpuesto = idimpuesto;
         this.impuesto = impuesto;
         this.porcentaje = porcentaje;
@@ -78,11 +78,11 @@ public class Impuesto implements Serializable {
         this.impuesto = impuesto;
     }
 
-    public float getPorcentaje() {
+    public Double getPorcentaje() {
         return porcentaje;
     }
 
-    public void setPorcentaje(float porcentaje) {
+    public void setPorcentaje(Double porcentaje) {
         this.porcentaje = porcentaje;
     }
 

@@ -75,7 +75,7 @@ public class MttoImp implements Serializable {
     private String impuesto;
 
     /* variable que contiene el valor del impuesto*/
-    private Float porcentaje;
+    private Double porcentaje;
     /* constructor clase Impuesto  */
     private Impuesto impuestoConstructor;
     /*constructor clase compania*/
@@ -279,13 +279,22 @@ public class MttoImp implements Serializable {
         this.idCompania = idCompania;
     }
 
-    public Float getPorcentaje() {
+    public Double getPorcentaje() {
         return porcentaje;
     }
 
-    public void setPorcentaje(Float porcentaje) {
+    public void setPorcentaje(Double porcentaje) {
         this.porcentaje = porcentaje;
     }
+
+    public Impuesto getImpuestoConstructor() {
+        return impuestoConstructor;
+    }
+
+    public void setImpuestoConstructor(Impuesto impuestoConstructor) {
+        this.impuestoConstructor = impuestoConstructor;
+    }
+
 
     public Compania getCompaniaConstructor() {
         return companiaConstructor;

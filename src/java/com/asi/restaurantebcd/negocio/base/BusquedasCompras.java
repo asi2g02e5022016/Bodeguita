@@ -27,16 +27,27 @@ public class BusquedasCompras implements BusquedasComprasLocal {
     
     /**
      * Obtener el ultimovalor de la compra.
+     * @param codsuc codigo de sucursal.
+     * @param clase Clase que se quiere obtenerel correlativo.
+     * @param identificador Identificados 
      * @return Integrt.
      * @throws Exception  Error gnerico.
      */
+   
     @Override
-    public Integer obtenerCorreltivoCompra() throws Exception {
+    public Integer obtenerCorreltivoCompra(Integer codsuc, Class clase,
+            String identificador) throws Exception {
         Integer valor;
+        System.out.println("clase.getName()..."+clase.getName());
+        System.out.println("clase.getSimpleName().." + clase.getSimpleName());
         StringBuilder slq = new StringBuilder();
-        slq.append("SELECT MAX(idcompra) FROM Compra ");
-        
+        slq.append("SELECT MAX(idcompra) FROM ");
+        slq.append(clase.getSimpleName());
+        slq.append(" where ");
+         slq.append(identificador);
+         slq.append(" = ?1");
         Query query = em.createNativeQuery(slq.toString());
+        query.setParameter(1, codsuc);
         valor = (Integer) query.getSingleResult();
         if (valor == null) {
             valor = Integer.parseInt("1");

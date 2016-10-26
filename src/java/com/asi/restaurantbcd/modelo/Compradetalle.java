@@ -36,19 +36,19 @@ public class Compradetalle implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidadsolicitada")
-    private int cantidadsolicitada;
+    private Double cantidadsolicitada;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidadconfirmada")
-    private int cantidadconfirmada;
+    private Double cantidadconfirmada;
     @Basic(optional = false)
     @NotNull
     @Column(name = "precio")
-    private float precio;
+    private Double precio;
     @Basic(optional = false)
     @NotNull
     @Column(name = "iva")
-    private float iva;
+    private Double iva;
     @JoinColumns({
         @JoinColumn(name = "idcompra", referencedColumnName = "idcompra", insertable = false, updatable = false),
         @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)})
@@ -59,9 +59,9 @@ public class Compradetalle implements Serializable {
     private Producto idproducto;
     
     @Transient
-    private BigDecimal monto;
+    private Double monto;
     @Transient
-    private  BigDecimal total;
+    private  Double total;
     @Transient
     private boolean editar;
     
@@ -72,7 +72,8 @@ public class Compradetalle implements Serializable {
         this.compradetallePK = compradetallePK;
     }
 
-    public Compradetalle(CompradetallePK compradetallePK, int cantidadsolicitada, int cantidadconfirmada, float precio, float iva) {
+    public Compradetalle(CompradetallePK compradetallePK, Double cantidadsolicitada,
+            Double cantidadconfirmada, Double precio, Double iva) {
         this.compradetallePK = compradetallePK;
         this.cantidadsolicitada = cantidadsolicitada;
         this.cantidadconfirmada = cantidadconfirmada;
@@ -92,35 +93,35 @@ public class Compradetalle implements Serializable {
         this.compradetallePK = compradetallePK;
     }
 
-    public int getCantidadsolicitada() {
+    public Double getCantidadsolicitada() {
         return cantidadsolicitada;
     }
 
-    public void setCantidadsolicitada(int cantidadsolicitada) {
+    public void setCantidadsolicitada(Double cantidadsolicitada) {
         this.cantidadsolicitada = cantidadsolicitada;
     }
 
-    public int getCantidadconfirmada() {
+    public Double getCantidadconfirmada() {
         return cantidadconfirmada;
     }
 
-    public void setCantidadconfirmada(int cantidadconfirmada) {
+    public void setCantidadconfirmada(Double cantidadconfirmada) {
         this.cantidadconfirmada = cantidadconfirmada;
     }
 
-    public float getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(float precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
-    public float getIva() {
+    public Double getIva() {
         return iva;
     }
 
-    public void setIva(float iva) {
+    public void setIva(Double iva) {
         this.iva = iva;
     }
 
@@ -140,21 +141,23 @@ public class Compradetalle implements Serializable {
         this.idproducto = idproducto;
     }
 
-    public BigDecimal getMonto() {
+    public Double getMonto() {
         return monto;
     }
 
-    public void setMonto(BigDecimal monto) {
+    public void setMonto(Double monto) {
         this.monto = monto;
     }
 
-    public BigDecimal getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
+
+    
 
     public boolean isEditar() {
         return editar;

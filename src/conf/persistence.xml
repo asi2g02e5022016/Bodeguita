@@ -47,6 +47,11 @@
     <class>com.asi.restaurantbcd.modelo.Vwproductos</class>
     <class>com.asi.restaurantbcd.modelo.Compradetalle</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+       <property name="eclipselink.persistence-context.flush-mode" value="COMMIT"/>
+      <property name="eclipselink.target-server" value="SunAS9"/>
+      <property name="eclipselink.logging.level" value="FINE"/>
+      <property name="eclipselink.logging.parameters" value="true"/>
+    </properties>
   </persistence-unit>
 </persistence>

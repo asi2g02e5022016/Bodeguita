@@ -10,9 +10,12 @@ import com.asi.restaurantbcd.modelo.CompraPK;
 import com.asi.restaurantbcd.modelo.Compradetalle;
 import com.asi.restaurantbcd.modelo.CompradetallePK;
 import com.asi.restaurantbcd.modelo.Estado;
+import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantbcd.modelo.Opcionmenu;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
+import com.asi.restaurantbcd.modelo.Sucursal;
+import com.asi.restaurantbcd.modelo.Usuario;
 import com.asi.restaurantbcd.modelo.Vwproductos;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
@@ -29,11 +32,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.dialog.Dialog;
@@ -55,8 +60,9 @@ public class ComprasBeans implements  Serializable {
      */
     public ComprasBeans() {
     }
-       
-//      @PostConstruct
+//     Impuesto impueso;
+//       
+//    @PostConstruct
 //    public void postConstruction(){
 //        try{
 //            if(sesion == null){
@@ -68,6 +74,8 @@ public class ComprasBeans implements  Serializable {
 //            FacesContext.getCurrentInstance().getExternalContext().
 //                    redirect(url);
 //            } 
+//           impueso =  crud.buscarEntidad(Impuesto.class, Integer.parseInt("1"));
+// 
 //        } catch (Exception e) {
 //                alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
 //        }
@@ -85,11 +93,11 @@ public class ComprasBeans implements  Serializable {
     private String nombreProveedor;
     private String descripcionProducto;
     private boolean mostrarCantConfirmada = false;
-    private BigDecimal cantidadSolic;
+    private Double cantidadSolic;
     private BigDecimal cantidadConfirmada;
     private Proveedor proveedor;
     private Vwproductos producto;
-            SessionUsr sesion = Utilidades.findBean("sessionBean");
+
     private Date fecha;
     private String mensaje;
     private Compra compraEnca;
@@ -105,6 +113,8 @@ public class ComprasBeans implements  Serializable {
     private BusquedasComprasLocal ejbBusComp;
     @EJB
     private BusquedasProductosLocal ejbBusProd;
+        @Inject
+    SessionUsr sesion;
    
     //</editor-fold >
 
@@ -141,7 +151,9 @@ public class ComprasBeans implements  Serializable {
              if (serie != null && !serie.equals("")) {
             compraEnca.setCodigofactura(codigo);
             }
-            Integer codigoCom =  ejbBusComp.obtenerCorreltivoCompra();
+            Integer codigoCom =  ejbBusComp.obtenerCorreltivoCompra(
+                    sesion.getSucursal().getIdsucursal(),
+                    Compra.class, "idsucursal");
                         
             compraEnca = new Compra();
             CompraPK idCompra = new CompraPK();
@@ -156,14 +168,17 @@ public class ComprasBeans implements  Serializable {
                 idDePK.setIdcompradetalle(correl);
                 idDePK.setIdsucursal(idCompra.getIdsucursal());
                 cmDet.setCompradetallePK(idDePK);
+                cmDet.setCompra(compraEnca);
             }
             compraEnca.setCompradetalleList(lstCompradeta);
             compraEnca.setFechacompra(new Date());
-            Estado est = crud.buscarEntidad(Estado.class, EstadoEnum.PENDIENTE_ALMACENAMIENTO);
+            Estado est = crud.buscarEntidad(Estado.class, 1);
             compraEnca.setIdestado(est);
             compraEnca.setIdproveedor(proveedor);
             compraEnca.setSucursal(sesion.getSucursal());
             compraEnca.setIdusuario(sesion.getUsuario());
+            System.out.println("");
+            crud.guardarEntidad(compraEnca);
             alert("El documento se guardo exitosamente", FacesMessage.SEVERITY_INFO);
             
         } catch (Exception ex) {
@@ -496,13 +511,14 @@ public class ComprasBeans implements  Serializable {
         this.mensaje = mensaje;
     }
 
-    public BigDecimal getCantidadSolic() {
+    public Double getCantidadSolic() {
         return cantidadSolic;
     }
 
-    public void setCantidadSolic(BigDecimal cantidadSolic) {
+    public void setCantidadSolic(Double cantidadSolic) {
         this.cantidadSolic = cantidadSolic;
     }
+
 
     public BigDecimal getCantidadConfirmada() {
         return cantidadConfirmada;
@@ -559,8 +575,12 @@ public class ComprasBeans implements  Serializable {
         try {
             Vwproductos idP  =  ((Vwproductos) event.getObject());
             System.out.println("yd.,,, " + idP);
+            System.out.println("camtidad... " +cantidadSolic);
             producto = ((Vwproductos) event.getObject());
-            
+            if (cantidadSolic == null || cantidadSolic.toString().equals("0")){
+                alert("La Cantidad Es obligatorio", FacesMessage.SEVERITY_WARN);
+                return;
+            }
             System.out.println("producto,.. " +producto);
             System.out.println("u..");
             Producto pro = crud.buscarEntidad(Producto.class,
@@ -570,8 +590,12 @@ public class ComprasBeans implements  Serializable {
             }
             compraDeta = new Compradetalle();
             compraDeta.setIdproducto(pro);
-            compraDeta.setEditar(true);
-            
+            compraDeta.setCantidadsolicitada(cantidadSolic);
+            compraDeta.setPrecio(producto.getPrecioventa());
+            compraDeta.setMonto(cantidadSolic * compraDeta.getPrecio());
+            Double totaliva = compraDeta.getMonto() * Double.valueOf("0.13");
+            compraDeta.setIva(totaliva);
+            compraDeta.setTotal(totaliva + compraDeta.getMonto());
             lstCompradeta.add(0, compraDeta);
             System.out.println("lstCompradeta.." +lstCompradeta);
             RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -608,7 +632,7 @@ public class ComprasBeans implements  Serializable {
       public void onRowEdit(RowEditEvent event) {
         try {
             compraDeta =  (Compradetalle) event.getObject();
-            crud.guardarEntidad(compraDeta);
+           // crud.guardarEntidad(compraDeta);
         } catch (Exception ex) {
             Logger.getLogger(ComprasBeans.class.getName())
                     .log(Level.SEVERE, null, ex);

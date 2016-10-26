@@ -66,7 +66,7 @@ and open the template in the editor.
 
                 <h:panelGrid >
                     <p:dataTable value="#{comprasBeans.lstCompradeta}" 
-                                 var="det"   emptyMessage=""  >
+                                 var="det"   emptyMessage=""   editable="true">
                         <p:ajax event="rowEdit" listener="#{comprasBeans.onRowEdit}" />                      <p:column headerText="cod.">
                             <h:outputText value="#{det.idproducto.idproducto}" />
                         </p:column>
@@ -136,7 +136,7 @@ and open the template in the editor.
                 <h:panelGrid >
                     <p:dataTable value="#{comprasBeans.lstProveedor}"  var="dpro"  emptyMessage=""  >
                                
-                        <p:ajax event="rowSelect" update="forprincipal" 
+                        <p:ajax event="rowSelect" update="forprincipal" process="@all"
                                 listener="#{comprasBeans.onRowSelectProveedor}" 
                         />
                         <p:column headerText="nombre">
@@ -165,6 +165,8 @@ and open the template in the editor.
                     </p:menubar>
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
+                                      <h:outputLabel  value="Cantidad    "  />
+                                      <p:inputText   value="#{comprasBeans.cantidadSolic}" />
                     <h:outputLabel  value="Producto "  />
                     <p:inputText   value="#{comprasBeans.descripcionProducto}" />
                 </h:panelGrid>
@@ -173,7 +175,7 @@ and open the template in the editor.
                                  value="#{comprasBeans.lstProducto}"
                                  var="dpro" rowKey="#{dpro.idproducto}"
                                  selectionMode="single" rows="19"  >                        
-                        <p:ajax event="rowSelect" update="forprincipal" 
+                        <p:ajax event="rowSelect" update="forprincipal"  
                                 listener="#{comprasBeans.onRowSelect}"/>
                         <p:column filterBy="#{dpro.producto}" headerText="descripcion">
                             <h:outputText value="#{dpro.producto}"  />

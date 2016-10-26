@@ -16,12 +16,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface BusquedasComprasLocal {
-    /**
-     * Obtener el ultimovalor de la compra.
-     * @return Integrt.
-     * @throws Exception  Error gnerico.
-     */
-    public Integer obtenerCorreltivoCompra() throws Exception;
+
     /**
      * Buscar Proveedores por medio de una MAP filtros.
      * @param map Map.
@@ -30,4 +25,7 @@ public interface BusquedasComprasLocal {
      */
     
     public List <Proveedor> buscarProveedores(Map map) throws Exception;
+
+    public Integer obtenerCorreltivoCompra(Integer codsuc, Class clase, String identificador)
+            throws Exception;
 }

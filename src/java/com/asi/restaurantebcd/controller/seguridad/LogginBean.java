@@ -94,10 +94,8 @@ public class LogginBean implements Serializable {
                           usr.getIdusuario()+ usr.getClave() + new Date().toString();
                //sesion.setCodusr(usuario);
                sesion.setFecha(new Date());
-              // sesion.setSucursal(BigInteger.ONE);
                sesion.setToken(token);
                sesion.setFecha(new Date());
-               sesion.setCompania(usr.getIdempleado().getIdsucursal().getIdcompania());
                sesion.setEmpleSucursal(usr.getIdempleado());
                sesion.setSucursal(usr.getIdempleado().getIdsucursal());
                sesion.setPerfil(usr.getIdperfil());
