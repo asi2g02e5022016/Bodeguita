@@ -6,31 +6,33 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author PROGRAMADOR
  */
+public class VwexistenciasPK implements Serializable {
 
-@Embeddable
-public class VexistsucursalPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "idsucursal")
     private int idsucursal;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "idcompania")
-    private Integer idcompania;
-        @Column(name = "idproducto")
-    
-    private Integer idproducto;
+    @Column(name = "idproducto")
+    private int idproducto;
 
+    public VwexistenciasPK() {
+    }
+    
+    public VwexistenciasPK(int idproducto, int idsucursal){
+        this.idproducto = idproducto;
+        this.idsucursal = idsucursal;
+    }
+    
     public int getIdsucursal() {
         return idsucursal;
     }
@@ -39,28 +41,19 @@ public class VexistsucursalPK implements Serializable {
         this.idsucursal = idsucursal;
     }
 
-    public Integer getIdcompania() {
-        return idcompania;
-    }
-
-    public void setIdcompania(Integer idcompania) {
-        this.idcompania = idcompania;
-    }
-
-    public Integer getIdproducto() {
+    public int getIdproducto() {
         return idproducto;
     }
 
-    public void setIdproducto(Integer idproducto) {
+    public void setIdproducto(int idproducto) {
         this.idproducto = idproducto;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 53 * hash + this.idsucursal;
-        hash = 53 * hash + Objects.hashCode(this.idcompania);
-        hash = 53 * hash + Objects.hashCode(this.idproducto);
+        int hash = 3;
+        hash = 97 * hash + this.idsucursal;
+        hash = 97 * hash + this.idproducto;
         return hash;
     }
 
@@ -75,25 +68,18 @@ public class VexistsucursalPK implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final VexistsucursalPK other = (VexistsucursalPK) obj;
+        final VwexistenciasPK other = (VwexistenciasPK) obj;
         if (this.idsucursal != other.idsucursal) {
             return false;
         }
-        if (!Objects.equals(this.idcompania, other.idcompania)) {
-            return false;
-        }
-        if (!Objects.equals(this.idproducto, other.idproducto)) {
+        if (this.idproducto != other.idproducto) {
             return false;
         }
         return true;
-    }
-
+    }   
     @Override
     public String toString() {
-        return "VexistsucursalPK{" + "idsucursal=" 
-                + idsucursal + ", idcompania=" + idcompania + ", idproducto=" + idproducto + '}';
+        return "VwexistenciasPK{" + "idsucursal=" + idsucursal + ", idproducto=" + idproducto + '}';
     }
-
-        
     
 }

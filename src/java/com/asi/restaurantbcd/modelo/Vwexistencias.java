@@ -6,10 +6,11 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -25,26 +26,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "vwexistencias")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Vwexistencias.findAll", query = "SELECT v FROM Vwexistencias v"),
-    @NamedQuery(name = "Vwexistencias.findByIdexistencia", query = "SELECT v FROM Vwexistencias v WHERE v.idexistencia = :idexistencia"),
-    @NamedQuery(name = "Vwexistencias.findByIdsucursal", query = "SELECT v FROM Vwexistencias v WHERE v.idsucursal = :idsucursal"),
-    @NamedQuery(name = "Vwexistencias.findByIdproducto", query = "SELECT v FROM Vwexistencias v WHERE v.idproducto = :idproducto"),
-    @NamedQuery(name = "Vwexistencias.findByValor", query = "SELECT v FROM Vwexistencias v WHERE v.valor = :valor"),
-    @NamedQuery(name = "Vwexistencias.findByCostounitario", query = "SELECT v FROM Vwexistencias v WHERE v.costounitario = :costounitario"),
-    @NamedQuery(name = "Vwexistencias.findBySucursal", query = "SELECT v FROM Vwexistencias v WHERE v.sucursal = :sucursal"),
-    @NamedQuery(name = "Vwexistencias.findByIdcompania", query = "SELECT v FROM Vwexistencias v WHERE v.idcompania = :idcompania"),
-    @NamedQuery(name = "Vwexistencias.findByCompania", query = "SELECT v FROM Vwexistencias v WHERE v.compania = :compania"),
-    @NamedQuery(name = "Vwexistencias.findByProducto", query = "SELECT v FROM Vwexistencias v WHERE v.producto = :producto"),
-    @NamedQuery(name = "Vwexistencias.findByIdtipoproducto", query = "SELECT v FROM Vwexistencias v WHERE v.idtipoproducto = :idtipoproducto"),
-    @NamedQuery(name = "Vwexistencias.findByTipoproducto", query = "SELECT v FROM Vwexistencias v WHERE v.tipoproducto = :tipoproducto")})
+    @NamedQuery(name = "Vwexistencias.findAll", query = "SELECT v FROM Vwexistencias v")})
 public class Vwexistencias implements Serializable {
-
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idexistencia")
-    @Id
-    private int idexistencia;
+    @EmbeddedId
+    protected VwexistenciasPK vwexistenciasPk;
     @Basic(optional = false)
     @NotNull
     @Column(name = "idsucursal")
@@ -80,13 +66,12 @@ public class Vwexistencias implements Serializable {
 
     public Vwexistencias() {
     }
-
-    public int getIdexistencia() {
-        return idexistencia;
-    }
-
-    public void setIdexistencia(int idexistencia) {
-        this.idexistencia = idexistencia;
+    
+    public Vwexistencias(VwexistenciasPK vwexistenciasPK, int idproducto, int idsucursal){
+        this.vwexistenciasPk = vwexistenciasPK;
+        this.idproducto = idproducto;
+        this.idsucursal = idsucursal;
+        
     }
 
     public int getIdsucursal() {
@@ -171,8 +156,8 @@ public class Vwexistencias implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + this.idexistencia;
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.vwexistenciasPk);
         return hash;
     }
 
@@ -188,10 +173,17 @@ public class Vwexistencias implements Serializable {
             return false;
         }
         final Vwexistencias other = (Vwexistencias) obj;
-        if (this.idexistencia != other.idexistencia) {
+        if (!Objects.equals(this.vwexistenciasPk, other.vwexistenciasPk)) {
             return false;
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Vwexistencias{" + "vwexistenciasPk=" + vwexistenciasPk + '}';
+    }
+
+    
     
 }

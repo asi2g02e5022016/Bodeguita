@@ -6,10 +6,8 @@
 package com.asi.restaurantebcd.controller.inventario;
 
 import com.asi.restaurantbcd.modelo.Existencia;
-import com.asi.restaurantbcd.modelo.Vexistxsucsal;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
-import com.asi.restaurantebcd.negocio.base.VBusquedasExistenciasLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -25,20 +23,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
+import com.asi.restaurantebcd.negocio.base.BusquedasExistenciasLocal;
 
 /**
  *
  * @author SANCHEZ
  */
-@ManagedBean(name = "invExistenciaBean")
+@ManagedBean(name = "invExistenciasBean")
 @ViewScoped
-public class InvExistenciaBean implements Serializable {
+public class InvExistenciasBean implements Serializable {
 
     @EJB
-    private VBusquedasExistenciasLocal vBusquedasExistencias;
+    private BusquedasExistenciasLocal BusquedasExistencias;
     
     //<editor-fold  defaultstate="collapsed" desc="Inializar" >
-    public InvExistenciaBean(){
+    public InvExistenciasBean(){
     }
     
     @PostConstruct
@@ -53,7 +52,7 @@ public class InvExistenciaBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().
                     redirect(url);
             } 
-            buscarInvExistencia();
+            buscarExistencia();
         } catch (Exception e) {
                 alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
         }
@@ -72,8 +71,7 @@ public class InvExistenciaBean implements Serializable {
       /**Entidad que buscará las existencias.*/
     private Existencia existencia;
       /**Atributo que se muestra en pantalla la lista de existencias.*/
-    private List <Vexistxsucsal> listExistencia;
-    /**Bindin de DataTable que muestra las existencias.*/
+      /**Bindin de DataTable que muestra las existencias.*/
     private DataTable dtExistencia  =  new DataTable();
      /**
       * EJB Quecon tiene metodos utilitarios como:
@@ -88,7 +86,6 @@ public class InvExistenciaBean implements Serializable {
     
     //<editor-fold  defaultstate="collapsed" desc="Metodos" >
      public void limpiarPantalla() {
-         listExistencia = null;
          existencia = null;
          idExistencia = null;
          valor = 0;
@@ -96,7 +93,7 @@ public class InvExistenciaBean implements Serializable {
          dtExistencia = new DataTable();
     }
      
-     public void buscarInvExistencia() {
+     public void buscarExistencia() {
         try {
             Map filtros = new HashMap();
             filtros.put("codcia", sesion.getCompania().getIdcompania());
@@ -108,12 +105,12 @@ public class InvExistenciaBean implements Serializable {
 //             if (true) {
 //                 filtros.put("codsuc", valor);
 //             }
-            listExistencia =  vBusquedasExistencias.buscarExistenciaFiltros(filtros);
+            /*listExistencia =  vBusquedasExistencias.buscarExistenciaFiltros(filtros);
             if (listExistencia == null || listExistencia.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
-            }
+            }*/
         } catch (Exception ex) {
-            Logger.getLogger(InvExistenciaBean.class.getName())
+            Logger.getLogger(InvExistenciasBean.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
@@ -129,14 +126,7 @@ public class InvExistenciaBean implements Serializable {
      //</editor-fold>
 
     //<editor-fold  defaultstate="collapsed" desc="Getter and setter" >
-    public Integer getIdExistencia() {
-        return idExistencia;
-    }
-
-    public void setIdExistencia(Integer idExistencia) {
-        this.idExistencia = idExistencia;
-    }
-
+    
     public float getValor() {
         return valor;
     }
@@ -169,13 +159,13 @@ public class InvExistenciaBean implements Serializable {
         this.existencia = existencia;
     }
 
-    public List<Vexistxsucsal> getListExistencia() {
+    /*public List<Vexistxsucsal> getListExistencia() {
         return listExistencia;
     }
 
     public void setListExistencia(List<Vexistxsucsal> listExistencia) {
         this.listExistencia = listExistencia;
-    }
+    }*/
 
 
 

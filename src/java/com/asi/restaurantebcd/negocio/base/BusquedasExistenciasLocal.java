@@ -1,6 +1,6 @@
 package com.asi.restaurantebcd.negocio.base;
 
-import com.asi.restaurantbcd.modelo.Vexistxsucsal;
+import com.asi.restaurantbcd.modelo.Vwexistencias;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Local;
@@ -10,7 +10,7 @@ import javax.ejb.Local;
  * @author PROGRAMADOR
  */
 @Local
-public interface VBusquedasExistenciasLocal {       
+public interface BusquedasExistenciasLocal {       
      
          /**
      * 
@@ -18,6 +18,6 @@ public interface VBusquedasExistenciasLocal {
      * @return
      * @throws Exception 
      */
-    public List <Vexistxsucsal> buscarExistenciaFiltros(Map filtro) 
+    public List <Vwexistencias> buscarExistenciaFiltros(Map filtro) 
                 throws Exception;
 }

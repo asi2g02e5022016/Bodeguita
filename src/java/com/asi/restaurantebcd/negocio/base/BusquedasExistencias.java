@@ -5,7 +5,7 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
-import com.asi.restaurantbcd.modelo.Vexistxsucsal;
+import com.asi.restaurantbcd.modelo.Vwexistencias;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -18,7 +18,7 @@ import javax.persistence.Query;
  * @author PROGRAMADOR
  */
 @Stateless
-public class VBusquedasExistencias implements VBusquedasExistenciasLocal {
+public class BusquedasExistencias implements BusquedasExistenciasLocal {
     
     @PersistenceContext(unitName = "RestaurantBDC-WebPU")
     private EntityManager em; 
@@ -29,7 +29,7 @@ public class VBusquedasExistencias implements VBusquedasExistenciasLocal {
      * @throws Exception 
      */
     @Override
-    public List <Vexistxsucsal> buscarExistenciaFiltros(Map filtro) 
+    public List <Vwexistencias> buscarExistenciaFiltros(Map filtro) 
                 throws Exception {
             if (filtro == null){
                 return null;
