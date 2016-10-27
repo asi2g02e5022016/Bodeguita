@@ -6,6 +6,7 @@
 package com.asi.restaurantebcd.controller.inventario;
 
 import com.asi.restaurantbcd.modelo.Existencia;
+import com.asi.restaurantbcd.modelo.Vwexistencias;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
@@ -24,6 +25,9 @@ import javax.faces.view.ViewScoped;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import com.asi.restaurantebcd.negocio.base.BusquedasExistenciasLocal;
+import java.util.ArrayList;
+import javax.ejb.Stateless;
+import javax.swing.tree.DefaultTreeCellEditor;
 
 /**
  *
@@ -35,98 +39,136 @@ public class InvExistenciasBean implements Serializable {
 
     @EJB
     private BusquedasExistenciasLocal BusquedasExistencias;
-    
+
     //<editor-fold  defaultstate="collapsed" desc="Inializar" >
-    public InvExistenciasBean(){
+    public InvExistenciasBean() {
     }
-    
-    @PostConstruct
-    public void postConstruction(){
-        try{
+
+    /*@PostConstruct
+    public void postConstruction() {
+        try {
             sesion = Utilidades.findBean("sessionUsr");
-            if(sesion == null){
-                alert("Debe Iniciar Sesion",FacesMessage.SEVERITY_FATAL);
+            if (sesion == null) {
+                alert("Debe Iniciar Sesion", FacesMessage.SEVERITY_FATAL);
                 FacesContext.getCurrentInstance().getViewRoot().
                         getViewMap().clear();
-            String url = "http://localhost:8080/RestaurantBDC";
-            FacesContext.getCurrentInstance().getExternalContext().
-                    redirect(url);
-            } 
-            buscarExistencia();
+                String url = "http://localhost:8080/RestaurantBDC";
+                FacesContext.getCurrentInstance().getExternalContext().
+                        redirect(url);
+            }
+            buscarExistenciasActuales();
         } catch (Exception e) {
-                alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
+            alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
         }
-    }
+    }*/
     //</editor-fold>
-    
+
     //<editor-fold  defaultstate="collapsed" desc="LocalVariables" >
-    /**Atributo que se muestra en pantalla el codigo de existencia.*/
-    private Integer idExistencia;
-    /**Atributo que se muestra en pantalla el valor del producto.*/
-    private float valor;
-      /**Atributo que se muestra en pantalla el costo unitario del producto.*/
-    private float costoUnitario;
-      /**Busca beans session activa.*/
-    private SessionUsr sesion ;
-      /**Entidad que buscará las existencias.*/
+    /**
+     * Entidad que buscará las existencias.
+     */
     private Existencia existencia;
-      /**Atributo que se muestra en pantalla la lista de existencias.*/
-      /**Bindin de DataTable que muestra las existencias.*/
-    private DataTable dtExistencia  =  new DataTable();
-     /**
-      * EJB Quecon tiene metodos utilitarios como:
-      * Guardar, Eliminar, Buscar... 
-      */
-     @EJB
+    /**
+     * Vista de las existencias.
+     */
+    private Vwexistencias vwexistencias;
+    /**
+     * Atributo que se muestra en pantalla el idsucursal.
+     */
+    private String codsucursal;
+    /**
+     * Atributo que se muestra en pantalla el idproducto.
+     */
+    private String codproducto;
+
+    /**
+     * Atributo que se muestra en pantalla el valor del producto.
+     */
+    private float valor;
+    /**
+     * Atributo que se muestra en pantalla el costo unitario del producto.
+     */
+    private float costoPromedio;
+    /**
+     * Busca beans session activa.
+     */
+    private SessionUsr sesion;
+
+    /**
+     * Atributo que se muestra en pantalla la lista de existencias.
+     */
+    /**
+     * Bindin de DataTable que muestra las existencias.
+     */
+    private DataTable dtExistencia = new DataTable();
+    private List<Vwexistencias> ltsVwExistencias = new ArrayList<>();
+    /**
+     * EJB Quecon tiene metodos utilitarios como: Guardar, Eliminar, Buscar...
+     */
+    @EJB
     private CrudBDCLocal crud;
-     
-     
+
+    @EJB
+    private BusquedasExistenciasLocal ejbBucdaExistencias;
 
     //</editor-fold>
     
     //<editor-fold  defaultstate="collapsed" desc="Metodos" >
-     public void limpiarPantalla() {
-         existencia = null;
-         idExistencia = null;
-         valor = 0;
-         costoUnitario = 0;
-         dtExistencia = new DataTable();
+    public void limpiarPantalla() {
+        ltsVwExistencias = null;
+        codproducto = null;
+        codsucursal = null;
     }
-     
-     public void buscarExistencia() {
-        try {
-            Map filtros = new HashMap();
-            filtros.put("codcia", sesion.getCompania().getIdcompania());
-//            //aqui capturar el valor de establecimieto eleccionado.
-//             if (true) {
-//                 filtros.put("codsuc", valor);
-//             }
-//             //
-//             if (true) {
-//                 filtros.put("codsuc", valor);
-//             }
-            /*listExistencia =  vBusquedasExistencias.buscarExistenciaFiltros(filtros);
-            if (listExistencia == null || listExistencia.isEmpty()) {
-                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
-            }*/
-        } catch (Exception ex) {
-            Logger.getLogger(InvExistenciasBean.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
+
+    public void buscarExistenciasActuales() {
     }
-     private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
+
+    private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
         if (mensaje == null) {
-            mensaje =  "-";
+            mensaje = "-";
         }
         FacesMessage message = new FacesMessage(faces,
                 "Mensaje", mensaje.toString());
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
-     //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold  defaultstate="collapsed" desc="PopupExistencias" >
+    public void buscarExistencias() {
+        try {
+            Map filtro = new HashMap();
+
+            if (codsucursal != null) {
+                filtro.put("codsuc", codsucursal.trim());
+            }
+            if (codproducto != null) {
+                filtro.put("codprod", codproducto.trim());
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(InvExistenciasBean.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
+        }
+    }
+    //</editor-fold>
 
     //<editor-fold  defaultstate="collapsed" desc="Getter and setter" >
-    
+    public String getCodsucursal() {
+        return codsucursal;
+    }
+
+    public void setCodsucursal(String codsucursal) {
+        this.codsucursal = codsucursal;
+    }
+
+    public String getCodproducto() {
+        return codproducto;
+    }
+
+    public void setCodproducto(String codproducto) {
+        this.codproducto = codproducto;
+    }
+
     public float getValor() {
         return valor;
     }
@@ -135,12 +177,12 @@ public class InvExistenciasBean implements Serializable {
         this.valor = valor;
     }
 
-    public float getCostoUnitario() {
-        return costoUnitario;
+    public float getCostoPromedio() {
+        return costoPromedio;
     }
 
-    public void setCostoUnitario(float costoUnitario) {
-        this.costoUnitario = costoUnitario;
+    public void setCostoPromedio(float costoPromedio) {
+        this.costoPromedio = costoPromedio;
     }
 
     public SessionUsr getSesion() {
@@ -159,22 +201,44 @@ public class InvExistenciasBean implements Serializable {
         this.existencia = existencia;
     }
 
-    /*public List<Vexistxsucsal> getListExistencia() {
-        return listExistencia;
-    }
-
-    public void setListExistencia(List<Vexistxsucsal> listExistencia) {
-        this.listExistencia = listExistencia;
-    }*/
-
-
-
     public DataTable getDtExistencia() {
         return dtExistencia;
     }
 
     public void setDtExistencia(DataTable dtExistencia) {
         this.dtExistencia = dtExistencia;
+    }
+
+    public BusquedasExistenciasLocal getBusquedasExistencias() {
+        return BusquedasExistencias;
+    }
+
+    public void setBusquedasExistencias(BusquedasExistenciasLocal BusquedasExistencias) {
+        this.BusquedasExistencias = BusquedasExistencias;
+    }
+
+    public Vwexistencias getVwexistencias() {
+        return vwexistencias;
+    }
+
+    public void setVwexistencias(Vwexistencias vwexistencias) {
+        this.vwexistencias = vwexistencias;
+    }
+
+    public List<Vwexistencias> getLtsVwExistencias() {
+        return ltsVwExistencias;
+    }
+
+    public void setLtsVwExistencias(List<Vwexistencias> ltsVwExistencias) {
+        this.ltsVwExistencias = ltsVwExistencias;
+    }
+
+    public BusquedasExistenciasLocal getEjbBucdaExistencias() {
+        return ejbBucdaExistencias;
+    }
+
+    public void setEjbBucdaExistencias(BusquedasExistenciasLocal ejbBucdaExistencias) {
+        this.ejbBucdaExistencias = ejbBucdaExistencias;
     }
 
     public CrudBDCLocal getCrud() {
@@ -184,7 +248,5 @@ public class InvExistenciasBean implements Serializable {
     public void setCrud(CrudBDCLocal crud) {
         this.crud = crud;
     }
-
     //</editor-fold>
-    
 }
