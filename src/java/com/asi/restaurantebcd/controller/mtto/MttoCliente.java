@@ -17,6 +17,8 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.view.ViewScoped;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 
@@ -24,9 +26,12 @@ import org.primefaces.context.RequestContext;
  *
  * @author Luis
  */
-@Named(value = "mttoCliente")
-@Dependent
+@ManagedBean(name = "mttoCliente")
+@ViewScoped
 public class MttoCliente implements Serializable{
+    
+    public MttoCliente() {
+    }
 
     @EJB
     private BusquedasClienteLocal busquedasCliente;
@@ -38,9 +43,16 @@ public class MttoCliente implements Serializable{
     /**
      * Creates a new instance of MttoCliente
      */
-    public MttoCliente() {
-        }
     
+    
+    
+    
+
+    
+    //<editor-fold  defaultstate="collapsed" desc="Variables" >
+    /**
+     * Busca beans session activa.
+     */
         
         private Integer idCliente;
         
@@ -66,146 +78,16 @@ public class MttoCliente implements Serializable{
         
         private DataTable dtCliente = new DataTable();
         
-        public void limpiarpantalla(){
         
-            idCliente = null;
-            nomCliente = null;
-            apeCliente = null;
-            dirCliente = null;
-            telCliente = null;
-            nitCliente = null;
-            nrcCliente = null;
-            duiCliente = null;
-            exCliente = null;
-            listaCliente = null;
-            dtCliente = new DataTable();
-        }
+        //</editor-fold >
         
-        public void guardarnomCliente(){
-        try {
-            if(nomCliente == null || nomCliente.equals("") ){
-                alert("Nombre de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            cliente = new Cliente();
-            cliente.setNombre(nomCliente);
-            crudBDC.guardarEntidad(cliente);
-            alert("El nombre se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
-        } catch (Exception ex) {
-            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-        }
+        
+        
+       
+        
+        
         
 
-        public void guardarapeCliente(){
-        try {
-            if(apeCliente == null || apeCliente.equals("") ){
-                alert("Apellido de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            cliente = new Cliente();
-            cliente.setApellido(apeCliente);
-            crudBDC.guardarEntidad(cliente);
-            alert("El apellido se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
-        } catch (Exception ex) {
-            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-        }
-        
-        
-        public void guardardirCliente(){
-        try {
-            if(dirCliente == null || dirCliente.equals("") ){
-                alert("Direccion de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            cliente = new Cliente();
-            cliente.setDireccion(dirCliente);
-            crudBDC.guardarEntidad(cliente);
-            alert("La Direccion se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
-        } catch (Exception ex) {
-            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-        }
-        
-        public void guardartelCliente(){
-        try {
-            if(telCliente == null || telCliente.equals("") ){
-                alert("Telefono de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            cliente = new Cliente();
-            cliente.setTelefono(telCliente);
-            crudBDC.guardarEntidad(cliente);
-            alert("El telefono se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
-        } catch (Exception ex) {
-            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-        }
-        
-        public void guardarnitCliente(){
-        try {
-            if(nitCliente == null || nitCliente.equals("") ){
-                alert("Telefono de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            cliente = new Cliente();
-            cliente.setNit(nitCliente);
-            crudBDC.guardarEntidad(cliente);
-            alert("El telefono se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
-        } catch (Exception ex) {
-            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-        }
-        
-        public void guardarnrcCliente(){
-        try {
-            if(nrcCliente == null || nrcCliente.equals("") ){
-                alert("NRC de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            cliente = new Cliente();
-            cliente.setNrc(nrcCliente);
-            crudBDC.guardarEntidad(cliente);
-            alert("El NRC se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
-        } catch (Exception ex) {
-            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-        }
-        
-        public void guardarduiCliente(){
-        try {
-            if(duiCliente == null || duiCliente.equals("") ){
-                alert("DUI de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            cliente = new Cliente();
-            cliente.setDui(duiCliente);
-            crudBDC.guardarEntidad(cliente);
-            alert("El DUI se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
-        } catch (Exception ex) {
-            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-        }
-        
-        public void guardarexCliente(){
-        try {            
-            cliente = new Cliente();
-            cliente.setDui(duiCliente);
-            crudBDC.guardarEntidad(cliente);
-            alert("El DUI se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
-        } catch (Exception ex) {
-            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-        }
 
         
 public void buscarCliente(){
@@ -222,6 +104,8 @@ public void buscarCliente(){
 
 
         
+
+//<editor-fold  defaultstate="collapsed" desc="Getter y setter"  >
 
     public Integer getIdCliente() {
         return idCliente;
@@ -311,8 +195,195 @@ public void buscarCliente(){
         this.dtCliente = dtCliente;
     }
         
+//</editor-fold > 
+    
+    //<editor-fold  defaultstate="collapsed" desc="Metodos"  >
+    
+     public void limpiarpantalla(){
         
-     private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
+            idCliente = null;
+            nomCliente = null;
+            apeCliente = null;
+            dirCliente = null;
+            telCliente = null;
+            nitCliente = null;
+            nrcCliente = null;
+            duiCliente = null;
+            exCliente = null;
+            listaCliente = null;
+            dtCliente = new DataTable();
+        }
+     
+    
+    public void insertarCliente() {
+        try {
+            System.out.println("entro");
+//            if (this.tablaEmpleado.getRowData() != null) {
+            if (idCliente != null) {
+                System.out.println("actualizar");
+                this.actualizarCliente();
+            } else {
+                System.out.println("nuevoRegistro");
+                this.guardarCliente();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MttoEmpleado.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+
+    }
+    
+    public void guardarCliente(){
+    if (idCliente == null || idCliente.equals("")){
+        alert("Seleccione el cliente", FacesMessage.SEVERITY_INFO);
+        return;
+    }
+    
+    if(nomCliente == null || nomCliente.equals("") ){
+                alert("Nombre de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
+                return;
+            }
+    
+    if(apeCliente == null || apeCliente.equals("") ){
+                alert("Apellido de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
+                return;
+            }
+    
+    if(dirCliente == null || dirCliente.equals("") ){
+                alert("Direccion de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
+                return;
+            }
+    
+    if(telCliente == null || telCliente.equals("") ){
+                alert("Telefono de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
+                return;
+            }
+    
+    if(nitCliente == null || nitCliente.equals("") ){
+                alert("Telefono de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
+                return;
+            }
+    
+    if(nrcCliente == null || nrcCliente.equals("") ){
+                alert("NRC de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
+                return;
+            }
+    
+    }
+     
+     
+     
+     
+    public void guardarnomCliente(){
+        try {
+            
+            cliente = new Cliente();
+            cliente.setNombre(nomCliente);
+            crudBDC.guardarEntidad(cliente);
+            alert("El nombre se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        }
+    
+    
+        public void guardarapeCliente(){
+        try {
+            
+            cliente = new Cliente();
+            cliente.setApellido(apeCliente);
+            crudBDC.guardarEntidad(cliente);
+            alert("El apellido se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        }
+        
+        
+        public void guardardirCliente(){
+        try {
+            
+            cliente = new Cliente();
+            cliente.setDireccion(dirCliente);
+            crudBDC.guardarEntidad(cliente);
+            alert("La Direccion se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        }
+        
+        public void guardartelCliente(){
+        try {
+            
+            cliente = new Cliente();
+            cliente.setTelefono(telCliente);
+            crudBDC.guardarEntidad(cliente);
+            alert("El telefono se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        }
+        
+        public void guardarnitCliente(){
+        try {
+            
+            cliente = new Cliente();
+            cliente.setNit(nitCliente);
+            crudBDC.guardarEntidad(cliente);
+            alert("El telefono se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        }
+        
+        public void guardarnrcCliente(){
+        try {
+            
+            cliente = new Cliente();
+            cliente.setNrc(nrcCliente);
+            crudBDC.guardarEntidad(cliente);
+            alert("El NRC se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        }
+        
+        public void guardarduiCliente(){
+        try {
+            if(duiCliente == null || duiCliente.equals("") ){
+                alert("DUI de Cliente es obligatorio", FacesMessage.SEVERITY_INFO);
+                return;
+            }
+            cliente = new Cliente();
+            cliente.setDui(duiCliente);
+            crudBDC.guardarEntidad(cliente);
+            alert("El DUI se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        }
+        
+        public void guardarexCliente(){
+        try {            
+            cliente = new Cliente();
+            cliente.setDui(duiCliente);
+            crudBDC.guardarEntidad(cliente);
+            alert("El DUI se ha guardado exitosamente", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        }
+     
+    private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
         if (mensaje == null) {
             mensaje =  "-";
         }
@@ -320,6 +391,6 @@ public void buscarCliente(){
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
         
-    
+      //</editor-fold > 
     
 }
