@@ -10,18 +10,14 @@ import com.asi.restaurantbcd.modelo.CompraPK;
 import com.asi.restaurantbcd.modelo.Compradetalle;
 import com.asi.restaurantbcd.modelo.CompradetallePK;
 import com.asi.restaurantbcd.modelo.Estado;
-import com.asi.restaurantbcd.modelo.Impuesto;
-import com.asi.restaurantbcd.modelo.Opcionmenu;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
-import com.asi.restaurantbcd.modelo.Sucursal;
-import com.asi.restaurantbcd.modelo.Usuario;
 import com.asi.restaurantbcd.modelo.Vwproductos;
-import com.asi.restaurantebcd.negocio.util.Utilidades;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.base.ProcesosInventariosLocal;
 import com.asi.restaurantebcd.negocio.util.EstadoEnum;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -32,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -76,10 +71,14 @@ public class ComprasBeans implements  Serializable {
     private BigDecimal cantidadConfirmada;
     private Proveedor proveedor;
     private Vwproductos producto;
-
+    private boolean mostrarBtnGuardar = false;
+    private boolean mostrarBtnActualizarExit = false;
     private Date fecha;
+    private Date fechaIniMonitor = new Date();
+    private Date fechaFinMonitor = new Date();
     private String mensaje;
     private Compra compraEnca;
+    private List  <Compra > lstComprasMonitor;
     private Compradetalle compraDeta;
     private DataTable tablaProd  =  new DataTable();
     private List < Compra > lstCompraMonitor =  new ArrayList<>();
@@ -92,8 +91,10 @@ public class ComprasBeans implements  Serializable {
     private BusquedasComprasLocal ejbBusComp;
     @EJB
     private BusquedasProductosLocal ejbBusProd;
-        @Inject
-    SessionUsr sesion;
+        @EJB
+    private ProcesosInventariosLocal ejbProInv;
+    @Inject
+    private SessionUsr sesion;
    
     //</editor-fold >
 
@@ -104,6 +105,8 @@ public class ComprasBeans implements  Serializable {
    public void nuevaCompra() {
        compraEnca = null;
        lstCompradeta.clear();
+       lstProducto = null;
+       lstProveedor = null;
        nodocu = null;
        estado = null;
        nombreProveedor = null;
@@ -112,6 +115,8 @@ public class ComprasBeans implements  Serializable {
        usr = null;
        codigo = null;
        serie = null;
+       mostrarBtnActualizarExit = false;
+       mostrarBtnGuardar = true;
        
    }
    /**
@@ -174,27 +179,51 @@ public class ComprasBeans implements  Serializable {
             alert("Error: " +ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
      }
+   /**
+    * 
+    */
       public void ActualizarExistenciaCompra() {
           if (compraEnca == null) { 
               alert("El documento de  compra es obligtorio.", FacesMessage.SEVERITY_WARN);
               return;
           }
-          if (lstCompradeta == null || lstCompradeta.isEmpty()) {
+          if (compraEnca.getCompradetalleList() == null 
+                  || compraEnca.getCompradetalleList().isEmpty()) {
               alert("El documento no tiene detalle.", FacesMessage.SEVERITY_WARN);
               return;
-              
           }
           
-          for (Compra compra : lstCompraMonitor) {
-              
+          try {    
+          Estado estad = crud.buscarEntidad(Estado.class, EstadoEnum.TERMINADO);
+          if (estad == null) {
+              alert("El estado terminado no existe.",
+                      FacesMessage.SEVERITY_WARN);
+              return;
           }
+      
+          for (Compradetalle compDet : lstCompradeta) {
+
+                  ejbProInv.afectarExistencia(
+                          compDet.getCantidadconfirmada(),
+                          compDet.getIdproducto(),
+                          sesion.getUsuario(),
+                          sesion.getSucursal(),
+                          compDet.getPrecio(),
+                          false,
+                          true);
+          }
+
+          compraEnca.setIdestado(estad);
+          crud.guardarEntidad(compraEnca);
+          } catch (Exception ex) {
+                  Logger.getLogger(ComprasBeans.class.getName())
+                          .log(Level.SEVERE, null, ex);
+                  alert("Error: ", FacesMessage.SEVERITY_ERROR);
+              }
+          
+          
       }
-  /**
-    * 
-    */
-   public void anularCompra() {
-       
-   }
+
   /**
     * 
     */
@@ -465,8 +494,48 @@ public class ComprasBeans implements  Serializable {
         return nodocu;
     }
 
+    public Date getFechaIniMonitor() {
+        return fechaIniMonitor;
+    }
+
+    public boolean isMostrarBtnGuardar() {
+        return mostrarBtnGuardar;
+    }
+
+    public void setMostrarBtnGuardar(boolean mostrarBtnGuardar) {
+        this.mostrarBtnGuardar = mostrarBtnGuardar;
+    }
+
+    public boolean isMostrarBtnActualizarExit() {
+        return mostrarBtnActualizarExit;
+    }
+
+    public void setMostrarBtnActualizarExit(boolean mostrarBtnActualizarExit) {
+        this.mostrarBtnActualizarExit = mostrarBtnActualizarExit;
+    }
+
+    public void setFechaIniMonitor(Date fechaIniMonitor) {
+        this.fechaIniMonitor = fechaIniMonitor;
+    }
+
+    public Date getFechaFinMonitor() {
+        return fechaFinMonitor;
+    }
+
+    public void setFechaFinMonitor(Date fechaFinMonitor) {
+        this.fechaFinMonitor = fechaFinMonitor;
+    }
+
     public Dialog getDialogProductos() {
         return dialogProductos;
+    }
+
+    public List<Compra> getLstComprasMonitor() {
+        return lstComprasMonitor;
+    }
+
+    public void setLstComprasMonitor(List<Compra> lstComprasMonitor) {
+        this.lstComprasMonitor = lstComprasMonitor;
     }
 
     public DataTable getTablaProd() {

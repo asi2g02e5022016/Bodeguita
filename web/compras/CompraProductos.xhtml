@@ -16,14 +16,17 @@ and open the template in the editor.
             <p:growl showDetail="true" showSummary="true" />
             <p:panel id="basic" header="Compras a proveedores"  >
                 <p:menubar>
-                    <p:menuitem value="Nuevo" action="#{comprasBeans.nuevaCompra()}"
+                    <p:menuitem value="Nuevo" update="forprincipal" action="#{comprasBeans.nuevaCompra()}"
                                 icon="ui-icon-plus" />
-                    <p:menuitem value="Guardar" action="#{comprasBeans.guardarCompra()}"
+                    <p:menuitem value="Guardar" id="btnGuardarDat" rendered="#{comprasBeans.mostrarBtnGuardar}" 
+                                action="#{comprasBeans.guardarCompra()}"
                                 icon="ui-icon-disk" />
-                    <p:menuitem value="Ingreso a compra" 
-                                icon=" ui-icon-refresh" />
+                    <p:menuitem value="Ingreso a compra" rendered=" #{!comprasBeans.mostrarBtnActualizarExit} "
+                                icon=" ui-icon-refresh" action="#{comprasBeans.actualizarExistenciaCompra}"/>
+                    
                     <p:menuitem value="Imprimir" action="#{comprasBeans.imprimirReporteCompra()}"
                                 icon="ui-icon-print" />
+                    
                      <p:menuitem value="Exportar"
                                 icon="fa fa-file-excel-o" />
                       <p:menuitem value="Monitor" action="#{comprasBeans.buscarCompra()}"

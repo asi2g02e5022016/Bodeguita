@@ -18,8 +18,8 @@ import javax.persistence.Embeddable;
 public class ExistenciaPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "idexistencia")
-    private int idexistencia;
+    @Column(name = "idproducto")
+    private int idproducto;
     @Basic(optional = false)
     @Column(name = "idsucursal")
     private int idsucursal;
@@ -27,17 +27,9 @@ public class ExistenciaPK implements Serializable {
     public ExistenciaPK() {
     }
 
-    public ExistenciaPK(int idexistencia, int idsucursal) {
-        this.idexistencia = idexistencia;
+    public ExistenciaPK(int idproducto, int idsucursal) {
+        this.idproducto = idproducto;
         this.idsucursal = idsucursal;
-    }
-
-    public int getIdexistencia() {
-        return idexistencia;
-    }
-
-    public void setIdexistencia(int idexistencia) {
-        this.idexistencia = idexistencia;
     }
 
     public int getIdsucursal() {
@@ -48,22 +40,35 @@ public class ExistenciaPK implements Serializable {
         this.idsucursal = idsucursal;
     }
 
+    public int getIdproducto() {
+        return idproducto;
+    }
+
+    public void setIdproducto(int idproducto) {
+        this.idproducto = idproducto;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (int) idexistencia;
-        hash += (int) idsucursal;
+        int hash = 5;
+        hash = 37 * hash + this.idproducto;
+        hash = 37 * hash + this.idsucursal;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ExistenciaPK)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        ExistenciaPK other = (ExistenciaPK) object;
-        if (this.idexistencia != other.idexistencia) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ExistenciaPK other = (ExistenciaPK) obj;
+        if (this.idproducto != other.idproducto) {
             return false;
         }
         if (this.idsucursal != other.idsucursal) {
@@ -74,7 +79,10 @@ public class ExistenciaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.ExistenciaPK[ idexistencia=" + idexistencia + ", idsucursal=" + idsucursal + " ]";
+        return "ExistenciaPK{" + "idproducto=" + idproducto + ", idsucursal=" + idsucursal + '}';
     }
+    
+
+    
     
 }

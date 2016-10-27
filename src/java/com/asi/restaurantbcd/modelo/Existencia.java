@@ -31,13 +31,10 @@ public class Existencia implements Serializable {
     protected ExistenciaPK existenciaPK;
     @Basic(optional = false)
     @Column(name = "valor")
-    private float valor;
+    private Double valor;
     @Basic(optional = false)
     @Column(name = "costounitario")
-    private float costounitario;
-    @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
-    @ManyToOne(optional = false)
-    private Producto idproducto;
+    private Double costounitario;
     @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Sucursal sucursal;
@@ -49,7 +46,7 @@ public class Existencia implements Serializable {
         this.existenciaPK = existenciaPK;
     }
 
-    public Existencia(ExistenciaPK existenciaPK, float valor, float costounitario) {
+    public Existencia(ExistenciaPK existenciaPK, Double valor, Double costounitario) {
         this.existenciaPK = existenciaPK;
         this.valor = valor;
         this.costounitario = costounitario;
@@ -67,30 +64,23 @@ public class Existencia implements Serializable {
         this.existenciaPK = existenciaPK;
     }
 
-    public float getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(float valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 
-    public float getCostounitario() {
+    public Double getCostounitario() {
         return costounitario;
     }
 
-    public void setCostounitario(float costounitario) {
+    public void setCostounitario(Double costounitario) {
         this.costounitario = costounitario;
     }
 
-    public Producto getIdproducto() {
-        return idproducto;
-    }
-
-    public void setIdproducto(Producto idproducto) {
-        this.idproducto = idproducto;
-    }
-
+   
     public Sucursal getSucursal() {
         return sucursal;
     }
