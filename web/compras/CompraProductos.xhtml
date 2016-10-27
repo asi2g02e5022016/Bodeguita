@@ -124,7 +124,7 @@ and open the template in the editor.
                     <p:menubar>
                         <p:menuitem value="Nuevo" action="#{comprasBeans.limpiarProveedor()}"
                                     icon="ui-icon-plus" />
-                        <p:menuitem value="Buscar" update="forprincipal"
+                        <p:menuitem value="Buscar" update="tablaProveedor"
                                     action="#{comprasBeans.buscarProveedor()}"
                                     icon=" ui-icon-search" />
                     </p:menubar>
@@ -134,19 +134,21 @@ and open the template in the editor.
                     <p:inputText   value="#{comprasBeans.nombreProveedor}" />
                 </h:panelGrid>
                 <h:panelGrid >
-                    <p:dataTable value="#{comprasBeans.lstProveedor}"  var="dpro"  emptyMessage=""  >
+                    <p:dataTable value="#{comprasBeans.lstProveedor}"
+                                 id="tablaProveedor" widgetVar="tablaProveedor" var="dprov"
+                                 selectionMode="single" rowKey="#{dprov.idproveedor}"  emptyMessage=""  >
                                
                         <p:ajax event="rowSelect" update="forprincipal" process="@all"
                                 listener="#{comprasBeans.onRowSelectProveedor}" 
                         />
-                        <p:column headerText="nombre">
-                            <h:outputText value="#{dpro.proveedor}"  />
+                        <p:column filterBy="#{dprov.proveedor}" headerText="nombre">
+                            <h:outputText value="#{dprov.proveedor}"  />
                         </p:column>
-                        <p:column headerText="direccion">
-                            <h:outputText value="#{dpro.direccion}"  />
+                        <p:column filterBy="#{dprov.direccion}"  headerText="direccion">
+                            <h:outputText value="#{dprov.direccion}"  />
                         </p:column>
-                        <p:column headerText="tel">
-                            <h:outputText value="#{dpro.telefono}"  />
+                        <p:column filterBy="#{dprov.telefono}"  headerText="tel">
+                            <h:outputText value="#{dprov.telefono}"  />
                         </p:column>
                     </p:dataTable>
                 </h:panelGrid>
@@ -166,16 +168,16 @@ and open the template in the editor.
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
                                       <h:outputLabel  value="Cantidad    "  />
-                                      <p:inputText   value="#{comprasBeans.cantidadSolic}" />
+                                      <p:inputText id="cantidadSolic"  value="#{comprasBeans.cantidadSolic}" />
                     <h:outputLabel  value="Producto "  />
                     <p:inputText   value="#{comprasBeans.descripcionProducto}" />
                 </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable id="tablaProdd" 
                                  value="#{comprasBeans.lstProducto}"
-                                 var="dpro" rowKey="#{dpro.idproducto}"
+                                 var="dpro" rowKey="#{dpro.idproducto}" 
                                  selectionMode="single" rows="19"  >                        
-                        <p:ajax event="rowSelect" update="forprincipal"  
+                        <p:ajax event="rowSelect" update="forprincipal" process="@all"  
                                 listener="#{comprasBeans.onRowSelect}"/>
                         <p:column filterBy="#{dpro.producto}" headerText="descripcion">
                             <h:outputText value="#{dpro.producto}"  />

@@ -6,7 +6,6 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -18,7 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -34,19 +32,15 @@ public class Compradetalle implements Serializable {
     @EmbeddedId
     protected CompradetallePK compradetallePK;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidadsolicitada")
     private Double cantidadsolicitada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidadconfirmada")
     private Double cantidadconfirmada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "precio")
     private Double precio;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "iva")
     private Double iva;
     @JoinColumns({

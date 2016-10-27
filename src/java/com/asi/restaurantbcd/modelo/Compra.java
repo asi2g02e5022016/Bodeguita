@@ -21,8 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -38,17 +36,11 @@ public class Compra implements Serializable {
     @EmbeddedId
     protected CompraPK compraPK;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "fechacompra")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacompra;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
     @Column(name = "codigofactura")
     private String codigofactura;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "seriefactura")
     private String seriefactura;
     @JoinColumn(name = "idestado", referencedColumnName = "idestado")

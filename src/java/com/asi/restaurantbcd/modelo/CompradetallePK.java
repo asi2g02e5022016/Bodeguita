@@ -9,7 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -22,11 +21,9 @@ public class CompradetallePK implements Serializable {
     @Column(name = "idcompradetalle")
     private int idcompradetalle;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "idcompra")
     private int idcompra;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "idsucursal")
     private int idsucursal;
 

@@ -60,28 +60,7 @@ public class ComprasBeans implements  Serializable {
      */
     public ComprasBeans() {
     }
-//     Impuesto impueso;
-//       
-//    @PostConstruct
-//    public void postConstruction(){
-//        try{
-//            if(sesion == null){
-//                System.out.println("redirect docs");
-//                alert("Debe Iniciar Sesion",FacesMessage.SEVERITY_FATAL);
-//                FacesContext.getCurrentInstance().getViewRoot().
-//                        getViewMap().clear();
-//            String url = "http://localhost:8080/RestaurantBDC";
-//            FacesContext.getCurrentInstance().getExternalContext().
-//                    redirect(url);
-//            } 
-//           impueso =  crud.buscarEntidad(Impuesto.class, Integer.parseInt("1"));
-// 
-//        } catch (Exception e) {
-//                alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
-//        }
-//    }
-    //</editor-fold >
-   
+
       //<editor-fold  defaultstate="collapsed" desc="Variables" >
     private Integer nodocu;
     private String observacion;
@@ -141,6 +120,10 @@ public class ComprasBeans implements  Serializable {
    public void guardarCompra() {
        
         try {
+            if (proveedor == null) {
+                alert("El proveedor obligatorio.", FacesMessage.SEVERITY_WARN);
+                return;
+            }
             if (lstCompradeta == null || lstCompradeta.isEmpty()) {
                 alert("El documento no tiene detalle.", FacesMessage.SEVERITY_FATAL);
                 return;
@@ -177,7 +160,12 @@ public class ComprasBeans implements  Serializable {
             compraEnca.setIdproveedor(proveedor);
             compraEnca.setSucursal(sesion.getSucursal());
             compraEnca.setIdusuario(sesion.getUsuario());
-            System.out.println("");
+            System.out.println("lista" + compraEnca.getCompradetalleList());
+            System.out.println(est); 
+            System.out.println("compranenca.. " +compraEnca);
+            System.out.println("sesion..." +sesion);
+            System.out.println("usuario.. " +   sesion.getUsuario());
+            System.out.println("sucursal... " +  sesion.getSucursal());
             crud.guardarEntidad(compraEnca);
             alert("El documento se guardo exitosamente", FacesMessage.SEVERITY_INFO);
             
@@ -187,7 +175,7 @@ public class ComprasBeans implements  Serializable {
         }
      }
       public void ActualizarExistenciaCompra() {
-          if (compraEnca == null) {
+          if (compraEnca == null) { 
               alert("El documento de  compra es obligtorio.", FacesMessage.SEVERITY_WARN);
               return;
           }
@@ -213,38 +201,38 @@ public class ComprasBeans implements  Serializable {
    public void buscarCompra() {
        
    }
-//  /**
-//    * 
-//    */
-//   public void imprimitCompra() {
-//       try {
-//            Map param = new HashMap();
-//                    
-//            FacesContext fc = FacesContext.getCurrentInstance();
-//            HttpServletRequest request = (HttpServletRequest) fc
-//                               .getExternalContext().getRequest();
-//            String url = request.getContextPath() + "/Reporte";
-//             request.getSession().setAttribute("datasourse","jdbc/ifbc");
-//            request.getSession().setAttribute("url",
-//              "/com/asi/estarurantebcd/reportes"
-//                    +"Compra.jasper");
-//            request.getSession().setAttribute("format","PDF");
-//            request.getSession().setAttribute("parameters", param);
-////            RequestContext context = RequestContext.getCurrentInstance();
-////             context.execute("window.open('resource.jsp', '_newtab')");
-//                        RequestContext context = RequestContext.getCurrentInstance();
-//             context.execute(             "window.open('" + url
+  /**
+    * 
+    */
+   public void imprimitCompra() {
+       try {
+            Map param = new HashMap();
+                    
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpServletRequest request = (HttpServletRequest) fc
+                               .getExternalContext().getRequest();
+            String url = request.getContextPath() + "/Reporte";
+             request.getSession().setAttribute("datasourse","jdbc/ifbc");
+            request.getSession().setAttribute("url",
+              "/com/asi/estarurantebcd/reportes"
+                    +"Compra.jasper");
+            request.getSession().setAttribute("format","PDF");
+            request.getSession().setAttribute("parameters", param);
+//            RequestContext context = RequestContext.getCurrentInstance();
+//             context.execute("window.open('resource.jsp', '_newtab')");
+                        RequestContext context = RequestContext.getCurrentInstance();
+             context.execute(             "window.open('" + url
+                   + "','Rpt','location=0,menubar=0,resizable=1,"
+                   + "status=0,toolbar=0');");
+//            JavascriptContext.addJavascriptCall(
+//                    FacesContext.getCurrentInstance(),
+//                    "window.open('" + url
 //                   + "','Rpt','location=0,menubar=0,resizable=1,"
 //                   + "status=0,toolbar=0');");
-////            JavascriptContext.addJavascriptCall(
-////                    FacesContext.getCurrentInstance(),
-////                    "window.open('" + url
-////                   + "','Rpt','location=0,menubar=0,resizable=1,"
-////                   + "status=0,toolbar=0');");
-//        } catch (Exception e) {
-//            alert(e.getMessage(), FacesMessage.SEVERITY_ERROR);
-//        }
-//   }
+        } catch (Exception e) {
+            alert(e.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+   }
          public void alert(String mensaje, FacesMessage.Severity faces) {
         FacesMessage message = new FacesMessage(faces,
                 "Mensaje", mensaje);
@@ -261,11 +249,12 @@ public class ComprasBeans implements  Serializable {
       public void buscarProveedor() {
         try {
             Map filtro = new HashMap();
-            if (nombreProveedor != null) {
+            if (nombreProveedor != null && !nombreProveedor.equals("")) {
                 filtro.put("nombre", nombreProveedor.trim());
                 
             }
             lstProveedor = ejbBusComp.buscarProveedores(filtro);
+            System.out.println("proveedre.." +lstProveedor);
             if (lstProveedor == null || lstProveedor.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
@@ -377,7 +366,99 @@ public class ComprasBeans implements  Serializable {
        lstProducto = null;
        descripcionProducto = null;
       }
-             //</editor-fold >
+         //</editor-fold >
+      
+      //<editor-fold  defaultstate="collapsed" desc="Metodos" >
+         
+    
+
+    public void mostrarDialogProd() {
+    dialogProductos.setVisible(true);
+     RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProducto').show();");
+    }
+        public void mostrarDialogProveedor() {
+     RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProveedor').show();");
+    }
+         public void selectProducto() {
+             if (tablaProd.getSelection() != null) {
+                 Producto pro = (Producto) tablaProd.getRowData();
+                 System.out.println("pro.." +pro);
+             }
+         }
+       
+       public void onRowSelect(SelectEvent event) {
+        try {
+            Vwproductos idP  =  ((Vwproductos) event.getObject());
+            System.out.println("yd.,,, " + idP);
+            System.out.println("camtidad... " +cantidadSolic);
+            producto = ((Vwproductos) event.getObject());
+            if (cantidadSolic == null || cantidadSolic.toString().equals("0")){
+                alert("La Cantidad Es obligatorio", FacesMessage.SEVERITY_WARN);
+                return;
+            }
+            System.out.println("producto,.. " +producto);
+            System.out.println("u..");
+            Producto pro = crud.buscarEntidad(Producto.class,
+                    producto.getIdproducto());
+            if (lstCompradeta == null ) {
+                lstCompradeta = new ArrayList<>();
+            }
+            compraDeta = new Compradetalle();
+            compraDeta.setIdproducto(pro);
+            compraDeta.setCantidadsolicitada(cantidadSolic);
+            compraDeta.setPrecio(producto.getPrecioventa());
+            compraDeta.setMonto(cantidadSolic * compraDeta.getPrecio());
+            Double totaliva = compraDeta.getMonto() * Double.valueOf("0.13");
+            compraDeta.setIva(totaliva);
+            compraDeta.setTotal(totaliva + compraDeta.getMonto());
+            lstCompradeta.add(0, compraDeta);
+            System.out.println("lstCompradeta.." +lstCompradeta);
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProducto').hide();");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.getLogger(ComprasBeans.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        
+    }
+      public void onRowSelectProveedor(SelectEvent event) {
+       proveedor  =  (Proveedor) event.getObject();
+       if (proveedor != null ) {
+           nombreProveedor = proveedor.getProveedor();
+       }
+       
+       RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProveedor').hide();");
+        
+    }
+
+    public boolean isMostrarCantConfirmada() {
+        return mostrarCantConfirmada;
+    }
+
+    public void setMostrarCantConfirmada(boolean mostrarCantConfirmada) {
+        this.mostrarCantConfirmada = mostrarCantConfirmada;
+    }
+    
+    
+    
+      public void onRowEdit(RowEditEvent event) {
+        try {
+            compraDeta =  (Compradetalle) event.getObject();
+           // crud.guardarEntidad(compraDeta);
+        } catch (Exception ex) {
+            Logger.getLogger(ComprasBeans.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert("Error: " + ex.getMessage(), FacesMessage.SEVERITY_FATAL);
+        }
+
+    }
+     
+          //</editor-fold >
          
       //<editor-fold  defaultstate="collapsed" desc="Getter y Setter" >
  public Integer getNodocu() {
@@ -554,92 +635,6 @@ public class ComprasBeans implements  Serializable {
         this.compraEnca = compraEnca;
     }
     //</editor-fold >
-    
-    public void mostrarDialogProd() {
-    dialogProductos.setVisible(true);
-     RequestContext requestContext = RequestContext.getCurrentInstance();
-                requestContext.execute("PF('dialogoProducto').show();");
-    }
-        public void mostrarDialogProveedor() {
-     RequestContext requestContext = RequestContext.getCurrentInstance();
-                requestContext.execute("PF('dialogoProveedor').show();");
-    }
-         public void selectProducto() {
-             if (tablaProd.getSelection() != null) {
-                 Producto pro = (Producto) tablaProd.getRowData();
-                 System.out.println("pro.." +pro);
-             }
-         }
-       
-       public void onRowSelect(SelectEvent event) {
-        try {
-            Vwproductos idP  =  ((Vwproductos) event.getObject());
-            System.out.println("yd.,,, " + idP);
-            System.out.println("camtidad... " +cantidadSolic);
-            producto = ((Vwproductos) event.getObject());
-            if (cantidadSolic == null || cantidadSolic.toString().equals("0")){
-                alert("La Cantidad Es obligatorio", FacesMessage.SEVERITY_WARN);
-                return;
-            }
-            System.out.println("producto,.. " +producto);
-            System.out.println("u..");
-            Producto pro = crud.buscarEntidad(Producto.class,
-                    producto.getIdproducto());
-            if (lstCompradeta == null ) {
-                lstCompradeta = new ArrayList<>();
-            }
-            compraDeta = new Compradetalle();
-            compraDeta.setIdproducto(pro);
-            compraDeta.setCantidadsolicitada(cantidadSolic);
-            compraDeta.setPrecio(producto.getPrecioventa());
-            compraDeta.setMonto(cantidadSolic * compraDeta.getPrecio());
-            Double totaliva = compraDeta.getMonto() * Double.valueOf("0.13");
-            compraDeta.setIva(totaliva);
-            compraDeta.setTotal(totaliva + compraDeta.getMonto());
-            lstCompradeta.add(0, compraDeta);
-            System.out.println("lstCompradeta.." +lstCompradeta);
-            RequestContext requestContext = RequestContext.getCurrentInstance();
-                requestContext.execute("PF('dialogoProducto').hide();");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Logger.getLogger(ComprasBeans.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-        
-    }
-      public void onRowSelectProveedor(SelectEvent event) {
-       proveedor  =  (Proveedor) event.getObject();
-       if (proveedor != null ) {
-           nombreProveedor = proveedor.getProveedor();
-       }
-       
-       RequestContext requestContext = RequestContext.getCurrentInstance();
-                requestContext.execute("PF('dialogoProveedor').hide();");
-        
-    }
-
-    public boolean isMostrarCantConfirmada() {
-        return mostrarCantConfirmada;
-    }
-
-    public void setMostrarCantConfirmada(boolean mostrarCantConfirmada) {
-        this.mostrarCantConfirmada = mostrarCantConfirmada;
-    }
-    
-    
-    
-      public void onRowEdit(RowEditEvent event) {
-        try {
-            compraDeta =  (Compradetalle) event.getObject();
-           // crud.guardarEntidad(compraDeta);
-        } catch (Exception ex) {
-            Logger.getLogger(ComprasBeans.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            alert("Error: " + ex.getMessage(), FacesMessage.SEVERITY_FATAL);
-        }
-
-    }
       
 }
 

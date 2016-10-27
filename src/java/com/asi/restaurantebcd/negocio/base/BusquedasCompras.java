@@ -63,7 +63,7 @@ public class BusquedasCompras implements BusquedasComprasLocal {
      */
     @Override
     public List <Proveedor> buscarProveedores(Map map) throws Exception {
-        if (map == null || map.isEmpty()){
+        if (map == null){
             return null;
         }
         StringBuilder jpql = new StringBuilder();

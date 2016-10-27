@@ -36,9 +36,6 @@ public class LoginFilter implements Filter {
         String requestURI;
          requestURI = req.getRequestURI();
 
-         System.out.println("sessionUsr: " + sessionUsr);
-         System.out.println("Token: " + sessionUsr.getToken());
-         System.out.println("Empleado: " + sessionUsr.getEmpleSucursal());
         // For the first application request there is no loginBean in the session so user needs to log in
         // For other requests loginBean is present but we need to check if user has logged in successfully
         if (sessionUsr == null || sessionUsr.getToken()==null || sessionUsr.getToken().equals("")) {
