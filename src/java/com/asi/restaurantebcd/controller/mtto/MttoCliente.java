@@ -199,7 +199,7 @@ public class MttoCliente implements Serializable{
             duiCliente = null;
             exCliente = null;
             listaCliente = null;
-            dtCliente = new DataTable();
+            
         }
      
     
@@ -209,7 +209,7 @@ public class MttoCliente implements Serializable{
 //            if (this.tablaEmpleado.getRowData() != null) {
             if (idCliente != null) {
                 System.out.println("actualizar");
-                this.actualizarCliente();
+                this.acutalizarCliente();
             } else {
                 System.out.println("nuevoRegistro");
                 this.guardarCliente();
