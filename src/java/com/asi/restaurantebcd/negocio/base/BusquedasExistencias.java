@@ -1,6 +1,7 @@
 package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Vwexistencias;
+import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -26,21 +27,22 @@ public class BusquedasExistencias implements BusquedasExistenciasLocal {
      * @throws Exception
      */
     @Override
-    public List<Vwexistencias> buscarExistenciaFiltros(Map filtro)
+    public List<Vwexistencias> buscarExistencias(Map filtro)
             throws Exception {
         if (filtro == null) {
             return null;
         }
         StringBuilder jpql = new StringBuilder();
         try {
-            Integer codsuc = (Integer) filtro.get("codsuc");
-            Integer codprod = (Integer) filtro.get("codprod");
+            /*Integer codsuc = (Integer) filtro.get("codsuc");
+            Integer codprod = (Integer) filtro.get("codprod");*/
             
-            System.out.println(codsuc);
-            System.out.println(codprod);
+            Integer codsuc = Utilidades.getParemetro("codsuc", filtro);
+            Integer codprod = Utilidades.getParemetro("codprod", filtro); 
             
+                        
             //String tipo = (String) filtro.get("tipo");
-            jpql.append("SELECT a FROM Vexistxsucsal a where 1 = 1");
+            jpql.append("SELECT a FROM Vwexistencias a where 1 = 1");
             if (codsuc != null) {
                 jpql.append(" AND a.idsucursal = :codsuc");
             }

@@ -36,7 +36,6 @@
     <class>com.asi.restaurantbcd.modelo.Tipodocumento</class>
     <class>com.asi.restaurantbcd.modelo.Tipoproducto</class>
     <class>com.asi.restaurantbcd.modelo.Usuario</class>
-    <class>com.asi.restaurantbcd.modelo.Vexistxsucsal</class>
     <class>com.asi.restaurantbcd.modelo.Vwexistencias</class>
     <class>com.asi.restaurantbcd.modelo.Mesa</class>
     <class>com.asi.restaurantbcd.modelo.Piso</class>

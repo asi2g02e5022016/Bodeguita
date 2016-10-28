@@ -18,6 +18,6 @@ public interface BusquedasExistenciasLocal {
      * @return
      * @throws Exception 
      */
-    public List <Vwexistencias> buscarExistenciaFiltros(Map filtro) 
+    public List <Vwexistencias> buscarExistencias(Map filtro) 
                 throws Exception;
 }

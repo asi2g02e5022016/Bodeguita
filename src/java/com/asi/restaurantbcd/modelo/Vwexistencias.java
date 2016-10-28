@@ -16,7 +16,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
+//import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "vwexistencias")
-@XmlRootElement
+//@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Vwexistencias.findAll", query = "SELECT v FROM Vwexistencias v")})
 public class Vwexistencias implements Serializable {
@@ -70,8 +70,7 @@ public class Vwexistencias implements Serializable {
     public Vwexistencias(VwexistenciasPK vwexistenciasPK, int idproducto, int idsucursal){
         this.vwexistenciasPk = vwexistenciasPK;
         this.idproducto = idproducto;
-        this.idsucursal = idsucursal;
-        
+        this.idsucursal = idsucursal;        
     }
 
     public int getIdsucursal() {

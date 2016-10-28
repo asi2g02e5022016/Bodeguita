@@ -22,7 +22,7 @@ and open the template in the editor.
                             <p:menuitem value="Limpiar" action="#{invExistenciasBean.limpiarPantalla()}"
                                         icon="ui-icon-plus" />
                             <p:menuitem id="idBuscarExist" value="Buscar" update="forprincipal"
-                                        ajax="true" action="#{invExistenciasBean.buscarExistencias()}"
+                                        action="#{invExistenciasBean.buscarExistencias()}"
                                         icon=" ui-icon-search" > 
                             </p:menuitem>
                         </p:menubar>
@@ -34,7 +34,8 @@ and open the template in the editor.
                         <p:inputText   value="#{invExistenciasBean.codsucursal}" />
                     </h:panelGrid>
                     <h:panelGrid >
-                        <p:dataTable id="tablaProd" emptyMessage="" binding="#{invExistenciasBean.ltsVwExistencias}"
+                        <p:dataTable id="tablaProd" emptyMessage=""
+                                     
                                      value="#{invExistenciasBean.ltsVwExistencias}" 
                                      var="dpro" selectionMode="single" rows="19"  >
                             <p:column headerText="Cod producto" width="40%">
@@ -45,6 +46,12 @@ and open the template in the editor.
                            </p:column>
                            <p:column headerText="Cod sucursal" width="40%">
                                <h:outputText value="#{dpro.idsucursal}"  />
+                           </p:column>
+                            <p:column headerText="Producto" width="40%">
+                                <h:outputText value="#{dpro.producto}"  />
+                           </p:column>
+                             <p:column headerText="Costo unitario" width="40%">
+                                 <h:outputText value="#{dpro.costounitario}"  />
                            </p:column>
                         </p:dataTable>
                     </h:panelGrid>

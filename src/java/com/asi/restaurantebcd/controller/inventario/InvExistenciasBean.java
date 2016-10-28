@@ -125,7 +125,30 @@ public class InvExistenciasBean implements Serializable {
         codsucursal = 0;
     }
 
-    public void buscarExistenciasActuales() {
+    public void buscarExistencias() {
+        try {
+            System.out.println("VIENDO");
+            
+            Map filtro = new HashMap();
+            
+            if (codsucursal != 0) {
+                filtro.put("codsuc", codsucursal);
+            }
+            if (codproducto != 0) {
+                filtro.put("codprod", codproducto);
+            }
+            
+            ltsVwExistencias = ejbBucdaExistencias.buscarExistencias(filtro);
+            System.out.println("lstVwExistencias.." +ltsVwExistencias);
+            if (ltsVwExistencias == null || ltsVwExistencias.isEmpty()) {
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(InvExistenciasBean.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
+        }
     }
 
     private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
@@ -138,53 +161,7 @@ public class InvExistenciasBean implements Serializable {
     }
     //</editor-fold>
 
-    //<editor-fold  defaultstate="collapsed" desc="PopupExistencias" >
-    public void buscarExistencias() {
-        try {
-            Map filtro = new HashMap();
-            
-            System.out.println("el filtro es" +codsucursal);
-            System.out.println("el filtro es" +codproducto);
-
-            if (codsucursal != 0) {
-                filtro.put("codsuc", codsucursal);
-            }
-            if (codproducto != 0) {
-                filtro.put("codprod", codproducto);
-            }
-            
-            ltsVwExistencias = ejbBucdaExistencias.buscarExistenciaFiltros(filtro);
-            System.out.println("lstProducto.." +ltsVwExistencias);
-            if (ltsVwExistencias == null || ltsVwExistencias.isEmpty()) {
-                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
-            }
-            
-        } catch (Exception ex) {
-            Logger.getLogger(InvExistenciasBean.class.getName()).log(
-                    Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
-        }
-    }
-    //</editor-fold>
-
     //<editor-fold  defaultstate="collapsed" desc="Getter and setter" >
-    /*public String getCodsucursal() {
-        return codsucursal;
-    }
-
-    public void setCodsucursal(String codsucursal) {
-        this.codsucursal = codsucursal;
-    }
-
-    public String getCodproducto() {
-        return codproducto;
-    }
-    
-
-    public void setCodproducto(String codproducto) {
-        this.codproducto = codproducto;
-    }*/
-
     public int getCodsucursal() {
         return codsucursal;
     }
