@@ -34,16 +34,13 @@ and open the template in the editor.
                         <p:inputText   value="#{invExistenciasBean.codsucursal}" />
                     </h:panelGrid>
                     <h:panelGrid >
-                        <p:dataTable id="tablaProd" emptyMessage=""
+                        <p:dataTable id="tablaProd" emptyMessage="" rowKey="#{dpro.vwexistenciasPk}"
                                      
                                      value="#{invExistenciasBean.ltsVwExistencias}" 
                                      var="dpro" selectionMode="single" rows="19"  >
                             <p:column headerText="Cod producto" width="40%">
                                 <h:outputText value="#{dpro.idproducto}"  />
                             </p:column>
-                           <p:column headerText="Cod compañia" width="40%">
-                               <h:outputText value="#{dpro.idcompania}"  />
-                           </p:column>
                            <p:column headerText="Cod sucursal" width="40%">
                                <h:outputText value="#{dpro.idsucursal}"  />
                            </p:column>

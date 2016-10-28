@@ -50,11 +50,6 @@ public class Vwexistencias implements Serializable {
     @Size(max = 50)
     @Column(name = "sucursal")
     private String sucursal;
-    @Column(name = "idcompania")
-    private Integer idcompania;
-    @Size(max = 50)
-    @Column(name = "compania")
-    private String compania;
     @Size(max = 50)
     @Column(name = "producto")
     private String producto;
@@ -113,22 +108,6 @@ public class Vwexistencias implements Serializable {
         this.sucursal = sucursal;
     }
 
-    public Integer getIdcompania() {
-        return idcompania;
-    }
-
-    public void setIdcompania(Integer idcompania) {
-        this.idcompania = idcompania;
-    }
-
-    public String getCompania() {
-        return compania;
-    }
-
-    public void setCompania(String compania) {
-        this.compania = compania;
-    }
-
     public String getProducto() {
         return producto;
     }
@@ -151,6 +130,14 @@ public class Vwexistencias implements Serializable {
 
     public void setTipoproducto(String tipoproducto) {
         this.tipoproducto = tipoproducto;
+    }
+
+    public VwexistenciasPK getVwexistenciasPk() {
+        return vwexistenciasPk;
+    }
+
+    public void setVwexistenciasPk(VwexistenciasPK vwexistenciasPk) {
+        this.vwexistenciasPk = vwexistenciasPk;
     }
 
     @Override
