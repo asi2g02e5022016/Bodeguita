@@ -5,6 +5,7 @@
  */
 package com.asi.restaurantebcd.controller.seguridad;
 
+import com.asi.restaurantbcd.modelo.Empleado;
 import com.asi.restaurantbcd.modelo.Usuario;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
@@ -96,8 +97,10 @@ public class LogginBean implements Serializable {
                sesion.setFecha(new Date());
                sesion.setToken(token);
                sesion.setFecha(new Date());
-               sesion.setEmpleSucursal(usr.getIdempleado());
-               sesion.setSucursal(usr.getIdempleado().getIdsucursal());
+               Empleado emp = crud.buscarEntidad(Empleado.class, 
+                       usr.getIdempleado());
+               sesion.setEmpleSucursal(emp);
+               sesion.setSucursal(emp.getIdsucursal());
                sesion.setPerfil(usr.getIdperfil());
                System.out.println("usr.getIdEmpleado().."+usr.getIdempleado());
                //sesion.setSucursal(usr.get);
