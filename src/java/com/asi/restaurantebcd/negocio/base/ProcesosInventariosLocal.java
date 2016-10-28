@@ -5,9 +5,12 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Compra;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Usuario;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -31,4 +34,14 @@ public interface ProcesosInventariosLocal {
     public void afectarExistencia(Double cantidad, Producto producto,
             Usuario usr, Sucursal sucursal, Double costo, boolean descargaInv,
             boolean  calcularCstProm) throws Exception;
+        /**
+     * Metodo de busqueda de comras.
+     * @param sucursal sucursal 
+     * @param fechaInicia fecha inicial de compra.
+     * @param fechaFinal fecha final de compra.
+     * @return
+     * @throws Exception 
+     */
+    public List<Compra> buscarCompras(Sucursal sucursal,
+            Date fechaInicia, Date fechaFinal) throws Exception;
 }
