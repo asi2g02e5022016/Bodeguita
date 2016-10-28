@@ -174,14 +174,14 @@ public class MttoCliente implements Serializable{
     public void setListaCliente(List<Cliente> listaCliente) {
         this.listaCliente = listaCliente;
     }
-
-    public DataTable getDtCliente() {
-        return dtCliente;
-    }
-
-    public void setDtCliente(DataTable dtCliente) {
-        this.dtCliente = dtCliente;
-    }
+//
+//    public DataTable getDtCliente() {
+//        return dtCliente;
+//    }
+//
+//    public void setDtCliente(DataTable dtCliente) {
+//        this.dtCliente = dtCliente;
+//    }
         
 //</editor-fold > 
     
