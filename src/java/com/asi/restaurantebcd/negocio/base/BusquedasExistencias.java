@@ -34,8 +34,12 @@ public class BusquedasExistencias implements BusquedasExistenciasLocal {
         StringBuilder jpql = new StringBuilder();
         try {
             Integer codsuc = (Integer) filtro.get("codsuc");
-            String codprod = (String) filtro.get("codprod");
-            String tipo = (String) filtro.get("tipo");
+            Integer codprod = (Integer) filtro.get("codprod");
+            
+            System.out.println(codsuc);
+            System.out.println(codprod);
+            
+            //String tipo = (String) filtro.get("tipo");
             jpql.append("SELECT a FROM Vexistxsucsal a where 1 = 1");
             if (codsuc != null) {
                 jpql.append(" AND a.idsucursal = :codsuc");
@@ -43,9 +47,9 @@ public class BusquedasExistencias implements BusquedasExistenciasLocal {
             if (codprod != null) {
                 jpql.append(" AND a.idproducto = :codprod");
             }
-            if (tipo != null) {
+            /*if (tipo != null) {
                 jpql.append(" AND a.idtipoproducto = :tipo");
-            }
+            }*/
             Query query = em.createQuery(jpql.toString());
             if (codsuc != null) {
                 query.setParameter("codsuc", codsuc);
@@ -53,9 +57,9 @@ public class BusquedasExistencias implements BusquedasExistenciasLocal {
             if (codprod != null) {
                 query.setParameter("codprod", codprod);
             }
-            if (tipo != null) {
+            /*if (tipo != null) {
                 query.setParameter("tipo", tipo);
-            }
+            }*/
             return query.getResultList();
         } catch (NoResultException nre) {
             return null;
