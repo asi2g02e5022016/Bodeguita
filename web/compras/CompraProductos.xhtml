@@ -200,6 +200,50 @@ and open the template in the editor.
                     </p:dataTable>
                 </h:panelGrid>
             </p:dialog>
+            
+            <p:dialog header="Monitor Compras" widgetVar="dialogoCompras"
+                      width="50%">
+                <h:panelGrid columns="1" width="100%"  >
+                    <p:menubar>
+                        <p:menuitem id="idBuscarCompr" value="Buscar" update="forprincipal"
+                                    ajax="true" 
+                                    icon=" ui-icon-search" > 
+                        </p:menuitem>
+                    </p:menubar>
+                </h:panelGrid>
+                <h:panelGrid columns="2" width="80%">
+ 
+                    <h:outputLabel  value="Fecha Inicial "  />
+                    <p:calendar value="#{comprasBeans.fechaIniMonitor}"/>
+                       <h:outputLabel  value="Fecha Final "  />
+                       <p:calendar value="#{comprasBeans.fechaFinMonitor}"/>
+                </h:panelGrid>
+                <h:panelGrid >
+                    <p:dataTable id="tablaCompras"
+                                 var="dcompra" 
+                                 selectionMode="single"  rows="19"  >                        
+                        <p:ajax event="rowSelect" update="forprincipal" process="@all"  
+                                />
+                        <p:column  headerText="Numero">
+                            <h:outputText   />
+                        </p:column>
+                        <p:column headerText="Proveedor"  >
+                            <h:outputText  />
+                        </p:column>
+                        <p:column headerText="fecha" >
+                            <h:outputText />
+                        </p:column>
+                        <p:column headerText="usuario" >
+                            <h:outputText   />
+                            <p:column headerText="estado"  >
+                                <h:outputText />
+                            </p:column>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:dialog>
+            
+            
         </h:form>
     </ui:define>
 </ui:composition>

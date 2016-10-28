@@ -12,6 +12,7 @@ import com.asi.restaurantbcd.modelo.CompradetallePK;
 import com.asi.restaurantbcd.modelo.Estado;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
+import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Vwproductos;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
@@ -61,7 +62,6 @@ public class ComprasBeans implements  Serializable {
     private String observacion;
     private String estado;
     private String usr;
-    private Dialog dialogProductos = new Dialog();
     private String codigo;
     private String serie;
     private String nombreProveedor;
@@ -82,6 +82,7 @@ public class ComprasBeans implements  Serializable {
     private Compradetalle compraDeta;
     private DataTable tablaProd  =  new DataTable();
     private List < Compra > lstCompraMonitor =  new ArrayList<>();
+    
     private List < Compradetalle > lstCompradeta =  new ArrayList<>();
     private List < Proveedor > lstProveedor =  new ArrayList<>();
       private List < Vwproductos > lstProducto =  new ArrayList<>();
@@ -173,6 +174,10 @@ public class ComprasBeans implements  Serializable {
             System.out.println("sucursal... " +  sesion.getSucursal());
             crud.guardarEntidad(compraEnca);
             alert("El documento se guardo exitosamente", FacesMessage.SEVERITY_INFO);
+            nodocu = compraEnca.getCompraPK().getIdsucursal();
+           // usr = compraEnca.getIdusuario().getIdempleado().getNombre();
+            estado = compraEnca.getIdestado().getEstado();
+            fecha = compraEnca.getFechacompra();
             
         } catch (Exception ex) {
             Logger.getLogger(ComprasBeans.class.getName()).log(Level.SEVERE, null, ex);
@@ -223,13 +228,7 @@ public class ComprasBeans implements  Serializable {
           
           
       }
-
-  /**
-    * 
-    */
-   public void buscarCompra() {
-       
-   }
+      
   /**
     * 
     */
@@ -378,6 +377,7 @@ public class ComprasBeans implements  Serializable {
                 filtro.put("producto", descripcionProducto.trim());
                 
             }
+            
             lstProducto = ejbBusProd.buscarProducto(filtro);
             if (lstProveedor == null || lstProveedor.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
@@ -402,7 +402,6 @@ public class ComprasBeans implements  Serializable {
     
 
     public void mostrarDialogProd() {
-    dialogProductos.setVisible(true);
      RequestContext requestContext = RequestContext.getCurrentInstance();
                 requestContext.execute("PF('dialogoProducto').show();");
     }
@@ -488,7 +487,69 @@ public class ComprasBeans implements  Serializable {
     }
      
           //</editor-fold >
-         
+      
+      //<editor-fold  defaultstate="collapsed" desc="Monitor de compras">
+      /**
+       * 
+       */
+      public void mostrarDialogoMonCompras() {
+     RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoCompras').show();");
+      }
+    /**
+     * 
+     */
+    public void buscarCompras() {
+        try {
+            if (fechaIniMonitor != null
+                    && fechaFinMonitor != null) {
+                if (fechaIniMonitor.after(fechaFinMonitor)) {
+                    alert("La fecha inicial tiene que ser menor que la final.",
+                            FacesMessage.SEVERITY_WARN);
+                    return;
+                }
+            }
+            
+            lstCompraMonitor = ejbProInv.buscarCompras(sesion.getSucursal(),
+                    fechaIniMonitor, fechaFinMonitor);
+            if (lstCompraMonitor == null || lstCompraMonitor.isEmpty()) {
+                alert("NO se encontraron resultados.", FacesMessage.SEVERITY_WARN);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ComprasBeans.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert("Error: " + ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
+    /**
+     * 
+     */
+    public void limpiarMonitorCompras() {
+    lstCompraMonitor = null;
+    fechaIniMonitor = new Date();
+    fechaFinMonitor = new Date();
+    }
+    public void onRowSelectCompra(SelectEvent event) {
+        compraEnca = (Compra) event.getObject();
+        if (compraEnca == null) {
+            alert("No se a podido obtener el objeto compra.", FacesMessage.SEVERITY_ERROR);
+            return;
+        }
+        nodocu = compraEnca.getCompraPK().getIdcompra();
+        usr = compraEnca.getIdusuario().getIdusuario();
+        serie =  compraEnca.getSeriefactura();
+        codigo = compraEnca.getCodigofactura();
+        nombreProveedor = compraEnca.getIdproveedor().getProveedor();
+        estado = compraEnca.getIdestado().getEstado();
+        fecha = compraEnca.getFechacompra();
+        observacion = compraEnca.getObservacion();
+        
+        
+    }
+    
+    
+            //</editor-fold >
+            
       //<editor-fold  defaultstate="collapsed" desc="Getter y Setter" >
  public Integer getNodocu() {
         return nodocu;
@@ -526,9 +587,6 @@ public class ComprasBeans implements  Serializable {
         this.fechaFinMonitor = fechaFinMonitor;
     }
 
-    public Dialog getDialogProductos() {
-        return dialogProductos;
-    }
 
     public List<Compra> getLstComprasMonitor() {
         return lstComprasMonitor;
@@ -545,11 +603,6 @@ public class ComprasBeans implements  Serializable {
     public void setTablaProd(DataTable tablaProd) {
         this.tablaProd = tablaProd;
     }
-
-    public void setDialogProductos(Dialog dialogProductos) {
-        this.dialogProductos = dialogProductos;
-    }
-
     public String getCodigo() {
         return codigo;
     }
@@ -704,6 +757,7 @@ public class ComprasBeans implements  Serializable {
         this.compraEnca = compraEnca;
     }
     //</editor-fold >
-      
-}
+    
+
+} 
 
