@@ -54,9 +54,6 @@ public class Sucursal implements Serializable {
     @Size(min = 1, max = 9)
     @Column(name = "telefono")
     private String telefono;
-    @JoinColumn(name = "idcompania", referencedColumnName = "idcompania")
-    @ManyToOne(optional = false)
-    private Compania idcompania;
    
 
     public Sucursal() {
@@ -106,13 +103,6 @@ public class Sucursal implements Serializable {
     }
 
     
-    public Compania getIdcompania() {
-        return idcompania;
-    }
-
-    public void setIdcompania(Compania idcompania) {
-        this.idcompania = idcompania;
-    }
 
     @Override
     public int hashCode() {

@@ -37,12 +37,9 @@ public class Caja implements Serializable {
     @Column(name = "idcaja")
     private Integer idcaja;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "caja")
     private String caja;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "activo")
     private boolean activo;
     @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")

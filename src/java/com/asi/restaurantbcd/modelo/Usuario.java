@@ -44,10 +44,10 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-    
-    @JoinColumn(name = "idempleado", referencedColumnName = "idempleado")
-    @ManyToOne(optional = false)
-    private Empleado idempleado;
+//    
+//    @JoinColumn(name = "idempleado", referencedColumnName = "idempleado")
+//    @ManyToOne(optional = false)
+//    private Empleado idempleado;
     @JoinColumn(name = "idperfil", referencedColumnName = "idperfil")
     @ManyToOne(optional = false)
     private Perfil idperfil;
@@ -89,13 +89,13 @@ public class Usuario implements Serializable {
         this.activo = activo;
     }
 
-    public Empleado getIdempleado() {
-        return idempleado;
-    }
-
-    public void setIdempleado(Empleado idempleado) {
-        this.idempleado = idempleado;
-    }
+//    public Empleado getIdempleado() {
+//        return idempleado;
+//    }
+//
+//    public void setIdempleado(Empleado idempleado) {
+//        this.idempleado = idempleado;
+//    }
 
     public Perfil getIdperfil() {
         return idperfil;

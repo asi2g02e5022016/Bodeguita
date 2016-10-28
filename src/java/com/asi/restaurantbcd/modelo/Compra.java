@@ -43,6 +43,8 @@ public class Compra implements Serializable {
     private String codigofactura;
     @Column(name = "seriefactura")
     private String seriefactura;
+    @Column(name = "observacion")
+    private String observacion;
     @JoinColumn(name = "idestado", referencedColumnName = "idestado")
     @ManyToOne(optional = false)
     private Estado idestado;
@@ -148,6 +150,15 @@ public class Compra implements Serializable {
     public void setCompradetalleList(List<Compradetalle> compradetalleList) {
         this.compradetalleList = compradetalleList;
     }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+    
 
     @Override
     public int hashCode() {

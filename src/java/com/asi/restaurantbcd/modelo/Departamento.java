@@ -49,9 +49,6 @@ public class Departamento implements Serializable {
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
-    @JoinColumn(name = "idcompania", referencedColumnName = "idcompania")
-    @ManyToOne(optional = false)
-    private Compania idcompania;
 
     public Departamento() {
     }
@@ -90,13 +87,6 @@ public class Departamento implements Serializable {
         this.fechacreacion = fechacreacion;
     }
 
-    public Compania getIdcompania() {
-        return idcompania;
-    }
-
-    public void setIdcompania(Compania idcompania) {
-        this.idcompania = idcompania;
-    }
 
     @Override
     public int hashCode() {

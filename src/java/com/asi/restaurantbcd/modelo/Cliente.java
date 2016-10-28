@@ -35,13 +35,11 @@ public class Cliente implements Serializable {
     @Column(name = "idcliente")
     private Integer idcliente;
     @Basic(optional = false)
-    @NotNull
+ 
     @Size(min = 1, max = 100)
     @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "apellido")
     private String apellido;
     @Basic(optional = false)
