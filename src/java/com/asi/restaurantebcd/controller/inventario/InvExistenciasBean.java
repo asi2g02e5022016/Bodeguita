@@ -83,6 +83,8 @@ public class InvExistenciasBean implements Serializable {
     
     private int codsucursal;
     private int codproducto;
+    private int param;
+    private int paramFiltro;
 
     /**
      * Atributo que se muestra en pantalla el valor del producto.
@@ -118,18 +120,37 @@ public class InvExistenciasBean implements Serializable {
     
     //<editor-fold  defaultstate="collapsed" desc="Metodos" >
     public void limpiarPantalla() {
-        ltsVwExistencias = null;
+        try {
+            ltsVwExistencias = null;
         //codproducto = null;
         //codsucursal = null;
+        param = 0;
+        paramFiltro = 0;
         codproducto = 0;
         codsucursal = 0;
+        } catch (Exception ex) {
+            Logger.getLogger(InvExistenciasBean.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
+        }        
     }
 
     public void buscarExistencias() {
         try {
-            System.out.println("VIENDO");
-            
+                      
             Map filtro = new HashMap();
+            
+            System.out.println("trae: "+param);
+            System.out.println("filtro: "+paramFiltro);
+            
+            if (param == 1){
+                codsucursal = 0;
+                codproducto = paramFiltro;
+            }
+            if (param == 2){
+                codsucursal = paramFiltro;
+                codproducto = 0;
+            }
             
             if (codsucursal != 0) {
                 filtro.put("codsuc", codsucursal);
@@ -177,7 +198,23 @@ public class InvExistenciasBean implements Serializable {
     public void setCodproducto(int codproducto) {
         this.codproducto = codproducto;
     }
-       
+
+    public int getParam() {
+        return param;
+    }
+
+    public void setParam(int param) {
+        this.param = param;
+    }
+
+    public int getParamFiltro() {
+        return paramFiltro;
+    }
+
+    public void setParamFiltro(int paramFiltro) {
+        this.paramFiltro = paramFiltro;
+    }
+    
     public float getValor() {
         return valor;
     }
