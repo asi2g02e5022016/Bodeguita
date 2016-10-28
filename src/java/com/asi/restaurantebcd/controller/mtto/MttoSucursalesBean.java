@@ -126,7 +126,7 @@ public class MttoSucursalesBean implements   Serializable {
             sucursal.setDireccion(direccionSucursal.trim().toUpperCase());
             sucursal.setSucursal(nombreSucursal.trim().toUpperCase());
             sucursal.setTelefono(telefonoSucursal.trim().toUpperCase());
-            sucursal.setIdcompania(sesion.getCompania());
+            //sucursal.setIdcompania(sesion.getCompania());
             
             crud.guardarEntidad(sucursal);
             alert("La Sucursal se guardo exitosamente.", 
