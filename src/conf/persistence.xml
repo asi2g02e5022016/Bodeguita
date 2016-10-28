@@ -7,7 +7,6 @@
     <class>com.asi.restaurantbcd.modelo.Compania</class>
     <class>com.asi.restaurantbcd.modelo.Compra</class>
     <class>com.asi.restaurantbcd.modelo.Condicionpago</class>
-    <class>com.asi.restaurantbcd.modelo.Conversionmedida</class>
     <class>com.asi.restaurantbcd.modelo.Departamento</class>
     <class>com.asi.restaurantbcd.modelo.Empleado</class>
     <class>com.asi.restaurantbcd.modelo.Estado</class>
@@ -15,7 +14,6 @@
     <class>com.asi.restaurantbcd.modelo.Facturadetalle</class>
     <class>com.asi.restaurantbcd.modelo.Facturaencabezado</class>
     <class>com.asi.restaurantbcd.modelo.Formapago</class>
-    <class>com.asi.restaurantbcd.modelo.Giro</class>
     <class>com.asi.restaurantbcd.modelo.Grupoproducto</class>
     <class>com.asi.restaurantbcd.modelo.Impuesto</class>
     <class>com.asi.restaurantbcd.modelo.Marcaproducto</class>
@@ -48,7 +46,7 @@
     <class>com.asi.restaurantbcd.modelo.Compradetalle</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
-       <property name="eclipselink.persistence-context.flush-mode" value="COMMIT"/>
+      <property name="eclipselink.persistence-context.flush-mode" value="COMMIT"/>
       <property name="eclipselink.target-server" value="SunAS9"/>
       <property name="eclipselink.logging.level" value="FINE"/>
       <property name="eclipselink.logging.parameters" value="true"/>
