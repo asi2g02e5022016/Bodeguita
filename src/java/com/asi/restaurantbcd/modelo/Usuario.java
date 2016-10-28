@@ -44,10 +44,8 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-//    
-//    @JoinColumn(name = "idempleado", referencedColumnName = "idempleado")
-//    @ManyToOne(optional = false)
-//    private Empleado idempleado;
+    @Column(name = "idempleado")
+    private Integer idempleado;
     @JoinColumn(name = "idperfil", referencedColumnName = "idperfil")
     @ManyToOne(optional = false)
     private Perfil idperfil;
@@ -105,6 +103,15 @@ public class Usuario implements Serializable {
         this.idperfil = idperfil;
     }
 
+    public Integer getIdempleado() {
+        return idempleado;
+    }
+
+    public void setIdempleado(Integer idempleado) {
+        this.idempleado = idempleado;
+    }
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -124,6 +131,7 @@ public class Usuario implements Serializable {
         }
         return true;
     }
+    
 
     @Override
     public String toString() {
