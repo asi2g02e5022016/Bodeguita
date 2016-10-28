@@ -34,15 +34,20 @@ and open the template in the editor.
                         <p:inputText   value="#{invExistenciasBean.codsucursal}" />
                     </h:panelGrid>
                     <h:panelGrid >
-                        <p:dataTable id="tablaProdd" 
-                                     value="#{comprasBeans.lstProducto}"
-                                     var="dpro" rowKey="#{dpro.idproducto}"
-                                     selectionMode="single" rows="19"  >                        
-                            <p:ajax event="rowSelect" update="forprincipal"  
-                                    listener="#{comprasBeans.onRowSelect}"/>                            
+                        <p:dataTable id="tablaProd" emptyMessage="" binding="#{invExistenciasBean.ltsVwExistencias}"
+                                     value="#{invExistenciasBean.ltsVwExistencias}" 
+                                     var="dpro" selectionMode="single" rows="19"  >
+                            <p:column headerText="Cod producto" width="40%">
+                                <h:outputText value="#{dpro.idproducto}"  />
+                            </p:column>
+                           <p:column headerText="Cod compañia" width="40%">
+                               <h:outputText value="#{dpro.idcompania}"  />
+                           </p:column>
+                           <p:column headerText="Cod sucursal" width="40%">
+                               <h:outputText value="#{dpro.idsucursal}"  />
+                           </p:column>
                         </p:dataTable>
                     </h:panelGrid>
-
                 </p:panel>
             </h:form>
         </center>

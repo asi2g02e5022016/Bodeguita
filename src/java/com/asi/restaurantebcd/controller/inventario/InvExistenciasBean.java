@@ -75,11 +75,14 @@ public class InvExistenciasBean implements Serializable {
     /**
      * Atributo que se muestra en pantalla el idsucursal.
      */
-    private String codsucursal;
+    //private String codsucursal;
     /**
      * Atributo que se muestra en pantalla el idproducto.
      */
-    private String codproducto;
+    //private String codproducto;
+    
+    private int codsucursal;
+    private int codproducto;
 
     /**
      * Atributo que se muestra en pantalla el valor del producto.
@@ -88,7 +91,7 @@ public class InvExistenciasBean implements Serializable {
     /**
      * Atributo que se muestra en pantalla el costo unitario del producto.
      */
-    private float costoPromedio;
+    private float costounitario;
     /**
      * Busca beans session activa.
      */
@@ -116,8 +119,10 @@ public class InvExistenciasBean implements Serializable {
     //<editor-fold  defaultstate="collapsed" desc="Metodos" >
     public void limpiarPantalla() {
         ltsVwExistencias = null;
-        codproducto = null;
-        codsucursal = null;
+        //codproducto = null;
+        //codsucursal = null;
+        codproducto = 0;
+        codsucursal = 0;
     }
 
     public void buscarExistenciasActuales() {
@@ -137,13 +142,23 @@ public class InvExistenciasBean implements Serializable {
     public void buscarExistencias() {
         try {
             Map filtro = new HashMap();
+            
+            System.out.println("el filtro es" +codsucursal);
+            System.out.println("el filtro es" +codproducto);
 
-            if (codsucursal != null) {
-                filtro.put("codsuc", codsucursal.trim());
+            if (codsucursal != 0) {
+                filtro.put("codsuc", codsucursal);
             }
-            if (codproducto != null) {
-                filtro.put("codprod", codproducto.trim());
+            if (codproducto != 0) {
+                filtro.put("codprod", codproducto);
             }
+            
+            ltsVwExistencias = ejbBucdaExistencias.buscarExistenciaFiltros(filtro);
+            System.out.println("lstProducto.." +ltsVwExistencias);
+            if (ltsVwExistencias == null || ltsVwExistencias.isEmpty()) {
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+            }
+            
         } catch (Exception ex) {
             Logger.getLogger(InvExistenciasBean.class.getName()).log(
                     Level.SEVERE, null, ex);
@@ -153,7 +168,7 @@ public class InvExistenciasBean implements Serializable {
     //</editor-fold>
 
     //<editor-fold  defaultstate="collapsed" desc="Getter and setter" >
-    public String getCodsucursal() {
+    /*public String getCodsucursal() {
         return codsucursal;
     }
 
@@ -164,11 +179,28 @@ public class InvExistenciasBean implements Serializable {
     public String getCodproducto() {
         return codproducto;
     }
+    
 
     public void setCodproducto(String codproducto) {
         this.codproducto = codproducto;
+    }*/
+
+    public int getCodsucursal() {
+        return codsucursal;
     }
 
+    public void setCodsucursal(int codsucursal) {
+        this.codsucursal = codsucursal;
+    }
+
+    public int getCodproducto() {
+        return codproducto;
+    }
+
+    public void setCodproducto(int codproducto) {
+        this.codproducto = codproducto;
+    }
+       
     public float getValor() {
         return valor;
     }
@@ -177,13 +209,13 @@ public class InvExistenciasBean implements Serializable {
         this.valor = valor;
     }
 
-    public float getCostoPromedio() {
-        return costoPromedio;
+    public float getCostounitario() {
+        return costounitario;
     }
 
-    public void setCostoPromedio(float costoPromedio) {
-        this.costoPromedio = costoPromedio;
-    }
+    public void setCostounitario(float costounitario) {
+        this.costounitario = costounitario;
+    }    
 
     public SessionUsr getSesion() {
         return sesion;
@@ -248,5 +280,12 @@ public class InvExistenciasBean implements Serializable {
     public void setCrud(CrudBDCLocal crud) {
         this.crud = crud;
     }
+    
+    @Override
+    public String toString() {
+        return "InvExistenciasBean{" + "BusquedasExistencias=" + BusquedasExistencias + ", existencia=" + existencia + ", vwexistencias=" + vwexistencias + ", codsucursal=" + codsucursal + ", codproducto=" + codproducto + ", valor=" + valor + ", costounitario=" + costounitario + ", sesion=" + sesion + ", dtExistencia=" + dtExistencia + ", ltsVwExistencias=" + ltsVwExistencias + ", crud=" + crud + ", ejbBucdaExistencias=" + ejbBucdaExistencias + '}';
+    }
     //</editor-fold>
+
+    
 }
