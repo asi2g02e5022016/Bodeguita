@@ -6,6 +6,7 @@
 package com.asi.restaurantebcd.controller.inventario;
 
 import com.asi.restaurantbcd.modelo.Existencia;
+import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Vwexistencias;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
@@ -44,7 +45,7 @@ public class InvExistenciasBean implements Serializable {
     public InvExistenciasBean() {
     }
 
-    /*@PostConstruct
+    @PostConstruct
     public void postConstruction() {
         try {
             sesion = Utilidades.findBean("sessionUsr");
@@ -56,61 +57,33 @@ public class InvExistenciasBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().
                         redirect(url);
             }
-            buscarExistenciasActuales();
+            this.ltsVwExistencias = ejbBucdaExistencias.buscarExistencias(null);
+            this.lstSucursal = ejbBucdaExistencias.buscarSucursal();
         } catch (Exception e) {
             alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
         }
-    }*/
+    }
     //</editor-fold>
 
     //<editor-fold  defaultstate="collapsed" desc="LocalVariables" >
-    /**
-     * Entidad que buscará las existencias.
-     */
     private Existencia existencia;
-    /**
-     * Vista de las existencias.
-     */
     private Vwexistencias vwexistencias;
-    /**
-     * Atributo que se muestra en pantalla el idsucursal.
-     */
-    //private String codsucursal;
-    /**
-     * Atributo que se muestra en pantalla el idproducto.
-     */
-    //private String codproducto;
     
     private int codsucursal;
-    private int codproducto;
-    private int param;
-    private int paramFiltro;
+    //private int codproducto;
+    //private int param;
+    //private int paramFiltro;*/
+    String sucursal;
+    String producto;
 
-    /**
-     * Atributo que se muestra en pantalla el valor del producto.
-     */
-    private float valor;
-    /**
-     * Atributo que se muestra en pantalla el costo unitario del producto.
-     */
-    private float costounitario;
-    /**
-     * Busca beans session activa.
-     */
-    private SessionUsr sesion;
-
-    /**
-     * Atributo que se muestra en pantalla la lista de existencias.
-     */
-    /**
-     * Bindin de DataTable que muestra las existencias.
-     */
+    private float valor; //Atributo que se muestra en pantalla el valor del producto.
+    private float costounitario; //Atributo que se muestra en pantalla el costo unitario del producto.
+    private SessionUsr sesion; //Busca beans session activa.
     private DataTable dtExistencia = new DataTable();
+    private Sucursal sucursalConst;
     private List<Vwexistencias> ltsVwExistencias = new ArrayList<>();
-    /**
-     * EJB Quecon tiene metodos utilitarios como: Guardar, Eliminar, Buscar...
-     */
-    @EJB
+    private List<Sucursal> lstSucursal ;
+    @EJB //EJB Quecon tiene metodos utilitarios como: Guardar, Eliminar, Buscar...
     private CrudBDCLocal crud;
 
     @EJB
@@ -121,13 +94,11 @@ public class InvExistenciasBean implements Serializable {
     //<editor-fold  defaultstate="collapsed" desc="Metodos" >
     public void limpiarPantalla() {
         try {
-            ltsVwExistencias = null;
-        //codproducto = null;
-        //codsucursal = null;
-        param = 0;
-        paramFiltro = 0;
-        codproducto = 0;
+        ltsVwExistencias = null;
+        //codproducto = 0;
         codsucursal = 0;
+        producto = null;
+        sucursal = null;
         } catch (Exception ex) {
             Logger.getLogger(InvExistenciasBean.class.getName()).log(
                     Level.SEVERE, null, ex);
@@ -135,7 +106,7 @@ public class InvExistenciasBean implements Serializable {
         }        
     }
 
-    public void buscarExistencias() {
+    /*public void buscarExistencias() {
         try {
                       
             Map filtro = new HashMap();
@@ -170,6 +141,47 @@ public class InvExistenciasBean implements Serializable {
                     Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
         }
+    }*/
+    
+    public void buscarExistencias() {
+        try {
+                      
+            Map filtro = new HashMap();
+            
+            if (codsucursal != 0){
+                filtro.put("codsuc", codsucursal);
+            }            
+            if (producto != null) {
+                filtro.put("prod", producto);
+            }
+            if (sucursal != null) {
+                filtro.put("sucsal", sucursal);
+            }
+            
+            ltsVwExistencias = ejbBucdaExistencias.buscarExistencias(filtro);
+            System.out.println("lstVwExistencias.." +ltsVwExistencias);
+            if (ltsVwExistencias == null || ltsVwExistencias.isEmpty()) {
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(InvExistenciasBean.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
+        }
+    }
+    
+    public void buscarSucursales(){
+        try {
+             lstSucursal = ejbBucdaExistencias.buscarSucursal();
+             if (lstSucursal == null || lstSucursal.isEmpty()) {
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(InvExistenciasBean.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
     }
 
     private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
@@ -183,6 +195,22 @@ public class InvExistenciasBean implements Serializable {
     //</editor-fold>
 
     //<editor-fold  defaultstate="collapsed" desc="Getter and setter" >
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    public String getProducto() {
+        return producto;
+    }
+
+    public void setProducto(String producto) {
+        this.producto = producto;
+    }
+        
     public int getCodsucursal() {
         return codsucursal;
     }
@@ -191,30 +219,6 @@ public class InvExistenciasBean implements Serializable {
         this.codsucursal = codsucursal;
     }
 
-    public int getCodproducto() {
-        return codproducto;
-    }
-
-    public void setCodproducto(int codproducto) {
-        this.codproducto = codproducto;
-    }
-
-    public int getParam() {
-        return param;
-    }
-
-    public void setParam(int param) {
-        this.param = param;
-    }
-
-    public int getParamFiltro() {
-        return paramFiltro;
-    }
-
-    public void setParamFiltro(int paramFiltro) {
-        this.paramFiltro = paramFiltro;
-    }
-    
     public float getValor() {
         return valor;
     }
@@ -253,6 +257,22 @@ public class InvExistenciasBean implements Serializable {
 
     public void setDtExistencia(DataTable dtExistencia) {
         this.dtExistencia = dtExistencia;
+    }
+
+    public Sucursal getSucursalConst() {
+        return sucursalConst;
+    }
+
+    public void setSucursalConst(Sucursal sucursalConst) {
+        this.sucursalConst = sucursalConst;
+    }
+
+    public List<Sucursal> getLstSucursal() {
+        return lstSucursal;
+    }
+
+    public void setLstSucursal(List<Sucursal> lstSucursal) {
+        this.lstSucursal = lstSucursal;
     }
 
     public BusquedasExistenciasLocal getBusquedasExistencias() {
@@ -295,11 +315,11 @@ public class InvExistenciasBean implements Serializable {
         this.crud = crud;
     }
     
-    @Override
+   @Override
     public String toString() {
-        return "InvExistenciasBean{" + "BusquedasExistencias=" + BusquedasExistencias + ", existencia=" + existencia + ", vwexistencias=" + vwexistencias + ", codsucursal=" + codsucursal + ", codproducto=" + codproducto + ", valor=" + valor + ", costounitario=" + costounitario + ", sesion=" + sesion + ", dtExistencia=" + dtExistencia + ", ltsVwExistencias=" + ltsVwExistencias + ", crud=" + crud + ", ejbBucdaExistencias=" + ejbBucdaExistencias + '}';
+        return "InvExistenciasBean{" + "BusquedasExistencias=" + BusquedasExistencias + ", existencia=" + existencia + ", vwexistencias=" + vwexistencias + ", codsucursal=" + codsucursal + ", sucursal=" + sucursal + ", producto=" + producto + ", valor=" + valor + ", costounitario=" + costounitario + ", sesion=" + sesion + ", dtExistencia=" + dtExistencia + ", sucursalConst=" + sucursalConst + ", ltsVwExistencias=" + ltsVwExistencias + ", lstSucursal=" + lstSucursal + ", crud=" + crud + ", ejbBucdaExistencias=" + ejbBucdaExistencias + '}';
     }
-    //</editor-fold>
+    //</editor-fold>    
 
     
 }

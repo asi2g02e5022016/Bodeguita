@@ -1,5 +1,6 @@
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Vwexistencias;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.util.List;
@@ -38,26 +39,35 @@ public class BusquedasExistencias implements BusquedasExistenciasLocal {
             Integer codprod = (Integer) filtro.get("codprod");*/
             
             Integer codsuc = Utilidades.getParemetro("codsuc", filtro);
-            Integer codprod = Utilidades.getParemetro("codprod", filtro); 
+            /*Integer codprod = Utilidades.getParemetro("codprod", filtro); */
+            
+            String sucsal = Utilidades.getParemetro("sucsal", filtro);
+            String prod = Utilidades.getParemetro("prod", filtro);
             
                         
-            //String tipo = (String) filtro.get("tipo");
             jpql.append("SELECT a FROM Vwexistencias a where 1 = 1");
-            if (codsuc != null) {
+            
+            if (codsuc != 0){
                 jpql.append(" AND a.idsucursal = :codsuc");
+            }            
+            if (sucsal != null) {
+                jpql.append(" AND a.sucursal like CONCAT('%', :sucsal, '%')");
             }
-            if (codprod != null) {
-                jpql.append(" AND a.idproducto = :codprod");
+            if (prod != null) {
+                jpql.append(" AND a.producto like CONCAT('%', :prod, '%')");
             }
             /*if (tipo != null) {
                 jpql.append(" AND a.idtipoproducto = :tipo");
             }*/
             Query query = em.createQuery(jpql.toString());
-            if (codsuc != null) {
+            if (codsuc != 0) {
                 query.setParameter("codsuc", codsuc);
             }
-            if (codprod != null) {
-                query.setParameter("codprod", codprod);
+            if (sucsal != null) {
+                query.setParameter("sucsal", sucsal);
+            }
+            if (prod != null) {
+                query.setParameter("prod", prod);
             }
             /*if (tipo != null) {
                 query.setParameter("tipo", tipo);
@@ -68,5 +78,13 @@ public class BusquedasExistencias implements BusquedasExistenciasLocal {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    @Override
+    public List<Sucursal> buscarSucursal()  throws Exception{
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Sucursal a ");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
     }
 }

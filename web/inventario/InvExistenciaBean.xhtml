@@ -27,32 +27,34 @@ and open the template in the editor.
                             </p:menuitem>
                         </p:menubar>
                     </h:panelGrid>
-                    <h:panelGrid columns="3" width="50%">
-                        <h:outputLabel  value="Filtro:  "  />
-                        <!--<p:inputText   value="#{invExistenciasBean.codproducto}" />
-                        <h:outputLabel  value="Codigo sucursal      "  />
-                        <p:inputText   value="#{invExistenciasBean.codsucursal}" /> -->
+                    <h:panelGrid columns="2" width="50%">
+                        <h:outputLabel  value="Producto:  "  />
+                        <p:inputText   value="#{invExistenciasBean.producto}" />
+                        <h:outputLabel  value="Sucursal:  "  />
+                        <p:selectOneMenu id="listSucursal"  value ="#{invExistenciasBean.codsucursal}" >
+                            <f:selectItems value="#{invExistenciasBean.lstSucursal}"
+                                           var="suc" itemLabel="#{suc.sucursal}" itemValue="#{suc.idsucursal}"/>                                       
+                        </p:selectOneMenu> 
 
-                        <!--<h:selectOneListbox value="#{invExistenciasBean.param}">
+                        <!--<h:outputLabel  value="Sucursal      "  />
+                        <p:inputText   value="#{invExistenciasBean.sucursal}" /> 
+
+                        <h:selectOneListbox value="#{invExistenciasBean.param}">
                             <f:selectItem itemValue="1" itemLabel="Cod producto" />
                             <f:selectItem itemValue="2" itemLabel="Cod sucursal" />	   							
                         </h:selectOneListbox> -->
-                        <h:selectOneMenu value="#{invExistenciasBean.param}">
+                        <!-- <h:selectOneMenu value="#{invExistenciasBean.param}">
                             <f:selectItem itemValue="1" itemLabel="Cod producto" />
                             <f:selectItem itemValue="2" itemLabel="Cod sucursal" />	   							
-                        </h:selectOneMenu>
-                        
-                        <p:inputText   value="#{invExistenciasBean.paramFiltro}" />
+                        </h:selectOneMenu> 
+                        <p:inputText   value="#{invExistenciasBean.paramFiltro}" />-->
                     </h:panelGrid>
                     <h:panelGrid >
                         <p:dataTable id="tablaProd" emptyMessage="" rowKey="#{dpro.vwexistenciasPk}"
                                      value="#{invExistenciasBean.ltsVwExistencias}" 
                                      var="dpro" selectionMode="single" rows="19"  >
-                            <p:column headerText="Cod producto" width="40%">
-                                <h:outputText value="#{dpro.idproducto}"  />
-                            </p:column>
-                            <p:column headerText="Cod sucursal" width="40%">
-                                <h:outputText value="#{dpro.idsucursal}"  />
+                            <p:column headerText="Sucursal" width="40%">
+                                <h:outputText value="#{dpro.sucursal}"  />
                             </p:column>
                             <p:column headerText="Producto" width="40%">
                                 <h:outputText value="#{dpro.producto}"  />
