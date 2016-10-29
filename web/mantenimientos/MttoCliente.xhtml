@@ -5,70 +5,101 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                template="/layout/templateBDC.xhtml">
-    <ui:define name="body">
-        <center>
-        <h:form id="forprincipal" >
-            
-            <p:growl showDetail="true" showSummary="true" />
-            <p:panel id="basic" header="Mantenimientos Forma de Pago" style="width: 50%"  >
-                <p:menubar>
-                    <p:menuitem value="Nuevo"  update="forprincipal" icon="ui-icon-plus" />
-                    <p:menuitem value="Guardar"  update="forprincipal" icon="ui-icon-disk" />
-                    <p:menuitem value="Buscar" update="forprincipal" icon=" ui-icon-search" />
-                    
-                </p:menubar>
-                    <h:panelGrid columns="2" width="80%">
-                        <h:outputLabel  value="Id de Cliente : "/>
-                        <p:inputText readonly="true" style="width: 100%" />
-                        
-                        <h:outputLabel  value="Nombre de Cliente : "/>
-                        <p:inputText readonly="true" style="width: 100%" />
-                        
-                        <h:outputLabel  value="Apellido de Cliente : "/>
-                        <p:inputText readonly="true" style="width: 100%" />
-                        
-                        <h:outputLabel  value="Direccion de Cliente : "/>
-                        <p:inputText readonly="true" style="width: 100%" />
-                        
-                        <h:outputLabel  value="Telefono de Cliente : "/>
-                        <p:inputText readonly="true" style="width: 100%" />
-                        
-                        <h:outputLabel  value="NIT Cliente : "/>
-                        <p:inputText readonly="true" style="width: 100%" />
-                        
-                        <h:outputLabel  value="NRC Cliente : "/>
-                        <p:inputText readonly="true" style="width: 100%" />
-                                                
-                        <h:outputLabel  value="DUI Cliente : " />
-                        <p:inputText style="width: 40px" />
-                        
-                        <h:outputLabel  value="Excento : " />
-                        <p:inputText style="width: 40px" />
-                    </h:panelGrid>
-                    <h:panelGrid >
-                        <p:dataTable id="tablaFpago" emptyMessage="" 
-                                     
-                                     var="dpro"
-                                     rows="19"  >
-                            <p:column headerText="Id" width="40%">
-                                <h:outputText  />
-                            </p:column>
-                            <p:column headerText="Nombre Forma de Pago" width="90%">
-                                <h:outputText />
-                            </p:column>
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+    <ui:define name ="body">
+        <center>
+            <h:form id="forprincipal">
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="basic" header="Mantenimiento de Clientes" style="width: 50%"  >
+                    <p:menubar>
+                        <p:menuitem value="Nuevo" action="#{mttoEmpleado.limpiarPantalla()}" update="@all"
+                                    icon="ui-icon-plus"   />
+                        <p:menuitem value="Guardar" update="forprincipal" action="#{mttoCliente.guardarCliente()}"
+                                    icon="ui-icon-disk"  id="btnGuardar" disabled="false" />
+                                                
+                       <!-- <p:menuitem value="Buscar" update="forprincipal" action="#{mttoEmpleado.buscarEmpleado()}"
+                                    icon=" ui-icon-search" /> -->
+                    </p:menubar>
+
+
+                    <p:accordionPanel   binding="#{mttoCliente.formPanel}"  multiple="false" id="forPanel" activeIndex="" >
+                        <p:tab title="Ingresar cliente"  closable="true"   >
+                            <h:panelGrid columns="4" width="80%" >
+                                <h:outputLabel value ="Id empleado:"/>
+                                <p:inputText value ="#{mttoCliente.idCliente}"
+                                             readonly ="true" style ="width: 40px"/>
+                                <h:outputLabel value="Nombre:"/>
+                                <p:inputText value="#{mttoCliente.nomCliente}" />
+                                <h:outputLabel value="Apellido:"/>
+                                <p:inputText value="#{mttoCliente.apeCliente}"/>
+                                <h:outputLabel value="telefono:"/>
+                                <p:inputMask id="iTel" value="#{mttoCliente.telCliente}" mask="9999-9999"/>
+                                <h:outputLabel value="Direcciòn:"/>
+                                <p:inputTextarea rows="2" cols="20" value ="#{mttoCliente.dirCliente}" />
+                                <h:outputLabel value="DUI:"/>
+                                <p:inputText id="iDui" value="#{mttoCliente.duiCliente}" />
+                                <h:outputLabel value="NIT:"/>
+                                <p:inputText id="iNit" value="#{mttoCliente.nitCliente}" />
+                                <h:outputLabel value="NRC:"/>
+                                <p:inputText id="iNcr" value="#{mttoCliente.nrcCliente}" />
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+
+                    <h:panelGrid>
+                        <p:dataTable id="tablaEmpleado" emptyMessage="" binding="#{mttoCliente.tablaCliente}"
+                                     value="#{mttoCliente.listaCliente}"
+                                     var="dimp" rowKey="#{dimp.idcliente}"
+                                     selectionMode="single" rows="5" 
+                                     editable="true" paginator="true" 
+                                     rowsPerPageTemplate="5" scrollable="true"
+                                     scrollWidth="650" >
+                            <p:ajax event="rowEdit" listener="#{mttoCliente.onSelect()}" update=":forprincipal:forPanel"   />
+                            <p:column headerText="Id" width="25" style="align-content: center" >
+                                <h:outputText value="#{dimp.idcliente}"   />                                
+                            </p:column>
+                            <p:column headerText="Nombres" width="150"  style=" align-content: center" filterBy="#{dimp.nombre}"  >
+                                <h:outputText value="#{dimp.nombre}"   />                                
+                            </p:column>
+                            <p:column headerText="Apellidos" width="150" style=" align-content: center" filterBy="#{dimp.apellido}"  >
+                                <h:outputText value="#{dimp.apellido}"  />                                
+                            </p:column>
+                            <p:column headerText="Telefono" width="75" style=" align-content: center"  >
+                                <h:outputText value="#{dimp.telefono}"  />                                
+                            </p:column>
+                            <p:column headerText="Dirección" width="300" style=" align-content: center" filterBy="#{dimp.direccion}"  >
+                                <h:outputText value="#{dimp.direccion}"  />                                
+                            </p:column>
+                            <p:column headerText="DUI" width="200" style=" align-content: center" filterBy="#{dimp.dui}"  >
+                                <h:outputText value="#{dimp.dui}"  />                                
+                            </p:column>
+                            <p:column headerText="NIT" width="200" style=" align-content: center" filterBy="#{dimp.nit}"  >
+                                <h:outputText value="#{dimp.nit}"  />                                
+                            </p:column>
+                            <p:column headerText="NRC" width="200" style=" align-content: center" filterBy="#{dimp.nrc}"  >
+                                <h:outputText value="#{dimp.nrc}"  />                                
+                            </p:column>
+                            
+                            
+                            <p:column style=" align-content: center" headerText="Modificar" width="75">
+                                <p:rowEditor     />
+                            </p:column>
+                            <p:column style="text-align: center" headerText="Eliminar" width="75">
+                                <p:commandButton   value="Eliminar" 
+                                                   action="#{mttoCliente.eliminarCliente()}"
+                                                   update="@all"  />
+                            </p:column>
                         </p:dataTable>
+
                     </h:panelGrid>
-            </p:panel>
-        </h:form>
-            </center>
+                </p:panel> 
+            </h:form>
+        </center>
     </ui:define>
 </ui:composition>
-
-
