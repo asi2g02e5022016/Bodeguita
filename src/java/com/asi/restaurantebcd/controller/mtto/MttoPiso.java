@@ -92,8 +92,8 @@ public class MttoPiso implements Serializable {
     public void postContruction() {
         try {
             
-            lstPiso = ejbBusqPiso.buscarPiso(sesion.getCompania());
-            lstSucursal = ejbBusqMtto.buscarSucursal(sesion.getCompania());
+            lstPiso = ejbBusqPiso.buscarPiso();
+            lstSucursal = ejbBusqMtto.buscarSucursal();
 //           System.out.println(lstCompania);            
             System.out.println("load");
         } catch (Exception e) {
@@ -135,7 +135,7 @@ public class MttoPiso implements Serializable {
             pisoConstructor.setNombre(nombre.trim().toUpperCase());
             crud.guardarEntidad(pisoConstructor);
             alert("Piso ingresado exitosamente.",FacesMessage.SEVERITY_INFO);
-            this.lstPiso = this.ejbBusqPiso.buscarPiso(sesion.getCompania());
+            this.lstPiso = this.ejbBusqPiso.buscarPiso(sesion.getSucursal());
             this.pisoConstructor = null;
         } catch (Exception ex) {
 
@@ -163,7 +163,7 @@ public class MttoPiso implements Serializable {
                 this.pisoConstructor = null;
                 this.sucursalConstructor = null;
                 imp = null;
-                this.lstPiso = this.ejbBusqPiso.buscarPiso(sesion.getCompania());
+                this.lstPiso = this.ejbBusqPiso.buscarPiso();
 
             }
         } catch (Exception ex) {
@@ -182,7 +182,7 @@ public class MttoPiso implements Serializable {
                     lstPiso.remove(this.tablaPiso.getRowIndex());
                     alert("Registro eliminado exitosamente.",
                             FacesMessage.SEVERITY_INFO);
-                    this.lstPiso = this.ejbBusqPiso.buscarPiso(sesion.getCompania());
+                    this.lstPiso = this.ejbBusqPiso.buscarPiso();
                     this.pisoConstructor = null;
 
                 }
@@ -197,7 +197,7 @@ public class MttoPiso implements Serializable {
 
     public void buscarPiso() {
         try {
-            this.lstPiso = this.ejbBusqPiso.buscarPiso(sesion.getCompania());
+            this.lstPiso = this.ejbBusqPiso.buscarPiso();
             if (this.lstPiso == null || this.lstPiso.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }

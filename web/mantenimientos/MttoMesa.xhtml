@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:define name="body"    >
+        <center>
+            <h:form id="forprincipal">
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="basic" header="Mantenimiento de Mesas" style="width: 50%"  >
+ 
+                  <p:menubar>
+                        <p:menuitem value="Nuevo" action="#{mttoMesa.limpiarPantalla()}"
+                                    icon="ui-icon-plus" />
+                        <p:menuitem value="Guardar" update="forprincipal" action="#{mttoMesa.guardarMesa()}"
+                                    icon="ui-icon-disk" />
+                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoMesa.buscarMesa()}"
+                                    icon=" ui-icon-search" />
+                    </p:menubar>
+       <h:panelGrid columns="4" width="80%">
+                         <h:outputLabel value="Sucursal "/>
+                         <p:inputText value ="#{sessionUsr.sucursal.sucursal}"
+                                     style ="width: 40px" disabled="true"/>
+                        <h:outputLabel value="Id Mesa "/>
+                        <p:inputText value ="#{mttoMesa.idMesa}"
+                                     style ="width: 40px" disabled="true"/>
+                        <h:outputLabel value ="Nombre "/>
+                        <p:inputText  value ="#{mttoMesa.nombre}"/>
+                        <h:outputLabel value ="Piso" />
+                        <p:selectOneMenu id="listCompania"  value ="#{mttoMesa.idPiso}" >
+                            <f:selectItem itemLabel="" itemValue=""/> 
+                            <f:selectItems value="#{mttoMesa.lstPiso}"
+                                           var="inp" itemLabel="#{inp.nombre}" itemValue="#{inp.idpiso}"/>                                       
+                        </p:selectOneMenu> 
+                        <h:outputLabel value ="X" />
+                        <p:inputText value ="#{mttoMesa.x}" style="width:60px" />
+                        <h:outputLabel value ="Y" />
+                        <p:inputText value ="#{mttoMesa.y}" style="width:60px" />
+                        <p:commandButton onclick="PF('dlg2').show();" value="Coordenadas" icon="fa-arrows" />
+
+
+                    </h:panelGrid>
+                    <h:panelGrid >
+                        <p:dataTable id="tablaImp" emptyMessage="" binding="#{mttoMesa.tablaMesa}"
+                                     value="#{mttoMesa.lstMesa}"
+                                     var="dimp" rowKey="#{dimp.idmesa}"
+                                     selectionMode="single" rows="5" 
+                                     editable="true"
+                                     paginator="true" 
+                                     rowsPerPageTemplate="5" scrollable="true"
+                                     scrollWidth="650">
+
+                            <p:ajax event="rowEdit" listener="#{mttoMesa.actualizarMesa()}" update="@all" />
+
+                            <p:column headerText="Id" width="10%">
+                                <h:outputText value="#{dimp.idmesa}"  />                                
+                            </p:column>
+
+                            <p:column headerText="Impuesto" width="20%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.nombre}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.nombre}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+
+                            <p:column headerText="Piso" width="100%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.idpiso.nombre}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu id="listPiso"  value ="#{dimp.idpiso.idpiso}" style="width: 100%"  >
+                                            <f:selectItems value="#{mttoMesa.lstPiso}"
+                                                           var="inp" itemLabel="#{inp.nombre}" itemValue="#{inp.idpiso}"/>                                       
+                                        </p:selectOneMenu> 
+                                    </f:facet> 
+                                </p:cellEditor>
+
+                            </p:column>
+                            <p:column headerText="X" width="30%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.x}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.x}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>
+
+                            </p:column>
+
+                            <p:column headerText="Y" width="30%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.y}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.y}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>
+
+                            </p:column>
+                            <p:column style="width:50px; align-content: center" headerText="Modificar">
+                                <p:rowEditor />
+                            </p:column>
+
+                            <p:column style="width:60px; align-content: center" headerText="Eliminar">                               
+                                  
+                                    <p:commandButton   value="Eliminar" 
+                                                      action="#{mttoMesa.eliminarMesa()}"
+                                                      />
+                               
+                            </p:column >
+                        </p:dataTable>
+                    </h:panelGrid>
+
+                    
+                </p:panel>
+            </h:form>
+
+        </center>
+        <p:dialog header="Coordenadas" widgetVar="dlg2" modal="true" closable="false" 
+                  draggable="false" onHide="PF('areaSelect').endSelection();" >
+            <h:form id="formCoords">
+                <h:outputText value="Click en la imagen para seleccionar la ubicación de la mesa." />
+                <br />
+                        <p:commandButton onclick="PF('dlg2').hide();" value="Guardar Coordenadas" icon="fa-save" update="forprincipal" />
+                <br />
+                <p:graphicImage id="myImage" value="/images/piso.jpg"  />  
+                <pe:imageAreaSelect id="areaSelect" for="myImage" handles="true" zIndex="99999" >  
+                    <p:ajax event="selectEnd" listener="#{mttoMesa.selectEndListener}" process="@this" />  
+                  </pe:imageAreaSelect>
+                </h:form>
+        </p:dialog>  
+    </ui:define>
+
+      <!--
+   -->
+    
+</ui:composition>

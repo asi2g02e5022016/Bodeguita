@@ -28,25 +28,22 @@ import javax.validation.constraints.Size;
 @Table(name = "mesa")
 public class Mesa implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @Id
+    @Column(name = "idmesa")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idmesa", nullable = false)
     private Integer idmesa;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "nombre", nullable = false, length = 10)
+    
+    @Column(name = "nombre")
     private String nombre;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "X", nullable = false)
+    
+    @Column(name = "X")
     private int x;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "Y", nullable = false)
+
+    @Column(name = "Y")
     private int y;
-    @JoinColumn(name = "idpiso", referencedColumnName = "idpiso", nullable = false)
+    
+    @JoinColumn(name = "idpiso", referencedColumnName = "idpiso")
     @ManyToOne(optional = false)
     private Piso idpiso;
 

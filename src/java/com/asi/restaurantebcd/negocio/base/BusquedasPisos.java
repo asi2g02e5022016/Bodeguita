@@ -5,8 +5,9 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
-
+import com.asi.restaurantbcd.modelo.Mesa;
 import com.asi.restaurantbcd.modelo.Piso;
+import com.asi.restaurantbcd.modelo.Sucursal;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -23,15 +24,36 @@ public class BusquedasPisos implements BusquedasPisosLocal {
     private EntityManager em;
 
     @Override
-    public List<Piso> buscarPiso(Compania idCompania) throws Exception {
+    public List<Piso> buscarPiso() throws Exception {
        StringBuilder jpql = new StringBuilder();
-        jpql.append("SELECT p FROM Piso p where p.idsucursal.idcompania =:c");
-        Query query = em.createQuery(jpql.toString()).setParameter("c", idCompania);
+        jpql.append("SELECT p FROM Piso p");
+        Query query = em.createQuery(jpql.toString());
         return query.getResultList();         
         
     }
 
-    
+    @Override
+    public List<Piso> buscarPiso(Sucursal idSucursal) throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT p FROM Piso p where p.idsucursal =:c");
+        Query query = em.createQuery(jpql.toString()).setParameter("c", idSucursal);
+        return query.getResultList(); 
+    }
 
-    
+    @Override
+    public List<Mesa> buscarMesa(Piso idPiso) throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT p FROM Mesa p where p.idpiso =:c");
+        Query query = em.createQuery(jpql.toString()).setParameter("c", idPiso);
+        return query.getResultList(); 
+    }
+
+    @Override
+    public List<Mesa> buscarMesa(Sucursal idSucursal) throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT p FROM Mesa p where p.idpiso.idsucursal =:c");
+        Query query = em.createQuery(jpql.toString()).setParameter("c", idSucursal);
+        return query.getResultList(); 
+    }
+
 }

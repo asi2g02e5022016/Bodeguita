@@ -6,7 +6,9 @@
 package com.asi.restaurantebcd.negocio.base;
 
 
+import com.asi.restaurantbcd.modelo.Mesa;
 import com.asi.restaurantbcd.modelo.Piso;
+import com.asi.restaurantbcd.modelo.Sucursal;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -17,6 +19,12 @@ import javax.ejb.Local;
 @Local
 public interface BusquedasPisosLocal {
     
-    List <Piso> buscarPiso(Compania idCompania) throws Exception;  
+    List <Piso> buscarPiso() throws Exception;  
+    
+    public List<Piso> buscarPiso(Sucursal idSucursal) throws Exception;
+    
+    public List<Mesa> buscarMesa(Piso idPiso) throws Exception;
+    
+    public List<Mesa> buscarMesa(Sucursal idSucursal) throws Exception;
     
 }

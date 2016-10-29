@@ -32,14 +32,11 @@ import javax.validation.constraints.Size;
 public class Piso implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @Column(name = "idpiso")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idpiso", nullable = false)
     private Integer idpiso;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 15)
-    @Column(name = "nombre", nullable = false, length = 15)
+    
+    @Column(name = "nombre")
     private String nombre;
     
     @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", nullable = false)
