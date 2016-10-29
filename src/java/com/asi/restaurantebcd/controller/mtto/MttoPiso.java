@@ -5,7 +5,6 @@
  */
 package com.asi.restaurantebcd.controller.mtto;
 
-import com.asi.restaurantbcd.modelo.Compania;
 import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantbcd.modelo.Piso;
 import com.asi.restaurantbcd.modelo.Sucursal;
@@ -140,7 +139,7 @@ public class MttoPiso implements Serializable {
             this.pisoConstructor = null;
         } catch (Exception ex) {
 
-            Logger.getLogger(MttoCompanias.class.getName())
+            Logger.getLogger(MttoPiso.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
 
