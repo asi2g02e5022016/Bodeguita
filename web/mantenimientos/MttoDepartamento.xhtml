@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+     <ui:define name="body"    >
+        <center>
+            <h:form id="forprincipal">
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="basic" header="Mantenimiento de Departamento" style="width: 50%"  >
+                    <p:menubar>
+                        <p:menuitem value="Nuevo" update="forprincipal" action="#{mttoDepartamento.limpiarPantalla()}"
+                                    icon="ui-icon-plus" />
+                        <p:menuitem value="Guardar" update="forprincipal" action="#{mttoDepartamento.guardarDepartamento()}"
+                                    icon="ui-icon-disk" />
+                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoDepartamento.buscarDepartamento()}"
+                                    icon=" ui-icon-search" />
+                    </p:menubar>
+                    <h:panelGrid columns="4" width="80%">
+                        <h:outputLabel value="Id Departamento: "/>
+                        <p:inputText value ="#{mttoDepartamento.idDepartamento}"
+                                     readonly ="true" style ="width: 40px"/>
+                        <h:outputLabel value ="Departamento "/>
+                        <p:inputText style="width: 100%" value ="#{mttoDepartamento.departamento}"/>
+                        <h:outputLabel value ="Compañia:" />
+                     <!--   <p:selectOneMenu id="listCompania"  value ="#{mttoDepartamento.idCompania}" >
+                            <f:selectItems value="#{mttoDepartamento.lstCompania}"
+                                           var="inp" itemLabel="#{inp.compania}" itemValue="#{inp.idcompania}"/>                                       
+                        </p:selectOneMenu> -->
+                      
+                    </h:panelGrid>
+                      <!-- //////////////////////////////////////////////////7-->
+                    <h:panelGrid >
+                        <p:dataTable id="tablaDept" emptyMessage="" 
+                                     binding="#{mttoDepartamento.tablaDepartamento}"
+                                     value="#{mttoDepartamento.lstDepartamento}"
+                                     var="dimp" rowKey="#{dimp.iddepartamento}"
+                                     selectionMode="single" rows="19" 
+                                     editable="true">
+
+                            <p:ajax event="rowEdit" listener="#{mttoDepartamento.actualizarDepartamento()}" />
+                            <p:ajax event="rowEditCancel" listener="#{mttoDepartamento.onCancel}"  />
+
+                            <p:column headerText="Id" width="10%">
+                                <h:outputText value="#{dimp.iddepartamento}"  />                                
+                            </p:column>
+
+                            <p:column headerText="Departamento" width="50%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.departamento}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.departamento}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+
+                            <!--<p:column headerText="Compañia" width="100%">
+                                <p:cellEditor>
+                                     <f:facet  name="output">
+                                        <h:outputText value="#{dimp.idcompania.compania}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                          <p:selectOneMenu id="listCompania"  value ="#{mttoDepartamento.idCompania}" style="width: 100%"  >
+                                            <f:selectItems value="#{mttoDepartamento.lstCompania}"
+                                                           var="inp" itemLabel="#{inp.compania}" itemValue="#{inp.idcompania}"/>                                       
+                                        </p:selectOneMenu> 
+                                    </f:facet> 
+                                </p:cellEditor>
+
+                            </p:column>-->
+                            <p:column headerText="Fecha de Creación" width="30%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.fechacreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.fechacreacion}" style="width:100%">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </p:inputText> 
+                                    </f:facet> 
+                                </p:cellEditor>
+
+                            </p:column>
+
+
+                            <p:column style="width:50px; align-content: center" headerText="Modificar">
+                                <p:rowEditor />
+                            </p:column>
+
+                            <p:column style="width:60px; align-content: center" headerText="Eliminar">                               
+                                  
+                                    <p:commandButton   value="Eliminar" 
+                                                       action="#{mttoDepartamento.eliminarDepartamento()}"
+                                                      />
+                               
+                            </p:column >
+                        </p:dataTable>
+                    </h:panelGrid>
+                    
+
+                    </p:panel>
+                </h:form>
+            </center>
+            </ui:define>
+
+    </ui:composition>
+
