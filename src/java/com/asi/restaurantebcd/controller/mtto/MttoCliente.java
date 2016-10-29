@@ -23,7 +23,6 @@ import org.primefaces.component.accordionpanel.AccordionPanel;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
-
 /**
  *
  * @author Luis
@@ -31,25 +30,16 @@ import org.primefaces.event.RowEditEvent;
 @ManagedBean(name = "mttoCliente")
 @ViewScoped
 public class MttoCliente implements Serializable{
-    
     public MttoCliente() {
-    }
-
-    
-    
-
+    }  
     /**
      * Creates a new instance of MttoCliente
-     */
-    
-    
-
-            
-    
-    //<editor-fold  defaultstate="collapsed" desc="Variables" >
+     */    
+//<editor-fold  defaultstate="collapsed" desc="Variables" >
     /**
      * Busca beans session activa.
      */
+        
         private AccordionPanel formPanel = new AccordionPanel();
         
         private Integer idCliente;
@@ -71,8 +61,7 @@ public class MttoCliente implements Serializable{
         private String exCliente;
         
         private Cliente clienteConstructor;
-        
-        
+       
         private List <Cliente> listaCliente;
         
         private DataTable tablaCliente = new DataTable();
@@ -83,17 +72,16 @@ public class MttoCliente implements Serializable{
             @EJB
             private BusquedasClienteLocal ejbBusqMtto;
 
-
-        
-        
         //</editor-fold >
-        
-
-
-
-        
-
 //<editor-fold  defaultstate="collapsed" desc="Getter y setter"  >
+            
+    public AccordionPanel getFormPanel() {
+        return formPanel;
+    }
+
+    public void setFormPanel(AccordionPanel formPanel) {
+        this.formPanel = formPanel;
+    }
 
     public Integer getIdCliente() {
         return idCliente;
@@ -183,9 +171,20 @@ public class MttoCliente implements Serializable{
 //        this.dtCliente = dtCliente;
 //    }
         
-//</editor-fold > 
+
     
-    //<editor-fold  defaultstate="collapsed" desc="Metodos"  >
+    public DataTable getTablaCliente() {
+        return tablaCliente;
+    }
+
+    public void setTablaCliente(DataTable tablaCliente) {
+        this.tablaCliente = tablaCliente;
+    }
+
+
+        
+//</editor-fold >   
+//<editor-fold  defaultstate="collapsed" desc="Metodos"  >
     
      public void limpiarpantalla(){
         
@@ -376,5 +375,4 @@ public class MttoCliente implements Serializable{
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }        
       //</editor-fold > 
-    
 }
