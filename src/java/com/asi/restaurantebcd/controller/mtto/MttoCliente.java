@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
@@ -32,6 +33,15 @@ import org.primefaces.event.RowEditEvent;
 public class MttoCliente implements Serializable{
     public MttoCliente() {
     }  
+    
+    @PostConstruct
+    public void inicial(){
+        try {
+            this.listaCliente = this.ejbBusqMtto.buscarCliente();
+        } catch (Exception ex) {
+            Logger.getLogger(MttoCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * Creates a new instance of MttoCliente
      */    
