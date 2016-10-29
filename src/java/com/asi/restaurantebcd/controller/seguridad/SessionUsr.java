@@ -5,7 +5,6 @@
  */
 package com.asi.restaurantebcd.controller.seguridad;
 
-import com.asi.restaurantbcd.modelo.Compania;
 import com.asi.restaurantbcd.modelo.Empleado;
 import com.asi.restaurantbcd.modelo.Perfil;
 import com.asi.restaurantbcd.modelo.Sucursal;
@@ -27,7 +26,6 @@ public class SessionUsr implements Serializable {
     public SessionUsr() {
     }
     private Usuario usuario;
-    private Compania compania;
     private Sucursal sucursal;
     private Perfil perfil;
     private Empleado EmpleSucursal;
@@ -79,13 +77,6 @@ public class SessionUsr implements Serializable {
         this.usuario = usuario;
     }
 
-    public Compania getCompania() {
-        return compania;
-    }
-
-    public void setCompania(Compania compania) {
-        this.compania = compania;
-    }
 
     public Sucursal getSucursal() {
         return sucursal;

@@ -5,7 +5,7 @@
  */
 package com.asi.restaurantebcd.controller.mtto;
 
-import com.asi.restaurantbcd.modelo.Compania;
+
 import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasMttoLocal;
@@ -54,7 +54,7 @@ public class MttoImp implements Serializable {
                         redirect(url);
             }
             lstImpuesto = this.ejbBusqMtto.buscarImpuesto();
-            lstCompania = this.ejbBusqMtto.buscarCompania();
+//            lstCompania = this.ejbBusqMtto.buscarCompania();
 //           System.out.println(lstCompania);            
             System.out.println("load");
         } catch (Exception e) {
@@ -80,12 +80,8 @@ public class MttoImp implements Serializable {
     private Double porcentaje;
     /* constructor clase Impuesto  */
     private Impuesto impuestoConstructor;
-    /*constructor clase compania*/
-    private Compania companiaConstructor = null;
     //atributo que muestra en pantalla listado de impuestos
     private List<Impuesto> lstImpuesto;
-    private List<Compania> lstCompania;
-
     /**
      * Bindin de DataTable que muestra companias.
      */
@@ -127,9 +123,9 @@ public class MttoImp implements Serializable {
                 return;
             }
             impuestoConstructor = new Impuesto();
-            companiaConstructor = new Compania();
-            companiaConstructor.setIdcompania(idCompania);
-            impuestoConstructor.setIdcompania(companiaConstructor);
+//            companiaConstructor = new Compania();
+//            companiaConstructor.setIdcompania(idCompania);
+           // impuestoConstructor.setIdcompania(companiaConstructor);
             impuestoConstructor.setImpuesto(impuesto.trim().toUpperCase());
             impuestoConstructor.setPorcentaje(porcentaje);
             crud.guardarEntidad(impuestoConstructor);
@@ -152,14 +148,14 @@ public class MttoImp implements Serializable {
         try {
             if (this.tablaImpuesto.getRowData() != null) {
                 Impuesto imp = this.lstImpuesto.get(this.tablaImpuesto.getRowIndex());
-                companiaConstructor = new Compania();
-                companiaConstructor.setIdcompania(idCompania);
-                imp.setIdcompania(companiaConstructor);
+//                companiaConstructor = new Compania();
+//                companiaConstructor.setIdcompania(idCompania);
+//                imp.setIdcompania(companiaConstructor);
                 crud.guardarEntidad(imp);
                 alert("Impuesto actualizado exitosamente.",
                         FacesMessage.SEVERITY_INFO);
                 this.impuestoConstructor = null;
-                this.companiaConstructor = null;
+//                this.companiaConstructor = null;
                 imp = null;
                 this.tablaImpuesto = null;
                 this.lstImpuesto = this.ejbBusqMtto.buscarImpuesto();
@@ -261,14 +257,6 @@ public class MttoImp implements Serializable {
         this.lstImpuesto = lstImpuesto;
     }
 
-    public List<Compania> getLstCompania() {
-        return lstCompania;
-    }
-
-    public void setLstCompania(List<Compania> lstCompania) {
-        this.lstCompania = lstCompania;
-    }
-
     public Integer getIdCompania() {
         return idCompania;
     }
@@ -294,13 +282,7 @@ public class MttoImp implements Serializable {
     }
 
 
-    public Compania getCompaniaConstructor() {
-        return companiaConstructor;
-    }
 
-    public void setCompaniaConstructor(Compania companiaConstructor) {
-        this.companiaConstructor = companiaConstructor;
-    }
     //</editor-fold>
 
 }

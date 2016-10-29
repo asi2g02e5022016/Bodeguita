@@ -18,35 +18,40 @@ and open the template in the editor.
                 <p:menubar>
                     <p:menuitem value="Nuevo" update="forprincipal" action="#{comprasBeans.nuevaCompra()}"
                                 icon="ui-icon-plus" />
-                    <p:menuitem value="Guardar" id="btnGuardarDat" rendered="#{comprasBeans.mostrarBtnGuardar}" 
-                                action="#{comprasBeans.guardarCompra()}"
+                    <p:menuitem value="Guardar" id="btnGuardarDat"
+                                update="forprincipal" 
+                                rendered="#{comprasBeans.mostrarBtnGuardar}" 
+                                action="#{comprasBeans.guardarCompra()}" 
                                 icon="ui-icon-disk" />
-                    <p:menuitem value="Ingreso a compra" rendered=" #{!comprasBeans.mostrarBtnActualizarExit} "
-                                icon=" ui-icon-refresh" action="#{comprasBeans.actualizarExistenciaCompra}"/>
+                    <p:menuitem value="Ingreso a compra" 
+                                icon=" ui-icon-refresh"
+                                action="#{comprasBeans.ActualizarExistenciaCompra()}"/>
                     
                     <p:menuitem value="Imprimir" action="#{comprasBeans.imprimirReporteCompra()}"
                                 icon="ui-icon-print" />
                     
                      <p:menuitem value="Exportar"
                                 icon="fa fa-file-excel-o" />
-                      <p:menuitem value="Monitor" action="#{comprasBeans.buscarCompra()}"
+                     <p:menuitem value="Monitor" action="#{comprasBeans.mostrarDialogoMonCompras()}"
                                 icon=" ui-icon-search" />
                 </p:menubar>
                 <h:panelGrid columns="2" width="100%">
                     <h:panelGrid columns="6" width="80%">
                         <h:outputLabel  value="No Documento : "/>
-                        <p:inputText value="#{comprasBeans.nodocu}"  />
+                        <p:inputText readonly="true" value="#{comprasBeans.nodocu}"  />
                         <h:outputLabel  value="Usuario: "  />
-                        <p:inputText  value="#{comprasBeans.usr}"  />
+                        <p:inputText readonly="true" value="#{comprasBeans.usr}"  />
                         <h:outputLabel  value="Sucursal "  />
-                        <p:inputText   value="#{comprasBeans.serie}"  />
+                        <p:inputText  readonly="true" value="#{comprasBeans.serie}"  />
                         <h:outputLabel  value="Codigo "  />
                         <p:inputText  value="#{comprasBeans.codigo}"  />
 
                         <h:outputLabel  value="Estado "  />
-                        <p:inputText   value="#{comprasBeans.estado}"  />   
+                        <p:inputText  readonly="true" value="#{comprasBeans.estado}"  />   
                         <h:outputLabel  value="Fecha "  />
-                        <p:inputText  value="#{comprasBeans.fecha}"  />
+                        <p:inputText readonly="true" value="#{comprasBeans.fecha}"  >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:inputText>
 
                         <h:outputLabel  value="Serie "  />
                         <p:inputText   value="#{comprasBeans.serie}"  />
@@ -54,7 +59,7 @@ and open the template in the editor.
                     </h:panelGrid>
                     <h:panelGrid columns="3" width="20%">
                         <h:outputLabel  value="Proveedor "  />
-                        <p:inputText  value="#{comprasBeans.nombreProveedor}"  style=" width: 100%" />
+                        <p:inputText readonly="true"  value="#{comprasBeans.nombreProveedor}"  style=" width: 100%" />
                         <p:commandButton   action="#{comprasBeans.mostrarDialogProveedor()}"
                                            id="iconOnly" 
                                            icon="ui-icon-search" title="Icon Only" />
@@ -158,13 +163,13 @@ and open the template in the editor.
             </p:dialog>
             <p:dialog header="Buscar producto" widgetVar="dialogoProducto"
                       width="50%"
-                      binding="#{comprasBeans.dialogProductos}">
+                      >
                 <h:panelGrid columns="1" width="100%">
                     <p:menubar>
                         <p:menuitem value="Limpiar" action="#{comprasBeans.limpiarProducto()}"
                                     icon="ui-icon-plus" />
-                        <p:menuitem id="idBuscarPro" value="Buscar" update="forprincipal"
-                                    ajax="true" action="#{comprasBeans.buscarProducto()}"
+                        <p:menuitem id="idBuscarPro" value="Buscar" update="tablaProdd"
+                                    action="#{comprasBeans.buscarProducto()}"
                                     icon=" ui-icon-search" > 
                         </p:menuitem>
                     </p:menubar>
@@ -178,10 +183,10 @@ and open the template in the editor.
                 <h:panelGrid >
                     <p:dataTable id="tablaProdd" 
                                  value="#{comprasBeans.lstProducto}"
-                                 var="dpro" rowKey="#{dpro.idproducto}" 
+                                 var="dpro" rowKey="#{dpro.idproducto}"                                  
                                  selectionMode="single" rows="19"  >                        
-                        <p:ajax event="rowSelect" update="forprincipal" process="@all"  
-                                listener="#{comprasBeans.onRowSelect}"/>
+                        <p:ajax event="rowSelect" update="tablaProdd" process="@all"  
+                            listener="#{comprasBeans.onRowSelect}"/>
                         <p:column filterBy="#{dpro.producto}" headerText="descripcion">
                             <h:outputText value="#{dpro.producto}"  />
                         </p:column>
@@ -205,8 +210,8 @@ and open the template in the editor.
                       width="50%">
                 <h:panelGrid columns="1" width="100%"  >
                     <p:menubar>
-                        <p:menuitem id="idBuscarCompr" value="Buscar" update="forprincipal"
-                                    ajax="true" 
+                        <p:menuitem id="idBuscarCompr" value="Buscar" update="tablaCompras"
+                                      action="#{comprasBeans.buscarCompras()}"
                                     icon=" ui-icon-search" > 
                         </p:menuitem>
                     </p:menubar>
@@ -219,26 +224,30 @@ and open the template in the editor.
                        <p:calendar value="#{comprasBeans.fechaFinMonitor}"/>
                 </h:panelGrid>
                 <h:panelGrid >
-                    <p:dataTable id="tablaCompras"
-                                 var="dcompra" 
+                    <p:dataTable value="#{comprasBeans.lstCompraMonitor}" id="tablaCompras"
+                                 var="dcompra"  rowKey="#{dcompra.compraPK}"
                                  selectionMode="single"  rows="19"  >                        
-                        <p:ajax event="rowSelect" update="forprincipal" process="@all"  
+                        <p:ajax event="rowSelect" update="forprincipal"
+                                listener="#{comprasBeans.onRowSelectCompra}" process="@all"  
                                 />
                         <p:column  headerText="Numero">
-                            <h:outputText   />
+                            <h:outputText value="#{dcompra.compraPK.idcompra}"  />
                         </p:column>
                         <p:column headerText="Proveedor"  >
-                            <h:outputText  />
+                            <h:outputText value="#{dcompra.idproveedor.proveedor}" />
                         </p:column>
                         <p:column headerText="fecha" >
-                            <h:outputText />
+                            <h:outputText value="#{dcompra.fechacompra}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="usuario" >
-                            <h:outputText   />
-                            <p:column headerText="estado"  >
-                                <h:outputText />
-                            </p:column>
+                            <h:outputText  value="#{dcompra.idusuario.idusuario}" />
+                   
                         </p:column>
+                          <p:column headerText="estado"  >
+                                <h:outputText value="#{dcompra.idestado.estado}" />
+                            </p:column>
                     </p:dataTable>
                 </h:panelGrid>
             </p:dialog>

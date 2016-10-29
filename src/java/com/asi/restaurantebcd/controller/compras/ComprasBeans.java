@@ -67,6 +67,7 @@ public class ComprasBeans implements  Serializable {
     private String nombreProveedor;
     private String descripcionProducto;
     private boolean mostrarCantConfirmada = false;
+    
     private Double cantidadSolic;
     private BigDecimal cantidadConfirmada;
     private Proveedor proveedor;
@@ -74,8 +75,8 @@ public class ComprasBeans implements  Serializable {
     private boolean mostrarBtnGuardar = false;
     private boolean mostrarBtnActualizarExit = false;
     private Date fecha;
-    private Date fechaIniMonitor = new Date();
-    private Date fechaFinMonitor = new Date();
+    private Date fechaIniMonitor = null;
+    private Date fechaFinMonitor = null;
     private String mensaje;
     private Compra compraEnca;
     private List  <Compra > lstComprasMonitor;
@@ -166,6 +167,7 @@ public class ComprasBeans implements  Serializable {
             compraEnca.setIdproveedor(proveedor);
             compraEnca.setSucursal(sesion.getSucursal());
             compraEnca.setIdusuario(sesion.getUsuario());
+            compraEnca.setObservacion(observacion);
             System.out.println("lista" + compraEnca.getCompradetalleList());
             System.out.println(est); 
             System.out.println("compranenca.. " +compraEnca);
@@ -178,6 +180,8 @@ public class ComprasBeans implements  Serializable {
            // usr = compraEnca.getIdusuario().getIdempleado().getNombre();
             estado = compraEnca.getIdestado().getEstado();
             fecha = compraEnca.getFechacompra();
+            mostrarBtnGuardar = false;
+            mostrarBtnActualizarExit = true;
             
         } catch (Exception ex) {
             Logger.getLogger(ComprasBeans.class.getName()).log(Level.SEVERE, null, ex);
@@ -199,7 +203,7 @@ public class ComprasBeans implements  Serializable {
           }
           
           try {    
-          Estado estad = crud.buscarEntidad(Estado.class, EstadoEnum.TERMINADO);
+          Estado estad = crud.buscarEntidad(Estado.class, EstadoEnum.TERMINADO.getInteger());
           if (estad == null) {
               alert("El estado terminado no existe.",
                       FacesMessage.SEVERITY_WARN);
@@ -335,8 +339,11 @@ public class ComprasBeans implements  Serializable {
       
       }
       public void imprimirReporteCompra() {
-
-       try {
+          if (compraEnca == null) {
+              alert("Selecione una compra.", FacesMessage.SEVERITY_INFO);
+              return;
+          }
+       try { 
             Map param = new HashMap();
                     
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -424,6 +431,8 @@ public class ComprasBeans implements  Serializable {
             producto = ((Vwproductos) event.getObject());
             if (cantidadSolic == null || cantidadSolic.toString().equals("0")){
                 alert("La Cantidad Es obligatorio", FacesMessage.SEVERITY_WARN);
+//                            RequestContext requestContext = RequestContext.getCurrentInstance();
+//                requestContext.execute("PF('dialogoProducto').show();");
                 return;
             }
             System.out.println("producto,.. " +producto);
@@ -512,6 +521,7 @@ public class ComprasBeans implements  Serializable {
             
             lstCompraMonitor = ejbProInv.buscarCompras(sesion.getSucursal(),
                     fechaIniMonitor, fechaFinMonitor);
+            System.out.println("lstCompraMonitor,,,.. " + lstCompraMonitor);
             if (lstCompraMonitor == null || lstCompraMonitor.isEmpty()) {
                 alert("NO se encontraron resultados.", FacesMessage.SEVERITY_WARN);
             }
@@ -543,6 +553,8 @@ public class ComprasBeans implements  Serializable {
         estado = compraEnca.getIdestado().getEstado();
         fecha = compraEnca.getFechacompra();
         observacion = compraEnca.getObservacion();
+        lstCompradeta = new ArrayList<>();
+        lstCompradeta.addAll(compraEnca.getCompradetalleList());
         
         
     }

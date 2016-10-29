@@ -5,7 +5,7 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
-import com.asi.restaurantbcd.modelo.Compania;
+
 import com.asi.restaurantbcd.modelo.Sucursal;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -23,11 +23,11 @@ public class BusquedasSucursal implements BusquedasSucursalLocal{
     private EntityManager em;
 
     @Override
-    public List<Sucursal> buscarSucursal(Compania idCompania) throws Exception {
+    public List<Sucursal> buscarSucursal() throws Exception {
         
         StringBuilder jpql = new StringBuilder();
-        jpql.append("SELECT a FROM Sucursal a where a.idcompania = :c");
-        Query query = em.createQuery(jpql.toString()).setParameter("c", idCompania);
+        jpql.append("SELECT a FROM Sucursal a where 1= 1 ");
+        Query query = em.createQuery(jpql.toString());
         return query.getResultList();   
     }
 

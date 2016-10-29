@@ -5,18 +5,13 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
-import com.asi.restaurantbcd.modelo.Compania;
+
 import com.asi.restaurantbcd.modelo.Piso;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.transaction.UserTransaction;
 
 /**
  *

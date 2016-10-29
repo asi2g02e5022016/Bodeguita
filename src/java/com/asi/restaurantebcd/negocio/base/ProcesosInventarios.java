@@ -111,11 +111,12 @@ public class ProcesosInventarios implements ProcesosInventariosLocal {
      * @return
      * @throws Exception 
      */
+    @Override
     public List<Compra> buscarCompras(Sucursal sucursal,
             Date fechaInicia, Date fechaFinal) throws Exception {
         try {
             StringBuilder jpql = new StringBuilder();
-            jpql.append(" SELECT Compra c WHERE 1 = 1 ");
+            jpql.append(" SELECT c FROM Compra c WHERE 1 = 1 ");
             if (sucursal != null) {
                 jpql.append(" AND c.compraPK.idsucursal = :sucursal ");
             }

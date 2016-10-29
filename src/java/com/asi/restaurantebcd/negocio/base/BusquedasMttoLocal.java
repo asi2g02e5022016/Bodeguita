@@ -5,7 +5,6 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
-import com.asi.restaurantbcd.modelo.Compania;
 import com.asi.restaurantbcd.modelo.Empleado;
 import com.asi.restaurantbcd.modelo.Formapago;
 import com.asi.restaurantbcd.modelo.Sucursal;
@@ -26,12 +25,6 @@ public interface BusquedasMttoLocal {
      * @throws Exception Error generico.
      */   
      Integer obtenerCorreltivoCompanias() throws Exception;
-       /**
-     * Obtiene la lista de companias.
-     * @return List Companias.
-     * @throws Exception Error generico.
-     */
-     List <Compania> buscarCompania() throws Exception;
    /**
      * Obtiene la lista de Sucursales.
      * @return List Sucursales.

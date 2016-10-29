@@ -5,7 +5,6 @@
  */
 package com.asi.restaurantebcd.controller.mtto;
 
-import com.asi.restaurantbcd.modelo.Compania;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasMttoLocal;
@@ -149,7 +148,7 @@ public class MttoSucursalesBean implements   Serializable {
             }
             System.out.println("{,,..." +lstSucursal);
         } catch (Exception ex) {
-            Logger.getLogger(MttoCompanias.class.getName())
+            Logger.getLogger(MttoSucursalesBean.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
@@ -186,7 +185,7 @@ public class MttoSucursalesBean implements   Serializable {
                 
             }
         } catch (Exception ex) {
-            Logger.getLogger(MttoCompanias.class.getName())
+            Logger.getLogger(MttoSucursalesBean.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }

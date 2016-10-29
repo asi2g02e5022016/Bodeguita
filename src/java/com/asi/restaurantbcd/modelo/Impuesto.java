@@ -45,9 +45,6 @@ public class Impuesto implements Serializable {
     @NotNull
     @Column(name = "porcentaje")
     private Double porcentaje;
-    @JoinColumn(name = "idcompania", referencedColumnName = "idcompania")
-    @ManyToOne(optional = false)
-    private Compania idcompania;
 
     public Impuesto() {
     }
@@ -86,13 +83,6 @@ public class Impuesto implements Serializable {
         this.porcentaje = porcentaje;
     }
 
-    public Compania getIdcompania() {
-        return idcompania;
-    }
-
-    public void setIdcompania(Compania idcompania) {
-        this.idcompania = idcompania;
-    }
 
     @Override
     public int hashCode() {

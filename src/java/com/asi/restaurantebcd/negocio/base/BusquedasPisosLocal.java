@@ -5,7 +5,7 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
-import com.asi.restaurantbcd.modelo.Compania;
+
 import com.asi.restaurantbcd.modelo.Piso;
 import java.util.List;
 import javax.ejb.Local;
