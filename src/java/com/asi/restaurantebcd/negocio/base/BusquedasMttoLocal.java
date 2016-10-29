@@ -5,6 +5,7 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Departamento;
 import com.asi.restaurantbcd.modelo.Empleado;
 import com.asi.restaurantbcd.modelo.Formapago;
 import com.asi.restaurantbcd.modelo.Sucursal;
@@ -55,5 +56,7 @@ public interface BusquedasMttoLocal {
      * @return List forma pago.
      * @throws Exception Error generico.
      */
+      public List<Departamento> buscarDepartamento() throws Exception;
+
     /**public List <Formapago> buscarFormapago() throws Exception;*/
 }
