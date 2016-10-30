@@ -40,27 +40,40 @@ and open the template in the editor.
                         <p:inputText style="width: 100%"   />
                     </h:panelGrid>
 
-                    <h:panelGrid >
+                    <!--<h:panelGrid >
                         <p:dataTable id="tablaUsr" emptyMessage="" 
-                                     binding="#{mttoEstado.dtEstado}"
-                                     value="#{mttoEstado.listEstado}" 
-                                     var="dpro" rowKey="#{dpro.idestado}"
+                                     binding="#{""}"
+                                     value="#{""}" 
+                                     var="dpro" rowKey="#{""}"
                                      selectionMode="single" rows="19" 
-                                     editable="true">
+                                     editable="true"> 
 
-                            <p:ajax event="rowEdit" listener="#{mttoEstado.actualizarEstado()}"     />
-                            <p:ajax event="rowEditCancel" listener="#{mttoEstado.eventoCancel}"     />
+                            <p:ajax event="rowEdit" listener="#{""}"     />
+                            <p:ajax event="rowEditCancel" listener="#{""}"     />
 
-                            <p:column headerText="Id" width="5%">
-                                <h:outputText value="#{dpro.idestado}"  />
+                            <p:column headerText="Usuario" width="5%">
+                                <h:outputText value="#{""}"  />
                             </p:column>
-                            <p:column headerText="Nombre" width="20%">
+                            <p:column headerText="Nombre" width="5%">
+                                <h:outputText value="#{""}"  /> 
+                            </p:column>
+                            <p:column headerText="Perfil" width="5%">
+                                <h:outputText value="#{""}"  /> 
+                            </p:column>
+                            <p:column headerText="Estado" width="20%">
                                 <p:cellEditor>
                                     <f:facet  name="output">
-                                        <h:outputText value="#{dpro.estado}"  />
+                                       <h:outputText value="#{""}"  /> 
                                     </f:facet>
                                     <f:facet  name="input">
-                                        <h:inputText value="#{dpro.estado}" style="width:100%" />
+                                        <h:inputText value="#{""}" style="width:100%" /> 
+                                        <p:selectOneMenu id="estado" value="">
+                                            <f:selectItem itemLabel="Estado" itemValue="" noSelectionOption="true" />
+                                        value ="#{invExistenciasBean.codsucursal}"  style="width:150px">
+                                                         <f:selectItems value="#{invExistenciasBean.lstSucursal}"
+                                            var="suc" itemLabel="#{suc.sucursal}" itemValue="#{suc.idsucursal}" /> 
+                                        </p:selectOneMenu>
+
                                     </f:facet>
                                 </p:cellEditor>                                
                             </p:column>
@@ -68,7 +81,7 @@ and open the template in the editor.
                                 <p:rowEditor></p:rowEditor>  
                             </p:column>                           
                         </p:dataTable>
-                    </h:panelGrid>
+                    </h:panelGrid>-->
                 </p:panel>
             </h:form>
         </center>
