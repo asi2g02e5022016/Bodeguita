@@ -9,10 +9,10 @@ import com.asi.restaurantbcd.modelo.Empleado;
 import com.asi.restaurantbcd.modelo.Perfil;
 import com.asi.restaurantbcd.modelo.Usuario;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
+import com.asi.restaurantebcd.negocio.base.BusquedasUsuariosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +22,7 @@ import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
@@ -70,10 +71,15 @@ public class MttoUsuarioMB implements Serializable {
     private Perfil idPerfil;
     private Empleado idEmpleado;
     private boolean activo;
-    private List lstPerfile = new ArrayList();
+    private DataTable dtUsuario = new DataTable() ;
+    private List<Usuario> lstUsuario;
+    private List<Perfil> lstPerfil;
 
     @EJB
-    CrudBDCLocal ejbCrud;
+    CrudBDCLocal crub;
+    @EJB
+    private BusquedasUsuariosLocal ejbBusqUsrLcal;
+    
 //</editor-fold >
 
 //<editor-fold  defaultstate="collapsed" desc="Metodos" >
@@ -90,7 +96,10 @@ public class MttoUsuarioMB implements Serializable {
         idEmpleado = null;
         idPerfil = null;
         activo = false;
-        lstPerfile = null;
+        dtUsuario = new DataTable();
+        lstUsuario = null;
+        lstPerfil = null;
+        
     }
 
     /**
@@ -98,12 +107,12 @@ public class MttoUsuarioMB implements Serializable {
      */
     public void buscarUsuario() {
         try {
-            //Falta EJB
-            if (lstPerfile == null || lstPerfile.isEmpty()) {
+            lstUsuario = ejbBusqUsrLcal.buscarUsuario();
+            if (lstUsuario == null || lstUsuario.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
         } catch (Exception ex) {
-            Logger.getLogger(MttoEstado.class.getName())
+            Logger.getLogger(MttoUsuarioMB.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
@@ -145,7 +154,7 @@ public class MttoUsuarioMB implements Serializable {
             usuarioConst.setIdEmpleado(idEmpleado);                    
             usuarioConst.setClave(claveUsr);
             usuarioConst.setActivo(activo);
-            ejbCrud.guardarEntidad(usuarioConst);
+            crub.guardarEntidad(usuarioConst);
         } catch (Exception ex) {
             Logger.getLogger(MttoUsuarioMB.class.getName())
                     .log(Level.SEVERE, null, ex);
@@ -156,6 +165,20 @@ public class MttoUsuarioMB implements Serializable {
      * Metódo para actualizar la informacion del usuario
      */
     public void actualizarUsuario() {
+        try {
+            if (this.dtUsuario.getRowData() != null){
+                usuarioConst = this.lstUsuario.get(this.dtUsuario.getRowIndex());
+                crub.guardarEntidad(usuarioConst);
+                alert("Usuario actualizado exitosamente.",
+                        FacesMessage.SEVERITY_INFO);
+                this.usuarioConst = null;
+                this.lstUsuario = this.ejbBusqUsrLcal.buscarUsuario();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MttoEstado.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }        
     }
 
     /**
@@ -165,7 +188,7 @@ public class MttoUsuarioMB implements Serializable {
      *
      */
     public void eventoEdit(RowEditEvent event) {
-        //this.guardarEstado();
+        this.guardarUsuario();
         alert("Registro modificado exitosamente.",
                 FacesMessage.SEVERITY_INFO);
     }
@@ -201,7 +224,7 @@ public class MttoUsuarioMB implements Serializable {
 //</editor-fold >
 
 //<editor-fold  defaultstate="collapsed" desc="Getter y Setter" >
-    public Usuario getUsuarioConst() {
+   public Usuario getUsuarioConst() {
         return usuarioConst;
     }
 
@@ -281,20 +304,46 @@ public class MttoUsuarioMB implements Serializable {
         this.activo = activo;
     }
 
-    public List getLstPerfile() {
-        return lstPerfile;
+    public DataTable getDtUsuario() {
+        return dtUsuario;
     }
 
-    public void setLstPerfile(List lstPerfile) {
-        this.lstPerfile = lstPerfile;
+    public void setDtUsuario(DataTable dtUsuario) {
+        this.dtUsuario = dtUsuario;
     }
 
-    public CrudBDCLocal getEjbCrud() {
-        return ejbCrud;
+    public List<Usuario> getLstUsuario() {
+        return lstUsuario;
     }
 
-    public void setEjbCrud(CrudBDCLocal ejbCrud) {
-        this.ejbCrud = ejbCrud;
+    public void setLstUsuario(List<Usuario> lstUsuario) {
+        this.lstUsuario = lstUsuario;
     }
+
+    public List<Perfil> getLstPerfil() {
+        return lstPerfil;
+    }
+
+    public void setLstPerfil(List<Perfil> lstPerfil) {
+        this.lstPerfil = lstPerfil;
+    }
+
+    public CrudBDCLocal getCrub() {
+        return crub;
+    }
+
+    public void setCrub(CrudBDCLocal crub) {
+        this.crub = crub;
+    }
+
+    public BusquedasUsuariosLocal getEjbBusqUsrLcal() {
+        return ejbBusqUsrLcal;
+    }
+
+    public void setEjbBusqUsrLcal(BusquedasUsuariosLocal ejbBusqUsrLcal) {
+        this.ejbBusqUsrLcal = ejbBusqUsrLcal;
+    }
+    
 //</editor-fold >      
+    
 }
