@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml">
+    <ui:define name="body">
+        <center>
+            <h:form id="forprincipal" >
+
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="basic" header="Mantenimientos Usuarios" style="width: 50%"  >
+                    <p:menubar>
+                        <p:menuitem value="Nuevo"  update="forprincipal" 
+                                    icon="ui-icon-plus" />
+                        <p:menuitem value="Guardar"  update="forprincipal"  
+                                    icon="ui-icon-disk" />
+                        <p:menuitem value="Buscar" update="forprincipal"
+                                    icon=" ui-icon-search" />
+                    </p:menubar>
+                    <h:panelGrid columns="2" width="80%">
+                        <h:outputLabel  value="Usuario: "/>
+                        <p:inputText style="width: 100px" />
+                        <h:outputLabel  value="Empleado: " />
+                        <p:inputText style="width: 100%"   />
+                        <h:outputLabel  value="Perfil: " />
+                        <p:inputText style="width: 100%"   />
+                        <h:outputLabel  value="Password: " />
+                        <p:inputText style="width: 100%"   />
+                        <h:outputLabel  value="Confirmar pass: " />
+                        <p:inputText style="width: 100%"   />
+                        <h:outputLabel  value="Estado: " />
+                        <p:inputText style="width: 100%"   />
+                    </h:panelGrid>
+
+                    <h:panelGrid >
+                        <p:dataTable id="tablaProd" emptyMessage="" 
+                                     selectionMode="single" rows="19"  >
+                            <p:column headerText="Id" width="40%">
+                                <h:outputText  />
+                            </p:column>
+                            <p:column headerText="Nombre" width="90%">
+                                <h:outputText  />
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

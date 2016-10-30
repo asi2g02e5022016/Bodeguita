@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -30,111 +31,67 @@ import org.primefaces.context.RequestContext;
 @ManagedBean(name = "mttoEstado")
 @ViewScoped
 public class MttoEstado implements Serializable {
-    
+
 //<editor-fold  defaultstate="collapsed" desc="Inializar" >
     /**
      * Creates a new instance of MttoCompanias
      */
-    public MttoEstado() {               
+    public MttoEstado() {
     }
-    
+
     /**
-     * Metodo  cuando carga la pagina.
+     * Metodo cuando carga la pagina.
      */
     @PostConstruct
-    public void postConstruction(){
-        try{
+    public void postConstruction() {
+        try {
             sesion = Utilidades.findBean("sessionUsr");
-            if(sesion == null){
-                alert("Debe Iniciar Sesion",FacesMessage.SEVERITY_FATAL);
+            if (sesion == null) {
+                alert("Debe Iniciar Sesion", FacesMessage.SEVERITY_FATAL);
                 FacesContext.getCurrentInstance().getViewRoot().
                         getViewMap().clear();
-            String url = "http://localhost:8080/RestaurantBDC";
-            FacesContext.getCurrentInstance().getExternalContext().
-                    redirect(url);
-            } 
+                String url = "http://localhost:8080/RestaurantBDC";
+                FacesContext.getCurrentInstance().getExternalContext().
+                        redirect(url);
+            }
             buscarEstados();
         } catch (Exception e) {
-                alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
+            alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
         }
     }
-     //</editor-fold >
-    
+    //</editor-fold >
+
 //<editor-fold  defaultstate="collapsed" desc="LocalVariables" >
-    /**Atributo que se muestra en pantalla el codigo de estado.*/
-    private Integer idEstado;
-      /**Atributo que se muestra en pantalla el nombre de estado documento.*/
-    private String nombreEstado;
-      /**Busca beans session activa.*/
-    private SessionUsr sesion ;
-      /**Entidad que guardara el estado.*/
-    private Estado estado;
-      /**Atributo que se muestra en pantalla la lista de estado.*/
-    private List <Estado> listEstado;
-    /**Bindin de DataTable que muestra los estado documentos.*/
-    private DataTable dtEstado  =  new DataTable();
-     /**
-      * EJB Quecon tiene metodos utilitarios como:
-      * Guardar, Eliminar, Buscar... 
-      */
-     @EJB
-    private CrudBDCLocal crud;
-     /**
-      * EJB 
-      * de busquedas  de mantenimiento.
-      */
-     @EJB
-    private BusquedasEstadoLocal ejbBusqEstLocal;
-        //</editor-fold >
-        
+    private Integer idEstado; //Atributo que se muestra en pantalla el codigo de estado.
+    private String nombreEstado; //Atributo que se muestra en pantalla el nombre de estado documento.
+    private SessionUsr sesion; //Busca beans session activa.
+    private Estado estadoConst; //Constructor de Entidad que hará los cruds del estado.
+    private List<Estado> listEstado; //Atributo que se muestra en pantalla la lista de estado.
+    private DataTable dtEstado = new DataTable();//Bindin de DataTable que muestra los estado documentos.
+    @EJB
+    private CrudBDCLocal crud; //EJB Quecon tiene metodos utilitarios como: Guardar,Actualizar, Eliminar, Buscar...
+    @EJB
+    private BusquedasEstadoLocal ejbBusqEstLocal; //EJB de busquedas  de mantenimiento.
+    //</editor-fold >
+
 //<editor-fold  defaultstate="collapsed" desc="Metodos" >
-     
-     /**
-      * Metodo para limpiar informacion de pantalla.
-      */
-     public void limpiarPantalla() {
-         listEstado = null;
-         estado = null;
-         nombreEstado = null;
-         idEstado = null;
-         dtEstado = new DataTable();
+    /**
+     * Metodo para limpiar informacion de pantalla.
+     */
+    public void limpiarPantalla() {
+        listEstado = null;
+        estadoConst = null;
+        nombreEstado = null;
+        idEstado = null;
+        dtEstado = new DataTable();
     }
-     
-     /**
-      * Metodo que se ejecuta cuando se 
-      * desea guardar un estado documento.
-      */
-     public void guardarEstado() {
+
+    /**
+     * Metodo que se ejecuta cuando se desea guardar un estado documento.
+     */
+    public void buscarEstados() {
         try {
-            if (nombreEstado == null || nombreEstado.equals("")) {
-                alert("Descripcion de estado es obligatoria.",
-                        FacesMessage.SEVERITY_INFO);
-                return;
-            }
-           
-            Integer codigo = ejbBusqEstLocal.obtenerCorreltivoEstado();
-            estado = new Estado();
-            estado.setEstado(nombreEstado.trim().toUpperCase());
-            estado.setIdestado(codigo);
-            
-            crud.guardarEntidad(estado);
-            alert("El estado documento se guardo exitosamente.", 
-                    FacesMessage.SEVERITY_INFO);
-            this.idEstado = codigo;
-        } catch (Exception ex) {
-            Logger.getLogger(MttoEstado.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-    }
-     
-     /**
-      * Metodo que se ejecuta cuando se 
-      * desea guardar un estado documento.
-      */
-     public void buscarEstados() {
-        try {
-            listEstado =  ejbBusqEstLocal.buscarEstado();
+            listEstado = ejbBusqEstLocal.buscarEstado();
             if (listEstado == null || listEstado.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
@@ -144,17 +101,65 @@ public class MttoEstado implements Serializable {
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
-     
-     /**
-      * Metodo que se ejecuta cuando se 
-      * desea actualizar un estado documento.
-      */
-     public void actualizarEstado() {
+
+    /**
+     * Metodo que se ejecuta cuando se desea guardar un estado documento.
+     */
+    public void guardarEstado() {
         try {
-                
+            if (nombreEstado == null || nombreEstado.equals("")) {
+                alert("Descripcion de estado es obligatoria.",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+
+            Integer codigo = ejbBusqEstLocal.obtenerCorreltivoEstado();
+            estadoConst = new Estado();
+            estadoConst.setEstado(nombreEstado.trim().toUpperCase());
+            estadoConst.setIdestado(codigo);
+
+            crud.guardarEntidad(estadoConst);
+            alert("El estado documento se guardo exitosamente.",
+                    FacesMessage.SEVERITY_INFO);
+            this.idEstado = codigo;
+        } catch (Exception ex) {
+            Logger.getLogger(MttoEstado.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
+
+    /**
+     * Metodo que se ejecuta cuando se desea actualizar un estado documento.
+     */
+    public void actualizarEstado() {
+        try {
+
+            if (this.dtEstado.getRowData() != null) {
+                Estado est = this.listEstado.get(this.dtEstado.getRowIndex());
+                crud.guardarEntidad(est);
+                alert("Estado documento actualizado exitosamente.",
+                        FacesMessage.SEVERITY_INFO);
+                this.estadoConst = null;
+                est = null;
+                this.listEstado = this.ejbBusqEstLocal.buscarEstado();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MttoEstado.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
+
+    /**
+     * Metodo que se ejecuta cuando se va a Eliminar un estado documento
+     */
+    public void eliminarEstado() {
+        try {
+            listEstado = ejbBusqEstLocal.buscarEstado();
             if (dtEstado.getRowData() != null) {
-                estado =  (Estado) dtEstado.getRowData();
-                System.out.println("estado.." + estado);
+                estadoConst = listEstado.get(dtEstado.getRowIndex());
+                System.out.println("estado.." + estadoConst);
             }
         } catch (Exception ex) {
             Logger.getLogger(MttoEstado.class.getName())
@@ -162,45 +167,49 @@ public class MttoEstado implements Serializable {
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
-     
-     /**
-      * Metodo que se ejecuta cuando se 
-      * va a Eliminar un estado documento
-      */
-     public void eliminarEstado() {
-        try {
-            listEstado =  ejbBusqEstLocal.buscarEstado();
-         if (dtEstado.getRowData() != null) {
-                estado =  listEstado.get(dtEstado.getRowIndex());
-                System.out.println("estado.." + estado);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(MttoEstado.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
+
+    /**
+     * Metodo que se ejecuta cuando se esta editando la grilla del formulario
+     * @param event
+     **/
+    public void eventoEdit(RowEditEvent event) {
+        this.guardarEstado();
+        alert("Registro modificado exitosamente.",
+                FacesMessage.SEVERITY_INFO);
     }
-     
-     /**
-      * Mensaje de alerta que se muestra en pantalla.
-      * @param mensaje Mensaje que quiere mostrar.
-      * @param faces constantes definidas en FacesMessage tipos:
-      * FacesMessage.SEVERITY_INFO  informativo.
-      * FacesMessage.SEVERITY_ERROR error.
-      * FacesMessage.SEVERITY_WARN adventencia.
-      */
+
+    /**
+     * Metodo que se ejecuta cuando se cancela la acción de edición en la grilla
+     * del formulario
+     *
+     * @param event
+     */
+    public void eventoCancel(RowEditEvent event) {
+        alert("Se ha cancelado la acción.",
+                FacesMessage.SEVERITY_INFO);
+//        System.out.println("event.getObject().." +event.getObject());
+    }
+
+    /**
+     * Mensaje de alerta que se muestra en pantalla.
+     *
+     * @param mensaje Mensaje que quiere mostrar.
+     * @param faces constantes definidas en FacesMessage tipos:
+     * FacesMessage.SEVERITY_INFO informativo. FacesMessage.SEVERITY_ERROR
+     * error. FacesMessage.SEVERITY_WARN adventencia.
+     */
     private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
         if (mensaje == null) {
-            mensaje =  "-";
+            mensaje = "-";
         }
         FacesMessage message = new FacesMessage(faces,
                 "Mensaje", mensaje.toString());
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
-        //</editor-fold >
-    
+    //</editor-fold >
+
 //<editor-fold  defaultstate="collapsed" desc="Getter y setter" >
-     public Integer getIdEstado() {
+    public Integer getIdEstado() {
         return idEstado;
     }
 
@@ -224,12 +233,12 @@ public class MttoEstado implements Serializable {
         this.sesion = sesion;
     }
 
-    public Estado getEstado() {
-        return estado;
+    public Estado getEstadoConst() {
+        return estadoConst;
     }
 
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setEstadoConst(Estado estadoConst) {
+        this.estadoConst = estadoConst;
     }
 
     public List<Estado> getListEstado() {
@@ -262,6 +271,6 @@ public class MttoEstado implements Serializable {
 
     public void setEjbBusqEstLocal(BusquedasEstadoLocal ejbBusqEstLocal) {
         this.ejbBusqEstLocal = ejbBusqEstLocal;
-    }   
+    }
 //</editor-fold >     
 }

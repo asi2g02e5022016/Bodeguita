@@ -10,21 +10,22 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                template="/layout/templateBDC.xhtml">
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="body">
         <center>
-        <h:form id="forprincipal" >
-            
-            <p:growl showDetail="true" showSummary="true" />
-            <p:panel id="basic" header="Mantenimientos estado documento" style="width: 50%"  >
-                <p:menubar>
-                    <p:menuitem value="Nuevo"  update="forprincipal"  action="#{mttoEstado.limpiarPantalla()}"
-                                icon="ui-icon-plus" />
-                    <p:menuitem value="Guardar"  update="forprincipal"  action="#{mttoEstado.guardarEstado()}"
-                                icon="ui-icon-disk" />
-                    <p:menuitem value="Buscar" update="forprincipal" action="#{mttoEstado.buscarEstados()}"
-                                icon=" ui-icon-search" />
-                </p:menubar>
+            <h:form id="forprincipal" >
+
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="basic" header="Mantenimientos estado documento" style="width: 50%"  >
+                    <p:menubar>
+                        <p:menuitem value="Nuevo"  update="forprincipal"  action="#{mttoEstado.limpiarPantalla()}"
+                                    icon="ui-icon-plus" />
+                        <p:menuitem value="Guardar"  update="forprincipal"  action="#{mttoEstado.guardarEstado()}"
+                                    icon="ui-icon-disk" />
+                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoEstado.buscarEstados()}"
+                                    icon=" ui-icon-search" />
+                    </p:menubar>
                     <h:panelGrid columns="2" width="80%">
                         <h:outputLabel  value="Id estado : "/>
                         <p:inputText value="#{mttoEstado.idEstado}"
@@ -33,22 +34,37 @@ and open the template in the editor.
                         <p:inputText style="width: 100%"  value="#{mttoEstado.nombreEstado}"  />
                     </h:panelGrid>
                     <h:panelGrid >
-                        <p:dataTable id="tablaProd" emptyMessage="" binding="#{mttoEstado.dtEstado}"
+                        <p:dataTable id="tablaProd" emptyMessage="" 
+                                     binding="#{mttoEstado.dtEstado}"
                                      value="#{mttoEstado.listEstado}" 
                                      var="dpro" rowKey="#{dpro.idestado}"
-                                     selectionMode="single" rows="19"  >
-                            <p:column headerText="Id" width="40%">
+                                     selectionMode="single" rows="19" 
+                                     editable="true">
+
+                            <p:ajax event="rowEdit" listener="#{mttoEstado.actualizarEstado()}"     />
+                            <p:ajax event="rowEditCancel" listener="#{mttoEstado.eventoCancel}"     />
+
+                            <p:column headerText="Id" width="5%">
                                 <h:outputText value="#{dpro.idestado}"  />
                             </p:column>
-                            <p:column headerText="Nombre" width="90%">
-                                <h:outputText value="#{dpro.estado}"  />
+                            <p:column headerText="Nombre" width="20%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dpro.estado}"  />
+                                    </f:facet>
+                                    <f:facet  name="input">
+                                        <h:inputText value="#{dpro.estado}" style="width:100%" />
+                                    </f:facet>
+                                </p:cellEditor>                                
                             </p:column>
-
+                            <p:column  headerText="Modificar" width="10%" style="align-content: center">
+                                <p:rowEditor></p:rowEditor>  
+                            </p:column>                           
                         </p:dataTable>
                     </h:panelGrid>
-            </p:panel>
-        </h:form>
-            </center>
+                </p:panel>
+            </h:form>
+        </center>
     </ui:define>
 </ui:composition>
 

@@ -38,6 +38,7 @@ public class MttoUsuarioMB implements Serializable {
    private String contrasenaUsr;
    private List lstPerfile = new ArrayList();
    private String mensaje;
+   private String codigoEmp;
    @EJB
    CrudBDCLocal ejbCrud;
    
@@ -71,6 +72,16 @@ public class MttoUsuarioMB implements Serializable {
        //</editor-fold >
    
       //<editor-fold  defaultstate="collapsed" desc="Getter y Setter" >
+
+    public String getCodigoEmp() {
+        return codigoEmp;
+    }
+
+    public void setCodigoEmp(String codigoEmp) {
+        this.codigoEmp = codigoEmp;
+    }
+   
+   
    public String getCodigoUsr() {
         return codigoUsr;
     }
