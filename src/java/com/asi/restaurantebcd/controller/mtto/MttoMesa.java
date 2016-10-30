@@ -21,11 +21,13 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.view.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.extensions.event.ImageAreaSelectEvent;
 
 /**
  *
@@ -89,7 +91,10 @@ public class MttoMesa implements Serializable {
             
             setLstMesa(ejbBusqPiso.buscarMesa(sesion.getSucursal()));
             setLstPiso(ejbBusqPiso.buscarPiso(sesion.getSucursal()));
-//           System.out.println(lstCompania);            
+            
+//           System.out.println(lstCompania); 
+                System.out.println("X: " + x);
+                System.out.println("Y: " + y);
             System.out.println("load");
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,7 +134,7 @@ public class MttoMesa implements Serializable {
             setPisoConstructor(new Piso());
             getPisoConstructor().setIdpiso(idPiso);
             getMesaConstructor().setIdpiso(getPisoConstructor());
-            getMesaConstructor().setNombre(nombre.trim().toUpperCase());
+            getMesaConstructor().setNombre(nombre.trim());
             getMesaConstructor().setX(x);
             getMesaConstructor().setY(y);
             crud.guardarEntidad(getMesaConstructor());
@@ -352,4 +357,13 @@ public class MttoMesa implements Serializable {
     public void setPisoConstructor(Piso pisoConstructor) {
         this.pisoConstructor = pisoConstructor;
     }
+    
+     public void selectEndListener(final ImageAreaSelectEvent e) {    
+                x = e.getX1(); 
+                y = e.getY1();
+                System.out.println("X: " + x);
+                System.out.println("Y: " + y);
+  
+    }  
+    
     }

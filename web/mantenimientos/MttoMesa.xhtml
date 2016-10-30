@@ -37,16 +37,17 @@ and open the template in the editor.
                         <h:outputLabel value ="Nombre "/>
                         <p:inputText  value ="#{mttoMesa.nombre}"/>
                         <h:outputLabel value ="Piso" />
-                        <p:selectOneMenu id="listCompania"  value ="#{mttoMesa.idMesa}" >
+                        <p:selectOneMenu id="listCompania"  value ="#{mttoMesa.idPiso}" >
                             <f:selectItem itemLabel="" itemValue=""/> 
                             <f:selectItems value="#{mttoMesa.lstPiso}"
                                            var="inp" itemLabel="#{inp.nombre}" itemValue="#{inp.idpiso}"/>                                       
                         </p:selectOneMenu> 
                         <h:outputLabel value ="X" />
-                        <p:inputText value ="#{mttoMesa.x}" style="width:60px" />
+                        <p:inputText id="xc" value ="#{mttoMesa.x}" style="width:60px" disabled="true" />
                         <h:outputLabel value ="Y" />
-                        <p:inputText value ="#{mttoMesa.y}" style="width:60px" />
-                        <p:commandButton onclick="PF('dlg2').show();" value="Coordenadas" icon="fa-arrows" />
+                        <p:inputText id="yc" value ="#{mttoMesa.y}" style="width:60px" disabled="true" />
+                        <p:commandButton onclick="PF('dlg2').show();" 
+                                         value="Coordenadas" icon="fa-arrows" />
 
 
                     </h:panelGrid>
@@ -130,22 +131,25 @@ and open the template in the editor.
 
                     
                 </p:panel>
-            </h:form>
-
-        </center>
-        <p:dialog header="Coordenadas" widgetVar="dlg2" modal="true" closable="false" 
-                  draggable="false" onHide="PF('areaSelect').endSelection();" >
-            <h:form id="formCoords">
-                <h:outputText value="Click en la imagen para seleccionar la ubicación de la mesa." />
+            <p:dialog header="Coordenadas" widgetVar="dlg2" modal="true" closable="false" 
+                      draggable="false"   >
+                            <h:outputText value="Click en la imagen para seleccionar la ubicación de la mesa." />
                 <br />
-                        <p:commandButton onclick="PF('dlg2').hide();" value="Guardar Coordenadas" icon="fa-save" update="forprincipal" />
+                        <p:commandButton onclick="PF('areaSelect').cancelSelection();PF('dlg2').hide();"
+                                         value="Guardar Coordenadas" icon="fa-save"  
+                                         update="@all" />
                 <br />
                 <p:graphicImage id="myImage" value="/images/piso.jpg"  />  
                 <pe:imageAreaSelect id="areaSelect" for="myImage" handles="true" zIndex="99999" >  
-                    <p:ajax event="selectEnd" listener="#{mttoMesa.selectEndListener}" process="@this" />  
+                    <p:ajax event="selectEnd" listener="#{mttoMesa.selectEndListener}" process="@this" update="xc, yc" />  
                   </pe:imageAreaSelect>
-                </h:form>
+            
         </p:dialog>  
+                
+            </h:form>
+
+        </center>
+        
     </ui:define>
 
       <!--
