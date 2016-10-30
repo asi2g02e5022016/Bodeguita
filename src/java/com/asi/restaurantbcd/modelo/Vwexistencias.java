@@ -39,14 +39,15 @@ public class Vwexistencias implements Serializable {
     @NotNull
     @Column(name = "idproducto")
     private int idproducto;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "valor")
     private float valor;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "costounitario")
     private float costounitario;
+    @Column(name = "valreservado")
+    private float valreservado;
+    @Column(name = "transito")
+    private float transito;
+    
     @Size(max = 50)
     @Column(name = "sucursal")
     private String sucursal;
@@ -98,6 +99,22 @@ public class Vwexistencias implements Serializable {
 
     public void setCostounitario(float costounitario) {
         this.costounitario = costounitario;
+    }
+
+    public float getValreservado() {
+        return valreservado;
+    }
+
+    public void setValreservado(float valreservado) {
+        this.valreservado = valreservado;
+    }
+
+    public float getTransito() {
+        return transito;
+    }
+
+    public void setTransito(float transito) {
+        this.transito = transito;
     }
 
     public String getSucursal() {

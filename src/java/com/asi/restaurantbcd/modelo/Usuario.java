@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -44,10 +45,11 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "activo")
     private boolean activo;
-    @Column(name = "idempleado")
-    private Integer idempleado;
+    @JoinColumn(name = "idempleado", referencedColumnName = "idempleado")
+    @OneToOne(optional = false)
+    private Empleado idEmpleado;
     @JoinColumn(name = "idperfil", referencedColumnName = "idperfil")
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Perfil idperfil;
 
     public Usuario() {
@@ -87,14 +89,6 @@ public class Usuario implements Serializable {
         this.activo = activo;
     }
 
-//    public Empleado getIdempleado() {
-//        return idempleado;
-//    }
-//
-//    public void setIdempleado(Empleado idempleado) {
-//        this.idempleado = idempleado;
-//    }
-
     public Perfil getIdperfil() {
         return idperfil;
     }
@@ -103,14 +97,13 @@ public class Usuario implements Serializable {
         this.idperfil = idperfil;
     }
 
-    public Integer getIdempleado() {
-        return idempleado;
+    public Empleado getIdEmpleado() {
+        return idEmpleado;
     }
 
-    public void setIdempleado(Integer idempleado) {
-        this.idempleado = idempleado;
+    public void setIdEmpleado(Empleado idEmpleado) {
+        this.idEmpleado = idEmpleado;
     }
-    
 
     @Override
     public int hashCode() {
@@ -133,9 +126,6 @@ public class Usuario implements Serializable {
     }
     
 
-    @Override
-    public String toString() {
-        return "com.asi.restaurantbcd.modelo.Usuario[ idusuario=" + idusuario + " ]";
-    }
+   
     
 }

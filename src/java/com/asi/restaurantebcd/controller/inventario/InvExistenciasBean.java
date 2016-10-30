@@ -27,8 +27,6 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import com.asi.restaurantebcd.negocio.base.BusquedasExistenciasLocal;
 import java.util.ArrayList;
-import javax.ejb.Stateless;
-import javax.swing.tree.DefaultTreeCellEditor;
 
 /**
  *
@@ -78,6 +76,8 @@ public class InvExistenciasBean implements Serializable {
 
     private float valor; //Atributo que se muestra en pantalla el valor del producto.
     private float costounitario; //Atributo que se muestra en pantalla el costo unitario del producto.
+    private float valreservado;
+    private float transito;
     private SessionUsr sesion; //Busca beans session activa.
     private DataTable dtExistencia = new DataTable();
     private Sucursal sucursalConst;
@@ -234,6 +234,22 @@ public class InvExistenciasBean implements Serializable {
     public void setCostounitario(float costounitario) {
         this.costounitario = costounitario;
     }    
+
+    public float getValreservado() {
+        return valreservado;
+    }
+
+    public void setValreservado(float valreservado) {
+        this.valreservado = valreservado;
+    }
+
+    public float getTransito() {
+        return transito;
+    }
+
+    public void setTransito(float transito) {
+        this.transito = transito;
+    }
 
     public SessionUsr getSesion() {
         return sesion;

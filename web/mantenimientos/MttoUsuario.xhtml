@@ -29,7 +29,15 @@ and open the template in the editor.
                         <h:outputLabel  value="Usuario: "/>
                         <p:inputText style="width: 100px" />
                         <h:outputLabel  value="Empleado: " />
-                        <p:inputText style="width: 100%"   />
+                        <p:inputText readonly="true"  value="#{comprasBeans.nombreProveedor}"  style=" width: 100%" />
+                        <p:commandButton   action="#{comprasBeans.mostrarDialogProveedor()}"
+                                           id="iconOnly" 
+                                           icon="ui-icon-search" title="Icon Only" />
+
+
+                        <h:outputLabel  value="Observaciones "  />
+                        <p:inputTextarea rows="3" cols="25" value="#{comprasBeans.observacion}"  />
+                        
                         <h:outputLabel  value="Perfil: " />
                         <p:inputText style="width: 100%"   />
                         <h:outputLabel  value="Password: " />
