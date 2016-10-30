@@ -9,7 +9,8 @@ and open the template in the editor.
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                template="/layout/templateBDC.xhtml">
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="body">
         <center>
             <h:form id="forprincipal" >
@@ -40,15 +41,32 @@ and open the template in the editor.
                     </h:panelGrid>
 
                     <h:panelGrid >
-                        <p:dataTable id="tablaProd" emptyMessage="" 
-                                     selectionMode="single" rows="19"  >
-                            <p:column headerText="Id" width="40%">
-                                <h:outputText  />
-                            </p:column>
-                            <p:column headerText="Nombre" width="90%">
-                                <h:outputText  />
-                            </p:column>
+                        <p:dataTable id="tablaUsr" emptyMessage="" 
+                                     binding="#{mttoEstado.dtEstado}"
+                                     value="#{mttoEstado.listEstado}" 
+                                     var="dpro" rowKey="#{dpro.idestado}"
+                                     selectionMode="single" rows="19" 
+                                     editable="true">
 
+                            <p:ajax event="rowEdit" listener="#{mttoEstado.actualizarEstado()}"     />
+                            <p:ajax event="rowEditCancel" listener="#{mttoEstado.eventoCancel}"     />
+
+                            <p:column headerText="Id" width="5%">
+                                <h:outputText value="#{dpro.idestado}"  />
+                            </p:column>
+                            <p:column headerText="Nombre" width="20%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dpro.estado}"  />
+                                    </f:facet>
+                                    <f:facet  name="input">
+                                        <h:inputText value="#{dpro.estado}" style="width:100%" />
+                                    </f:facet>
+                                </p:cellEditor>                                
+                            </p:column>
+                            <p:column  headerText="Modificar" width="10%" style="align-content: center">
+                                <p:rowEditor></p:rowEditor>  
+                            </p:column>                           
                         </p:dataTable>
                     </h:panelGrid>
                 </p:panel>
