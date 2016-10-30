@@ -60,6 +60,10 @@ body {
 .dr-pnl {
 	border: none;
 }
+.pe-imgageareaselect-outer{
+    
+    z-index: 9999 !important;
+}
 
 #headBanner {
 	height: 80px;

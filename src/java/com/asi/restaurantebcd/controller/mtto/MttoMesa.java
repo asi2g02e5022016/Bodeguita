@@ -5,6 +5,7 @@
  */
 package com.asi.restaurantebcd.controller.mtto;
 
+import com.asi.restaurantbcd.modelo.Mesa;
 import com.asi.restaurantbcd.modelo.Piso;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
@@ -40,37 +41,36 @@ public class MttoMesa implements Serializable {
     private SessionUsr sesion;
 
     /* variable de pk tabla impuesto*/
-    private Integer idPiso;
+    private Integer idMesa;
 
     /* variable de fk tabla impuesto*/
-    private Integer idSucursal;
+    private Integer idPiso;
 
     /* variable de descripcion del tipo de impuesto*/
     private String nombre;
     
     /* constructor clase Piso  */
-    private Piso pisoConstructor;
+    private Mesa mesaConstructor;
     /*constructor clase Sucursal*/
-    private Sucursal sucursalConstructor = null;
+    private Piso pisoConstructor = null;
     //atributo que muestra en pantalla listado de impuestos
+    private List<Mesa> lstMesa;
     private List<Piso> lstPiso;
-    private List<Sucursal> lstSucursal;
+    
+    private Integer x;
+    
+    private Integer y;
 
     /**
      * Bindin de DataTable que muestra companias.
      */
-    private DataTable tablaPiso = new DataTable();
+    private DataTable tablaMesa = new DataTable();
     /**
      * EJB Quecon tiene metodos utilitarios como: Guardar, Eliminar, Buscar...
      */
     @EJB
     private CrudBDCLocal crud;
 
-    /**
-     * EJB de busquedas de mantenimiento.
-     */
-    @EJB
-    private BusquedasSucursalLocal ejbBusqMtto;
 
        @EJB
     private BusquedasPisosLocal ejbBusqPiso;
@@ -87,8 +87,8 @@ public class MttoMesa implements Serializable {
     public void postContruction() {
         try {
             
-            lstPiso = ejbBusqPiso.buscarPiso();
-            lstSucursal = ejbBusqMtto.buscarSucursal();
+            setLstMesa(ejbBusqPiso.buscarMesa(sesion.getSucursal()));
+            setLstPiso(ejbBusqPiso.buscarPiso(sesion.getSucursal()));
 //           System.out.println(lstCompania);            
             System.out.println("load");
         } catch (Exception e) {
@@ -102,36 +102,40 @@ public class MttoMesa implements Serializable {
     //<editor-fold  defaultstate="collapsed" desc="Metodos" >
     //Limpiar variables
     public void limpiarPantalla() {
+        idMesa = null;
         idPiso = null;
-        idSucursal = null;
         nombre = null;
-        tablaPiso = new DataTable();
-        this.lstPiso = new ArrayList<Piso>();
+        x= null;
+        y=null;
+        tablaMesa = new DataTable();
+        this.setLstMesa(new ArrayList<Mesa>());
 
     }
 
     // metodo para registrar un nuevo impuesto
-    public void guardarPiso() {
+    public void guardarMesa() {
         try {
             if (nombre == null || nombre.equals("")) {
-                alert("Nombre dePiso es obligatorio.",
+                alert("Nombre de Mesa es obligatorio.",
                         FacesMessage.SEVERITY_INFO);
                 return;
             }
 
-            if (idSucursal == null) {
+            if (idPiso == null) {
                 alert("Selecione una sucursal.", FacesMessage.SEVERITY_WARN);
                 return;
             }
-            pisoConstructor = new Piso();
-            sucursalConstructor = new Sucursal();
-            sucursalConstructor.setIdsucursal(idSucursal);
-            pisoConstructor.setIdsucursal(sucursalConstructor);
-            pisoConstructor.setNombre(nombre.trim().toUpperCase());
-            crud.guardarEntidad(pisoConstructor);
-            alert("Piso ingresado exitosamente.",FacesMessage.SEVERITY_INFO);
-            this.lstPiso = this.ejbBusqPiso.buscarPiso(sesion.getSucursal());
-            this.pisoConstructor = null;
+            setMesaConstructor(new Mesa());
+            setPisoConstructor(new Piso());
+            getPisoConstructor().setIdpiso(idPiso);
+            getMesaConstructor().setIdpiso(getPisoConstructor());
+            getMesaConstructor().setNombre(nombre.trim().toUpperCase());
+            getMesaConstructor().setX(x);
+            getMesaConstructor().setY(y);
+            crud.guardarEntidad(getMesaConstructor());
+            alert("Mesa ingresada exitosamente.",FacesMessage.SEVERITY_INFO);
+            this.setLstMesa(this.ejbBusqPiso.buscarMesa(sesion.getSucursal()));
+            this.setMesaConstructor(null);
         } catch (Exception ex) {
 
             Logger.getLogger(MttoPiso.class.getName())
@@ -142,23 +146,23 @@ public class MttoMesa implements Serializable {
     }
 
     //metodo para actualizar un impuesto
-    public void actualizarPiso() {
+    public void actualizarMesa() {
         try {
-            if (this.tablaPiso.getRowData() != null) {
-                Piso imp = this.lstPiso.get(this.tablaPiso.getRowIndex());                
-//                this.pisoConstructor = (Impuesto) tablaPiso.getRowData();
-                sucursalConstructor = new Sucursal();
-                sucursalConstructor.setIdsucursal(idSucursal);
-                imp.setIdsucursal(sucursalConstructor);
-//                this.pisoConstructor.setIdcompania(sucursalConstructor);
-//                System.out.println(this.pisoConstructor);
+            if (this.tablaMesa.getRowData() != null) {
+                Mesa imp = this.getLstMesa().get(this.tablaMesa.getRowIndex());                
+//                this.mesaConstructor = (Impuesto) tablaMesa.getRowData();
+                setPisoConstructor(new Piso());
+                getPisoConstructor().setIdpiso(imp.getIdpiso().getIdpiso());
+                imp.setIdpiso(getPisoConstructor());
+//                this.mesaConstructor.setIdcompania(pisoConstructor);
+//                System.out.println(this.mesaConstructor);
                 crud.guardarEntidad(imp);
-                alert("Impuesto actualizado exitosamente.",
+                alert("Mesa actualizada exitosamente.",
                         FacesMessage.SEVERITY_INFO);
-                this.pisoConstructor = null;
-                this.sucursalConstructor = null;
+                this.setMesaConstructor(null);
+                this.setPisoConstructor(null);
                 imp = null;
-                this.lstPiso = this.ejbBusqPiso.buscarPiso();
+                this.setLstMesa(this.ejbBusqPiso.buscarMesa(sesion.getSucursal()));
 
             }
         } catch (Exception ex) {
@@ -170,15 +174,15 @@ public class MttoMesa implements Serializable {
 
     public void eliminarPiso() {
         try {
-            if (tablaPiso.getRowData() != null) {
+            if (tablaMesa.getRowData() != null) {
 
-                Piso imp = this.lstPiso.get(this.tablaPiso.getRowIndex());
+                Mesa imp = this.getLstMesa().get(this.tablaMesa.getRowIndex());
                 if (crud.eliminarEntidad(imp) == true) {
-                    lstPiso.remove(this.tablaPiso.getRowIndex());
+                    getLstMesa().remove(this.tablaMesa.getRowIndex());
                     alert("Registro eliminado exitosamente.",
                             FacesMessage.SEVERITY_INFO);
-                    this.lstPiso = this.ejbBusqPiso.buscarPiso();
-                    this.pisoConstructor = null;
+                    this.setLstMesa(this.ejbBusqPiso.buscarMesa(sesion.getSucursal()));
+                    this.setMesaConstructor(null);
 
                 }
             }
@@ -192,8 +196,8 @@ public class MttoMesa implements Serializable {
 
     public void buscarPiso() {
         try {
-            this.lstPiso = this.ejbBusqPiso.buscarPiso();
-            if (this.lstPiso == null || this.lstPiso.isEmpty()) {
+            this.setLstMesa(this.ejbBusqPiso.buscarMesa(sesion.getSucursal()));
+            if (this.getLstMesa() == null || this.getLstMesa().isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
         } catch (Exception ex) {
@@ -205,7 +209,7 @@ public class MttoMesa implements Serializable {
     }
 
     public void onEdit(RowEditEvent event) {
-        this.guardarPiso();
+        this.actualizarMesa();
         alert("Registro modificado exitosamente.",
                 FacesMessage.SEVERITY_INFO);
 //        System.out.println("entro");
@@ -228,20 +232,20 @@ public class MttoMesa implements Serializable {
     //</editor-fold>
 
     //<editor-fold  defaultstate="collapsed" desc="Getter y setter" >
-    public Integer getIdPiso() {
-        return idPiso;
+    public Integer getIdMesa() {
+        return idMesa;
     }
 
-    public void setIdPiso(Integer idPiso) {
-        this.idPiso = idPiso;
+    public void setIdMesa(Integer idMesa) {
+        this.idMesa = idMesa;
     }
 
-    public DataTable getTablaPiso() {
-        return tablaPiso;
+    public DataTable getTablaMesa() {
+        return tablaMesa;
     }
 
-    public void setTablaPiso(DataTable tablaPiso) {
-        this.tablaPiso = tablaPiso;
+    public void setTablaMesa(DataTable tablaMesa) {
+        this.tablaMesa = tablaMesa;
     }
 
     public String getNombre() {
@@ -252,38 +256,100 @@ public class MttoMesa implements Serializable {
         this.nombre = nombre;
     }
 
+
+    public Integer getIdPiso() {
+        return idPiso;
+    }
+
+    public void setIdPiso(Integer idPiso) {
+        this.idPiso = idPiso;
+    }
+
+
+    
+    //</editor-fold>
+
+    /**
+     * @return the x
+     */
+    public Integer getX() {
+        return x;
+    }
+
+    /**
+     * @param x the x to set
+     */
+    public void setX(Integer x) {
+        this.x = x;
+    }
+
+    /**
+     * @return the y
+     */
+    public Integer getY() {
+        return y;
+    }
+
+    /**
+     * @param y the y to set
+     */
+    public void setY(Integer y) {
+        this.y = y;
+    }
+
+    /**
+     * @return the lstPiso
+     */
     public List<Piso> getLstPiso() {
         return lstPiso;
     }
 
+    /**
+     * @param lstPiso the lstPiso to set
+     */
     public void setLstPiso(List<Piso> lstPiso) {
         this.lstPiso = lstPiso;
     }
 
-    public List<Sucursal> getLstSucursal() {
-        return lstSucursal;
+    /**
+     * @return the lstMesa
+     */
+    public List<Mesa> getLstMesa() {
+        return lstMesa;
     }
 
-    public void setLstSucursal(List<Sucursal> lstSucursal) {
-        this.lstSucursal = lstSucursal;
+    /**
+     * @param lstMesa the lstMesa to set
+     */
+    public void setLstMesa(List<Mesa> lstMesa) {
+        this.lstMesa = lstMesa;
     }
 
-    public Integer getIdSucursal() {
-        return idSucursal;
+    /**
+     * @return the mesaConstructor
+     */
+    public Mesa getMesaConstructor() {
+        return mesaConstructor;
     }
 
-    public void setIdSucursal(Integer idSucursal) {
-        this.idSucursal = idSucursal;
+    /**
+     * @param mesaConstructor the mesaConstructor to set
+     */
+    public void setMesaConstructor(Mesa mesaConstructor) {
+        this.mesaConstructor = mesaConstructor;
     }
 
-
-    public Sucursal getSucursalConstructor() {
-        return sucursalConstructor;
+    /**
+     * @return the pisoConstructor
+     */
+    public Piso getPisoConstructor() {
+        return pisoConstructor;
     }
 
-    public void setSucursalConstructor(Sucursal sucursalConstructor) {
-        this.sucursalConstructor = sucursalConstructor;
+    /**
+     * @param pisoConstructor the pisoConstructor to set
+     */
+    public void setPisoConstructor(Piso pisoConstructor) {
+        this.pisoConstructor = pisoConstructor;
     }
-    
-    //</editor-fold>
     }
