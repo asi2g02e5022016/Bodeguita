@@ -6,6 +6,7 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,12 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
- * @author samaelopez
+ * @author quincho
  */
 @Entity
 @Table(name = "medida")
@@ -35,15 +34,21 @@ public class Medida implements Serializable {
     @Column(name = "idmedida")
     private Integer idmedida;
     @Basic(optional = false)
-    @NotNull
-    @Size(max = 25)
     @Column(name = "medida")
     private String medida;
+    @Basic(optional = false)
+    @Column(name = "referencia")
+    private String referencia;
+    @Basic(optional = false)
+    @Column(name = "conversion")
+    private double conversion;
+    
+    
 
     public Medida() {
     }
 
-    public Medida(Integer idmedida) {
+    /*public Medida(Integer idmedida) {
         this.idmedida = idmedida;
     }
 
@@ -86,6 +91,72 @@ public class Medida implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Medida[ idmedida=" + idmedida + " ]";
+    }*/
+
+    public Integer getIdmedida() {
+        return idmedida;
     }
+
+    public void setIdmedida(Integer idmedida) {
+        this.idmedida = idmedida;
+    }
+
+    public String getMedida() {
+        return medida;
+    }
+
+    public void setMedida(String medida) {
+        this.medida = medida;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
+
+    public double getConversion() {
+        return conversion;
+    }
+
+    public void setConversion(double conversion) {
+        this.conversion = conversion;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.idmedida);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Medida other = (Medida) obj;
+        if (!Objects.equals(this.idmedida, other.idmedida)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Medida{" + "idmedida=" + idmedida + ", medida=" + medida + ", referencia=" + referencia + ", conversion=" + conversion + '}';
+    }
+    
+    
+    
+    
     
 }

@@ -10,48 +10,52 @@ Vista xhtl de Mantenimientos de companias.
                 xmlns:p="http://primefaces.org/ui"
                 template="/layout/templateBDC.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-                    
+
     <ui:define name="body">
         <center>
             <h:form id="forprincipal" >
                 <p:growl showDetail="true" showSummary="true" />
-                 <p:panel id="basic" header="Mantenimientos medidas" style="width: 50%"  >
+                <p:panel id="basic" header="Mantenimientos medidas" style="width: 50%"  >
                     <p:menubar>
                         <p:menuitem value="Nuevo"  update="forprincipal" action="#{mttoMedidas.limpiarPantalla()}"
                                     icon="ui-icon-plus" />
-                        <p:menuitem value="Guardar" action ="#{mttoMedidas.guardarMedidas()}"
+                        <p:menuitem value="Guardar" update="tablaProd" action ="#{mttoMedidas.guardarMedidas()}"
                                     icon="ui-icon-disk" />
                         <p:menuitem value="Buscar" update="forprincipal" action= "#{mttoMedidas.buscarMedidas()}"
-                                        icon="ui-icon-search" />
+                                    icon="ui-icon-search" />
                     </p:menubar>
                     <h:panelGrid columns="2" width="80%">
-                        <h:outputLabel  value="Id Medida: "/>
-                        <p:inputText 
-                            readonly="true" value="#{mttoMedidas.idMedida}" style="width: 40px" />
-                        <h:outputLabel  value="Medida " />
-                        <p:inputText value="#{mttoMedidas.nombreMedida}" style="width: 100%"   />
+                        <h:outputLabel  value="Medida: " />
+                        <p:inputText value="#{mttoMedidas.medida}" style="width: 100%"   />
+                        <h:outputLabel  value="Referencia: " />
+                        <p:inputText value="#{mttoMedidas.referencia}" style="width: 100%"   />
+                        <h:outputLabel  value="Valor de conversión: " />
+                        <p:inputText value="#{mttoMedidas.conversion}" style="width: 100%"   />
                     </h:panelGrid>
                     <h:panelGrid >
-                        <p:dataTable id="tablaProd" emptyMessage="" 
-                                     value="#{mttoMedidas.listaMedidas}"
-                                     var="p" 
-                                     rows="19"  >
-
+                        <p:dataTable id="tablaProd" emptyMessage="" value="#{mttoMedidas.lstMedida}"
+                                     var="p" rows="19"  >
                             <p:column headerText="Id" width="10%">
                                 <h:outputText value="#{p.idmedida}"  />
                             </p:column> 
-                                <p:column headerText="medida" width="10%">
-                                    <h:outputText value="#{p.medida}"  />
+                            <p:column headerText="Medida" width="40%">
+                                <h:outputText value="#{p.medida}"  />
+                            </p:column> 
+                            <p:column headerText="Refencia" width="40%">
+                                <h:outputText value="#{p.referencia}"  />
+                            </p:column> 
+                            <p:column headerText="Conversión" width="40%">
+                                <h:outputText value="#{p.conversion}"  />
                             </p:column> 
                         </p:dataTable>
                     </h:panelGrid>
                 </p:panel>
-                
+
             </h:form>
         </center>
-        
+
     </ui:define>
-    
-    
-    
+
+
+
 </ui:composition>
