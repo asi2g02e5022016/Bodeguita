@@ -5,6 +5,7 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Departamento;
 import com.asi.restaurantbcd.modelo.Empleado;
 import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantbcd.modelo.Sucursal;
@@ -105,6 +106,14 @@ public class BusquedasMtto implements BusquedasMttoLocal {
     public List <Puesto> buscarPuesto() throws Exception {
         StringBuilder jpql = new StringBuilder();
         jpql.append("SELECT a FROM Puesto a ");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+    }
+    
+    @Override
+    public List <Departamento> buscarDepartamento() throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Departamento a ");
         Query query = em.createQuery(jpql.toString());
         return query.getResultList();
     }
