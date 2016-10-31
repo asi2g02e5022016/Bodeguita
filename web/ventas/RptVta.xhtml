@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="body">
+        <center>
+            <h:form id="forprincipal" >
+
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="basic" header="Reporte ventas" style="width: 50%"  >
+                    <h:panelGrid columns="1" width="100%">
+                        <p:menubar>
+                            <p:menuitem value="Imprimir"  
+                                        
+                                   
+                                        icon="ui-icon-print" />
+                         
+                        </p:menubar>
+                    </h:panelGrid>
+                    <h:panelGrid columns="3" width="50%">
+                        <h:outputLabel  value="Sucursal:  "  />
+                        <p:selectOneMenu id="lstSucursal" >
+                            <f:selectItems 
+                                           var="suc" />	   							
+                        </p:selectOneMenu>
+                     </h:panelGrid>
+                       
+                </p:panel>
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
