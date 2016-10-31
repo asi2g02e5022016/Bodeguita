@@ -19,15 +19,16 @@ and open the template in the editor.
                 <p:panel id="basic" header="Existencias de productos" style="width: 50%"  >
                     <h:panelGrid columns="1" width="100%">
                         <p:menubar>
-                            <p:menuitem value="Imprimir" 
-                                        icon="ui-icon-plus" />
+                            <p:menuitem value="Imprimir"  action="#{rptExistenciasBeans.imprimirReporteCompra()}"
+                                        icon="ui-icon-print" />
                          
                         </p:menubar>
                     </h:panelGrid>
                     <h:panelGrid columns="3" width="50%">
                         <h:outputLabel  value="Sucursal:  "  />
-                        <p:selectOneMenu  >
-                            <f:selectItems   />	   							
+                        <p:selectOneMenu id="lstSucursal" value="#{rptExistenciasBeans.codsucursal}" >
+                            <f:selectItems value="#{rptExistenciasBeans.lstSucursal}" 
+                                           var="suc" itemLabel="#{suc.sucursal}" itemValue="#{suc.idsucursal}"/>	   							
                         </p:selectOneMenu>
                      </h:panelGrid>
                        
