@@ -150,7 +150,7 @@ public class MttoUsuarioContraseña implements Serializable{
             return;
         }
      
-     contraseñaConstructor.setIdusuario(idUsuario.trim());
+     //contraseñaConstructor.setIdusuario(idUsuario.trim());
         
     }
     
