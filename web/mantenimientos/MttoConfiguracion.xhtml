@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="body">
+        <center>
+            <h:form id="forprincipal" >
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="basic" header="Mantenimiento de la Configuracion" style="width: 50%"  >
+                    <p:menubar>
+                        <p:menuitem value="Nuevo"  update="forprincipal" action="#{mttoConfiguracion.limpiarPantalla()}"
+                                    icon="ui-icon-plus" />
+                        <p:menuitem value="Guardar" action ="#{mttoConfiguracion.guardarConfiguracion()}"
+                                    icon="ui-icon-disk" />
+                        <p:menuitem value="Buscar" update="forprincipal" action= "#{mttoConfiguracion.buscarConfiguracion()}"
+                                    icon="ui-icon-search" />
+                    </p:menubar>
+                    <h:panelGrid columns="2" width="100%">
+                        <h:outputLabel  value="Id Configuracion: " />
+                        <p:inputText 
+                            value="#{mttoConfiguracion.idConfiguracion}" style="width: 40%"   readonly="true"/>
+                        <h:outputLabel  value="Descripcion: " />
+                        <p:inputText value="#{mttoConfiguracion.descripcion}" style="width: 40%"   />
+                        <h:outputLabel  value="Valor: " />
+                        <p:inputText value="#{mttoConfiguracion.valor}" style="width: 40%"   />
+                    </h:panelGrid>
+                    <h:panelGrid >
+                        <p:dataTable id="tablaProd" emptyMessage="" 
+                                     value="#{mttoConfiguracion.lstConfiguracion}"
+                                     var="p" 
+                                     rows="19"  >
+                            <p:column headerText="Id" width="10%">
+                                <h:outputText value="#{p.idconfiguracion}"  />
+                            </p:column> 
+                            <p:column headerText="Descripcion" width="40%">
+                                <h:outputText value="#{p.descripcion}"  />
+                            </p:column> 
+                            <p:column headerText="Valor" width="40%">
+                                <h:outputText value="#{p.valor}"  />
+                            </p:column> 
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
