@@ -18,13 +18,13 @@ and open the template in the editor.
                 <p:growl showDetail="true" showSummary="true" />
                 <p:panel id="basic" header="Mantenimiento de Clientes" style="width: 50%"  >
                     <p:menubar>
-                        <p:menuitem value="Nuevo" action="#{mttoEmpleado.limpiarPantalla()}" update="@all"
+                        <p:menuitem value="Nuevo" action="#{mttoCliente.limpiarpantalla()}" update="@all"
                                     icon="ui-icon-plus"   />
                         <p:menuitem value="Guardar" update="forprincipal" action="#{mttoCliente.guardarCliente()}"
                                     icon="ui-icon-disk"  id="btnGuardar" disabled="false" />
                                                 
-                       <!-- <p:menuitem value="Buscar" update="forprincipal" action="#{mttoEmpleado.buscarEmpleado()}"
-                                    icon=" ui-icon-search" /> -->
+                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoCliente.buscarCliente()}"
+                                    icon=" ui-icon-search" /> 
                     </p:menubar>
 
 
