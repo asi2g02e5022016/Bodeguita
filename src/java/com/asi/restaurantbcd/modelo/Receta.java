@@ -49,12 +49,6 @@ public class Receta implements Serializable {
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
-    @Size(max = 45)
-    @Column(name = "idusuariomodifica")
-    private String idusuariomodifica;
-    @Column(name = "fechamodifica")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechamodifica;
         @OneToMany(cascade = CascadeType.ALL, mappedBy = "receta")
     private List<Recetadetalle> recetadetalleList;
 
@@ -105,21 +99,6 @@ public class Receta implements Serializable {
         this.fechacreacion = fechacreacion;
     }
 
-    public String getIdusuariomodifica() {
-        return idusuariomodifica;
-    }
-
-    public void setIdusuariomodifica(String idusuariomodifica) {
-        this.idusuariomodifica = idusuariomodifica;
-    }
-
-    public Date getFechamodifica() {
-        return fechamodifica;
-    }
-
-    public void setFechamodifica(Date fechamodifica) {
-        this.fechamodifica = fechamodifica;
-    }
 
     public List<Recetadetalle> getRecetadetalleList() {
         return recetadetalleList;
