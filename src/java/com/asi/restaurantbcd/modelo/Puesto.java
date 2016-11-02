@@ -106,5 +106,7 @@ public class Puesto implements Serializable {
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Puesto[ idpuesto=" + idpuesto + " ]";
     }
+
+    
     
 }

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 
 <!DOCTYPE html>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
@@ -7,88 +12,69 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/layout/templateBDC.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-                    
-    <ui:define name="body">
+
+    <ui:define name ="body">
         <center>
-            <h:form id="forprincipal" >
+            <h:form id="forprincipal">
                 <p:growl showDetail="true" showSummary="true" />
-                 <p:panel id="basic" header="Mantenimientos de Puestos" style="width: 50%"  >
+                <p:panel id="basic" header="Mantenimiento de Puesto" style="width: 50%"  >
                     <p:menubar>
-                        <p:menuitem value="Nuevo" 
-                                    icon="ui-icon-plus" />
-                        <p:menuitem value="Guardar" 
-                                    icon="ui-icon-disk" />
-                        <p:menuitem value="Buscar" update="forprincipal" 
-                                    
-                                        icon=" ui-icon-search" />
+                        <p:menuitem value="Nuevo" action="#{mttoPuesto.limpiarPantalla()}" update="@all"
+                                    icon="ui-icon-plus"   />
+                        <p:menuitem value="Guardar" update="forprincipal" action="#{mttoPuesto.insertarPuesto()}"
+                                    icon="ui-icon-disk"  id="btnGuardar" disabled="false" />
+                                                
+                       
                     </p:menubar>
-                    <h:panelGrid columns="1" width="80%">
-                        <h:outputLabel value="Id Puesto: "/>
-                        <p:inputText value =""
-                                     readonly ="true" style ="width: 40px"/>
-                        <h:outputLabel value ="Puesto: "/>
-                        <p:inputText style="width: 70%" value =""/>
-                        <h:outputLabel value ="Departamento:" />
-                        <p:selectOneMenu id="ListPuesto"  value ="" >
-                            <f:selectItems value=""
-                                           var="" itemLabel="" itemValue=""/>                                       
-                        </p:selectOneMenu> 
-                        
-
-
-                    </h:panelGrid>
-                    <h:panelGrid >
-                        <p:dataTable id="tablaProd" emptyMessage="" 
-                                     selectionMode="single" rows="19"  >
-                            <p:ajax event="rowEdit" />  
-                    <p:ajax event="rowEditCancel"   /> 
-
-                            <p:column headerText="Id" width="10%">
-                                <h:outputText   />
+                    <p:accordionPanel   binding="#{mttoPuesto.formPanel}"  multiple="false" id="forPanel" activeIndex="" >
+                        <p:tab title="Ingresar Puesto"  closable="true"   >
+                            <h:panelGrid columns="4" width="80%" >
+                                <h:outputLabel value ="Id Puesto:"/>
+                                <p:inputText value ="#{mttoPuesto.idPuesto}"
+                                             readonly ="true" style ="width: 40px"/>
+                                <h:outputLabel value="Puesto: "/>
+                                <p:inputText value="#{mttoPuesto.puesto}" />
+                                <h:outputLabel value ="Departamento: " />
+                                <p:selectOneMenu id="listDepartamento"  value ="#{mttoPuesto.idDepartamento}" >
+                                    <f:selectItems value="#{mttoPuesto.lstDepartamento}"
+                                                   var="inp" itemLabel="#{inp.departamento}" itemValue="#{inp.iddepartamento}"/>                                       
+                                </p:selectOneMenu> 
+                                </h:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+ 
+                    <h:panelGrid>
+                        <p:dataTable id="tablaPuesto" emptyMessage="" binding="#{mttoPuesto.tablaPuesto}"
+                                     value="#{mttoPuesto.lstPuesto}"
+                                     var="dimp" rowKey="#{dimp.idpuesto}"
+                                     selectionMode="single" rows="5" 
+                                     editable="true" paginator="true" 
+                                     rowsPerPageTemplate="5" scrollable="true"
+                                     scrollWidth="650" >
+                            <p:ajax event="rowEdit" listener="#{mttoPuesto.onSelect()}" update=":forprincipal:forPanel"   />
+                            <p:column headerText="Id" width="25" style="align-content: center" >
+                                <h:outputText value="#{dimp.idpuesto}"   />                                
                             </p:column>
-                            <p:column headerText="Puesto" width="80%">
-                 
-                        <p:cellEditor>  
-                            <f:facet name="output">  
-                                <h:outputText  />  
-                            </f:facet>  
-                            <f:facet name="input">  
-                                <p:inputText style="width:100%"/>  
-                            </f:facet>  
-                        </p:cellEditor>
+                            <p:column headerText="Puestos: " width="150"  style=" align-content: center" filterBy="#{dimp.puesto}"  >
+                                <h:outputText value="#{dimp.idpuesto}"   />                                
                             </p:column>
-                            <p:column headerText="Departamento" width="80%">
-                 
-                        <p:cellEditor>  
-                            <f:facet name="output">  
-                                <h:outputText  />  
-                            </f:facet>  
-                            <f:facet name="input">  
-                                <p:inputText style="width:100%"/>  
-                            </f:facet>  
-                        </p:cellEditor>
+                            <p:column headerText="Departamento" width="150" style="align-content: center" filterBy="#{dimp.iddepartamento.departamento}"  >
+                                <h:outputText value="#{dimp.iddepartamento.departamento}"  />                                
                             </p:column>
-                          
-                          
-                            <p:column style="width:50px; align-content: center" headerText="Modificar">
-                                <p:rowEditor />
+                            
+                            <p:column style=" align-content: center" headerText="Modificar" width="75">
+                                <p:rowEditor     />
                             </p:column>
-
-                            <p:column style="width:60px; align-content: center" headerText="Eliminar">                               
-                                  
-                            <p:commandButton   value="Eliminar" 
-                                               action="#{mttoImp.eliminarPuesto()}"
-                                               />
+                            <p:column style="text-align: center" headerText="Eliminar" width="75">
+                                <p:commandButton   value="Eliminar" 
+                                                   action="#{mttoPuesto.eliminarPuesto()}"
+                                                   update="@all"  />
                             </p:column>
                         </p:dataTable>
+
                     </h:panelGrid>
-                </p:panel>
-                
+                </p:panel> 
             </h:form>
         </center>
-        
     </ui:define>
-    
-    
-    
 </ui:composition>
