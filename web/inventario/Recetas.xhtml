@@ -18,6 +18,8 @@ and open the template in the editor.
                 <p:menubar>
                     <p:menuitem value="Limpiar" update="forprincipal" 
                                 icon="ui-icon-plus" />
+                     <p:menuitem value="Guradar" 
+                                icon=" ui-icon-search" />
                      <p:menuitem value="Monitor" 
                                 icon=" ui-icon-search" />
                 </p:menubar>
@@ -30,13 +32,12 @@ and open the template in the editor.
                         <h:outputLabel  value="Producto Terminado"  />
                         <p:inputText  readonly="true"   />
 
-                            <h:outputLabel  value="Descricion "  />
+                         <h:outputLabel  value="Descricion "  />
                         <p:inputText  readonly="true"  />   
                         <h:outputLabel  value="Fecha "  />
                         <p:inputText readonly="true"  >
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                         </p:inputText>
-
                     </h:panelGrid>
 
                 </h:panelGrid>

@@ -43,6 +43,8 @@
     <class>com.asi.restaurantbcd.modelo.Kardex</class>
     <class>com.asi.restaurantbcd.modelo.Vwproductos</class>
     <class>com.asi.restaurantbcd.modelo.Compradetalle</class>
+    <class>com.asi.restaurantbcd.modelo.Receta</class>
+    <class>com.asi.restaurantbcd.modelo.Recetadetalle</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.persistence-context.flush-mode" value="COMMIT"/>
