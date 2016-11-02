@@ -9,7 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -19,20 +18,18 @@ import javax.validation.constraints.NotNull;
 public class RecetadetallePK implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
     @Column(name = "idproducto")
     private int idproducto;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "idrecetadetalle")
-    private int idrecetadetalle;
+    @Column(name = "idreceta")
+    private int idreceta;
 
     public RecetadetallePK() {
     }
 
-    public RecetadetallePK(int idproducto, int idrecetadetalle) {
+    public RecetadetallePK(int idproducto, int idreceta) {
         this.idproducto = idproducto;
-        this.idrecetadetalle = idrecetadetalle;
+        this.idreceta = idreceta;
     }
 
     public int getIdproducto() {
@@ -43,19 +40,19 @@ public class RecetadetallePK implements Serializable {
         this.idproducto = idproducto;
     }
 
-    public int getIdrecetadetalle() {
-        return idrecetadetalle;
+    public int getIdreceta() {
+        return idreceta;
     }
 
-    public void setIdrecetadetalle(int idrecetadetalle) {
-        this.idrecetadetalle = idrecetadetalle;
+    public void setIdreceta(int idreceta) {
+        this.idreceta = idreceta;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) idproducto;
-        hash += (int) idrecetadetalle;
+        hash += (int) idreceta;
         return hash;
     }
 
@@ -69,7 +66,7 @@ public class RecetadetallePK implements Serializable {
         if (this.idproducto != other.idproducto) {
             return false;
         }
-        if (this.idrecetadetalle != other.idrecetadetalle) {
+        if (this.idreceta != other.idreceta) {
             return false;
         }
         return true;
@@ -77,7 +74,8 @@ public class RecetadetallePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.asi.restaurantbcd.modelo.RecetadetallePK[ idproducto=" + idproducto + ", idrecetadetalle=" + idrecetadetalle + " ]";
+        return "com.asi.restaurantbcd.modelo.RecetadetallePK[ idproducto=" + idproducto + ", idreceta=" + idreceta + " ]";
     }
     
 }
+

@@ -26,6 +26,7 @@ public interface BusquedasComprasLocal {
     
     public List <Proveedor> buscarProveedores(Map map) throws Exception;
 
-    public Integer obtenerCorreltivoCompra(Integer codsuc, Class clase, String identificador)
+    public Integer obtenerCorreltivoCompra(Integer codsuc, Class clase,
+            String identificador, String llave)
             throws Exception;
 }

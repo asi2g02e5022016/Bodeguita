@@ -33,15 +33,11 @@ public class Ordenproducciondetalle implements Serializable {
     @Basic(optional = false)
     @Column(name = "cantidadconfirmada")
     private Double cantidadconfirmada;
-    @Basic(optional = false)
-    @Column(name = "precio")
-    private Double precio;
-    @Basic(optional = false)
-    @Column(name = "costo")
-    private Double costo;
-    @Basic(optional = false)
-    @Column(name = "iva")
-    private Double iva;
+        @Basic(optional = false)
+    @Column(name = "factorconvercion")
+    private Double factorconvercion ;
+    @Column(name = "costounitario")
+    private Double costounitario;
     @JoinColumns({
         @JoinColumn(name = "idordenproduccion", referencedColumnName = "idordenproduccion", insertable = false, updatable = false),
         @JoinColumn(name = "idSucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)})
@@ -73,29 +69,14 @@ public class Ordenproducciondetalle implements Serializable {
         this.cantidadconfirmada = cantidadconfirmada;
     }
 
-    public Double getPrecio() {
-        return precio;
+    public Double getCostounitario() {
+        return costounitario;
     }
 
-    public void setPrecio(Double precio) {
-        this.precio = precio;
+    public void setCostounitario(Double costounitario) {
+        this.costounitario = costounitario;
     }
 
-    public Double getCosto() {
-        return costo;
-    }
-
-    public void setCosto(Double costo) {
-        this.costo = costo;
-    }
-
-    public Double getIva() {
-        return iva;
-    }
-
-    public void setIva(Double iva) {
-        this.iva = iva;
-    }
 
     public Ordenproduccion getOrdenproduccion() {
         return ordenproduccion;
@@ -112,6 +93,16 @@ public class Ordenproducciondetalle implements Serializable {
     public void setIdproducto(Producto idproducto) {
         this.idproducto = idproducto;
     }
+
+    public Double getFactorconvercion() {
+        return factorconvercion;
+    }
+
+    public void setFactorconvercion(Double factorconvercion) {
+        this.factorconvercion = factorconvercion;
+    }
+    
+    
 
     @Override
     public int hashCode() {

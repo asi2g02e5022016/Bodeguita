@@ -19,8 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -35,21 +33,18 @@ public class Receta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "idreceta")
     private Integer idreceta;
-    @Size(max = 45)
     @Column(name = "descripcion")
     private String descripcion;
     @Column(name = "estado")
     private Integer estado;
-    @Size(max = 45)
     @Column(name = "idusuariocrea")
     private String idusuariocrea;
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
-        @OneToMany(cascade = CascadeType.ALL, mappedBy = "receta")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "receta")
     private List<Recetadetalle> recetadetalleList;
 
     public Receta() {
@@ -99,7 +94,6 @@ public class Receta implements Serializable {
         this.fechacreacion = fechacreacion;
     }
 
-
     public List<Recetadetalle> getRecetadetalleList() {
         return recetadetalleList;
     }
@@ -122,8 +116,7 @@ public class Receta implements Serializable {
             return false;
         }
         Receta other = (Receta) object;
-        if ((this.idreceta == null
-                && other.idreceta != null) || (this.idreceta != null && !this.idreceta.equals(other.idreceta))) {
+        if ((this.idreceta == null && other.idreceta != null) || (this.idreceta != null && !this.idreceta.equals(other.idreceta))) {
             return false;
         }
         return true;

@@ -6,17 +6,13 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -40,10 +36,7 @@ public class Recetadetalle implements Serializable {
     private Integer idmedidacargo;
     @Column(name = "factorconvercion")
     private Short factorconvercion;
-    
-    @JoinColumns({
-        @JoinColumn(name = "idreceta", referencedColumnName = "idreceta", insertable = false, updatable = false),
-        @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", insertable = false, updatable = false)})
+    @JoinColumn(name = "idreceta", referencedColumnName = "idreceta", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Receta receta;
 
@@ -54,8 +47,8 @@ public class Recetadetalle implements Serializable {
         this.recetadetallePK = recetadetallePK;
     }
 
-    public Recetadetalle(int idproducto, int idrecetadetalle) {
-        this.recetadetallePK = new RecetadetallePK(idproducto, idrecetadetalle);
+    public Recetadetalle(int idproducto, int idreceta) {
+        this.recetadetallePK = new RecetadetallePK(idproducto, idreceta);
     }
 
     public RecetadetallePK getRecetadetallePK() {
@@ -105,7 +98,7 @@ public class Recetadetalle implements Serializable {
     public void setReceta(Receta receta) {
         this.receta = receta;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;

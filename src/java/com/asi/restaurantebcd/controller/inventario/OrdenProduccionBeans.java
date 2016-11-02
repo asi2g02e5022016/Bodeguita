@@ -11,6 +11,7 @@ import com.asi.restaurantbcd.modelo.Ordenproduccion;
 import com.asi.restaurantbcd.modelo.OrdenproduccionPK;
 import com.asi.restaurantbcd.modelo.Ordenproducciondetalle;
 import com.asi.restaurantbcd.modelo.OrdenproducciondetallePK;
+import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Receta;
 import com.asi.restaurantbcd.modelo.Recetadetalle;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
@@ -19,6 +20,7 @@ import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.ConvercionesLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.base.ProcesosInventariosLocal;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +43,7 @@ import org.primefaces.event.SelectEvent;
  */
 @ManagedBean(name = "ordenProduccionBeans")
 @ViewScoped
-public class OrdenProduccionBeans {
+public class OrdenProduccionBeans implements Serializable {
 
     @EJB
     private ConvercionesLocal converciones;
@@ -98,12 +100,15 @@ public class OrdenProduccionBeans {
             OrdenproduccionPK idOrdenPK = new  OrdenproduccionPK();
             Integer codigoCom =  ejbBusComp.obtenerCorreltivoCompra(
                     sesion.getSucursal().getIdsucursal(),
-                    Compra.class, "idsucursal");
+                    Ordenproduccion.class, "idsucursal", "idordenproduccion");
             ordenProd = new Ordenproduccion();
+            idOrdenPK.setIdordenproduccion(codigoCom);
+            idOrdenPK.setIdsucursal(sesion.getSucursal().getIdsucursal());
             ordenProd.setOrdenproduccionPK(idOrdenPK);
             ordenProd.setFechapedido(new Date());
             Estado est = crud.buscarEntidad(Estado.class, 10);
             ordenProd.setIdestado(est);
+             
             int corel = 0;
             for (Ordenproducciondetalle det : lstOrdenProdDetalle) {
                 corel++;
@@ -117,6 +122,8 @@ public class OrdenProduccionBeans {
             }
             ordenProd.setOrdenproducciondetalleList(lstOrdenProdDetalle);
             ordenProd.setSucursal(sesion.getSucursal());
+            ordenProd.setIdusuario(sesion.getUsuario());
+            crud.guardarEntidad(ordenProd);
             alert("La orden fue ejecutada exitosamente.", FacesMessage.SEVERITY_INFO);
         } catch (Exception ex) {
             Logger.getLogger(OrdenProduccionBeans.class.getName())
@@ -128,47 +135,94 @@ public class OrdenProduccionBeans {
     
       //<editor-fold  defaultstate="collapsed" desc="Monitor recetas">
     
+               public void mostrarDialogMonirOT() {
+     RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoMonitor').show();");
+    }
            public void mostrarDialogRecetas() {
      RequestContext requestContext = RequestContext.getCurrentInstance();
                 requestContext.execute("PF('dialogoRecetas').show();");
     }
+                    public void buscarOrdeneProd() {
+             Query q = em.createNamedQuery("Ordenproduccion.findAll");
+        lstOrdenProd = q.getResultList();
+        if (lstOrdenProd == null){
+            alert("No se encontraron resultados.", FacesMessage.SEVERITY_WARN);
+            return;
+        }
+           }
            
-              public void buscarRecetas() {
+           public void buscarRecetas() {
              Query q = em.createNamedQuery("Receta.findAll");
         lstReceta = q.getResultList();
         if (lstReceta == null){
             alert("No se encontraron resultado.", FacesMessage.SEVERITY_WARN);
             return;
         }
-                    
-    }        
-    public void onRowSelectCompra(SelectEvent event) {
-        receta  = (Receta) event.getObject();
-        if (receta == null) {
-            alert("La receta es obligatorio.", FacesMessage.SEVERITY_ERROR);
-            return;
-        }
-        if (receta.getRecetadetalleList() == null) {
-            alert("La receta no tiene detalle.", FacesMessage.SEVERITY_WARN);
-            return;
-        }
+           }
         
-        lstOrdenProdDetalle = new  ArrayList<>();
-        for (Recetadetalle recDeta : receta.getRecetadetalleList()) {
-            Ordenproducciondetalle detaOP = new Ordenproducciondetalle();
-//            
-//            Double cant = converciones.getValorConvercion(recDeta.getCantidad(), 
+                   
+    private List<Recetadetalle> buscarDetallesRecetas(Integer idreceta) {
+        StringBuilder jp = new StringBuilder();
+        Recetadetalle o;
+        jp.append(" SELECT o FROM Recetadetalle o ");
+        jp.append(" WHERE o.recetadetallePK.idreceta = :receta");
+        Query q = em.createQuery(jp.toString());
+        q.setParameter("receta", idreceta);
+        
+        return q.getResultList();
+    }
+    /**
+     * 
+     * @param event 
+     */       
+    public void onRowSelectCompra(SelectEvent event) {
+        try {
+            receta = (Receta) event.getObject();
+            System.out.println("receta.." +receta);
+            if (receta == null) {
+                alert("La receta es obligatorio.", FacesMessage.SEVERITY_ERROR);
+                return;
+            }
+            List <Recetadetalle> lstDet = buscarDetallesRecetas(receta.getIdreceta());            
+            lstOrdenProdDetalle = new ArrayList<>();
+            for (Recetadetalle recDeta : lstDet) {
+
+                Ordenproducciondetalle detaOP = new Ordenproducciondetalle();
+//
+//            Double cant = converciones.getValorConvercion(recDeta.getCantidad(),
 //                    recDeta.GET, cantidadArealizar);
-            detaOP.setCantidadconfirmada(recDeta.getCantidad().doubleValue());
-            detaOP.setCosto(recDeta.getCantidad().doubleValue());
-          //  detaOP.setIdproducto(0);
+                detaOP.setCantidadconfirmada(recDeta.getCantidad().doubleValue());
+                detaOP.setCostounitario(recDeta.getCantidad().doubleValue());
+                Producto prod = crud.buscarEntidad(Producto.class,
+                        recDeta.getRecetadetallePK().getIdproducto());
+                detaOP.setIdproducto(prod);
 //            detaOP.setIva(detaOP.getIva());
 //            detaOP.setPrecio(0);
-            lstOrdenProdDetalle.add(detaOP);
-            
+                lstOrdenProdDetalle.add(detaOP);
+
+            }
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            requestContext.execute("PF('dialogoRecetas').hide();");
+        } catch (Exception ex) {
+            Logger.getLogger(OrdenProduccionBeans.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
+    
+    
+        public void onRowSelectMonito(SelectEvent event) {
+        try {
+            ordenProd = (Ordenproduccion) event.getObject();
+            
+            lstOrdenProdDetalle = new ArrayList<>();
+            lstOrdenProdDetalle.addAll(ordenProd.getOrdenproducciondetalleList());
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            requestContext.execute("PF('dialogoMonitor').hide();");
+        } catch (Exception ex) {
+            Logger.getLogger(OrdenProduccionBeans.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
      //</editor-fold >
     
     

@@ -143,7 +143,7 @@ public class ComprasBeans implements  Serializable {
             }
             Integer codigoCom =  ejbBusComp.obtenerCorreltivoCompra(
                     sesion.getSucursal().getIdsucursal(),
-                    Compra.class, "idsucursal");
+                    Compra.class, "idsucursal","idcompra");
                         
             compraEnca = new Compra();
             CompraPK idCompra = new CompraPK();

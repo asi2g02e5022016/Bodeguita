@@ -36,18 +36,21 @@ public class BusquedasCompras implements BusquedasComprasLocal {
    
     @Override
     public Integer obtenerCorreltivoCompra(Integer codsuc, Class clase,
-            String identificador) throws Exception {
+            String identificador, String llave) throws Exception {
         Integer valor;
-        System.out.println("clase.getName()..."+clase.getName());
-        System.out.println("clase.getSimpleName().." + clase.getSimpleName());
         StringBuilder slq = new StringBuilder();
-        slq.append("SELECT MAX(idcompra) FROM ");
+        slq.append("SELECT ").append("MAX(").append(llave).append(") FROM ");
         slq.append(clase.getSimpleName());
-        slq.append(" where ");
+        slq.append(" where 1 = 1 and ");
+        if (identificador !=null) {
          slq.append(identificador);
          slq.append(" = ?1");
+        }
         Query query = em.createNativeQuery(slq.toString());
-        query.setParameter(1, codsuc);
+         if (identificador !=null) {
+              query.setParameter(1, codsuc);
+         }
+       
         valor = (Integer) query.getSingleResult();
         if (valor == null) {
             valor = Integer.parseInt("1");

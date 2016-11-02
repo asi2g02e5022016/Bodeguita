@@ -16,9 +16,15 @@ and open the template in the editor.
             <p:growl showDetail="true" showSummary="true" />
             <p:panel id="basic" header="Compras a proveedores"  >
                 <p:menubar>
-                    <p:menuitem value="Limpiar" update="forprincipal" 
+                    <p:menuitem value="Nuevo" update="forprincipal" 
+                                action="#{ordenProduccionBeans.limpiarPantalla()}"
                                 icon="ui-icon-plus" />
-                     <p:menuitem value="Monitor" 
+                 
+                     <p:menuitem value="Guardar" action="#{ordenProduccionBeans.guardarOrden()}"
+                                   update="forprincipal" 
+                                icon="ui-icon-disk" />
+                         <p:menuitem value="Monitor" 
+                                     action="#{ordenProduccionBeans.mostrarDialogMonirOT()}"
                                 icon=" ui-icon-search" />
                 </p:menubar>
                 <h:panelGrid columns="1" width="100%">
@@ -42,7 +48,7 @@ and open the template in the editor.
                                <h:panelGroup >
                         <p:inputText readonly="true"   />
                         
-                                    <p:commandButton   
+                        <p:commandButton    action="#{ordenProduccionBeans.mostrarDialogRecetas()}"
                                            id="iconOnly" 
                                            icon="ui-icon-search" title="Icon Only" />
                                </h:panelGroup>  
@@ -66,10 +72,9 @@ and open the template in the editor.
                         </p:column>
 
                         <p:column headerText="Cantidad">
-                                    <p:inputText id="modelInput"  style="width:70%"/>
+                            <h:outputText value="#{det.cantidadconfirmada}"  />
                         </p:column>
                         <p:column headerText="Valor " >
-                                    <h:outputText  />
                         </p:column>
                        <p:column headerText="tipo">
                                     <h:outputText />
@@ -83,44 +88,67 @@ and open the template in the editor.
                 <h:panelGrid columns="1" width="100%"  >
                     <p:menubar>
                         <p:menuitem id="idBuscarCompr" value="Buscar" update="tablaCompras"
-                                     
+                                    action="#{ordenProduccionBeans.buscarRecetas()}"
                                     icon=" ui-icon-search" > 
                         </p:menuitem>
                     </p:menubar>
-                </h:panelGrid>
-                <h:panelGrid columns="2" width="80%">
- 
-                    <h:outputLabel  value="Fecha Inicial "  />
-                    <p:inputText />
                 </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable value="#{ordenProduccionBeans.lstReceta}" id="tablaCompras"
                                  var="de"  rowKey="#{de.idreceta}"
                                  selectionMode="single"  rows="19"  >                        
                         <p:ajax event="rowSelect" update="forprincipal"
-                                listener="#{comprasBeans.onRowSelectCompra}" process="@all"  
+                                listener="#{ordenProduccionBeans.onRowSelectCompra}" process="@all"  
                                 />
-                        <p:column  headerText="Numero">
-                            <h:outputText value="#{dcompra.compraPK.idcompra}"  />
+                        <p:column  headerText="receta">
+                            <h:outputText value="#{de.descripcion}"  />
                         </p:column>
-                        <p:column headerText="Proveedor"  >
-                            <h:outputText value="#{dcompra.idproveedor.proveedor}" />
+                        <p:column headerText="media"  >
+                            <h:outputText value="#{de.descripcion}"  />
                         </p:column>
-                        <p:column headerText="fecha" >
-                            <h:outputText value="#{dcompra.fechacompra}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="usuario" >
-                            <h:outputText  value="#{dcompra.idusuario.idusuario}" />
-                   
-                        </p:column>
-                          <p:column headerText="estado"  >
-                                <h:outputText value="#{dcompra.idestado.estado}" />
-                            </p:column>
                     </p:dataTable>
                 </h:panelGrid>
             </p:dialog>
+            
+            
+              
+            <p:dialog header="Monitor Recetas" widgetVar="dialogoMonitor"
+                      width="50%">
+                <h:panelGrid columns="1" width="100%"  >
+                    <p:menubar>
+                        <p:menuitem id="idBus" value="Buscar" update="tablaC"
+                                    action="#{ordenProduccionBeans.buscarOrdeneProd()}"
+                                    icon=" ui-icon-search" > 
+                        </p:menuitem>
+                    </p:menubar>
+                </h:panelGrid>
+                <h:panelGrid >
+                    <p:dataTable value="#{ordenProduccionBeans.lstOrdenProd}" id="tablaC"
+                                 var="de"  rowKey="#{de.ordenproduccionPK}"
+                                 selectionMode="single"  rows="19"  >                        
+                        <p:ajax event="rowSelect" update="forprincipal"
+                                listener="#{ordenProduccionBeans.onRowSelectMonito}" process="@all"  
+                                />
+                        <p:column  headerText="No Orden">
+                            <h:outputText value="#{de.ordenproduccionPK.idordenproduccion}"  />
+                        </p:column>
+                        <p:column headerText="fecha"  >
+                            <h:outputText value="#{de.fechapedido}"  />
+                        </p:column>
+                         <p:column headerText="sucursal"  >
+                             <h:outputText value="#{de.sucursal.sucursal}"  />
+                        </p:column>
+                         <p:column headerText="usuario"  >
+                             <h:outputText value="#{de.idusuario.idusuario}"  />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:dialog>
+            
+            
+            
+            
+            
             
         </h:form>
     </ui:define>
