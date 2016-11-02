@@ -122,7 +122,7 @@ public MttoPuesto(){
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
-
+ 
     }
     public void guardarPuesto() {
         try {
