@@ -6,11 +6,17 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -34,6 +40,12 @@ public class Recetadetalle implements Serializable {
     private Integer idmedidacargo;
     @Column(name = "factorconvercion")
     private Short factorconvercion;
+    
+    @JoinColumns({
+        @JoinColumn(name = "idreceta", referencedColumnName = "idreceta", insertable = false, updatable = false),
+        @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Receta receta;
 
     public Recetadetalle() {
     }
@@ -86,6 +98,14 @@ public class Recetadetalle implements Serializable {
         this.factorconvercion = factorconvercion;
     }
 
+    public Receta getReceta() {
+        return receta;
+    }
+
+    public void setReceta(Receta receta) {
+        this.receta = receta;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

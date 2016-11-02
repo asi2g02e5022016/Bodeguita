@@ -5,8 +5,7 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
-import com.asi.restaurantbcd.modelo.Receta;
-import java.util.List;
+import com.asi.restaurantbcd.modelo.Medida;
 import javax.ejb.Local;
 
 /**
@@ -14,7 +13,8 @@ import javax.ejb.Local;
  * @author samaelopez
  */
 @Local
-public interface ProcesosInvLocal {
-    public List <Receta > buscarRecetas();
+public interface ConvercionesLocal {
+
+    public Double getValorConvercion(Medida medidaInicial, Medida medidaFinal, Double cantida) throws Exception;
     
 }

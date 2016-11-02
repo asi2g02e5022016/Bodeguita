@@ -7,12 +7,15 @@ package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -52,6 +55,8 @@ public class Receta implements Serializable {
     @Column(name = "fechamodifica")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechamodifica;
+        @OneToMany(cascade = CascadeType.ALL, mappedBy = "receta")
+    private List<Recetadetalle> recetadetalleList;
 
     public Receta() {
     }
@@ -114,6 +119,14 @@ public class Receta implements Serializable {
 
     public void setFechamodifica(Date fechamodifica) {
         this.fechamodifica = fechamodifica;
+    }
+
+    public List<Recetadetalle> getRecetadetalleList() {
+        return recetadetalleList;
+    }
+
+    public void setRecetadetalleList(List<Recetadetalle> recetadetalleList) {
+        this.recetadetalleList = recetadetalleList;
     }
 
     @Override

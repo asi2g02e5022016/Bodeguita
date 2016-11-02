@@ -130,7 +130,7 @@ public class ComprasBeans implements  Serializable {
             if (proveedor == null) {
                 alert("El proveedor obligatorio.", FacesMessage.SEVERITY_WARN);
                 return;
-            }
+            }   
             if (lstCompradeta == null || lstCompradeta.isEmpty()) {
                 alert("El documento no tiene detalle.", FacesMessage.SEVERITY_FATAL);
                 return;
@@ -509,6 +509,7 @@ public class ComprasBeans implements  Serializable {
     fechaIniMonitor = new Date();
     fechaFinMonitor = new Date();
     }
+    
     public void onRowSelectCompra(SelectEvent event) {
         compraEnca = (Compra) event.getObject();
         if (compraEnca == null) {

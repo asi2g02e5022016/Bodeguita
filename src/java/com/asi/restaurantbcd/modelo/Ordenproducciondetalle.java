@@ -31,20 +31,17 @@ public class Ordenproducciondetalle implements Serializable {
     @EmbeddedId
     protected OrdenproducciondetallePK ordenproducciondetallePK;
     @Basic(optional = false)
-    @Column(name = "cantidadsolicitada")
-    private int cantidadsolicitada;
-    @Basic(optional = false)
     @Column(name = "cantidadconfirmada")
-    private int cantidadconfirmada;
+    private Double cantidadconfirmada;
     @Basic(optional = false)
     @Column(name = "precio")
-    private float precio;
+    private Double precio;
     @Basic(optional = false)
     @Column(name = "costo")
-    private float costo;
+    private Double costo;
     @Basic(optional = false)
     @Column(name = "iva")
-    private float iva;
+    private Double iva;
     @JoinColumns({
         @JoinColumn(name = "idordenproduccion", referencedColumnName = "idordenproduccion", insertable = false, updatable = false),
         @JoinColumn(name = "idSucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)})
@@ -60,20 +57,6 @@ public class Ordenproducciondetalle implements Serializable {
     public Ordenproducciondetalle(OrdenproducciondetallePK ordenproducciondetallePK) {
         this.ordenproducciondetallePK = ordenproducciondetallePK;
     }
-
-    public Ordenproducciondetalle(OrdenproducciondetallePK ordenproducciondetallePK, int cantidadsolicitada, int cantidadconfirmada, float precio, float costo, float iva) {
-        this.ordenproducciondetallePK = ordenproducciondetallePK;
-        this.cantidadsolicitada = cantidadsolicitada;
-        this.cantidadconfirmada = cantidadconfirmada;
-        this.precio = precio;
-        this.costo = costo;
-        this.iva = iva;
-    }
-
-    public Ordenproducciondetalle(int idordenproducciondetalle, int idordenproduccion, int idSucursal) {
-        this.ordenproducciondetallePK = new OrdenproducciondetallePK(idordenproducciondetalle, idordenproduccion, idSucursal);
-    }
-
     public OrdenproducciondetallePK getOrdenproducciondetallePK() {
         return ordenproducciondetallePK;
     }
@@ -82,43 +65,35 @@ public class Ordenproducciondetalle implements Serializable {
         this.ordenproducciondetallePK = ordenproducciondetallePK;
     }
 
-    public int getCantidadsolicitada() {
-        return cantidadsolicitada;
-    }
-
-    public void setCantidadsolicitada(int cantidadsolicitada) {
-        this.cantidadsolicitada = cantidadsolicitada;
-    }
-
-    public int getCantidadconfirmada() {
+    public Double getCantidadconfirmada() {
         return cantidadconfirmada;
     }
 
-    public void setCantidadconfirmada(int cantidadconfirmada) {
+    public void setCantidadconfirmada(Double cantidadconfirmada) {
         this.cantidadconfirmada = cantidadconfirmada;
     }
 
-    public float getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(float precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
-    public float getCosto() {
+    public Double getCosto() {
         return costo;
     }
 
-    public void setCosto(float costo) {
+    public void setCosto(Double costo) {
         this.costo = costo;
     }
 
-    public float getIva() {
+    public Double getIva() {
         return iva;
     }
 
-    public void setIva(float iva) {
+    public void setIva(Double iva) {
         this.iva = iva;
     }
 

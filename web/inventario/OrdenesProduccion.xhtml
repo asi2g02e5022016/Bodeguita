@@ -21,70 +21,107 @@ and open the template in the editor.
                      <p:menuitem value="Monitor" 
                                 icon=" ui-icon-search" />
                 </p:menubar>
-                <h:panelGrid columns="2" width="100%">
+                <h:panelGrid columns="1" width="100%">
                     <h:panelGrid columns="6" width="80%">
                         <h:outputLabel  value="No Documento : "/>
-                        <p:inputText readonly="true"  />
-                        <h:outputLabel  value="Usuario: "  />
-                        <p:inputText readonly="true"  />
-                        <h:outputLabel  value="Sucursal "  />
-                        <p:inputText  readonly="true"   />
-                        <h:outputLabel  value="Codigo "  />
-                        <p:inputText  />
-                        <h:outputLabel  value="Estado "  />
-                        <p:inputText  readonly="true"  />   
-                        <h:outputLabel  value="Fecha "  />
-                        <p:inputText readonly="true"  >
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </p:inputText>
-
-                    </h:panelGrid>
-                    <h:panelGrid columns="2" width="20%">
-                        <h:outputLabel  value="Receta "  />
                         <p:inputText readonly="true"  
-                                     style=" width: 100%" />
-                
-
+                                     value="#{ordenProduccionBeans.ordenProd.ordenproduccionPK.idordenproduccion}" />
+                        <h:outputLabel  value="Usuario: "  />
+                        <p:inputText readonly="true" value="#{ordenProduccionBeans.ordenProd.idusuario.idusuario}"  />
+                        <h:outputLabel  value="Sucursal "  />
+                        <p:inputText  readonly="true" value="#{ordenProduccionBeans.ordenProd.sucursal.sucursal}"   />
+                        <h:outputLabel  value="Estado "  />
+                        <p:inputText  readonly="true" value="#{ordenProduccionBeans.ordenProd.idestado.estado}"   />   
+                        <h:outputLabel  value="Fecha "  />
+                        <p:inputText readonly="true" value="#{ordenProduccionBeans.ordenProd.fechapedido}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                       
+                        </p:inputText>
+                       
+                               <h:outputLabel  value="Receta "  />
+                               <h:panelGroup >
+                        <p:inputText readonly="true"   />
+                        
+                                    <p:commandButton   
+                                           id="iconOnly" 
+                                           icon="ui-icon-search" title="Icon Only" />
+                               </h:panelGroup>  
+                                
                     </h:panelGrid>
-
                 </h:panelGrid>
 
                 <h:panelGrid >
-                    <p:dataTable 
+                    <p:dataTable value="#{ordenProduccionBeans.lstOrdenProdDetalle}"
                                  var="det"   emptyMessage=""   editable="true">
                       
                         <p:column headerText="cod.">
-                            <h:outputText  />
+                            <h:outputText value="#{det.ordenproducciondetallePK.idordenproduccion}"  />
                         </p:column>
 
                         <p:column headerText="Descripcion">
-                            <h:outputText  />
+                            <h:outputText value="#{det.idproducto.producto}" />
+                        </p:column>
+                          <p:column headerText="medida">
+                              <h:outputText value="#{det.idproducto.idmedida.idmedida}" />
                         </p:column>
 
-                        <p:column headerText="Cantidad Solic.">
-                             <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText />
-                                </f:facet>
-                                <f:facet name="input">
+                        <p:column headerText="Cantidad">
                                     <p:inputText id="modelInput"  style="width:70%"/>
-                                </f:facet>
-                            </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Cantidad Conf. " >
-                            <p:cellEditor>
-                                <f:facet name="output">
+                        <p:column headerText="Valor " >
                                     <h:outputText  />
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText  style="width:70%"/>
-                                </f:facet>
-                            </p:cellEditor>
                         </p:column>
-                     
+                       <p:column headerText="tipo">
+                                    <h:outputText />
+                        </p:column>
                     </p:dataTable>
                 </h:panelGrid>
             </p:panel>
+            
+            <p:dialog header="Monitor Recetas" widgetVar="dialogoRecetas"
+                      width="50%">
+                <h:panelGrid columns="1" width="100%"  >
+                    <p:menubar>
+                        <p:menuitem id="idBuscarCompr" value="Buscar" update="tablaCompras"
+                                     
+                                    icon=" ui-icon-search" > 
+                        </p:menuitem>
+                    </p:menubar>
+                </h:panelGrid>
+                <h:panelGrid columns="2" width="80%">
+ 
+                    <h:outputLabel  value="Fecha Inicial "  />
+                    <p:inputText />
+                </h:panelGrid>
+                <h:panelGrid >
+                    <p:dataTable value="#{ordenProduccionBeans.lstReceta}" id="tablaCompras"
+                                 var="de"  rowKey="#{de.idreceta}"
+                                 selectionMode="single"  rows="19"  >                        
+                        <p:ajax event="rowSelect" update="forprincipal"
+                                listener="#{comprasBeans.onRowSelectCompra}" process="@all"  
+                                />
+                        <p:column  headerText="Numero">
+                            <h:outputText value="#{dcompra.compraPK.idcompra}"  />
+                        </p:column>
+                        <p:column headerText="Proveedor"  >
+                            <h:outputText value="#{dcompra.idproveedor.proveedor}" />
+                        </p:column>
+                        <p:column headerText="fecha" >
+                            <h:outputText value="#{dcompra.fechacompra}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="usuario" >
+                            <h:outputText  value="#{dcompra.idusuario.idusuario}" />
+                   
+                        </p:column>
+                          <p:column headerText="estado"  >
+                                <h:outputText value="#{dcompra.idestado.estado}" />
+                            </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:dialog>
+            
         </h:form>
     </ui:define>
 </ui:composition>
