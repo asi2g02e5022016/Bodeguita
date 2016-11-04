@@ -51,7 +51,7 @@ and open the template in the editor.
                                 <p:inputText readonly="true" value="#{mttoUsuario.nombreEmpl}"/>
                             </p:column>
                             <p:column style="width: 5px">
-                                <p:commandButton action="#{comprasBeans.mostrarDialogProveedor()}"
+                                <p:commandButton action="#{mttoUsuario.mostrarDialogEmpleado()}"
                                                  id="iconOnly" icon="ui-icon-search" title="Seleccione empleado" />
                             </p:column>                            
                         </p:row>
@@ -60,10 +60,10 @@ and open the template in the editor.
                                 <h:outputLabel  value="Perfil: " />
                             </p:column>
                             <p:column style="width: 65px">
-                                <p:selectOneMenu id="listPerfil" style="width: 85%" value ="#{mttoUsuario.idPerfil}" >
+                                <p:selectOneMenu id="listPerfil" style="width: 140px" value ="#{mttoUsuario.idPerfil}" >
                                     <f:selectItems value="#{mttoUsuario.lstPerfil}"
-                                                   var="usr" itemLabel="#{usr.nombre}" itemValue="#{usr.idPerfil}"/>                                       
-                                </p:selectOneMenu> 
+                                                   var="usr" itemLabel="#{usr.nombre}" itemValue="#{usr.codigo}"/>                                       
+                                </p:selectOneMenu>                                
                             </p:column>
                             <p:column style="width: 5px">
                                 <h:outputLabel value=" "/>
@@ -75,7 +75,6 @@ and open the template in the editor.
                             </p:column>
                             <p:column style="width: 65px">
                                 <p:password id="Pass" value="#{mttoUsuario.claveUsr}" feedback="true" />
-                                <!--<p:inputText value="#{mttoUsuario.claveUsr}" />-->
                             </p:column>
                             <p:column style="width: 5px">
                                 <h:outputLabel value=" "/>
@@ -86,19 +85,7 @@ and open the template in the editor.
                                 <h:outputLabel  value="Confirmar pass: " />
                             </p:column>
                             <p:column style="width: 65px">
-                                <p:password id="PassConf" value="#{mttoUsuario.confclaveUsr}" />
-                                <!--<p:inputText value="#{mttoUsuario.confclaveUsr}" />-->
-                            </p:column>
-                            <p:column style="width: 5px">
-                                <h:outputLabel value=" "/>
-                            </p:column>                            
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 20px">
-                                <h:outputLabel  value="Estado: " />
-                            </p:column>
-                            <p:column style="width: 65px">
-                                <p:inputText value="#{mttoUsuario.confclaveUsr}" />
+                                <p:password id="PassConf" value="#{mttoUsuario.confclaveUsr}" />                                
                             </p:column>
                             <p:column style="width: 5px">
                                 <h:outputLabel value=" "/>
@@ -106,52 +93,68 @@ and open the template in the editor.
                         </p:row>
                     </p:panelGrid>
 
-                    <!--width="100%"-->
-                    <!--
-                    
                     <h:panelGrid >
-                        <p:dataTable id="tablaUsr" emptyMessage="" 
-                                     binding="#{""}"
-                                     value="#{""}" 
-                                     var="dpro" rowKey="#{""}"
+                        <p:dataTable id="tablaUsuarios" emptyMessage="" 
+                                     binding="#{mttoUsuario.dtUsuario}"
+                                     value="#{mttoUsuario.lstUsuario}" 
+                                     var="dpro" rowKey="#{dpro.idusuario}"
                                      selectionMode="single" rows="19" 
                                      editable="true"> 
 
-                            <p:ajax event="rowEdit" listener="#{""}"     />
-                            <p:ajax event="rowEditCancel" listener="#{""}"     />
+                            <p:ajax event="rowEdit" listener="#{mttoUsuario.actualizarUsuario()}"     />
+                            <p:ajax event="rowEditCancel" listener="#{mttoUsuario.eventoCancel}"     />
+
 
                             <p:column headerText="Usuario" width="5%">
-                                <h:outputText value="#{""}"  />
+                                <h:outputText value="#{dpro.idusuario}"  />
                             </p:column>
                             <p:column headerText="Nombre" width="5%">
-                                <h:outputText value="#{""}"  /> 
+                                <h:outputText value="#{dpro.idempleado.nombre}"  /> 
                             </p:column>
                             <p:column headerText="Perfil" width="5%">
-                                <h:outputText value="#{""}"  /> 
+                                <h:outputText value="#{dpro.idperfil.nombre}"  /> 
                             </p:column>
-                            <p:column headerText="Estado" width="20%">
+                            <!--<p:column headerText="Estado" width="20%">
                                 <p:cellEditor>
                                     <f:facet  name="output">
                                        <h:outputText value="#{""}"  /> 
                                     </f:facet>
                                     <f:facet  name="input">
                                         <h:inputText value="#{""}" style="width:100%" /> 
-                                        <p:selectOneMenu id="estado" value="">
+                                        <p:selectOneMenu id="estado" value="#{""}">
                                             <f:selectItem itemLabel="Estado" itemValue="" noSelectionOption="true" />
                                         value ="#{invExistenciasBean.codsucursal}"  style="width:150px">
                                                          <f:selectItems value="#{invExistenciasBean.lstSucursal}"
                                             var="suc" itemLabel="#{suc.sucursal}" itemValue="#{suc.idsucursal}" /> 
                                         </p:selectOneMenu>
-
+    
                                     </f:facet>
                                 </p:cellEditor>                                
                             </p:column>
                             <p:column  headerText="Modificar" width="10%" style="align-content: center">
                                 <p:rowEditor></p:rowEditor>  
+                            </p:column>-->                           
+                        </p:dataTable>
+                    </h:panelGrid>                    
+                </p:panel>
+                <p:dialog header="Buscar Empleado" width="50%" widgetVar="dialogoEmpleado" minHeight="100">
+                    <h:panelGrid >
+                        <p:dataTable value="#{mttoEmpleado.lstEmpleado}"
+                                     id="tablaEmpleado" widgetVar="tablaEmpleado" var="dprov"
+                                     selectionMode="single" rowKey="#{dprov.idempleado}"  emptyMessage=""  >
+
+                            <p:ajax event="rowSelect" update="forprincipal" process="@all"
+                                    listener="#{mttoEmpleado.onSelect()}" 
+                                    />
+                            <p:column filterBy="#{dprov.idempleado}" headerText="Codigo">
+                                <h:outputText value="#{dprov.idempleado}"  />
+                            </p:column>
+                            <p:column filterBy="#{dprov.nombre}"  headerText="Nombre">
+                                <h:outputText value="#{dprov.nombre}"  />
                             </p:column>                           
                         </p:dataTable>
-                    </h:panelGrid>-->
-                </p:panel>
+                    </h:panelGrid>
+                </p:dialog>
             </h:form>
         </center>
     </ui:define>

@@ -5,6 +5,7 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Perfil;
 import com.asi.restaurantbcd.modelo.Usuario;
 import java.util.List;
 import javax.ejb.Local;
@@ -15,5 +16,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface BusquedasUsuariosLocal {
-    List <Usuario> buscarUsuario() throws Exception;
+    public List <Usuario> buscarUsuario() throws Exception;
+    public List <Perfil> buscarPerfil() throws Exception;
 }

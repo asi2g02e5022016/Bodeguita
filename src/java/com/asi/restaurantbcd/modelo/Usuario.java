@@ -47,7 +47,7 @@ public class Usuario implements Serializable {
     private boolean activo;
     @JoinColumn(name = "idempleado", referencedColumnName = "idempleado")
     @OneToOne(optional = false)
-    private Empleado idEmpleado;
+    private Empleado idempleado;
     @JoinColumn(name = "idperfil", referencedColumnName = "idperfil")
     @OneToOne(optional = false)
     private Perfil idperfil;
@@ -97,12 +97,12 @@ public class Usuario implements Serializable {
         this.idperfil = idperfil;
     }
 
-    public Empleado getIdEmpleado() {
-        return idEmpleado;
+    public Empleado getIdempleado() {
+        return idempleado;
     }
 
-    public void setIdEmpleado(Empleado idEmpleado) {
-        this.idEmpleado = idEmpleado;
+    public void setIdempleado(Empleado idempleado) {
+        this.idempleado = idempleado;
     }
 
     @Override
@@ -124,6 +124,13 @@ public class Usuario implements Serializable {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "idusuario=" + idusuario + ", clave=" + clave + ", activo=" + activo + ", idempleado=" + idempleado + ", idperfil=" + idperfil + '}';
+    }
+    
+    
     
 
    

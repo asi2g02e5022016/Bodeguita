@@ -5,6 +5,7 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Perfil;
 import com.asi.restaurantbcd.modelo.Usuario;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -35,6 +36,12 @@ public class BusquedasUsuarios implements BusquedasUsuariosLocal{
         jpql.append("SELECT a FROM Usuario a ");
         Query query = em.createQuery(jpql.toString());
         return query.getResultList();
-    }
-    
+    }    
+    @Override
+    public List<Perfil> buscarPerfil() throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Perfil a ");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+    }    
 }

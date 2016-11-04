@@ -99,14 +99,14 @@ public class LogginBean implements Serializable {
                sesion.setFecha(new Date());
                //Empleado emp = crud.buscarEntidad(Empleado.class, 
                //        usr.getIdempleado());
-               Empleado emp = crud.buscarEntidad(Empleado.class, usr.getIdEmpleado().getIdempleado());
+               Empleado emp = crud.buscarEntidad(Empleado.class, usr.getIdempleado().getIdempleado());
                
                sesion.setEmpleSucursal(emp);
                sesion.setSucursal(emp.getIdsucursal());
                
                sesion.setPerfil(usr.getIdperfil());
                //System.out.println("usr.getIdEmpleado().."+usr.getIdempleado());
-               System.out.println("usr.getIdEmpleado().."+usr.getIdEmpleado());
+               System.out.println("usr.getIdEmpleado().."+usr.getIdempleado());
                //sesion.setSucursal(usr.get);
                sesion.setUsuario(usr);
                userMenu.loadUserMenus();

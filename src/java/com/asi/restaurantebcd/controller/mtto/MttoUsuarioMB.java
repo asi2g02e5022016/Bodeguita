@@ -52,8 +52,10 @@ public class MttoUsuarioMB implements Serializable {
                 String url = "http://localhost:8080/RestaurantBDC";
                 FacesContext.getCurrentInstance().getExternalContext().
                         redirect(url);
+                //buscarUsuario();
+                this.lstUsuario = ejbBusqUsrLcal.buscarUsuario();
+                this.lstPerfil = ejbBusqUsrLcal.buscarPerfil();
             }
-            //buscarEstados();
         } catch (Exception e) {
             alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
         }
@@ -71,15 +73,18 @@ public class MttoUsuarioMB implements Serializable {
     private Perfil idPerfil;
     private Empleado idEmpleado;
     private boolean activo;
-    private DataTable dtUsuario = new DataTable() ;
+    private Integer paramEst;
+    private DataTable dtUsuario = new DataTable();
     private List<Usuario> lstUsuario;
     private List<Perfil> lstPerfil;
 
     @EJB
-    CrudBDCLocal crub;
+    private CrudBDCLocal crub;
     @EJB
     private BusquedasUsuariosLocal ejbBusqUsrLcal;
     
+    
+
 //</editor-fold >
 
 //<editor-fold  defaultstate="collapsed" desc="Metodos" >
@@ -99,7 +104,6 @@ public class MttoUsuarioMB implements Serializable {
         dtUsuario = new DataTable();
         lstUsuario = null;
         lstPerfil = null;
-        
     }
 
     /**
@@ -117,7 +121,23 @@ public class MttoUsuarioMB implements Serializable {
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
-
+    
+    /**
+     * Metodo para buscar los usuarios ingresados.
+     */
+    public void buscarPerfil(){
+        try {
+            lstPerfil = ejbBusqUsrLcal.buscarPerfil();
+            if (lstPerfil == null || lstPerfil.isEmpty()) {
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioMB.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
+    
     /**
      * Metodo que guarda un usuaio.
      */
@@ -151,7 +171,7 @@ public class MttoUsuarioMB implements Serializable {
             usuarioConst = new Usuario();
             usuarioConst.setIdusuario(codigoUsr);
             usuarioConst.setIdperfil(idPerfil);
-            usuarioConst.setIdEmpleado(idEmpleado);                    
+            usuarioConst.setIdempleado(idEmpleado);
             usuarioConst.setClave(claveUsr);
             usuarioConst.setActivo(activo);
             crub.guardarEntidad(usuarioConst);
@@ -166,7 +186,12 @@ public class MttoUsuarioMB implements Serializable {
      */
     public void actualizarUsuario() {
         try {
-            if (this.dtUsuario.getRowData() != null){
+            if (this.dtUsuario.getRowData() != null) {
+                if (paramEst == null) {
+                    alert("Seleccione un estado",
+                            FacesMessage.SEVERITY_INFO);
+                    return;
+                }
                 usuarioConst = this.lstUsuario.get(this.dtUsuario.getRowIndex());
                 crub.guardarEntidad(usuarioConst);
                 alert("Usuario actualizado exitosamente.",
@@ -178,7 +203,7 @@ public class MttoUsuarioMB implements Serializable {
             Logger.getLogger(MttoEstado.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }        
+        }
     }
 
     /**
@@ -202,7 +227,14 @@ public class MttoUsuarioMB implements Serializable {
     public void eventoCancel(RowEditEvent event) {
         alert("Se ha cancelado la acción.",
                 FacesMessage.SEVERITY_INFO);
-//        System.out.println("event.getObject().." +event.getObject());
+    }
+
+    /**
+     * Metódo para mostrar la pantalla de los empleados registrados
+     */
+    public void mostrarDialogEmpleado() {
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('dialogoEmpleado').show();");
     }
 
     /**
@@ -224,7 +256,7 @@ public class MttoUsuarioMB implements Serializable {
 //</editor-fold >
 
 //<editor-fold  defaultstate="collapsed" desc="Getter y Setter" >
-   public Usuario getUsuarioConst() {
+    public Usuario getUsuarioConst() {
         return usuarioConst;
     }
 
@@ -304,6 +336,14 @@ public class MttoUsuarioMB implements Serializable {
         this.activo = activo;
     }
 
+    public Integer getParamEst() {
+        return paramEst;
+    }
+
+    public void setParamEst(Integer paramEst) {
+        this.paramEst = paramEst;
+    }
+
     public DataTable getDtUsuario() {
         return dtUsuario;
     }
@@ -343,7 +383,6 @@ public class MttoUsuarioMB implements Serializable {
     public void setEjbBusqUsrLcal(BusquedasUsuariosLocal ejbBusqUsrLcal) {
         this.ejbBusqUsrLcal = ejbBusqUsrLcal;
     }
-    
 //</editor-fold >      
-    
+
 }
