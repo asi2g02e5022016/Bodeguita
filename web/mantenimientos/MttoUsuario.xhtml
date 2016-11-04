@@ -52,7 +52,7 @@ and open the template in the editor.
                             </p:column>
                             <p:column style="width: 5px">
                                 <p:commandButton action="#{mttoUsuario.mostrarDialogEmpleado()}"
-                                                 id="iconOnly" icon="ui-icon-search" title="Seleccione empleado" />
+                                                 id="iconOnly" icon="ui-icon-search" title="Seleccione el empleado" />
                             </p:column>                            
                         </p:row>
                         <p:row>
@@ -114,37 +114,25 @@ and open the template in the editor.
                             <p:column headerText="Perfil" width="5%">
                                 <h:outputText value="#{dpro.idperfil.nombre}"  /> 
                             </p:column>
-                            <!--<p:column headerText="Estado" width="20%">
-                                <p:cellEditor>
-                                    <f:facet  name="output">
-                                       <h:outputText value="#{""}"  /> 
-                                    </f:facet>
-                                    <f:facet  name="input">
-                                        <h:inputText value="#{""}" style="width:100%" /> 
-                                        <p:selectOneMenu id="estado" value="#{""}">
-                                            <f:selectItem itemLabel="Estado" itemValue="" noSelectionOption="true" />
-                                        value ="#{invExistenciasBean.codsucursal}"  style="width:150px">
-                                                         <f:selectItems value="#{invExistenciasBean.lstSucursal}"
-                                            var="suc" itemLabel="#{suc.sucursal}" itemValue="#{suc.idsucursal}" /> 
-                                        </p:selectOneMenu>
-    
-                                    </f:facet>
-                                </p:cellEditor>                                
-                            </p:column>
-                            <p:column  headerText="Modificar" width="10%" style="align-content: center">
-                                <p:rowEditor></p:rowEditor>  
-                            </p:column>-->                           
+
                         </p:dataTable>
                     </h:panelGrid>                    
                 </p:panel>
                 <p:dialog header="Buscar Empleado" width="50%" widgetVar="dialogoEmpleado" minHeight="100">
+                    <h:panelGrid columns="1" width="100%">
+                        <p:menubar>
+                            <p:menuitem value="Buscar" update="tablaEmpleado"
+                                        action="#{mttoUsuario.buscarEmpleado()}"
+                                        icon=" ui-icon-search" />
+                        </p:menubar>
+                    </h:panelGrid>
                     <h:panelGrid >
-                        <p:dataTable value="#{mttoEmpleado.lstEmpleado}"
+                        <p:dataTable value="#{mttoUsuario.lstEmpleado}"
                                      id="tablaEmpleado" widgetVar="tablaEmpleado" var="dprov"
                                      selectionMode="single" rowKey="#{dprov.idempleado}"  emptyMessage=""  >
 
                             <p:ajax event="rowSelect" update="forprincipal" process="@all"
-                                    listener="#{mttoEmpleado.onSelect()}" 
+                                    listener="#{mttoUsuario.selEmpleado}" 
                                     />
                             <p:column filterBy="#{dprov.idempleado}" headerText="Codigo">
                                 <h:outputText value="#{dprov.idempleado}"  />

@@ -13,24 +13,26 @@ import com.asi.restaurantebcd.negocio.base.BusquedasUsuariosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
  * @author Joaquin Sánchez
  */
-@Named(value = "mttoUsuario")
+@ManagedBean(name = "mttoUsuario")
 @ViewScoped
 public class MttoUsuarioMB implements Serializable {
 
@@ -52,18 +54,22 @@ public class MttoUsuarioMB implements Serializable {
                 String url = "http://localhost:8080/RestaurantBDC";
                 FacesContext.getCurrentInstance().getExternalContext().
                         redirect(url);
-                //buscarUsuario();
-                this.lstUsuario = ejbBusqUsrLcal.buscarUsuario();
-                this.lstPerfil = ejbBusqUsrLcal.buscarPerfil();
             }
+            buscarUsuario();
+            buscarPerfil();
+            buscarEmpleado();
+
         } catch (Exception e) {
             alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
+            alert("error de post", FacesMessage.SEVERITY_FATAL);
         }
     }
     //</editor-fold >
 
 //<editor-fold  defaultstate="collapsed" desc="Variables" >
     private Usuario usuarioConst;
+    private Empleado empleadoConst;
+    private Perfil perfilConst;
     private SessionUsr sesion; //Busca beans session activa.
     private String codigoUsr;
     private String claveUsr;
@@ -75,18 +81,19 @@ public class MttoUsuarioMB implements Serializable {
     private boolean activo;
     private Integer paramEst;
     private DataTable dtUsuario = new DataTable();
-    private List<Usuario> lstUsuario;
-    private List<Perfil> lstPerfil;
+    //private List<Usuario> lstUsuario;
+    //private List<Perfil> lstPerfil;
+    //private List<Empleado> lstEmpleado;
+    private List<Usuario> lstUsuario = new ArrayList<>();
+    private List<Perfil> lstPerfil = new ArrayList<>();
+    private List<Empleado> lstEmpleado = new ArrayList<>();
 
     @EJB
     private CrudBDCLocal crub;
     @EJB
     private BusquedasUsuariosLocal ejbBusqUsrLcal;
-    
-    
 
 //</editor-fold >
-
 //<editor-fold  defaultstate="collapsed" desc="Metodos" >
     /**
      * Metodo para limpiar informacion de pantalla.
@@ -121,11 +128,11 @@ public class MttoUsuarioMB implements Serializable {
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
-    
+
     /**
      * Metodo para buscar los usuarios ingresados.
      */
-    public void buscarPerfil(){
+    public void buscarPerfil() {
         try {
             lstPerfil = ejbBusqUsrLcal.buscarPerfil();
             if (lstPerfil == null || lstPerfil.isEmpty()) {
@@ -137,7 +144,23 @@ public class MttoUsuarioMB implements Serializable {
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
-    
+
+    /**
+     * Metodo para buscar los usuarios ingresados.
+     */
+    public void buscarEmpleado() {
+        try {
+            lstEmpleado = ejbBusqUsrLcal.buscarEmpleado();
+            if (lstEmpleado == null || lstEmpleado.isEmpty()) {
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioMB.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
+
     /**
      * Metodo que guarda un usuaio.
      */
@@ -233,8 +256,29 @@ public class MttoUsuarioMB implements Serializable {
      * Metódo para mostrar la pantalla de los empleados registrados
      */
     public void mostrarDialogEmpleado() {
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        requestContext.execute("PF('dialogoEmpleado').show();");
+        try {
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            requestContext.execute("PF('dialogoEmpleado').show();");
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioMB.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
+
+    public void selEmpleado(SelectEvent event) {
+        try {
+            empleadoConst = (Empleado) event.getObject();
+            if (empleadoConst != null) {
+                nombreEmpl = empleadoConst.getNombre();
+            }
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            requestContext.execute("PF('dialogoEmpleado').hide();");
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioMB.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
     }
 
     /**
@@ -262,6 +306,22 @@ public class MttoUsuarioMB implements Serializable {
 
     public void setUsuarioConst(Usuario usuarioConst) {
         this.usuarioConst = usuarioConst;
+    }
+
+    public Empleado getEmpleadoConst() {
+        return empleadoConst;
+    }
+
+    public void setEmpleadoConst(Empleado empleadoConst) {
+        this.empleadoConst = empleadoConst;
+    }
+
+    public Perfil getPerfilConst() {
+        return perfilConst;
+    }
+
+    public void setPerfilConst(Perfil perfilConst) {
+        this.perfilConst = perfilConst;
     }
 
     public SessionUsr getSesion() {
@@ -366,6 +426,14 @@ public class MttoUsuarioMB implements Serializable {
 
     public void setLstPerfil(List<Perfil> lstPerfil) {
         this.lstPerfil = lstPerfil;
+    }
+
+    public List<Empleado> getLstEmpleado() {
+        return lstEmpleado;
+    }
+
+    public void setLstEmpleado(List<Empleado> lstEmpleado) {
+        this.lstEmpleado = lstEmpleado;
     }
 
     public CrudBDCLocal getCrub() {
