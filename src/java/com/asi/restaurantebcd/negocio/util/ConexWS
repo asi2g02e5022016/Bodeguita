@@ -1,0 +1,54 @@
+ public String consumirWebservices(String usr,
+            String metodo, String recurso, String jsonDatos) throws Exception {
+        String respuesta;
+        Segmodulo modu = crudPos.buscarEntidad(Segmodulo.class,
+                Modulo.GENERAL.getCodigo());
+        if (modu == null) {
+            throw new Exception("El modulo al que pertenece la peticion "
+                    + "no existe.");
+        } else if (modu.getUrlbase() == null
+                || modu.getUrlbase().isEmpty()) {
+            throw new Exception("El modulo al que pertenece la peticion "
+                    + "no posee una URL de acceso.");
+        }       
+        String token = crearTokenWebservice(usr);
+        Map mapHeader = new HashMap();
+        mapHeader.put("User", encriptarStringJson(usr));
+        mapHeader.put("fecha", util.formatearFecha(new Date(), "dd/MM/yyyy"));
+        mapHeader.put("Token", token);
+        try {
+            String jsonHeader = new Gson().toJson(mapHeader);
+            Client client = Client.create();
+            WebResource webResource = client.resource("urlbase");
+            WebResource.Builder buildws;
+            buildws = webResource.path(recurso).path(metodo)
+                    .header("autorizacion", jsonHeader);
+            String encriptado = null; 
+            ClientResponse response;
+            if (jsonDatos != null) {
+               encriptado = encriptarStringJson(jsonDatos);
+            }
+            if (encriptado != null) {
+                response = buildws.post(ClientResponse.class, encriptado);
+            } else {
+                response = buildws.post(ClientResponse.class);
+            }
+            String rs = response.getEntity(String.class);
+               Gson json = new Gson();
+        ReponseWs ws = json.fromJson(rs, ReponseWs.class);
+            if (ws != null && ws.getError().equals("1")) {
+                throw new Exception("Integrity: " +ws.getDescripcion());
+            }
+            String desencrip = Encriptacion.decrypt(ws.getContent());
+            respuesta = desencrip;
+            return respuesta;
+        } catch (Exception e) {
+            if (e instanceof ConnectException
+                    || e instanceof ClientHandlerException
+                    || e instanceof NoRouteToHostException) {
+                throw new Exception("No se pudo establecer comunicacion con servicios web,"
+                        + " comuniquese con el administrador");
+            }
+            throw new Exception(e.getMessage());
+        }
+    }
