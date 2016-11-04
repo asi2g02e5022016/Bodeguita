@@ -6,12 +6,13 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -21,7 +22,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author samaelopez
+ * @author joaquin
  */
 @Entity
 @Table(name = "usuario")
@@ -30,6 +31,8 @@ import javax.validation.constraints.Size;
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    //@EmbeddedId
+    //protected UsuarioPK usuarioPk;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -55,16 +58,34 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(String idusuario) {
-        this.idusuario = idusuario;
+    /*
+    public Usuario(UsuarioPK usuarioPk) {
+        this.usuarioPk = usuarioPk;             
+    }
+    
+    public Usuario(String idusuario, int idperfil, int idempleado) {
+        this.usuarioPk = new UsuarioPK(idusuario, idperfil, idempleado);      
     }
 
-    public Usuario(String idusuario, String clave, boolean activo) {
+    public UsuarioPK getUsuarioPk() {
+        return usuarioPk;
+    }
+    
+
+    public void setUsuarioPk(UsuarioPK usuarioPk) {
+        this.usuarioPk = usuarioPk;
+    }
+    */
+
+    public Usuario(String idusuario, String clave, boolean activo, Empleado idempleado, Perfil idperfil) {
         this.idusuario = idusuario;
         this.clave = clave;
         this.activo = activo;
+        this.idempleado = idempleado;
+        this.idperfil = idperfil;
     }
-
+    
+    
     public String getIdusuario() {
         return idusuario;
     }
@@ -81,20 +102,12 @@ public class Usuario implements Serializable {
         this.clave = clave;
     }
 
-    public boolean getActivo() {
+    public boolean isActivo() {
         return activo;
     }
 
     public void setActivo(boolean activo) {
         this.activo = activo;
-    }
-
-    public Perfil getIdperfil() {
-        return idperfil;
-    }
-
-    public void setIdperfil(Perfil idperfil) {
-        this.idperfil = idperfil;
     }
 
     public Empleado getIdempleado() {
@@ -105,21 +118,84 @@ public class Usuario implements Serializable {
         this.idempleado = idempleado;
     }
 
+    public Perfil getIdperfil() {
+        return idperfil;
+    }
+
+    public void setIdperfil(Perfil idperfil) {
+        this.idperfil = idperfil;
+    }
+    
+    
+
+    /*
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idusuario != null ? idusuario.hashCode() : 0);
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.usuarioPk);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Usuario)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Usuario other = (Usuario) object;
-        if ((this.idusuario == null && other.idusuario != null) || (this.idusuario != null && !this.idusuario.equals(other.idusuario))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (!Objects.equals(this.usuarioPk, other.usuarioPk)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "usuarioPk=" + usuarioPk + ", idusuario=" + idusuario + ", clave=" + clave + ", activo=" + activo + ", idempleado=" + idempleado + ", idperfil=" + idperfil + '}';
+    }
+    */  
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.idusuario);
+        hash = 79 * hash + Objects.hashCode(this.clave);
+        hash = 79 * hash + (this.activo ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.idempleado);
+        hash = 79 * hash + Objects.hashCode(this.idperfil);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (this.activo != other.activo) {
+            return false;
+        }
+        if (!Objects.equals(this.idusuario, other.idusuario)) {
+            return false;
+        }
+        if (!Objects.equals(this.clave, other.clave)) {
+            return false;
+        }
+        if (!Objects.equals(this.idempleado, other.idempleado)) {
+            return false;
+        }
+        if (!Objects.equals(this.idperfil, other.idperfil)) {
             return false;
         }
         return true;
@@ -129,9 +205,6 @@ public class Usuario implements Serializable {
     public String toString() {
         return "Usuario{" + "idusuario=" + idusuario + ", clave=" + clave + ", activo=" + activo + ", idempleado=" + idempleado + ", idperfil=" + idperfil + '}';
     }
-    
-    
-    
 
    
     
