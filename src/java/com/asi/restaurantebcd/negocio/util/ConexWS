@@ -167,5 +167,11 @@
     
     
     
-    
+        public final void invalidarCacheEM(final Gencatsdeta valorem)
+            throws Exception {
+        EntityManagerFactory factory
+              = Persistence.createEntityManagerFactory(valorem.getDsccor());
+        EntityManager eme = factory.createEntityManager();
+        eme.getEntityManagerFactory().getCache().evictAll();
+    }
     
