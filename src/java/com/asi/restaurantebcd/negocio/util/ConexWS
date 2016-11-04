@@ -52,3 +52,120 @@
             throw new Exception(e.getMessage());
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////
+
+
+
+
+  public ReponseWs validarAccesoSinTokenIntWS(String auth) throws Exception {
+        StringBuffer str = new StringBuffer();
+        if (auth == null || auth.equals("")) {
+            str.append("No se puede acceder al recurso solicitado.");
+            str.append("El usuario no cuenta con las credenciales.");
+            throw new Exception(str.toString());
+        }
+        Gson json = new Gson();
+        HashMap autorizmap;
+        try {
+            autorizmap = json.fromJson(auth, HashMap.class);
+        } catch (Exception e) {
+            str.append("Error al convertir los parametros");
+            str.append("de Authorization.");
+            str.append(e.getMessage());
+            throw new Exception(str.toString());
+        }
+        String fecha = Parametro.getParamValue(autorizmap, "fecha");
+        String user =  Parametro.getParamValue(autorizmap, "User");
+        String token = Parametro.getParamValue(autorizmap, "Token");
+        String updater = Parametro.getParamValue(autorizmap, "updater");
+        if (user == null || user.equals("")) {
+            str.append("No existe usuario de autenticacion.");
+            throw new Exception(str.toString());
+        }
+        if (token == null || token.equals("")) {
+            str.append("No existe token en la peticion.");
+            throw new Exception(str.toString());
+        }
+        String descencriptarUsr = null;
+        if (updater != null) {
+            if (updater.equals("1")) {
+                descencriptarUsr = UpdateEncryp.decrypt(user);
+            }
+        } else {
+            descencriptarUsr = Encriptacion.decrypt(user);
+        }
+        String tokenPOS = token;
+        Segusuario usrVali = em.find(Segusuario.class, descencriptarUsr);
+        if (usrVali == null) {
+            throw new Exception("El usuario :" + descencriptarUsr + " no existe");
+        }
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaAhora    = format.format(new Date());
+        Date forFechaAhora   = format.parse(fechaAhora);
+        Calendar calFechaAhora = Calendar.getInstance();
+        calFechaAhora.setTime(forFechaAhora);
+        Calendar calFechaAntes = Calendar.getInstance();
+        calFechaAntes.setTime(forFechaAhora);
+        calFechaAntes.add(Calendar.HOUR, -1);
+        fechaAhora    = format.format(calFechaAhora.getTime());
+        String fechaAnterior = format.format(calFechaAntes.getTime());
+        String TokenAhora = ejbUtilsPOS.crearTokenWebservice(descencriptarUsr, fechaAhora);
+        String TokenAntes = ejbUtilsPOS.crearTokenWebservice(descencriptarUsr, fechaAnterior);
+        List < String > lstHash = new ArrayList();
+        lstHash.add(TokenAhora);
+        lstHash.add(TokenAntes);
+        if (!lstHash.contains(tokenPOS)) {
+           throw new Exception("El token no es invalido.");
+        }
+        ReponseWs resp = new ReponseWs(Numeros.DOSCIENTOS.intValue(),
+                "OK", "0", fecha);
+        resp.setFecha(fecha);
+        resp.setUsuario(descencriptarUsr);
+        return resp;
+    }
+    
+    
+    
+        @POST
+    @Path("/respuestaAprobacion")
+    public String respuestaAprobacion(@HeaderParam("autorizacion")
+                                    String auth, String json) throws Exception {
+        ReponseWs resp;
+        try {
+            if (auth == null || auth.equals("")) {
+                throw new Exception("No vienen datos para autorizar acceso");
+            }
+            resp = lookupProcesosSeg().validarAccesoSinTokenIntWS(auth);
+            if (resp != null && resp.getError().equals("1")) {
+                throw new Exception(resp.getDescripcion());
+            }
+
+            resp = new ReponseWs();
+            resp.setContent("Se guardo existosamente.");
+            resp.setDescripcion("-");
+            resp.setError("0");
+            resp.setStatus(Response.Status.OK.getStatusCode());
+            return new Gson().toJson(resp);
+        } catch (Exception e) {
+            Logger.getLogger(PosResource.class.getName()).log(Level.SEVERE, null, e);
+            throw new WSATException(e.getMessage());
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
