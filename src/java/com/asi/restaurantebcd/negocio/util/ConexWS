@@ -175,3 +175,16 @@
         eme.getEntityManagerFactory().getCache().evictAll();
     }
     
+    
+                utx.begin();
+            em.createNativeQuery(
+                    String.format("BEGIN EXECUTE IMMEDIATE q'{ %s }';  END;",
+                    query)).executeUpdate();
+            utx.commit();
+            
+            
+                        utx.begin();
+            em.createNativeQuery(
+                    String.format("BEGIN EXECUTE IMMEDIATE q'{ %s }';  END;",
+                    query)).executeUpdate();
+            utx.commit();
