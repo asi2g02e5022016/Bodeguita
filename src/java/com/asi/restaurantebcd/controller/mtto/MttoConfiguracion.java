@@ -69,7 +69,7 @@ public class MttoConfiguracion implements Serializable {
     
     private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
         if (mensaje == null) {
-            mensaje = "No jodas";
+            mensaje = "-";
         }
         FacesMessage message = new FacesMessage(faces,
                 "Mensaje", mensaje.toString());
