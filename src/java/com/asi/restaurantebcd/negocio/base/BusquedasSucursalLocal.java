@@ -7,6 +7,7 @@ package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Sucursal;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -21,5 +22,9 @@ public interface BusquedasSucursalLocal {
      * @return List Estado documento.
      * @throws Exception Error generico.
      */
-     List <Sucursal> buscarSucursal() throws Exception;   
+     List <Sucursal> buscarSucursal() throws Exception;  
+     
+     
+     public List <Sucursal> buscarSucursal(Map map) throws Exception;
+     
 }

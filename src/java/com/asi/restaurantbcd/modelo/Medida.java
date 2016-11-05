@@ -13,9 +13,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -43,7 +46,15 @@ public class Medida implements Serializable {
     @Column(name = "conversion")
     private double conversion;
     
+    @JoinColumn(name = "idMedidaBase", referencedColumnName = "idmedida")
+    @ManyToOne(optional = true)
+    private Medida idMedidaBase;
     
+    @Transient
+    private boolean medidaBase;
+    
+    @Transient
+    private Medida medidaPadre;
 
     public Medida() {
     }
@@ -155,7 +166,44 @@ public class Medida implements Serializable {
         return "Medida{" + "idmedida=" + idmedida + ", medida=" + medida + ", referencia=" + referencia + ", conversion=" + conversion + '}';
     }
     
-    
+
+    /**
+     * @return the idMedidaBase
+     */
+    public Medida getIdMedidaBase() {
+        return idMedidaBase;
+    }
+
+    /**
+     * @param idMedidaBase the idMedidaBase to set
+     */
+    public void setIdMedidaBase(Medida idMedidaBase) {
+        this.idMedidaBase = idMedidaBase;
+    }
+
+    /**
+     * @return the medidaBase
+     */
+    public boolean isMedidaBase() {
+        medidaBase = false;
+        if(this.getIdMedidaBase() == null || this.getIdmedida().equals(this.getIdMedidaBase().getIdmedida()) ){
+             medidaBase = true;
+        }
+        return medidaBase;
+    }
+
+    /**
+     * @return the medidaPadre
+     */
+    public Medida getMedidaPadre() {
+        medidaPadre = this.getIdMedidaBase();
+        if (medidaPadre==null){
+          medidaPadre = this;
+        }
+        return medidaPadre;
+    }
+
+
     
     
     

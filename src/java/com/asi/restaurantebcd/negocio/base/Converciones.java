@@ -29,6 +29,15 @@ public Double getValorConvercion(Medida medidaInicial, Medida medidaFinal,
     try {
 
       Double factor = null;
+      
+      if(medidaInicial.isMedidaBase() && medidaFinal.isMedidaBase()){
+          throw new Exception("No se pueden realizar conversión de dos medidas base");
+      }
+      
+      if(!medidaInicial.getMedidaPadre().equals(medidaFinal.getMedidaPadre())){
+          throw new Exception("No existe conversión de la medida" + medidaInicial.getReferencia() + " a la medida " + medidaFinal.getReferencia());
+      }
+      
       if (medidaInicial.getConversion() == 1) {
           Double valor = null ;
           if (factor == null || factor == 0) {
