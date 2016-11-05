@@ -5,7 +5,7 @@
  */
 package com.asi.restaurantebcd.controller.mtto;
 
-import com.asi.restaurantbcd.modelo.Compania;
+//import com.asi.restaurantbcd.modelo.Compania;
 import com.asi.restaurantbcd.modelo.Condicionpago;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasMttoLocal;
@@ -132,7 +132,7 @@ public class MttoCondicionPago implements Serializable{
       */
      public void buscarCondicionPago() {
         try {
-            lstCondicionPago =  ejbBusqMtto.buscarCondicionPago();
+            //lstCondicionPago =  ejbBusqMtto.buscarCondicionPago();
             if (lstCondicionPago == null || lstCondicionPago.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
@@ -173,8 +173,8 @@ public class MttoCondicionPago implements Serializable{
                 
             }
         } catch (Exception ex) {
-            Logger.getLogger(MttoCompanias.class.getName())
-                    .log(Level.SEVERE, null, ex);
+            //Logger.getLogger(MttoCompanias.class.getName())
+            //        .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
