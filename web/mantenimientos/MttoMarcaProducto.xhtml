@@ -12,8 +12,7 @@ and open the template in the editor.
                 template="/layout/templateBDC.xhtml">
     <ui:define name="body">
         <center> 
-        <h:form id="forprincipal" >
-            
+            <h:form id="forprincipal" >
             <p:growl showDetail="true" showSummary="true" />
             <p:panel id="basic" header="Mantenimientos de Marca de Producto documento" style="width: 50%"  >
                 <p:menubar>
@@ -41,12 +40,12 @@ and open the template in the editor.
                             </p:column>
                             <p:column headerText="Nombre" width="90%">
                                 <h:outputText value="#{dpro.marcaproducto}"  />
-                            </p:column>
+                            </p:column> 
 
                         </p:dataTable>
                     </h:panelGrid>
-            </p:panel>
-        </h:form>
-            </center>
+                </p:panel>
+            </h:form>
+        </center>
     </ui:define>
 </ui:composition>
