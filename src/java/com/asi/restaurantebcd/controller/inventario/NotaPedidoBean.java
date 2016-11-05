@@ -91,24 +91,22 @@ public class NotaPedidoBean implements Serializable{
     public void mostrarDialogoMonNotPedido(){};
     
     public void mostrarDialogOrigen(){
+        System.out.println("Entro dialog...");
      RequestContext requestContext = RequestContext.getCurrentInstance();
                 requestContext.execute("PF('dialogoSucursal').show();");    
     };
     
     public void mostrarDialogProd() {};
     
-    public void limpiarSucursalOrigen() {};
-    
-    public void buscarSucursal() {
-       try {
+    public void limpiarSucursalOrigen() {
+     System.out.println("Limpiar....");
+      try {
             Map filtro = new HashMap();
             if (sucursalFilter != null && !sucursalFilter.equals("")) {
-                filtro.put("sucursal", sucursalFilter.trim());
-                
+                filtro.put("sucursal", sucursalFilter.trim()); 
             }
             lstSucursalOrigen = ejbSucursal.buscarSucursal(filtro);
             System.out.println("sucursal.." +lstSucursalOrigen);
-             System.out.println("sucursalFilter.." +sucursalFilter);
             if (lstSucursalOrigen == null || lstSucursalOrigen.isEmpty()) {
                // alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
@@ -117,6 +115,26 @@ public class NotaPedidoBean implements Serializable{
                     Level.SEVERE, null, ex);
             //alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
         }
+    };
+    
+    public void buscarSucursal() {
+        System.out.println("Entro....");
+       try {
+            Map filtro = new HashMap();
+            if (sucursalFilter != null && !sucursalFilter.equals("")) {
+                filtro.put("sucursal", sucursalFilter.trim()); 
+            }
+            lstSucursalOrigen = ejbSucursal.buscarSucursal(filtro);
+            System.out.println("sucursal.." +lstSucursalOrigen);
+            if (lstSucursalOrigen == null || lstSucursalOrigen.isEmpty()) {
+               // alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+            }
+         } catch (Exception ex) {
+            Logger.getLogger(ComprasBeans.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            //alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
+        }
+       System.out.println("sucursal..");
     }; 
     
     public void limpiarProducto() {};

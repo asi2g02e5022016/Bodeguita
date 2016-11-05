@@ -125,16 +125,12 @@ and open the template in the editor.
             <p:dialog header="Buscar Sucursal" width="50%" widgetVar="dialogoSucursal" minHeight="100">
                 <h:panelGrid columns="1" width="100%">
                     <p:menubar>
-                        <p:menuitem value="Limpiar" action="#{notaPedido.limpiarSucursalOrigen()}"
-                                    icon="ui-icon-plus" />
-                        <p:menuitem value="Buscar" update="tablaSucursal"
-                                    action="#{notaPedido.buscarSucursal()}" process="filter"
-                                    icon=" ui-icon-search" />
+                        <p:menuitem value="Limpiar" actionListener="#{notaPedido.limpiarSucursalOrigen()}"
+                                    icon="ui-icon-plus" update="tablaSucursal" />
+                        <p:menuitem value="Buscar Sucursal" update="tablaSucursal"
+                                    actionListener="#{notaPedido.buscarSucursal()}" 
+                                    icon=" ui-icon-search" ajax="true" immediate="true" />
                     </p:menubar>
-                </h:panelGrid>
-                <h:panelGrid columns="2" width="80%">
-                    <h:outputLabel  value="Nombres "  />
-                    <p:inputText  id="filter"  value="#{notaPedido.sucursalFilter}" />
                 </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable value="#{notaPedido.lstSucursalOrigen}"

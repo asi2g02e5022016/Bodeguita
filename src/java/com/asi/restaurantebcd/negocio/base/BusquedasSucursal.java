@@ -35,9 +35,7 @@ public class BusquedasSucursal implements BusquedasSucursalLocal{
 
     @Override
     public List<Sucursal> buscarSucursal(Map filtroMap) throws Exception {
-            if (filtroMap == null) {
-            return null;
-        }
+         
         try {
         StringBuilder jpql = new StringBuilder();
         jpql.append("SELECT o FROM Sucursal o WHERE 1 = 1 ");
