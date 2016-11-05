@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml">
+    <ui:define name="body">
+        <h:form id="forprincipal" >
+            <p:growl showDetail="true" showSummary="true" />
+            <p:panel id="basic" header="Notas de Pedido"  >
+                <p:menubar>
+                    <p:menuitem value="Nuevo" update="forprincipal" action="#{notaPedido.nuevoPedido()}"
+                                icon="ui-icon-plus" />
+                    <p:menuitem value="Guardar" id="btnGuardarDat"
+                                update="forprincipal" 
+                                rendered="#{notaPedido.mostrarBtnGuardar}" 
+                                action="#{notaPedido.guardarPedido()}" 
+                                icon="ui-icon-disk" />
+                    <p:menuitem value="Enviar nota de Pedido" 
+                                icon=" ui-icon-refresh"
+                                action="#{notaPedido.enviarNotaPedido()}"/>
+                    
+                    <p:menuitem value="Imprimir" action="#{notaPedido.imprimirReporteCompra()}"
+                                icon="ui-icon-print" />
+                    
+                     <p:menuitem value="Exportar"
+                                icon="fa fa-file-excel-o" />
+                     <p:menuitem value="Monitor" action="#{notaPedido.mostrarDialogoMonNotPedido()}"
+                                icon=" ui-icon-search" />
+                </p:menubar>
+                <h:panelGrid columns="2" width="100%">
+                    <h:panelGrid columns="6" width="80%">
+                        <h:outputLabel  value="No Documento : "/>
+                        <p:inputText readonly="true" value="#{notaPedido.nodocu}"  />
+                        <h:outputLabel  value="Usuario: "  />
+                        <p:inputText readonly="true" value="#{notaPedido.usr}"  />
+                        
+                        <h:outputLabel  value="Sucursal "  />
+                        <p:inputText  readonly="true" value="#{notaPedido.sucursalDestino}"  />
+
+
+                        <h:outputLabel  value="Estado "  />
+                        <p:inputText  readonly="true" value="#{notaPedido.estado}"  />   
+                        <h:outputLabel  value="Fecha "  />
+                        <p:inputText readonly="true" value="#{notaPedido.fecha}"  >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:inputText>
+
+                    </h:panelGrid>
+                    <h:panelGrid columns="3" width="20%">
+                        <h:outputLabel  value="Sucursal Origen "  />
+                        <p:inputText readonly="true"  value="#{notaPedido.sucursalOrigen}"  style=" width: 100%" />
+                        <p:commandButton   action="#{notaPedido.mostrarDialogOrigen()}"
+                                           id="iconOnly" 
+                                           icon="ui-icon-search" title="Icon Only" />
+
+
+                        <h:outputLabel  value="Observaciones "  />
+                        <p:inputTextarea rows="3" cols="25" value="#{notaPedido.observacion}"  />
+
+                    </h:panelGrid>
+
+                </h:panelGrid>
+                
+
+                <h:panelGrid >
+                    <p:dataTable value="#{notaPedido.lstPeddeta}" 
+                                 var="det"   emptyMessage=""   editable="true">
+                        <p:ajax event="rowEdit" listener="#{notaPedido.onRowEdit}" />                      <p:column headerText="cod.">
+                            <h:outputText value="#{det.idproducto.idproducto}" />
+                        </p:column>
+
+                        <p:column headerText="Descripcion">
+                            <h:outputText value="#{det.idproducto.producto}"  />
+                        </p:column>
+
+                        <p:column headerText="Cantidad Solic.">
+                             <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{det.cantidadsolicitada}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput" value="#{det.cantidadsolicitada}" style="width:70%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Cantidad Conf. " rendered="#{notaPedido.mostrarCantConfirmada}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{det.cantidadconfirmada}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText  value="#{det.cantidadconfirmada}" style="width:70%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Precio">
+                            <h:outputText value="#{det.precio}"  />
+                        </p:column>
+                        <p:column headerText="Monto">
+                            <h:outputText value="#{det.monto}"  />
+                        </p:column>
+                        <p:column headerText="Total">
+                            <h:outputText value="#{det.total}" />
+                        </p:column>
+                        <p:column style="width:32px">
+                            <f:facet name="header">
+                                <p:commandButton  
+                                    id="iconOnly" action="#{notaPedido.mostrarDialogProd()}"
+                                    icon="ui-icon-plus"  />
+                            </f:facet>
+                            <p:rowEditor />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:panel>
+
+            <p:dialog header="Buscar Sucursal" width="50%" widgetVar="dialogoSucursal" minHeight="100">
+                <h:panelGrid columns="1" width="100%">
+                    <p:menubar>
+                        <p:menuitem value="Limpiar" actionListener="#{notaPedido.limpiarSucursalOrigen()}"
+                                    icon="ui-icon-plus" update="tablaSucursal" />
+                        <p:menuitem value="Buscar Sucursal" update="tablaSucursal"
+                                    actionListener="#{notaPedido.buscarSucursal()}" 
+                                    icon=" ui-icon-search" ajax="true" immediate="true" />
+                    </p:menubar>
+                </h:panelGrid>
+                <h:panelGrid >
+                    <p:dataTable value="#{notaPedido.lstSucursalOrigen}"
+                                 id="tablaSucursal" widgetVar="tablaSucursal" var="suc"
+                                 selectionMode="single" rowKey="#{suc.idsucursal}"  emptyMessage=""  >
+                               
+                        <p:ajax event="rowSelect" update="forprincipal" process="@all"
+                                listener="#{notaPedido.onRowSelectSucursal}" 
+                        />
+                        <p:column filterBy="#{suc.sucursal}" headerText="nombre">
+                            <h:outputText value="#{suc.sucursal}"  />
+                        </p:column>
+                        <p:column filterBy="#{suc.direccion}"  headerText="direccion">
+                            <h:outputText value="#{suc.direccion}"  />
+                        </p:column>
+                        <p:column filterBy="#{suc.telefono}"  headerText="tel">
+                            <h:outputText value="#{suc.telefono}"  />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:dialog>
+            <p:dialog header="Buscar producto" widgetVar="dialogoProducto"
+                      width="50%"
+                      >
+                <h:panelGrid columns="1" width="100%">
+                    <p:menubar>
+                        <p:menuitem value="Limpiar" action="#{notaPedido.limpiarProducto()}"
+                                    icon="ui-icon-plus" />
+                        <p:menuitem id="idBuscarPro" value="Buscar" update="tablaProdd"
+                                    action="#{notaPedido.buscarProducto()}"
+                                    icon=" ui-icon-search" > 
+                        </p:menuitem>
+                    </p:menubar>
+                </h:panelGrid>
+                <h:panelGrid columns="2" width="80%">
+                                      <h:outputLabel  value="Cantidad    "  />
+                                      <p:inputText id="cantidadSolic"  value="#{notaPedido.cantidadSolic}" />
+                    <h:outputLabel  value="Producto "  />
+                    <p:inputText   value="#{notaPedido.descripcionProducto}" />
+                </h:panelGrid>
+                <h:panelGrid >
+                    <p:dataTable id="tablaProdd" 
+                                 value="#{notaPedido.lstProducto}"
+                                 var="dpro" rowKey="#{dpro.idproducto}"                                  
+                                 selectionMode="single" rows="19"  >                        
+                        <p:ajax event="rowSelect" update="tablaProdd" process="@all"  
+                            listener="#{comprasBeans.onRowSelect}"/>
+                        <p:column filterBy="#{dpro.producto}" headerText="descripcion">
+                            <h:outputText value="#{dpro.producto}"  />
+                        </p:column>
+                        <p:column headerText="medida" filterBy="#{dpro.medida}" >
+                            <h:outputText value="#{dpro.medida}"  />
+                        </p:column>
+                        <p:column headerText="tipo" filterBy="#{dpro.tipoproducto}">
+                            <h:outputText value="#{dpro.tipoproducto}"  />
+                        </p:column>
+                        <p:column headerText="grupo" filterBy="#{dpro.grupoproducto}">
+                            <h:outputText value="#{dpro.grupoproducto}"  />
+                            <p:column headerText="marca"  filterBy="#{dpro.marcaproducto}">
+                                <h:outputText value="#{dpro.marcaproducto}"  />
+                            </p:column>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:dialog>
+            
+            <p:dialog header="Monitor Compras" widgetVar="dialogoCompras"
+                      width="50%" >
+                <h:panelGrid columns="1" width="100%"  >
+                    <p:menubar>
+                        <p:menuitem id="idBuscarCompr" value="Buscar" update="tablaCompras"
+                                      action="#{notaPedido.buscarPedidos()}"
+                                    icon=" ui-icon-search" > 
+                        </p:menuitem>
+                    </p:menubar>
+                </h:panelGrid>
+                <h:panelGrid columns="2" width="80%">
+ 
+                    <h:outputLabel  value="Fecha Inicial "  />
+                    <p:calendar value="#{notaPedido.fechaIniMonitor}"/>
+                       <h:outputLabel  value="Fecha Final "  />
+                       <p:calendar value="#{notaPedido.fechaFinMonitor}"/>
+                </h:panelGrid>
+                <h:panelGrid >
+                    <p:dataTable value="#{notaPedido.lstPedidoMonitor}" id="tablaCompras"
+                                 var="dpedido"  rowKey="#{dcompra.notapedidoPK}"
+                                 selectionMode="single"  rows="19"  >                        
+                        <p:ajax event="rowSelect" update="forprincipal"
+                                listener="#{notaPedido.onRowSelectPedido}" process="@all"  
+                                />
+                        <p:column  headerText="Numero">
+                            <h:outputText value="#{dpedido.notapedidoPK.idnotapedido}"  />
+                        </p:column>
+                         <p:column  headerText="Sucursal Destino">
+                             <h:outputText value="#{dpedido.sucursal.sucursal}"  />
+                        </p:column>
+                        <p:column headerText="Sucursal Origen"  >
+                            <h:outputText value="" />
+                        </p:column>
+                        <p:column headerText="fecha" >
+                            <h:outputText value="#{dpedido.fechaingreso}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="usuario" >
+                            <h:outputText  value="#{dpedido.idusuariod.idusuario}" />
+                   
+                        </p:column>
+                          <p:column headerText="estado"  >
+                              <h:outputText value="#{dpedido.idestado.estado}" />
+                            </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:dialog>
+            
+            
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
+import org.primefaces.context.RequestContext;
 /**
  *
  * @author samaelopez
@@ -62,15 +63,22 @@ public class RecetasBeans {
        receta.setDescripcion(descripcion);
        receta.setEstado(1);
        receta.setFechacreacion(new Date());
-      // receta.setIdusuariocrea(sesion.getSucursal().getIdsucursal());
+      //receta.setIdusuariocrea(sesion.getSucursal().getIdsucursal());
     }
     
     
     
     
     
+        public void mostrarDialogProd() {
+     RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProducto').show();");
+    }
     
-    
+                public void mostrarDialogMonitor() {
+     RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoMonitor').show();");
+    }
     
          public void alert(String mensaje, FacesMessage.Severity faces) {
         FacesMessage message = new FacesMessage(faces,

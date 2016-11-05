@@ -1,3 +1,10 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.asi.restaurantebcd.negocio.util;
+
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileWriter;
@@ -34,10 +41,10 @@ import net.sf.jasperreports.engine.export.JRTextExporterParameter;
 
 /**
  *
- * @author nmayen
+ * @author samaelopez
  */
 public class ImpFactura {
-    
+        
     public void ImprimirFactura2(String datSource, String url, Map parameters)
             throws IOException, NamingException,
             SQLException, Exception {
@@ -316,4 +323,6 @@ public class ImpFactura {
         exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, service);
         exporter.exportReport();
     }
+
+    
 }

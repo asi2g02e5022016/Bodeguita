@@ -151,7 +151,9 @@ public class OrdenProduccionBeans implements Serializable {
             return;
         }
            }
-           
+                    
+                    
+                    
            public void buscarRecetas() {
              Query q = em.createNamedQuery("Receta.findAll");
         lstReceta = q.getResultList();

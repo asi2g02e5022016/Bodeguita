@@ -17,10 +17,11 @@ and open the template in the editor.
             <p:panel id="basic" header="Compras a proveedores"  >
                 <p:menubar>
                     <p:menuitem value="Limpiar" update="forprincipal" 
+                                action="#{recetas.limpiarPantalla()}"
                                 icon="ui-icon-plus" />
-                     <p:menuitem value="Guradar" 
+                    <p:menuitem value="Guradar"  action="#{recetas.guaradarReceta()}"
                                 icon=" ui-icon-search" />
-                     <p:menuitem value="Monitor" 
+                    <p:menuitem value="Monitor"  action="#{recetas.mostrarDialogProd()}"
                                 icon=" ui-icon-search" />
                 </p:menubar>
                 <h:panelGrid columns="2" width="100%">
@@ -90,7 +91,93 @@ and open the template in the editor.
                 </h:panelGrid>
             </p:panel>
             
+            <p:dialog header="Buscar producto" widgetVar="dialogoProducto"
+                      width="50%"
+                      >
+                <h:panelGrid columns="1" width="100%">
+                    <p:menubar>
+                        <p:menuitem value="Limpiar"
+                                    icon="ui-icon-plus" />
+                        <p:menuitem id="idBuscarPro" value="Buscar" update="tablaProdd"
+                                    
+                                    icon=" ui-icon-search" > 
+                        </p:menuitem>
+                    </p:menubar>
+                </h:panelGrid>
+                <h:panelGrid columns="2" width="80%">
+                                      <h:outputLabel  value="Cantidad    "  />
+                                      <p:inputText id="cantidadSolic"   />
+                    <h:outputLabel  value="Producto "  />
+                    <p:inputText   />
+                </h:panelGrid>
+                <h:panelGrid >
+                    <p:dataTable id="tablaProdd" 
+                                                                   
+                                 selectionMode="single" rows="19"  >                        
+                        <p:ajax event="rowSelect" update="tablaProdd" process="@all"  
+                            />
+                        <p:column  headerText="descripcion">
+                            <h:outputText   />
+                        </p:column>
+                        <p:column headerText="medida"  >
+                            <h:outputText   />
+                        </p:column>
+                        <p:column headerText="tipo" >
+                            <h:outputText  />
+                        </p:column>
+                        <p:column headerText="grupo" >
+                            <h:outputText   />
+                            <p:column headerText="marca"  >
+                                <h:outputText   />
+                            </p:column>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:dialog>
             
+            <p:dialog header="Monitor Recetas" widgetVar="dialogoRecetas"
+                      width="50%"
+                      >
+                <h:panelGrid columns="1" width="100%">
+                    <p:menubar>
+                        <p:menuitem value="Limpiar"
+                                    icon="ui-icon-plus" />
+                        <p:menuitem value="Buscar" 
+                                    
+                                    icon=" ui-icon-search" > 
+                        </p:menuitem>
+                    </p:menubar>
+                </h:panelGrid>
+                <h:panelGrid columns="2" width="80%">
+                                      <h:outputLabel  value="Cantidad    "  />
+                                      <p:inputText id="cantidadSolic"   />
+                    <h:outputLabel  value="Producto "  />
+                    <p:inputText   />
+                </h:panelGrid>
+                <h:panelGrid >
+                    <p:dataTable id="tablaProdd" 
+                                                                   
+                                 selectionMode="single" rows="19"  >                        
+                        <p:ajax event="rowSelect" update="tablaProdd" process="@all"  
+                            />
+                        <p:column  headerText="descripcion">
+                            <h:outputText   />
+                        </p:column>
+                        <p:column headerText="medida"  >
+                            <h:outputText   />
+                        </p:column>
+                        <p:column headerText="tipo" >
+                            <h:outputText  />
+                        </p:column>
+                        <p:column headerText="grupo" >
+                            <h:outputText   />
+                            <p:column headerText="marca"  >
+                                <h:outputText   />
+                            </p:column>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>
