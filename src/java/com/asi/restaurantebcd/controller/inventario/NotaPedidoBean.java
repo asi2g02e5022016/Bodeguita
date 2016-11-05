@@ -13,8 +13,10 @@ import com.asi.restaurantbcd.modelo.Proveedor;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Vwproductos;
 import com.asi.restaurantebcd.controller.compras.ComprasBeans;
+import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal;
+import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,9 +62,17 @@ public class NotaPedidoBean implements Serializable{
     private Date fechaIniMonitor = null;
     private Date fechaFinMonitor = null;
     private Double cantidadSolic;
+    private Vwproductos producto;
+    private Notapedidodetalle notaDeta;
     
     @EJB
     private BusquedasSucursalLocal ejbSucursal;
+    
+    @EJB
+    private BusquedasProductosLocal ejbBusProd;
+    
+        @EJB
+    private CrudBDCLocal crud;
     
     public void nuevoPedido(){
     
@@ -88,18 +98,22 @@ public class NotaPedidoBean implements Serializable{
     
     public void imprimirReporteCompra(){};
     
-    public void mostrarDialogoMonNotPedido(){};
+    public void mostrarDialogoMonNotPedido(){
+     RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoNotaPedidos').show();");
+    };
     
     public void mostrarDialogOrigen(){
-        System.out.println("Entro dialog...");
      RequestContext requestContext = RequestContext.getCurrentInstance();
                 requestContext.execute("PF('dialogoSucursal').show();");    
     };
     
-    public void mostrarDialogProd() {};
+    public void mostrarDialogProd() {
+         RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProducto').show();");  
+    };
     
     public void limpiarSucursalOrigen() {
-     System.out.println("Limpiar....");
       try {
             Map filtro = new HashMap();
             if (sucursalFilter != null && !sucursalFilter.equals("")) {
@@ -118,7 +132,6 @@ public class NotaPedidoBean implements Serializable{
     };
     
     public void buscarSucursal() {
-        System.out.println("Entro....");
        try {
             Map filtro = new HashMap();
             if (sucursalFilter != null && !sucursalFilter.equals("")) {
@@ -134,12 +147,31 @@ public class NotaPedidoBean implements Serializable{
                     Level.SEVERE, null, ex);
             //alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
         }
-       System.out.println("sucursal..");
     }; 
     
     public void limpiarProducto() {};
     
-    public void buscarProducto() {};
+    public void buscarProducto() {
+    try {
+            Map filtro = new HashMap();
+            if (descripcionProducto != null) {
+                filtro.put("producto", descripcionProducto.trim());
+                
+            }
+            filtro.put("activo", 1);
+            filtro.put("tipo", 1);
+            
+            lstProducto = ejbBusProd.buscarProducto(filtro);
+            System.out.println("lstProducto.." +lstProducto);
+            if (lstProducto == null || lstProducto.isEmpty()) {
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+            }
+         } catch (Exception ex) {
+            Logger.getLogger(ComprasBeans.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
+        }
+    };
     
     public void buscarPedidos() {};
     
@@ -161,7 +193,38 @@ public class NotaPedidoBean implements Serializable{
       
       public void onRowSelect(SelectEvent event) {
    
-        
+        try {
+            Vwproductos idP  =  ((Vwproductos) event.getObject());
+            System.out.println("yd.,,, " + idP);
+            System.out.println("camtidad... " +cantidadSolic);
+            producto = ((Vwproductos) event.getObject());
+            if (cantidadSolic == null || cantidadSolic.toString().equals("0")){
+                alert("La Cantidad Es obligatorio", FacesMessage.SEVERITY_WARN);
+//                            RequestContext requestContext = RequestContext.getCurrentInstance();
+//                requestContext.execute("PF('dialogoProducto').show();");
+                return;
+            }
+            System.out.println("producto,.. " +producto);
+            System.out.println("u..");
+            Producto pro = crud.buscarEntidad(Producto.class,
+                    producto.getIdproducto());
+            if (lstPeddeta == null ) {
+                lstPeddeta = new ArrayList<>();
+            }
+            notaDeta = new Notapedidodetalle();
+            notaDeta.setIdproducto(pro);
+            notaDeta.setCantidadsolicitada(cantidadSolic.intValue());
+            notaDeta.setPrecio(0);
+            lstPeddeta.add(0, notaDeta);
+            System.out.println("lstPeddeta.." +lstPeddeta);
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            requestContext.execute("PF('dialogoProducto').hide();");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.getLogger(ComprasBeans.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
     }
       
     public void onRowSelectPedido(SelectEvent event) {
@@ -417,6 +480,11 @@ public class NotaPedidoBean implements Serializable{
     }
     
     
-    
+    public void alert(String mensaje, FacesMessage.Severity faces) {
+        FacesMessage message = new FacesMessage(faces,
+                "Mensaje", mensaje);
+         
+        RequestContext.getCurrentInstance().showMessageInDialog(message);
+    }
     
 }

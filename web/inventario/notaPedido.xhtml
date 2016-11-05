@@ -177,7 +177,7 @@ and open the template in the editor.
                                  var="dpro" rowKey="#{dpro.idproducto}"                                  
                                  selectionMode="single" rows="19"  >                        
                         <p:ajax event="rowSelect" update="tablaProdd" process="@all"  
-                            listener="#{comprasBeans.onRowSelect}"/>
+                            listener="#{notaPedido.onRowSelect}"/>
                         <p:column filterBy="#{dpro.producto}" headerText="descripcion">
                             <h:outputText value="#{dpro.producto}"  />
                         </p:column>
@@ -197,7 +197,7 @@ and open the template in the editor.
                 </h:panelGrid>
             </p:dialog>
             
-            <p:dialog header="Monitor Compras" widgetVar="dialogoCompras"
+            <p:dialog header="Monitor Compras" widgetVar="dialogoNotaPedidos"
                       width="50%" >
                 <h:panelGrid columns="1" width="100%"  >
                     <p:menubar>
