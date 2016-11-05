@@ -78,15 +78,15 @@ public class MttoUsuarioMB implements Serializable {
     private String nombrePerfil;
     private Perfil idPerfil;
     private Empleado idEmpleado;
+    private int codperfil;
+    private int codempleado;
     private boolean activo;
     private Integer paramEst;
     private DataTable dtUsuario = new DataTable();
-    //private List<Usuario> lstUsuario;
-    //private List<Perfil> lstPerfil;
-    //private List<Empleado> lstEmpleado;
-    private List<Usuario> lstUsuario = new ArrayList<>();
-    private List<Perfil> lstPerfil = new ArrayList<>();
-    private List<Empleado> lstEmpleado = new ArrayList<>();
+    private List<Usuario> lstUsuario;
+    private List<Perfil> lstPerfil;
+    private List<Empleado> lstEmpleado;
+    
 
     @EJB
     private CrudBDCLocal crub;
@@ -94,12 +94,15 @@ public class MttoUsuarioMB implements Serializable {
     private BusquedasUsuariosLocal ejbBusqUsrLcal;
 
 //</editor-fold >
+
 //<editor-fold  defaultstate="collapsed" desc="Metodos" >
     /**
      * Metodo para limpiar informacion de pantalla.
      */
     public void limpiarPantalla() {
         usuarioConst = null;
+        empleadoConst = null;
+        perfilConst = null;
         codigoUsr = null;
         claveUsr = null;
         confclaveUsr = null;
@@ -107,10 +110,13 @@ public class MttoUsuarioMB implements Serializable {
         nombrePerfil = null;
         idEmpleado = null;
         idPerfil = null;
+        codperfil = 0;
+        codempleado = 0;        
         activo = false;
         dtUsuario = new DataTable();
         lstUsuario = null;
         lstPerfil = null;
+        lstEmpleado = null;
     }
 
     /**
@@ -223,7 +229,7 @@ public class MttoUsuarioMB implements Serializable {
                 this.lstUsuario = this.ejbBusqUsrLcal.buscarUsuario();
             }
         } catch (Exception ex) {
-            Logger.getLogger(MttoEstado.class.getName())
+            Logger.getLogger(MttoUsuarioMB.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
@@ -241,7 +247,7 @@ public class MttoUsuarioMB implements Serializable {
                 FacesMessage.SEVERITY_INFO);
     }
 
-    /**
+        /**
      * Metodo que se ejecuta cuando se cancela la acción de edición en la grilla
      * del formulario
      *
@@ -256,14 +262,10 @@ public class MttoUsuarioMB implements Serializable {
      * Metódo para mostrar la pantalla de los empleados registrados
      */
     public void mostrarDialogEmpleado() {
-        try {
+        System.out.println("entro...");
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoEmpleado').show();");
-        } catch (Exception ex) {
-            Logger.getLogger(MttoUsuarioMB.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
+
     }
 
     public void selEmpleado(SelectEvent event) {
@@ -340,6 +342,22 @@ public class MttoUsuarioMB implements Serializable {
         this.codigoUsr = codigoUsr;
     }
 
+    public int getCodperfil() {
+        return codperfil;
+    }
+
+    public void setCodperfil(int codperfil) {
+        this.codperfil = codperfil;
+    }
+
+    public int getCodempleado() {
+        return codempleado;
+    }
+
+    public void setCodempleado(int codempleado) {
+        this.codempleado = codempleado;
+    }
+    
     public String getClaveUsr() {
         return claveUsr;
     }

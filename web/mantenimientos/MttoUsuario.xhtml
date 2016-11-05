@@ -49,20 +49,25 @@ and open the template in the editor.
                             </p:column>
                             <p:column style="width: 65px">
                                 <p:inputText readonly="true" value="#{mttoUsuario.nombreEmpl}"/>
-                            </p:column>
-                            <p:column style="width: 5px">
-                                <p:commandButton action="#{mttoUsuario.mostrarDialogEmpleado()}"
-                                                 id="iconOnly" icon="ui-icon-search" title="Seleccione el empleado" />
-                            </p:column>                            
+
+                                <h:panelGroup >
+                                    <p:inputText readonly="true"   />
+
+                                    <p:commandButton    action="#{mttoUsuario.mostrarDialogEmpleado()}"
+                                                        id="iconOnly" update="forprincipal"
+                                                        icon="ui-icon-search" title="Icon Only" />
+                                </h:panelGroup>  
+                                
+                            </p:column>                        
                         </p:row>
                         <p:row>
                             <p:column style="width: 20px">
                                 <h:outputLabel  value="Perfil: " />
                             </p:column>
                             <p:column style="width: 65px">
-                                <p:selectOneMenu id="listPerfil" style="width: 140px" value ="#{mttoUsuario.idPerfil}" >
+                                <p:selectOneMenu id="listPerfil" style="width: 140px" value="#{mttoUsuario.codperfil}"  >
                                     <f:selectItems value="#{mttoUsuario.lstPerfil}"
-                                                   var="usr" itemLabel="#{usr.nombre}" itemValue="#{usr.codigo}"/>                                       
+                                                   var="usr" itemLabel="#{usr.descripcion}" itemValue="#{usr.idPerfil}"/>                                       
                                 </p:selectOneMenu>                                
                             </p:column>
                             <p:column style="width: 5px">
@@ -130,7 +135,7 @@ and open the template in the editor.
                         <p:dataTable value="#{mttoUsuario.lstEmpleado}"
                                      id="tablaEmpleado" widgetVar="tablaEmpleado" var="dprov"
                                      selectionMode="single" rowKey="#{dprov.idempleado}"  emptyMessage=""  >
-
+                      
                             <p:ajax event="rowSelect" update="forprincipal" process="@all"
                                     listener="#{mttoUsuario.selEmpleado}" 
                                     />
@@ -142,6 +147,7 @@ and open the template in the editor.
                             </p:column>                           
                         </p:dataTable>
                     </h:panelGrid>
+                    
                 </p:dialog>
             </h:form>
         </center>
