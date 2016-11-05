@@ -10,6 +10,7 @@ import com.asi.restaurantbcd.modelo.Empleado;
 import com.asi.restaurantbcd.modelo.Formapago;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Impuesto;
+import com.asi.restaurantbcd.modelo.Proveedor;
 import com.asi.restaurantbcd.modelo.Puesto;
 import java.util.List;
 import javax.ejb.Local;
@@ -59,4 +60,12 @@ public interface BusquedasMttoLocal {
       public List<Departamento> buscarDepartamento() throws Exception;
 
     /**public List <Formapago> buscarFormapago() throws Exception;*/
+      
+          /**
+     * Obtiene la lista de Proveedores.
+     * @return List forma pago.
+     * @throws Exception Error generico.
+     */
+      public List<Proveedor> buscarProveedor() throws Exception;
+      
 }
