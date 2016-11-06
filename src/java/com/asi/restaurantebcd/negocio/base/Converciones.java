@@ -6,7 +6,6 @@
 package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Medida;
-import com.asi.restaurantbcd.modelo.Producto;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,7 +23,8 @@ public class Converciones implements ConvercionesLocal {
 
     
     
-public Double getValorConvercion(Medida medidaInicial, Medida medidaFinal, 
+    @Override 
+    public Double getValorConvercion(Medida medidaInicial, Medida medidaFinal, 
         Double cantidad) throws Exception {
     try {
 

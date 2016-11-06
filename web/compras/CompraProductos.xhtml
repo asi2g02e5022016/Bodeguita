@@ -25,6 +25,7 @@ and open the template in the editor.
                                 icon="ui-icon-disk" />
                     <p:menuitem value="Ingreso a compra" 
                                 icon=" ui-icon-refresh"
+                                rendered="#{comprasBeans.mostrarBtnActualizarExit}"
                                 action="#{comprasBeans.ActualizarExistenciaCompra()}"/>
                     
                     <p:menuitem value="Imprimir" action="#{comprasBeans.imprimitCompra()}"

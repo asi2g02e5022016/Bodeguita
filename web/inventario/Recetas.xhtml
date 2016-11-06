@@ -150,15 +150,15 @@ and open the template in the editor.
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
                                       <h:outputLabel  value="Cantidad    "  />
-                                      <p:inputText id="cantidadSolic"   />
+                                      <p:inputText   />
                     <h:outputLabel  value="Producto "  />
                     <p:inputText   />
                 </h:panelGrid>
                 <h:panelGrid >
-                    <p:dataTable id="tablaProdd" 
+                    <p:dataTable id="tablad" 
                                                                    
                                  selectionMode="single" rows="19"  >                        
-                        <p:ajax event="rowSelect" update="tablaProdd" process="@all"  
+                        <p:ajax event="rowSelect" process="@all"  
                             />
                         <p:column  headerText="descripcion">
                             <h:outputText   />
