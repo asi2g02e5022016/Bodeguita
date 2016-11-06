@@ -25,21 +25,28 @@ public class Converciones implements ConvercionesLocal {
     
     
 public Double getValorConvercion(Medida medidaInicial, Medida medidaFinal, 
-        Double cantida) throws Exception {
+        Double cantidad) throws Exception {
     try {
 
       Double factor = null;
-      if (medidaInicial.getConversion() == 1) {
-          Double valor = null ;
-          if (factor == null || factor == 0) {
-              throw new Exception("Error al obtener el factor");
-          }
-          factor = obtenerfactor(medidaFinal.getIdmedida(), 
-                  medidaInicial.getIdmedida());
-          factor = cantida / valor;
-      } else {
-       factor = cantida * medidaFinal.getConversion();   
-          }
+      
+      //Validar si no se pide convertir medidas base
+      if(medidaInicial.isMedidaBase() && medidaFinal.isMedidaBase()){
+          throw new Exception("No se pueden realizar conversión de dos medidas base");
+      }
+      
+      //Validar si la conversion es valida
+      if(!medidaInicial.getMedidaPadre().equals(medidaFinal.getMedidaPadre())){
+          throw new Exception("No existe conversión de la medida" + medidaInicial.getReferencia() + " a la medida " + medidaFinal.getReferencia());
+      }
+      
+      if(medidaInicial.getMedidaPadre().equals(medidaFinal)) {
+         factor = cantidad * medidaInicial.getConversion();
+      }
+      else {
+         factor = cantidad * medidaInicial.getConversion();
+         factor = factor/medidaFinal.getConversion();
+      }
     
     return factor;
             

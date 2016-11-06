@@ -12,6 +12,7 @@ import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.ConnectException;
+
 import java.net.NoRouteToHostException;
 import java.util.Date;
 import java.util.HashMap;

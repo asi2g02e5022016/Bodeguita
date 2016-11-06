@@ -196,7 +196,14 @@ public class MttoUsuarioMB implements Serializable {
                 alert("Perfil es obligatorio.",
                         FacesMessage.SEVERITY_INFO);
                 return;
+            }            
+            if (!claveUsr.equals(confclaveUsr)){
+                alert("Claves no coinciden",
+                        FacesMessage.SEVERITY_INFO);
+                return;
             }
+            activo = true;
+            
             usuarioConst = new Usuario();
             usuarioConst.setIdusuario(codigoUsr);
             usuarioConst.setIdperfil(idPerfil);
@@ -221,6 +228,11 @@ public class MttoUsuarioMB implements Serializable {
                             FacesMessage.SEVERITY_INFO);
                     return;
                 }
+                if (paramEst == 1){
+                    activo = true;                    
+                } else {
+                    activo = false;
+                }                
                 usuarioConst = this.lstUsuario.get(this.dtUsuario.getRowIndex());
                 crub.guardarEntidad(usuarioConst);
                 alert("Usuario actualizado exitosamente.",

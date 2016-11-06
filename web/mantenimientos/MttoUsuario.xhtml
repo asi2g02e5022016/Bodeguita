@@ -109,7 +109,6 @@ and open the template in the editor.
                             <p:ajax event="rowEdit" listener="#{mttoUsuario.actualizarUsuario()}"     />
                             <p:ajax event="rowEditCancel" listener="#{mttoUsuario.eventoCancel}"     />
 
-
                             <p:column headerText="Usuario" width="5%">
                                 <h:outputText value="#{dpro.idusuario}"  />
                             </p:column>
@@ -118,6 +117,9 @@ and open the template in the editor.
                             </p:column>
                             <p:column headerText="Perfil" width="5%">
                                 <h:outputText value="#{dpro.idperfil.nombre}"  /> 
+                            </p:column>
+                            <p:column  headerText="Modificar" width="10%" style="align-content: center">
+                                <p:rowEditor></p:rowEditor>  
                             </p:column>
 
                         </p:dataTable>
