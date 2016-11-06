@@ -20,6 +20,7 @@ public enum EstadoEnum {
     /**constante de numero dos.*/
     INGRESO_INVENTARIO(new BigInteger("3")),
     /**constante de numero trs.*/
+    TRANSITO(new BigInteger("4")),
     ANULADO(new BigInteger("9")),
     /**constante de numero cuatro.*/
     TERMINADO(new BigInteger("10"));
