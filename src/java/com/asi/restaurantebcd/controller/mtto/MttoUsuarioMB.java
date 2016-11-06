@@ -86,7 +86,6 @@ public class MttoUsuarioMB implements Serializable {
     private List<Usuario> lstUsuario;
     private List<Perfil> lstPerfil;
     private List<Empleado> lstEmpleado;
-    
 
     @EJB
     private CrudBDCLocal crub;
@@ -111,7 +110,7 @@ public class MttoUsuarioMB implements Serializable {
         idEmpleado = null;
         idPerfil = null;
         codperfil = 0;
-        codempleado = 0;        
+        //codempleado = 0;
         activo = false;
         dtUsuario = new DataTable();
         lstUsuario = null;
@@ -187,30 +186,37 @@ public class MttoUsuarioMB implements Serializable {
                         FacesMessage.SEVERITY_INFO);
                 return;
             }
-            if (idEmpleado == null) {
+            System.out.println("nombre empleado " + nombreEmpl);
+            System.out.println("codempleado.."+codempleado);
+            System.out.println("idEmpleado.." +idEmpleado);
+            if (codempleado == 0) {
                 alert("Empleado es obligatorio.",
                         FacesMessage.SEVERITY_INFO);
                 return;
             }
-            if (idPerfil == null) {
+            if (codperfil == 0) {
                 alert("Perfil es obligatorio.",
                         FacesMessage.SEVERITY_INFO);
                 return;
-            }            
-            if (!claveUsr.equals(confclaveUsr)){
+            }
+            if (!claveUsr.equals(confclaveUsr)) {
                 alert("Claves no coinciden",
                         FacesMessage.SEVERITY_INFO);
                 return;
             }
             activo = true;
-            
+
+            String password = String.valueOf(confclaveUsr.hashCode());
+
+            System.out.println("La clave hash" + password);
+
             usuarioConst = new Usuario();
             usuarioConst.setIdusuario(codigoUsr);
             usuarioConst.setIdperfil(idPerfil);
             usuarioConst.setIdempleado(idEmpleado);
-            usuarioConst.setClave(claveUsr);
+            usuarioConst.setClave(password);
             usuarioConst.setActivo(activo);
-            crub.guardarEntidad(usuarioConst);
+            //crub.guardarEntidad(usuarioConst);
         } catch (Exception ex) {
             Logger.getLogger(MttoUsuarioMB.class.getName())
                     .log(Level.SEVERE, null, ex);
@@ -228,13 +234,13 @@ public class MttoUsuarioMB implements Serializable {
                             FacesMessage.SEVERITY_INFO);
                     return;
                 }
-                if (paramEst == 1){
-                    activo = true;                    
+                if (paramEst == 1) {
+                    activo = true;
                 } else {
                     activo = false;
-                }                
+                }
                 usuarioConst = this.lstUsuario.get(this.dtUsuario.getRowIndex());
-                crub.guardarEntidad(usuarioConst);
+                //crub.guardarEntidad(usuarioConst);
                 alert("Usuario actualizado exitosamente.",
                         FacesMessage.SEVERITY_INFO);
                 this.usuarioConst = null;
@@ -259,7 +265,7 @@ public class MttoUsuarioMB implements Serializable {
                 FacesMessage.SEVERITY_INFO);
     }
 
-        /**
+    /**
      * Metodo que se ejecuta cuando se cancela la acción de edición en la grilla
      * del formulario
      *
@@ -275,17 +281,19 @@ public class MttoUsuarioMB implements Serializable {
      */
     public void mostrarDialogEmpleado() {
         System.out.println("entro...");
-            RequestContext requestContext = RequestContext.getCurrentInstance();
-            requestContext.execute("PF('dialogoEmpleado').show();");
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('dialogoEmpleado').show();");
 
     }
 
     public void selEmpleado(SelectEvent event) {
         try {
             empleadoConst = (Empleado) event.getObject();
-            if (empleadoConst != null) {
+            if (empleadoConst != null) {                   
+                codempleado = empleadoConst.getIdempleado();                
                 nombreEmpl = empleadoConst.getNombre();
             }
+            System.out.println("codigo" + codempleado);
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoEmpleado').hide();");
         } catch (Exception ex) {
@@ -314,7 +322,7 @@ public class MttoUsuarioMB implements Serializable {
 //</editor-fold >
 
 //<editor-fold  defaultstate="collapsed" desc="Getter y Setter" >
-    public Usuario getUsuarioConst() {
+     public Usuario getUsuarioConst() {
         return usuarioConst;
     }
 
@@ -354,22 +362,6 @@ public class MttoUsuarioMB implements Serializable {
         this.codigoUsr = codigoUsr;
     }
 
-    public int getCodperfil() {
-        return codperfil;
-    }
-
-    public void setCodperfil(int codperfil) {
-        this.codperfil = codperfil;
-    }
-
-    public int getCodempleado() {
-        return codempleado;
-    }
-
-    public void setCodempleado(int codempleado) {
-        this.codempleado = codempleado;
-    }
-    
     public String getClaveUsr() {
         return claveUsr;
     }
@@ -416,6 +408,22 @@ public class MttoUsuarioMB implements Serializable {
 
     public void setIdEmpleado(Empleado idEmpleado) {
         this.idEmpleado = idEmpleado;
+    }
+
+    public int getCodperfil() {
+        return codperfil;
+    }
+
+    public void setCodperfil(int codperfil) {
+        this.codperfil = codperfil;
+    }
+
+    public int getCodempleado() {
+        return codempleado;
+    }
+
+    public void setCodempleado(int codempleado) {
+        this.codempleado = codempleado;
     }
 
     public boolean isActivo() {
@@ -482,5 +490,6 @@ public class MttoUsuarioMB implements Serializable {
         this.ejbBusqUsrLcal = ejbBusqUsrLcal;
     }
 //</editor-fold >      
+   
 
 }

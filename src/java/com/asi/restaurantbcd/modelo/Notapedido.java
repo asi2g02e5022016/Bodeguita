@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -53,6 +54,11 @@ public class Notapedido implements Serializable {
     @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Sucursal sucursal;
+    
+    @JoinColumn(name = "idsucursalorigen", referencedColumnName = "idsucursal", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Sucursal idSucursalOrigen;
+    
     @JoinColumn(name = "idusuariod", referencedColumnName = "idusuario")
     @ManyToOne
     private Usuario idusuariod;
@@ -162,5 +168,19 @@ public class Notapedido implements Serializable {
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Notapedido[ notapedidoPK=" + notapedidoPK + " ]";
     }
-    
+
+    /**
+     * @return the idSucursalOrigen
+     */
+    public Sucursal getIdSucursalOrigen() {
+        return idSucursalOrigen;
+    }
+
+    /**
+     * @param idSucursalOrigen the idSucursalOrigen to set
+     */
+    public void setIdSucursalOrigen(Sucursal idSucursalOrigen) {
+        this.idSucursalOrigen = idSucursalOrigen;
+    }
+
 }

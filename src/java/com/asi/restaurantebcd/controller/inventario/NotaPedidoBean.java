@@ -6,6 +6,7 @@
 package com.asi.restaurantebcd.controller.inventario;
 
 import com.asi.restaurantbcd.modelo.Compradetalle;
+import com.asi.restaurantbcd.modelo.Estado;
 import com.asi.restaurantbcd.modelo.Notapedido;
 import com.asi.restaurantbcd.modelo.Notapedidodetalle;
 import com.asi.restaurantbcd.modelo.Producto;
@@ -13,10 +14,12 @@ import com.asi.restaurantbcd.modelo.Proveedor;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Vwproductos;
 import com.asi.restaurantebcd.controller.compras.ComprasBeans;
+import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.util.EstadoEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +33,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
@@ -64,6 +69,7 @@ public class NotaPedidoBean implements Serializable{
     private Double cantidadSolic;
     private Vwproductos producto;
     private Notapedidodetalle notaDeta;
+    private Notapedido notaEnca;
     
     @EJB
     private BusquedasSucursalLocal ejbSucursal;
@@ -71,17 +77,34 @@ public class NotaPedidoBean implements Serializable{
     @EJB
     private BusquedasProductosLocal ejbBusProd;
     
-        @EJB
+    @EJB
     private CrudBDCLocal crud;
     
-    public void nuevoPedido(){
+    @Inject
+    private SessionUsr session;
     
+    public void nuevoPedido(){
+    Estado estadoPed=null;
+        try {
+           estadoPed = crud.buscarEntidad(Estado.class, EstadoEnum.GENERADO);
+        }catch(Exception e){
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e, null);
+        }
+        estado=estadoPed.getEstado();
+        notaEnca=new Notapedido();
+        notaEnca.setSucursal(session.getSucursal());
+        notaEnca.setIdusuariod(session.getUsuario());
+        notaEnca.setFechaingreso(new Date());
+        notaEnca.setIdestado(estadoPed);
+        
     nodocu = null;
     observacion = null;
-    estado = null;
-    usr = null;
-    sucursalDestino=null;
-    fecha = null;
+    
+    usr = session.getUsuario().getIdusuario();
+    sucursalDestino=session.getSucursal().getSucursal();
+    
+    
+    fecha = new Date();
     sucursalOrigen = null;
     lstPeddeta.clear();
     sucursalFilter = null;
@@ -114,21 +137,8 @@ public class NotaPedidoBean implements Serializable{
     };
     
     public void limpiarSucursalOrigen() {
-      try {
-            Map filtro = new HashMap();
-            if (sucursalFilter != null && !sucursalFilter.equals("")) {
-                filtro.put("sucursal", sucursalFilter.trim()); 
-            }
-            lstSucursalOrigen = ejbSucursal.buscarSucursal(filtro);
-            System.out.println("sucursal.." +lstSucursalOrigen);
-            if (lstSucursalOrigen == null || lstSucursalOrigen.isEmpty()) {
-               // alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
-            }
-         } catch (Exception ex) {
-            Logger.getLogger(ComprasBeans.class.getName()).log(
-                    Level.SEVERE, null, ex);
-            //alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
-        }
+         this.setSucursalOrigen(null);
+         notaEnca.setIdSucursalOrigen(null);
     };
     
     public void buscarSucursal() {
@@ -188,7 +198,7 @@ public class NotaPedidoBean implements Serializable{
     }
     
       public void onRowSelectSucursal(SelectEvent event) {
-       
+          this.sucursalOrigen = ((Sucursal) event.getObject()).getSucursal();
       }
       
       public void onRowSelect(SelectEvent event) {
@@ -485,6 +495,20 @@ public class NotaPedidoBean implements Serializable{
                 "Mensaje", mensaje);
          
         RequestContext.getCurrentInstance().showMessageInDialog(message);
+    }
+
+    /**
+     * @return the notaEnca
+     */
+    public Notapedido getNotaEnca() {
+        return notaEnca;
+    }
+
+    /**
+     * @param notaEnca the notaEnca to set
+     */
+    public void setNotaEnca(Notapedido notaEnca) {
+        this.notaEnca = notaEnca;
     }
     
 }

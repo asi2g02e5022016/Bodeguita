@@ -137,7 +137,7 @@ and open the template in the editor.
                                  id="tablaSucursal" widgetVar="tablaSucursal" var="suc"
                                  selectionMode="single" rowKey="#{suc.idsucursal}"  emptyMessage=""  >
                                
-                        <p:ajax event="rowSelect" update="forprincipal" process="@all"
+                        <p:ajax event="rowSelect" update="@all" 
                                 listener="#{notaPedido.onRowSelectSucursal}" 
                         />
                         <p:column filterBy="#{suc.sucursal}" headerText="nombre">
