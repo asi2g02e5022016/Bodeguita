@@ -35,21 +35,12 @@ private int status ;
         return status;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+    public void setStatus(int status) {
+        this.status = status;
 
-
-
-
-
-
+    }  
 }
