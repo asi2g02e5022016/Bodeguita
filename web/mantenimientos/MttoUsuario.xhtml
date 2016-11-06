@@ -49,15 +49,11 @@ and open the template in the editor.
                             </p:column>
                             <p:column style="width: 65px">
                                 <p:inputText readonly="true" value="#{mttoUsuario.nombreEmpl}"/>
-
-                                <h:panelGroup >
-                                    <p:inputText readonly="true"   />
-
-                                    <p:commandButton    action="#{mttoUsuario.mostrarDialogEmpleado()}"
-                                                        id="iconOnly" update="forprincipal"
-                                                        icon="ui-icon-search" title="Icon Only" />
-                                </h:panelGroup>  
-                                
+                            </p:column>
+                            <p:column>
+                                <p:commandButton    action="#{mttoUsuario.mostrarDialogEmpleado()}"
+                                                    id="iconOnly" update="forprincipal"
+                                                    icon="ui-icon-search" title="Icon Only" />
                             </p:column>                        
                         </p:row>
                         <p:row>
@@ -149,7 +145,7 @@ and open the template in the editor.
                             </p:column>                           
                         </p:dataTable>
                     </h:panelGrid>
-                    
+
                 </p:dialog>
             </h:form>
         </center>
