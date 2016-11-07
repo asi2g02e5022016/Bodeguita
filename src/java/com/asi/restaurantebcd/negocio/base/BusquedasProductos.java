@@ -5,6 +5,8 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Grupoproducto;
+import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Vwproductos;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.util.List;
@@ -31,6 +33,34 @@ public class BusquedasProductos implements BusquedasProductosLocal {
      * todo los productos.
      * @return Lista de productos de la vista Vwproductos.
      */
+     @Override
+     public List<Producto> buscarProd(){
+         StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Producto a");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+     }
+     
+     @Override
+     public List<Grupoproducto> buscarGrupoProducto(){
+       try{ 
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Grupoproducto a WHERE a.grupodependencia is null");
+        
+        Query query = em.createQuery(jpql.toString());
+        
+        return query.getResultList();  
+        
+       }catch (NoResultException er){
+           return null;
+       }
+       catch(Exception e){
+           throw e;
+       }
+     }
+     
+     
+     
      @Override
     public List < Vwproductos > buscarProducto(Map filtros) {
         if (filtros == null) {
