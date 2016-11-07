@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name ="body">
+        <center>
+            <h:form id="forprincipal">
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel  id="apAjuste"  style="width: 50%">
+                    <p:tab title="Crear ajuste"  closable="false"   >
+                        <h:panelGrid columns="4" width="80%" >
+                            <h:panelGrid id="encabezado" columns="4" width="100%">
+                                <h:outputLabel value ="Usuario:"/>
+                                <p:inputText value="#{ajusteExistenciaBean.idUsuarioCrea}"
+                                             readonly ="true" style ="width: 150px"/>
+                                <h:outputLabel value="Sucursal"/>
+                                <p:inputText value="#{ajusteExistenciaBean.sesion.sucursal.sucursal}"
+                                             readonly ="true" style ="width: 150px"/>
+                                <!--<p:selectOneMenu id="listCompania"  value ="#{ajusteExistenciaBean.idSucursal}" disabled="true" >
+                                    <f:selectItems value="#{ajusteExistenciaBean.lstSucursal}"
+                                                   var="inp" itemLabel="#{inp.sucursal}" itemValue="#{inp.idsucursal}" />
+                                </p:selectOneMenu>                                       --> 
+                                <p:outputLabel for="event" value="Fecha de solicitud"  />
+                                <p:calendar id="event"  style="width: 150px" value="#{ajusteExistenciaBean.fechaCreacion}">
+                                    <p:ajax event="dateSelect"   />
+                                </p:calendar>
+                                <h:outputLabel value="Observación:"/>
+                                <p:inputTextarea rows="1" cols="20" value ="#{ajusteExistenciaBean.observacion}" />
+                                <p:commandButton id="btnProd"  value="Agregar producto" 
+                                                 styleClass="ui-priority-primary" 
+                                                 action="#{ajusteExistenciaBean.mostrarProducto()}"  />
+                                <p:commandButton id="btnGuardar"  value="Guardar" 
+                                                 styleClass="ui-priority-primary" 
+                                                 action="#{ajusteExistenciaBean.guardar()}" 
+                                                 update="tablaDetProducto"/>
+                            </h:panelGrid>
+                        </h:panelGrid>
+
+
+                        <p:dataTable id="tablaDetProducto" emptyMessage=""  
+                                     value="#{ajusteExistenciaBean.lstAjusteDet}"
+                                     var="dimp" rowKey="#{dimp.idproducto}"
+                                     selectionMode="single" rows="5" 
+                                     editable="true" paginator="true" 
+                                     rowsPerPageTemplate="5" scrollable="true"
+                                     scrollWidth="650" >
+
+
+                            <p:column headerText="Id Producto" width="25"  style=" align-content: center"   visible="true" >
+                                <h:outputText value="#{dimp.idproducto.idproducto}"   />                                
+                            </p:column>
+                            <p:column headerText="Producto" width="25"  style=" align-content: center"   visible="true" >
+                                <h:outputText value="#{dimp.idproducto.producto}"   />                                
+                            </p:column>
+                            <p:column headerText="Cantidad" width="150" style=" align-content: center"  >
+                                <h:outputText value="#{dimp.cantidad}"  />                                
+                            </p:column>
+
+                        </p:dataTable>
+
+
+                        <p:dialog  id ="dProducto" header="Buscar Producto" width="50%" widgetVar="dialogoProducto" minHeight="100" >
+                            <h:outputLabel value ="Cantidad solicitada:"/>
+                            <p:spinner id="txtCantidad" value="#{ajusteExistenciaBean.cantidad}" />
+                            <p></p>
+                            <p></p>
+                            <p:dataTable    id="tablaProducto" emptyMessage=""
+                                            var="prod"  rowKey="#{prod.idproducto}" value="#{ajusteExistenciaBean.lstProducto}" 
+                                            paginator="true" selectionMode="single" rows="5" >
+                                <p:ajax event="rowSelect"   update=":forprincipal:tablaDetProducto"
+                                        listener="#{ajusteExistenciaBean.onRowSelectProducto}" process="@all" />
+                                <!--process="@all"  -->
+                                <p:column headerText="Producto" filterBy="#{prod.producto}" >
+                                    <h:outputText value="#{prod.producto}" />
+                                </p:column>                               
+                            </p:dataTable>
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                            <p></p>                            
+                        </p:dialog> 
+                    </p:tab>
+                </p:panel>
+            </h:form>
+        </center>                
+    </ui:define>
+</ui:composition>
