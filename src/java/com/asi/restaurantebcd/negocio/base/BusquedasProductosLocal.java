@@ -5,6 +5,7 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Grupoproducto;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Vwproductos;
 import java.util.List;
@@ -25,4 +26,6 @@ public interface BusquedasProductosLocal {
      * @return Lista de productos de la vista Vwproductos.
      */
     public List < Vwproductos > buscarProducto(Map filtros);
+    public List < Producto > buscarProd();
+    public List < Grupoproducto > buscarGrupoProducto();
 }
