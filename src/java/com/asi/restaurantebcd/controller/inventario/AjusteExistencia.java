@@ -7,7 +7,7 @@ package com.asi.restaurantebcd.controller.inventario;
 
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Sucursal;
-import com.asi.restaurantebcd.controller.mtto.MttoRequisa;
+//import com.asi.restaurantebcd.controller.mtto.MttoRequisa;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedaAjustesExistencia;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
