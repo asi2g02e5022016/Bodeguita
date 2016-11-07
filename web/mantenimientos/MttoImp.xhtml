@@ -31,11 +31,7 @@ and open the template in the editor.
                                      readonly ="true" style ="width: 40px"/>
                         <h:outputLabel value ="Impuesto: "/>
                         <p:inputText style="width: 100%" value ="#{mttoImp.impuesto}"/>
-                        <h:outputLabel value ="Compañia:" />
-                        <p:selectOneMenu id="listCompania"  value ="#{mttoImp.idCompania}" >
-                            <f:selectItems value="#{mttoImp.lstCompania}"
-                                           var="inp" itemLabel="#{inp.compania}" itemValue="#{inp.idcompania}"/>                                       
-                        </p:selectOneMenu> 
+                
                         <h:outputLabel value ="Porcentaje:" />
                         <p:inputText value ="#{mttoImp.porcentaje}" style="width:60px">
                             <f:validateDoubleRange minimum="0.01" maximum="100" />
@@ -68,20 +64,7 @@ and open the template in the editor.
                                 </p:cellEditor>   
                             </p:column>
 
-                            <p:column headerText="Compañia" width="125" filterBy="#{dimp.idcompania.compania}">
-                                <p:cellEditor>
-                                    <f:facet  name="output">
-                                        <h:outputText value="#{dimp.idcompania.compania}" />  
-                                    </f:facet>
-                                    <f:facet name="input">  
-                                        <p:selectOneMenu id="listCompania"  value ="#{mttoImp.idCompania}" style="width: 100%"  >
-                                            <f:selectItems value="#{mttoImp.lstCompania}"
-                                                           var="inp" itemLabel="#{inp.compania}" itemValue="#{inp.idcompania}"/>                                       
-                                        </p:selectOneMenu> 
-                                    </f:facet> 
-                                </p:cellEditor>
-
-                            </p:column>
+         
                             <p:column headerText="Porcentaje" width="50"  >
                                 <p:cellEditor>
                                     <f:facet  name="output">

@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -31,15 +32,17 @@ public class Recetadetalle implements Serializable {
     @Column(name = "salida")
     private Integer salida;
     @Column(name = "cantidad")
-    private Long cantidad;
+    private Double cantidad;
     @Column(name = "idmedidacargo")
     private Integer idmedidacargo;
     @Column(name = "factorconvercion")
-    private Short factorconvercion;
+    private Double factorconvercion;
     @JoinColumn(name = "idreceta", referencedColumnName = "idreceta", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Receta receta;
-
+    @Transient
+    private Producto producto;
+    
     public Recetadetalle() {
     }
 
@@ -67,11 +70,11 @@ public class Recetadetalle implements Serializable {
         this.salida = salida;
     }
 
-    public Long getCantidad() {
+    public Double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Long cantidad) {
+    public void setCantidad(Double cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -83,13 +86,14 @@ public class Recetadetalle implements Serializable {
         this.idmedidacargo = idmedidacargo;
     }
 
-    public Short getFactorconvercion() {
+    public Double getFactorconvercion() {
         return factorconvercion;
     }
 
-    public void setFactorconvercion(Short factorconvercion) {
+    public void setFactorconvercion(Double factorconvercion) {
         this.factorconvercion = factorconvercion;
     }
+
 
     public Receta getReceta() {
         return receta;
@@ -99,6 +103,15 @@ public class Recetadetalle implements Serializable {
         this.receta = receta;
     }
 
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;

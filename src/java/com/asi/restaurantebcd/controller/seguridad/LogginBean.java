@@ -9,6 +9,7 @@ import com.asi.restaurantbcd.modelo.Empleado;
 import com.asi.restaurantbcd.modelo.Usuario;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.util.Cache;
 import javax.enterprise.context.ConversationScoped;
 import java.io.Serializable;
 import java.util.Date;
@@ -168,10 +169,18 @@ public class LogginBean implements Serializable {
     }
     
     public String logOut(){
-       HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-            .getExternalContext().getSession(false);
-        session.invalidate();
-      return "/home?faces-redirect=true";
+       try {
+           HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                   .getExternalContext().getSession(false);
+           session.invalidate();
+           Cache cache = new Cache();
+           cache.invalidarCacheEM("RestaurantBDC-WebPU");
+           return "/home?faces-redirect=true";
+           
+       } catch (Exception ex) {
+           Logger.getLogger(LogginBean.class.getName()).log(Level.SEVERE, null, ex);
+         return "/home?faces-redirect=true";
+       }
     }
     
 }

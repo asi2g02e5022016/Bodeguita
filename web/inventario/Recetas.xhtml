@@ -12,31 +12,30 @@ and open the template in the editor.
                 xmlns:p="http://primefaces.org/ui"
                 template="/layout/templateBDC.xhtml">
     <ui:define name="body">
+         
         <h:form id="forprincipal" >
             <p:growl showDetail="true" showSummary="true" />
-            <p:panel id="basic" header="Compras a proveedores"  >
+            <p:panel id="basic" header="Recetas" style="width: 80%" >
                 <p:menubar>
                     <p:menuitem value="Limpiar" update="forprincipal" 
                                 action="#{recetas.limpiarPantalla()}"
                                 icon="ui-icon-plus" />
-                    <p:menuitem value="Guradar"  action="#{recetas.guaradarReceta()}"
+                    <p:menuitem value="Guardar"  action="#{recetas.guaradarReceta()}"
                                 icon=" ui-icon-search" />
                     <p:menuitem value="Monitor"  action="#{recetas.mostrarDialogProd()}"
                                 icon=" ui-icon-search" />
                 </p:menubar>
-                <h:panelGrid columns="2" width="100%">
-                    <h:panelGrid columns="6" width="80%">
+                <h:panelGrid columns="2" width="80%">
+                    <h:panelGrid columns="4" width="100%">
                         <h:outputLabel  value="No Receta : "/>
-                        <p:inputText readonly="true"  />
+                        <p:inputText value="#{recetas.receta.idreceta}" readonly="true"  />
                         <h:outputLabel  value="Usuario: "  />
-                        <p:inputText readonly="true"  />
-                        <h:outputLabel  value="Producto Terminado"  />
-                        <p:inputText  readonly="true"   />
+                        <p:inputText value="#{recetas.receta.idusuariocrea}"  readonly="true"  />
 
                          <h:outputLabel  value="Descricion "  />
-                        <p:inputText  readonly="true"  />   
+                         <p:inputText  readonly="true" value="#{recetas.receta.descripcion}"   />   
                         <h:outputLabel  value="Fecha "  />
-                        <p:inputText readonly="true"  >
+                        <p:inputText readonly="true" value="#{recetas.receta.fechacreacion}"  >
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                         </p:inputText>
                     </h:panelGrid>
@@ -45,25 +44,21 @@ and open the template in the editor.
 
                 <h:panelGrid >
                     <p:dataTable 
-                                 var="det"   emptyMessage=""   editable="true">
-                      
+                        var="det" value="#{recetas.lstRecetaDetalle}"
+                        id="tabladeta" emptyMessage=""  
+                        rowKey="#{det.recetadetallePK.idproducto}"
+                        editable="true">
+                        
                         <p:column headerText="cod.">
-                            <h:outputText  />
+                            <h:outputText value="#{det.producto.idproducto}"  />
                         </p:column>
 
                         <p:column headerText="Descripcion">
-                            <h:outputText  />
+                            <h:outputText value="#{det.producto.producto}" />
                         </p:column>
 
                         <p:column headerText="Medida">
-                             <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText />
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText id="modelInput"  style="width:70%"/>
-                                </f:facet>
-                            </p:cellEditor>
+                            <h:outputText value="#{det.producto.idmedida.medida}" />
                         </p:column>
                         <p:column headerText="Cantidad Conf. " >
                             <p:cellEditor>
@@ -83,6 +78,7 @@ and open the template in the editor.
                             <f:facet name="header">
                                 <p:commandButton  
                                     id="iconOnly" 
+                                    action="#{recetas.mostrarDialogProd()}"
                                     icon="ui-icon-plus"  />
                             </f:facet>
                             <p:rowEditor />
@@ -99,36 +95,39 @@ and open the template in the editor.
                         <p:menuitem value="Limpiar"
                                     icon="ui-icon-plus" />
                         <p:menuitem id="idBuscarPro" value="Buscar" update="tablaProdd"
-                                    
+                                    action="#{recetas.buscarProducto()}"
                                     icon=" ui-icon-search" > 
                         </p:menuitem>
                     </p:menubar>
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
-                                      <h:outputLabel  value="Cantidad    "  />
-                                      <p:inputText id="cantidadSolic"   />
-                    <h:outputLabel  value="Producto "  />
-                    <p:inputText   />
+                     <h:outputLabel  value="Cantidad    "  />
+                     <p:inputText id="cantidadSolic" value="#{recetas.cantidad}"  />
+                     <h:outputLabel  value="Producto "  />
+                    <p:inputText  value="#{recetas.descripProducto}" />
                 </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable id="tablaProdd" 
-                                                                   
+                                 value="#{recetas.lstProducto}"
+                                  var="dpro" rowKey="#{dpro.idproducto}"       
                                  selectionMode="single" rows="19"  >                        
-                        <p:ajax event="rowSelect" update="tablaProdd" process="@all"  
+                        <p:ajax event="rowSelect"  update="forprincipal"  process="@all"
+                                listener="#{recetas.onRowSelectProduc}"
                             />
-                        <p:column  headerText="descripcion">
-                            <h:outputText   />
+
+                        <p:column filterBy="#{dpro.producto}" headerText="descripcion">
+                            <h:outputText value="#{dpro.producto}"  />
                         </p:column>
-                        <p:column headerText="medida"  >
-                            <h:outputText   />
+                        <p:column headerText="medida" filterBy="#{dpro.medida}" >
+                            <h:outputText value="#{dpro.medida}"  />
                         </p:column>
-                        <p:column headerText="tipo" >
-                            <h:outputText  />
+                        <p:column headerText="tipo" filterBy="#{dpro.tipoproducto}">
+                            <h:outputText value="#{dpro.tipoproducto}"  />
                         </p:column>
-                        <p:column headerText="grupo" >
-                            <h:outputText   />
-                            <p:column headerText="marca"  >
-                                <h:outputText   />
+                        <p:column headerText="grupo" filterBy="#{dpro.grupoproducto}">
+                            <h:outputText value="#{dpro.grupoproducto}"  />
+                            <p:column headerText="marca"  filterBy="#{dpro.marcaproducto}">
+                                <h:outputText value="#{dpro.marcaproducto}"  />
                             </p:column>
                         </p:column>
                     </p:dataTable>
@@ -143,14 +142,14 @@ and open the template in the editor.
                         <p:menuitem value="Limpiar"
                                     icon="ui-icon-plus" />
                         <p:menuitem value="Buscar" 
-                                    
+                                    action="#{recetas.buscarRecetas()}"
                                     icon=" ui-icon-search" > 
                         </p:menuitem>
                     </p:menubar>
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
                                       <h:outputLabel  value="Cantidad    "  />
-                                      <p:inputText   />
+                                      <p:inputText  />
                     <h:outputLabel  value="Producto "  />
                     <p:inputText   />
                 </h:panelGrid>
