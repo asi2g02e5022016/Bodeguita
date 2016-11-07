@@ -74,7 +74,8 @@ and open the template in the editor.
                 </h:panelGrid>
 
                 <h:panelGrid >
-                    <p:dataTable value="#{comprasBeans.lstCompradeta}" 
+                    <p:dataTable value="#{comprasBeans.lstCompradeta}"
+                                 id="tabladetalle"
                                  var="det"   emptyMessage=""   editable="true">
                         <p:ajax event="rowEdit" listener="#{comprasBeans.onRowEdit}" />                      <p:column headerText="cod.">
                             <h:outputText value="#{det.idproducto.idproducto}" />
@@ -186,7 +187,7 @@ and open the template in the editor.
                                  value="#{comprasBeans.lstProducto}"
                                  var="dpro" rowKey="#{dpro.idproducto}"                                  
                                  selectionMode="single" rows="19"  >                        
-                        <p:ajax event="rowSelect" update="tablaProdd" process="@all"  
+                        <p:ajax event="rowSelect" update="forprincipal" process="@all"  
                             listener="#{comprasBeans.onRowSelect}"/>
                         <p:column filterBy="#{dpro.producto}" headerText="descripcion">
                             <h:outputText value="#{dpro.producto}"  />
