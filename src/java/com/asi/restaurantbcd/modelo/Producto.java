@@ -42,20 +42,33 @@ public class Producto implements Serializable {
     @Basic(optional = false)
     @Column(name = "idproducto")
     private Integer idproducto;
+  
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "producto")
     private String producto;
+    
     @Basic(optional = false)
-    @NotNull
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
+    
     @Basic(optional = false)
-    @NotNull
+    @Column(name ="preciocompra")
+     private double preciocompra;
+    
+    @Column(name ="precioventa")
+    private double precioventa;
+    
     @Column(name = "activo")
     private boolean activo;
+    
+   @Column(name ="vendible")
+   private boolean vendible;
+    
+   @Column(name ="excento")
+   private boolean excento;
+    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
     private List<Pedidodetalle> pedidodetalleList;
     @JoinColumn(name = "idgrupoproducto", referencedColumnName = "idgrupoproducto")
@@ -90,6 +103,38 @@ public class Producto implements Serializable {
 
     public Integer getIdproducto() {
         return idproducto;
+    }
+
+    public double getPreciocompra() {
+        return preciocompra;
+    }
+
+    public void setPreciocompra(double preciocompra) {
+        this.preciocompra = preciocompra;
+    }
+
+    public double getPrecioventa() {
+        return precioventa;
+    }
+
+    public void setPrecioventa(double precioventa) {
+        this.precioventa = precioventa;
+    }
+
+    public boolean isVendible() {
+        return vendible;
+    }
+
+    public void setVendible(boolean vendible) {
+        this.vendible = vendible;
+    }
+
+    public boolean isExcento() {
+        return excento;
+    }
+
+    public void setExcento(boolean excento) {
+        this.excento = excento;
     }
 
     public void setIdproducto(Integer idproducto) {
