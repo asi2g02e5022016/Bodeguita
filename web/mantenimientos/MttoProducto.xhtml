@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+  <ui:define name="body"    >
+      <center>
+          <h:form id="forprincipal">
+               <p:growl showDetail="true" showSummary="true" />
+               <p:panel id="basic" header="Mantenimiento de Productos" style="width: 70%"  >
+                   <p:menubar>
+                       <p:menuitem value="Nuevo" update="forprincipal" action="#{mttoProducto.limpiarPantalla()}"
+                                    icon="ui-icon-plus" />
+                       <p:menuitem value="Guardar" update="forprincipal" action="#{mttoProducto.guardarProducto()}"
+                                    icon="ui-icon-disk" />
+                       <p:menuitem value="Buscar" update="forprincipal" action="#{mttoProducto.buscarProducto()}"
+                                    icon=" ui-icon-search" />
+                    </p:menubar>
+                   
+                   <h:panelGrid columns="4" width="90%">
+                       
+                      <!--  <h:outputLabel value="Id Producto "/>
+                        <p:inputText value ="#{mttoProducto.idProducto}"
+                                     readonly ="true" style ="width: 40px"/> -->
+                        
+                        <p:outputLabel value="Grupo Producto"/>
+                        <p:selectOneMenu id="listGrupo" autoWidth="40" value ="#{mttoProducto.idGrupoProducto}" >
+                            <f:selectItems value="#{mttoProducto.lstGrupoProducto}"
+                                           var="gp" itemLabel="#{gp.grupoproducto}" itemValue="#{gp.idgrupoproducto}"/>                                       
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="Marca Producto"/>
+                        <p:selectOneMenu id="listMarca" autoWidth="40"  value ="#{mttoProducto.idMarcaProducto}" >
+                            <f:selectItems value="#{mttoProducto.lstMarcaProducto}"
+                                           var="gp" itemLabel="#{gp.marcaproducto}" itemValue="#{gp.idmarcaproducto}"/>                                       
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="Tipo Producto"/>
+                        <p:selectOneMenu id="listTipo"  value ="#{mttoProducto.idTipoProducto}" >
+                            <f:selectItems value="#{mttoProducto.lstTipoProducto}"
+                                           var="tp" itemLabel="#{tp.tipoproducto}" itemValue="#{tp.idtipoproducto}"/>                                       
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="Medida"/>
+                        <p:selectOneMenu id="listMedida"  value ="#{mttoProducto.idMedida}" >
+                            <f:selectItems value="#{mttoProducto.lstMedida}"
+                                           var="md" itemLabel="#{md.medida}" itemValue="#{md.idmedida}"/>                                       
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel value ="Producto "/>
+                        <p:inputText style="width: 50%" value ="#{mttoProducto.producto}"/>
+                        
+                        <h:outputText value="Activo:" />
+                         <p:selectBooleanButton id="Activo" value="#{mttoProducto.activo}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px" >
+                         </p:selectBooleanButton>
+                        
+                       
+                       
+                         <h:outputLabel value ="Precio de Compra Sin IVA "/>
+                         <p:inputNumber id="pcompra" value="#{mttoProducto.preciocompra}">  
+                        </p:inputNumber>
+                         
+                        
+                        
+                           <h:outputText value="Vendible: " />
+                         <p:selectBooleanButton id="vendible" value="#{mttoProducto.vendible}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px" >
+                         </p:selectBooleanButton>
+                           
+                         <h:outputLabel value ="Precio de Venta Sin IVA "/>
+                        <p:inputNumber id="pventa" value="#{mttoProducto.precioventa}">  
+                        </p:inputNumber>
+                         
+                         <h:outputText value="Excento: " />
+                         <p:selectBooleanButton id="excento" value="#{mttoProducto.excento}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px" >
+                         </p:selectBooleanButton>
+                    </h:panelGrid>
+                   
+                   <h:panelGrid>
+                       <p:dataTable id="tablaProd" emptyMessage=""
+                                    value="#{mttoProducto.lstProducto}"
+                                    var="dimp" rowKey="#{dimp.idproducto}"
+                                     rows="5" 
+                                     editable="true" paginator="true" 
+                                     rowsPerPageTemplate="5"  >
+                           
+                           
+                            <p:column headerText="Id" width="10%">
+                                <h:outputText value="#{dimp.idproducto}"  />                                
+                            </p:column>
+                           
+                           <p:column headerText="Marca" width="30%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.idmarcaproducto.marcaproducto}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu id="listMarca"  value ="#{mttoProducto.idMarcaProducto}" style="width: 100%"  >
+                                            <f:selectItems value="#{mttoProducto.lstMarcaProducto}"
+                                                           var="mp" itemLabel="#{mp.marcaproducto}" itemValue="#{mp.idmarcaproducto}"/>                                       
+                                        </p:selectOneMenu> 
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+
+                           
+                           <p:column headerText="Grupo" width="30%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.idgrupoproducto.grupoproducto}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu id="listGrupo"  value ="#{mttoProducto.idGrupoProducto}" style="width: 100%"  >
+                                            <f:selectItems value="#{mttoProducto.lstGrupoProducto}"
+                                                           var="gp" itemLabel="#{gp.grupoproducto}" itemValue="#{gp.idgrupoproducto}"/>                                       
+                                        </p:selectOneMenu> 
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+
+                           
+                           <p:column headerText="Tipo" width="20%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.idtipoproducto.tipoproducto}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu id="listTipo"  value ="#{mttoProducto.idTipoProducto}" style="width: 100%"  >
+                                            <f:selectItems value="#{mttoProducto.lstTipoProducto}"
+                                                           var="tp" itemLabel="#{tp.tipoproducto}" itemValue="#{tp.idtipoproducto}"/>                                       
+                                        </p:selectOneMenu> 
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+
+                           
+                           <p:column headerText="Medida" width="15%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.idmedida.medida}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu id="listMedida"  value ="#{mttoProducto.idMedida}" style="width: 100%"  >
+                                            <f:selectItems value="#{mttoProducto.lstMedida}"
+                                                           var="inp" itemLabel="#{inp.medida}" itemValue="#{inp.idmedida}"/>                                       
+                                        </p:selectOneMenu> 
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+
+                           
+                           <p:column headerText="Producto" width="30%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.producto}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.producto}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+
+                           
+                           <p:column headerText="Fecha de Creación" width="30%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.fechacreacion}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.fechacreacion}" style="width:100%">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </p:inputText> 
+                                    </f:facet> 
+                                </p:cellEditor>
+                            </p:column>
+                           
+                           <p:column headerText="Precio Compra" width="15%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.preciocompra}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.preciocompra}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+                           <p:column headerText="Precio Venta" width="15%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.precioventa}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.preciocompra}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+                           
+                           <p:column headerText="Activo" width="15%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <p:selectBooleanButton id="act" value="#{dimp.activo}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:40px" >
+                                        </p:selectBooleanButton> 
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectBooleanButton value="#{dimp.activo}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:40px" >
+                                        </p:selectBooleanButton>  
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+                           
+                           <p:column headerText="Excento" width="15%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <p:selectBooleanButton id="ext" value="#{dimp.excento}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:40px" >
+                                        </p:selectBooleanButton>  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectBooleanButton value="#{dimp.excento}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:40px" >
+                                        </p:selectBooleanButton>   
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+                            <p:column headerText="Vendible" width="15%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <p:selectBooleanButton id="vnd" value="#{dimp.vendible}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:40px" >
+                                        </p:selectBooleanButton>   
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectBooleanButton value="#{dimp.vendible}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:40px" >
+                                        </p:selectBooleanButton>  
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+                           
+                           <p:column headerText="Usuario" width="20%">
+                                <p:cellEditor>
+                                     <f:facet  name="output">
+                                         <h:outputText value="#{dimp.idusuario.idusuario}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu id="listUsuario"  value ="#{mttoProducto.idUsuario}" style="width: 100%"  >
+                                            <f:selectItems value="#{mttoProducto.lstUsario}"
+                                                           var="inp" itemLabel="#{inp.idusuario}" itemValue="#{inp.idusuario}"/>                                       
+                                        </p:selectOneMenu> 
+                                    </f:facet> 
+                                </p:cellEditor>
+                           </p:column>
+                           
+                           <p:ajax event="rowEdit"  update="@all" listener="#{mttoProducto.actualizarProducto}" />
+                           <p:ajax event="rowEditCancel"  listener="#{mttoProducto.onCancel}"/>
+                           
+                           <p:column style="width:50px; align-content: center" headerText="Modificar">
+                                <p:rowEditor />
+                            </p:column>
+
+                            <p:column style="width:60px; align-content: center"  headerText="Eliminar">                               
+                                  
+                                    <p:commandButton   value="Eliminar" 
+                                                       action="#{mttoProducto.eliminarProducto(dimp)}"
+                                                      />
+                               
+                            </p:column >
+                           
+                                                         
+                           
+                       </p:dataTable>
+                  
+                 </h:panelGrid>
+                   
+               </p:panel>
+             </h:form>
+          </center>
+      </ui:define>
+     </ui:composition>
+
