@@ -56,7 +56,10 @@ public class Grupoproducto implements Serializable {
     @JoinColumn(name = "grupodependencia", referencedColumnName = "idgrupoproducto")
     @ManyToOne(optional = true)
     private Grupoproducto grupodependencia;
-
+    
+    @Transient
+    private String breadcumb; 
+    
     public Grupoproducto() {
     }
 
@@ -143,12 +146,15 @@ public class Grupoproducto implements Serializable {
         return "com.asi.restaurantbcd.modelo.Grupoproducto[ idgrupoproducto=" + idgrupoproducto + " ]";
     }
     
-        @Transient
+        
     public String getBreadcumb(){
+        breadcumb = null;
         if(getGrupodependencia()==null){
-        return "Root -> "+this.getGrupoproducto();
+        breadcumb = "Root -> "+this.getGrupoproducto();
+        return breadcumb;
        }else {
-           return this.getGrupodependencia().getBreadcumb() + " -> " + this.getGrupoproducto();
+            breadcumb = this.getGrupodependencia().getBreadcumb() + " -> " + this.getGrupoproducto();
+           return breadcumb;
         }
     }
     
