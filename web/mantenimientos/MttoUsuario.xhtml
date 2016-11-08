@@ -26,92 +26,92 @@ and open the template in the editor.
                                     icon=" ui-icon-search" />
                     </p:menubar>
 
-                    <p:panelGrid>
-                        <p:row>
-                            <p:column colspan="3" style="text-align: center">
-                                <h:outputLabel value="Información del usuario del sistema" style="width: 90px"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 20px">
-                                <h:outputLabel value="Usuario: " />
-                            </p:column>
-                            <p:column style="width: 65px">
-                                <p:inputText value="#{mttoUsuario.codigoUsr}" />
-                            </p:column>
-                            <p:column style="width: 5px">
-                                <h:outputLabel value=" "/>
-                            </p:column>                            
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 20px">
-                                <h:outputLabel value="Empleado: "/>
-                            </p:column>
-                            <p:column style="width: 65px">
-                                <p:inputText readonly="true" value="#{mttoUsuario.nombreEmpl}"/>
-                            </p:column>
-                            <p:column>
-                                <p:commandButton    action="#{mttoUsuario.mostrarDialogEmpleado()}"
-                                                    id="iconOnly" update="forprincipal"
-                                                    icon="ui-icon-search" title="Icon Only" />
-                            </p:column>                        
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 20px">
-                                <h:outputLabel  value="Perfil: " />
-                            </p:column>
-                            <p:column style="width: 65px">
-                                <p:selectOneMenu id="listPerfil" style="width: 140px" value="#{mttoUsuario.codperfil}"  >
-                                    <f:selectItems value="#{mttoUsuario.lstPerfil}"
-                                                   var="usr" itemLabel="#{usr.descripcion}" itemValue="#{usr.idPerfil}"/>                                       
-                                </p:selectOneMenu>                                
-                            </p:column>
-                            <p:column style="width: 5px">
-                                <h:outputLabel value=" "/>
-                            </p:column>                            
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 20px">
-                                <h:outputLabel  value="Password: " />
-                            </p:column>
-                            <p:column style="width: 65px">
-                                <p:password id="Pass" value="#{mttoUsuario.claveUsr}" feedback="true" />
-                            </p:column>
-                            <p:column style="width: 5px">
-                                <h:outputLabel value=" "/>
-                            </p:column>                            
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 20px">
-                                <h:outputLabel  value="Confirmar pass: " />
-                            </p:column>
-                            <p:column style="width: 65px">
-                                <p:password id="PassConf" value="#{mttoUsuario.confclaveUsr}" />                                
-                            </p:column>
-                            <p:column style="width: 5px">
-                                <h:outputLabel value=" "/>
-                            </p:column>                            
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 20px">
-                                <h:outputLabel  value="Fecha ingreso: " />
-                            </p:column>
-                            <p:column style="width: 65px">
-                                <p:calendar id="fechaIng" value="#{mttoUsuario.fechaIngreso}" pattern="dd-MM-yyyy" mask="true" />                                                        
-                            </p:column>
-                            <p:column style="width: 5px">
-                                <h:outputLabel value=" "/>
-                            </p:column>                            
-                        </p:row>
-                    </p:panelGrid>
-
+                    <p:accordionPanel binding="#{mttoUsuario.formPanel}" multiple="false" id="forPanel" activeIndex="">
+                        <p:tab title="Ingresar nuevo usuario"  closable="true"   >
+                            <p:panelGrid>
+                                <p:row>
+                                    <p:column style="width: 20px">
+                                        <h:outputLabel value="Usuario: " />
+                                    </p:column>
+                                    <p:column style="width: 65px">
+                                        <p:inputText value="#{mttoUsuario.codigoUsr}" />
+                                    </p:column>
+                                    <p:column style="width: 5px">
+                                        <h:outputLabel value=" "/>
+                                    </p:column>                            
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 20px">
+                                        <h:outputLabel value="Empleado: "/>
+                                    </p:column>
+                                    <p:column style="width: 65px">
+                                        <p:inputText readonly="true" value="#{mttoUsuario.nombreEmpl}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton    action="#{mttoUsuario.mostrarDialogEmpleado()}"
+                                                            id="iconOnly" update="forprincipal"
+                                                            icon="ui-icon-search" title="Icon Only" />
+                                    </p:column>                        
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 20px">
+                                        <h:outputLabel  value="Perfil: " />
+                                    </p:column>
+                                    <p:column style="width: 65px">
+                                        <p:selectOneMenu id="listPerfil" style="width: 140px" value="#{mttoUsuario.codperfil}"  >
+                                            <f:selectItems value="#{mttoUsuario.lstPerfil}"
+                                                           var="usr" itemLabel="#{usr.descripcion}" itemValue="#{usr.idPerfil}"/>                                       
+                                        </p:selectOneMenu>                                
+                                    </p:column>
+                                    <p:column style="width: 5px">
+                                        <h:outputLabel value=" "/>
+                                    </p:column>                            
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 20px">
+                                        <h:outputLabel  value="Password: " />
+                                    </p:column>
+                                    <p:column style="width: 65px">
+                                        <p:password id="Pass" value="#{mttoUsuario.claveUsr}" feedback="true" />
+                                    </p:column>
+                                    <p:column style="width: 5px">
+                                        <h:outputLabel value=" "/>
+                                    </p:column>                            
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 20px">
+                                        <h:outputLabel  value="Confirmar pass: " />
+                                    </p:column>
+                                    <p:column style="width: 65px">
+                                        <p:password id="PassConf" value="#{mttoUsuario.confclaveUsr}" />                                
+                                    </p:column>
+                                    <p:column style="width: 5px">
+                                        <h:outputLabel value=" "/>
+                                    </p:column>                            
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 20px">
+                                        <h:outputLabel  value="Fecha ingreso: " />
+                                    </p:column>
+                                    <p:column style="width: 65px">
+                                        <p:calendar id="fechaIng" value="#{mttoUsuario.fechaIngreso}" pattern="dd-MM-yyyy" mask="true" />                                                        
+                                    </p:column>
+                                    <p:column style="width: 5px">
+                                        <h:outputLabel value=" "/>
+                                    </p:column>                            
+                                </p:row>
+                            </p:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
                     <h:panelGrid >
                         <p:dataTable id="tablaUsuarios" emptyMessage="" 
                                      binding="#{mttoUsuario.dtUsuario}"
                                      value="#{mttoUsuario.lstUsuario}" 
                                      var="dpro" rowKey="#{dpro.idusuario}"
                                      selectionMode="single" rows="3" 
-                                     editable="true"> 
+                                     editable="true" paginator="true" 
+                                     rowsPerPageTemplate="3" scrollable="true"
+                                     scrollWidth="650" > 
                             <!--<p:ajax event="cellEdit" listener="#{mttoUsuario.SeleccionarFecha}" update="tablaUsuarios" />-->
                             <p:ajax event="rowEdit" listener="#{mttoUsuario.actualizarUsuario()}"     />
                             <p:ajax event="rowEditCancel" listener="#{mttoUsuario.eventoCancel}"     />

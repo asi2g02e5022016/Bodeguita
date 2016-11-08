@@ -24,6 +24,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.component.accordionpanel.AccordionPanel;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
@@ -72,6 +73,7 @@ public class MttoUsuarioMB implements Serializable {
     private Usuario usuarioConst;
     private Empleado empleadoConst;
     private Perfil perfilConst;
+    private AccordionPanel formPanel = new AccordionPanel();
     private SessionUsr sesion; //Busca beans session activa.
     private String codigoUsr;
     private String claveUsr;
@@ -106,6 +108,7 @@ public class MttoUsuarioMB implements Serializable {
         usuarioConst = null;
         empleadoConst = null;
         perfilConst = null;
+        this.formPanel.setActiveIndex("0");
         codigoUsr = null;
         claveUsr = null;
         confclaveUsr = null;
@@ -397,6 +400,14 @@ public class MttoUsuarioMB implements Serializable {
         this.perfilConst = perfilConst;
     }
 
+    public AccordionPanel getFormPanel() {
+        return formPanel;
+    }
+
+    public void setFormPanel(AccordionPanel formPanel) {
+        this.formPanel = formPanel;
+    }
+    
     public SessionUsr getSesion() {
         return sesion;
     }
