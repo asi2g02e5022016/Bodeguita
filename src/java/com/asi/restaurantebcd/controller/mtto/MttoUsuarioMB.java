@@ -14,6 +14,7 @@ import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.CellEditEvent;
 
 /**
  *
@@ -55,6 +57,7 @@ public class MttoUsuarioMB implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().
                         redirect(url);
             }
+            limpiarPantalla();
             buscarUsuario();
             buscarPerfil();
             buscarEmpleado();
@@ -75,6 +78,8 @@ public class MttoUsuarioMB implements Serializable {
     private String confclaveUsr;
     private String nombreEmpl;
     private String nombrePerfil;
+    private Date fechaIngreso;
+    private Date fechaBaja;
     private Perfil idPerfil;
     private Empleado idEmpleado;
     private boolean activo;
@@ -106,6 +111,8 @@ public class MttoUsuarioMB implements Serializable {
         confclaveUsr = null;
         nombreEmpl = null;
         nombrePerfil = null;
+        fechaIngreso = null;
+        fechaBaja = null;
         idEmpleado = null;
         idPerfil = null; 
         codperfil = 0;
@@ -215,6 +222,28 @@ public class MttoUsuarioMB implements Serializable {
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
+    
+    /**
+     * Metódo para seleccionar una fecha 
+     * @param event
+     */
+    public void SeleccionarFecha(CellEditEvent event) {
+        try {
+            if (this.dtUsuario.getRowData() != null) {                             
+                usuarioConst = this.lstUsuario.get(this.dtUsuario.getRowIndex());
+                
+                Date fecIng = usuarioConst.getFechaingreso();
+                Date fecBaj = usuarioConst.getFechabaja();
+                                               
+                System.out.println("fecha ingreso.." + fecIng);
+                System.out.println("fecha baja.." + fecBaj);                
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioMB.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }    
+    }
 
     /**
      * Mensaje de alerta que se muestra en pantalla.
@@ -267,7 +296,13 @@ public class MttoUsuarioMB implements Serializable {
                 alert("Empleado es obligatorio.",
                         FacesMessage.SEVERITY_INFO);
                 return;
-            }          
+            }
+            
+            if (fechaIngreso ==null){
+            alert("Fecha ingreso es obligatoria.",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
            
             activo = true;
             
@@ -280,7 +315,10 @@ public class MttoUsuarioMB implements Serializable {
             usuarioConst.setIdperfil(perf);
             usuarioConst.setIdempleado(em);
             usuarioConst.setClave(password);
+            usuarioConst.setFechaingreso(fechaIngreso);
+            usuarioConst.setFechabaja(fechaBaja);
             usuarioConst.setActivo(activo);
+            
             
             crud.guardarEntidad(usuarioConst);
              alert("Usuario guardado exitosamente",FacesMessage.SEVERITY_INFO);
@@ -300,10 +338,26 @@ public class MttoUsuarioMB implements Serializable {
             if (this.dtUsuario.getRowData() != null) {                             
                 usuarioConst = this.lstUsuario.get(this.dtUsuario.getRowIndex());
                 
-                if (Boolean.FALSE.equals(usuarioConst.isActivo())) {
+                /*if (Boolean.FALSE.equals(usuarioConst.isActivo())) {
                     System.out.println("Usuario desactivado.." + usuarioConst.isActivo());
-                }                                 
+                }*/
+                Date fecIng = usuarioConst.getFechaingreso();
+                Date fecBaj = usuarioConst.getFechabaja();
+                                                
                 
+                System.out.println("fecha ingreso" + fecIng);
+                System.out.println("fecha baja" + fecBaj);
+                
+                if (fecBaj == null){
+                    alert("Fecha de baja no puede ser vacia. Verifique..",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+                }      
+                if (fecBaj.before(fecIng)){
+                    alert("Fecha de baja no debe ser menor a la de ingreso. Verifique..",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+                }                
                 crud.guardarEntidad(usuarioConst);
                 alert("Usuario actualizado exitosamente.",
                         FacesMessage.SEVERITY_INFO);
@@ -391,6 +445,22 @@ public class MttoUsuarioMB implements Serializable {
         this.nombrePerfil = nombrePerfil;
     }
 
+    public Date getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(Date fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
+
+    public Date getFechaBaja() {
+        return fechaBaja;
+    }
+
+    public void setFechaBaja(Date fechaBaja) {
+        this.fechaBaja = fechaBaja;
+    }
+    
     public Perfil getIdPerfil() {
         return idPerfil;
     }

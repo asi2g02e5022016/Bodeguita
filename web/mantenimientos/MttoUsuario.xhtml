@@ -92,6 +92,17 @@ and open the template in the editor.
                                 <h:outputLabel value=" "/>
                             </p:column>                            
                         </p:row>
+                        <p:row>
+                            <p:column style="width: 20px">
+                                <h:outputLabel  value="Fecha ingreso: " />
+                            </p:column>
+                            <p:column style="width: 65px">
+                                <p:calendar id="fechaIng" value="#{mttoUsuario.fechaIngreso}" pattern="dd-MM-yyyy" mask="true" />                                                        
+                            </p:column>
+                            <p:column style="width: 5px">
+                                <h:outputLabel value=" "/>
+                            </p:column>                            
+                        </p:row>
                     </p:panelGrid>
 
                     <h:panelGrid >
@@ -99,9 +110,9 @@ and open the template in the editor.
                                      binding="#{mttoUsuario.dtUsuario}"
                                      value="#{mttoUsuario.lstUsuario}" 
                                      var="dpro" rowKey="#{dpro.idusuario}"
-                                     selectionMode="single" rows="19" 
+                                     selectionMode="single" rows="3" 
                                      editable="true"> 
-
+                            <!--<p:ajax event="cellEdit" listener="#{mttoUsuario.SeleccionarFecha}" update="tablaUsuarios" />-->
                             <p:ajax event="rowEdit" listener="#{mttoUsuario.actualizarUsuario()}"     />
                             <p:ajax event="rowEditCancel" listener="#{mttoUsuario.eventoCancel}"     />
 
@@ -114,7 +125,25 @@ and open the template in the editor.
                             <p:column headerText="Perfil" width="5%">
                                 <h:outputText value="#{dpro.idperfil.nombre}"  /> 
                             </p:column>
-                            <p:column headerText="Estatus" width="2%" style="text-align:center">
+                            <p:column headerText="Ingreso" width="4%">
+                                <h:outputText value="#{dpro.fechaingreso}">  
+                                    <f:convertDateTime pattern="MM/dd/yyyy" />
+                                </h:outputText> 
+                            </p:column>
+                            <p:column headerText="Baja" width="8%" style="text-align:center">
+                                <p:cellEditor >
+                                    <f:facet  name="output">
+                                        <p:calendar disabled="true" value="#{dpro.fechabaja}" pattern="dd-MM-yyyy" mask="true" />
+                                    </f:facet>
+                                    <f:facet  name="input">
+                                        <p:calendar  disabled="false" value="#{dpro.fechabaja}" pattern="dd-MM-yyyy" mask="true" />
+                                        <!--<p:ajax event="dateSelect" oncomplete="PF('tablaUsuarios').filter()" update="tablaUsuarios" />
+                                        <p:ajax event="change"  oncomplete="PF('Table').filter()" update="tablaUsuarios"/>-->
+
+                                    </f:facet>
+                                </p:cellEditor> 
+                            </p:column>
+                            <!--<p:column headerText="Estatus" width="2%" style="text-align:center">
                                 <p:cellEditor >
                                     <f:facet  name="output">
                                         <p:selectBooleanCheckbox  disabled="true" value="#{dpro.activo}" />
@@ -123,7 +152,7 @@ and open the template in the editor.
                                         <p:selectBooleanCheckbox disabled="false" value="#{dpro.activo}" />  
                                     </f:facet>
                                 </p:cellEditor> 
-                            </p:column>
+                            </p:column>-->                            
                             <p:column  headerText="Modificar" width="2%" style="text-align:center">
                                 <p:rowEditor></p:rowEditor>  
                             </p:column>
