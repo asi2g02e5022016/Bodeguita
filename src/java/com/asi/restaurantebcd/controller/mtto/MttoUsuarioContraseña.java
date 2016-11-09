@@ -16,8 +16,6 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.component.accordionpanel.AccordionPanel;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
-import sun.security.provider.SHA;
-
 /**
  *
  * @author Luis

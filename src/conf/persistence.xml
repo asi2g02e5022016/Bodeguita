@@ -45,6 +45,9 @@
     <class>com.asi.restaurantbcd.modelo.Compradetalle</class>
     <class>com.asi.restaurantbcd.modelo.Receta</class>
     <class>com.asi.restaurantbcd.modelo.Recetadetalle</class>
+    <class>com.asi.restaurantbcd.modelo.Ajuste</class>
+    <class>com.asi.restaurantbcd.modelo.Ajustedetalle</class>
+    <class>com.asi.restaurantbcd.modelo.Configuracion</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.persistence-context.flush-mode" value="COMMIT"/>

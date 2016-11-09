@@ -17,12 +17,14 @@ and open the template in the editor.
             <p:growl showDetail="true" showSummary="true" />
             <p:panel id="basic" header="Recetas" style="width: 80%" >
                 <p:menubar>
-                    <p:menuitem value="Limpiar" update="forprincipal" 
+                    <p:menuitem value="Nuevo" update="forprincipal" 
                                 action="#{recetas.limpiarPantalla()}"
                                 icon="ui-icon-plus" />
                     <p:menuitem value="Guardar"  action="#{recetas.guaradarReceta()}"
-                                icon=" ui-icon-search" />
-                    <p:menuitem value="Monitor"  action="#{recetas.mostrarDialogProd()}"
+                                rendered="#{recetas.mostrarGuardar}"
+                                update="forprincipal"
+                                icon=" ui-icon-disk" />
+                    <p:menuitem value="Monitor"  action="#{recetas.mostrarDialogMonitor()}"
                                 icon=" ui-icon-search" />
                 </p:menubar>
                 <h:panelGrid columns="2" width="80%">

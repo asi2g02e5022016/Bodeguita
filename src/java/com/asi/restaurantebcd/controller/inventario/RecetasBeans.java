@@ -66,6 +66,7 @@ public class RecetasBeans implements Serializable{
      private String descripcion;
     private String usuarioIniciador;
     private String productoTerminado;
+    private boolean  mostrarGuardar;
     private Date fecha;
     @PersistenceContext(unitName = "RestaurantBDC-WebPU")
     private EntityManager em;
@@ -106,12 +107,14 @@ public class RecetasBeans implements Serializable{
                 recetadetalle.setReceta(receta);
             }
             crudBDC.guardarEntidad(receta);
+            alert("La receta se guardo exitosamente.", FacesMessage.SEVERITY_INFO);
         } catch (Exception ex) {
+            alert("Error: " + ex.getMessage(), FacesMessage.SEVERITY_ERROR);
             Logger.getLogger(RecetasBeans.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
         
-        public void mostrarDialogProd() {
+            public void mostrarDialogProd() {
      RequestContext requestContext = RequestContext.getCurrentInstance();
                 requestContext.execute("PF('dialogoProducto').show();");
     }
@@ -181,7 +184,7 @@ public class RecetasBeans implements Serializable{
         
                 public void mostrarDialogMonitor() {
      RequestContext requestContext = RequestContext.getCurrentInstance();
-                requestContext.execute("PF('dialogoMonitor').show();");
+                requestContext.execute("PF('dialogoRecetas').show();");
     }
     
                public void buscarRecetas() {
@@ -190,7 +193,7 @@ public class RecetasBeans implements Serializable{
             lstRecetaMon =  q.getResultList();
             
             System.out.println("lstProducto.." +lstRecetaMon);
-            if (lstRecetaMon == null || lstProducto.isEmpty()) {
+            if (lstRecetaMon == null || lstRecetaMon.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
          } catch (Exception ex) {
@@ -208,7 +211,7 @@ public class RecetasBeans implements Serializable{
             lstRecetaDetalle.addAll(receta.getRecetadetalleList());
             System.out.println("lstCompradeta.." +lstRecetaDetalle);
             RequestContext requestContext = RequestContext.getCurrentInstance();
-                requestContext.execute("PF('dialogoMonitor').hide();");
+                requestContext.execute("PF('dialogoRecetas').hide();");
         } catch (Exception ex) {
             ex.printStackTrace();
             Logger.getLogger(Receta.class.getName())
@@ -323,6 +326,16 @@ public class RecetasBeans implements Serializable{
             throw new RuntimeException(e);
         }
     }
+
+    public boolean isMostrarGuardar() {
+        return mostrarGuardar;
+    }
+
+    public void setMostrarGuardar(boolean mostrarGuardar) {
+        this.mostrarGuardar = mostrarGuardar;
+    }
+    
+    
     
     
     
