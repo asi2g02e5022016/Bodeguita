@@ -6,6 +6,7 @@
 package com.asi.restaurantbcd.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -48,6 +51,15 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "activo")
     private boolean activo;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fechaingreso")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaingreso;
+    @Column(name = "fechabaja")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechabaja;
+    
     @JoinColumn(name = "idempleado", referencedColumnName = "idempleado")
     @OneToOne(optional = false)
     private Empleado idempleado;
@@ -125,6 +137,22 @@ public class Usuario implements Serializable {
     public void setIdperfil(Perfil idperfil) {
         this.idperfil = idperfil;
     }
+
+    public Date getFechaingreso() {
+        return fechaingreso;
+    }
+
+    public void setFechaingreso(Date fechaingreso) {
+        this.fechaingreso = fechaingreso;
+    }
+
+    public Date getFechabaja() {
+        return fechabaja;
+    }
+
+    public void setFechabaja(Date fechabaja) {
+        this.fechabaja = fechabaja;
+    }
     
     
 
@@ -163,11 +191,13 @@ public class Usuario implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.idusuario);
-        hash = 79 * hash + Objects.hashCode(this.clave);
-        hash = 79 * hash + (this.activo ? 1 : 0);
-        hash = 79 * hash + Objects.hashCode(this.idempleado);
-        hash = 79 * hash + Objects.hashCode(this.idperfil);
+        hash = 41 * hash + Objects.hashCode(this.idusuario);
+        hash = 41 * hash + Objects.hashCode(this.clave);
+        hash = 41 * hash + (this.activo ? 1 : 0);
+        hash = 41 * hash + Objects.hashCode(this.fechaingreso);
+        hash = 41 * hash + Objects.hashCode(this.fechabaja);
+        hash = 41 * hash + Objects.hashCode(this.idempleado);
+        hash = 41 * hash + Objects.hashCode(this.idperfil);
         return hash;
     }
 
@@ -192,6 +222,12 @@ public class Usuario implements Serializable {
         if (!Objects.equals(this.clave, other.clave)) {
             return false;
         }
+        if (!Objects.equals(this.fechaingreso, other.fechaingreso)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechabaja, other.fechabaja)) {
+            return false;
+        }
         if (!Objects.equals(this.idempleado, other.idempleado)) {
             return false;
         }
@@ -203,8 +239,12 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "Usuario{" + "idusuario=" + idusuario + ", clave=" + clave + ", activo=" + activo + ", idempleado=" + idempleado + ", idperfil=" + idperfil + '}';
+        return "Usuario{" + "idusuario=" + idusuario + ", clave=" + clave + ", activo=" + activo + ", fechaingreso=" + fechaingreso + ", fechabaja=" + fechabaja + ", idempleado=" + idempleado + ", idperfil=" + idperfil + '}';
     }
+
+   
+
+    
 
    
     

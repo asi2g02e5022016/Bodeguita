@@ -13,6 +13,8 @@ import com.asi.restaurantebcd.negocio.base.BusquedasUsuariosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,11 +23,13 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
+import javax.faces.bean.ViewScoped;
+import org.primefaces.component.accordionpanel.AccordionPanel;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.CellEditEvent;
 
 /**
  *
@@ -54,10 +58,10 @@ public class MttoUsuarioMB implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().
                         redirect(url);
             }
+            limpiarPantalla();
             buscarUsuario();
             buscarPerfil();
             buscarEmpleado();
-
         } catch (Exception e) {
             alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
             alert("error de post", FacesMessage.SEVERITY_FATAL);
@@ -69,25 +73,28 @@ public class MttoUsuarioMB implements Serializable {
     private Usuario usuarioConst;
     private Empleado empleadoConst;
     private Perfil perfilConst;
+    private AccordionPanel formPanel = new AccordionPanel();
     private SessionUsr sesion; //Busca beans session activa.
     private String codigoUsr;
     private String claveUsr;
     private String confclaveUsr;
     private String nombreEmpl;
     private String nombrePerfil;
+    private Date fechaIngreso;
+    private Date fechaBaja;
     private Perfil idPerfil;
     private Empleado idEmpleado;
-    private int codperfil;
-    private int codempleado;
     private boolean activo;
-    private Integer paramEst;
+    //private int activo;
+    private int codperfil;
     private DataTable dtUsuario = new DataTable();
     private List<Usuario> lstUsuario;
     private List<Perfil> lstPerfil;
     private List<Empleado> lstEmpleado;
+    private List LstEstados = new ArrayList();
 
     @EJB
-    private CrudBDCLocal crub;
+    private CrudBDCLocal crud;
     @EJB
     private BusquedasUsuariosLocal ejbBusqUsrLcal;
 
@@ -101,16 +108,19 @@ public class MttoUsuarioMB implements Serializable {
         usuarioConst = null;
         empleadoConst = null;
         perfilConst = null;
+        this.formPanel.setActiveIndex("0");
         codigoUsr = null;
         claveUsr = null;
         confclaveUsr = null;
         nombreEmpl = null;
         nombrePerfil = null;
+        fechaIngreso = null;
+        fechaBaja = null;
         idEmpleado = null;
-        idPerfil = null;
+        idPerfil = null; 
         codperfil = 0;
-        //codempleado = 0;
         activo = false;
+        //activo = 0;
         dtUsuario = new DataTable();
         lstUsuario = null;
         lstPerfil = null;
@@ -166,93 +176,6 @@ public class MttoUsuarioMB implements Serializable {
     }
 
     /**
-     * Metodo que guarda un usuaio.
-     */
-    public void guardarUsuario() {
-        try {
-            if (codigoUsr == null || codigoUsr.equals("")) {
-                alert("Código de usuario es obligatorio.",
-                        FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            if (claveUsr == null) {
-                alert("Clave es obligatoria.",
-                        FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            if (confclaveUsr == null) {
-                alert("Confirmación de clave es obligatoria.",
-                        FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            System.out.println("nombre empleado " + nombreEmpl);
-            System.out.println("codempleado.."+codempleado);
-            System.out.println("idEmpleado.." +idEmpleado);
-            if (codempleado == 0) {
-                alert("Empleado es obligatorio.",
-                        FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            if (codperfil == 0) {
-                alert("Perfil es obligatorio.",
-                        FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            if (!claveUsr.equals(confclaveUsr)) {
-                alert("Claves no coinciden",
-                        FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            activo = true;
-
-            String password = String.valueOf(confclaveUsr.hashCode());
-
-            System.out.println("La clave hash" + password);
-
-            usuarioConst = new Usuario();
-            usuarioConst.setIdusuario(codigoUsr);
-            usuarioConst.setIdperfil(idPerfil);
-            usuarioConst.setIdempleado(idEmpleado);
-            usuarioConst.setClave(password);
-            usuarioConst.setActivo(activo);
-            //crub.guardarEntidad(usuarioConst);
-        } catch (Exception ex) {
-            Logger.getLogger(MttoUsuarioMB.class.getName())
-                    .log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Metódo para actualizar la informacion del usuario
-     */
-    public void actualizarUsuario() {
-        try {
-            if (this.dtUsuario.getRowData() != null) {
-                if (paramEst == null) {
-                    alert("Seleccione un estado",
-                            FacesMessage.SEVERITY_INFO);
-                    return;
-                }
-                if (paramEst == 1) {
-                    activo = true;
-                } else {
-                    activo = false;
-                }
-                usuarioConst = this.lstUsuario.get(this.dtUsuario.getRowIndex());
-                //crub.guardarEntidad(usuarioConst);
-                alert("Usuario actualizado exitosamente.",
-                        FacesMessage.SEVERITY_INFO);
-                this.usuarioConst = null;
-                this.lstUsuario = this.ejbBusqUsrLcal.buscarUsuario();
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(MttoUsuarioMB.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-    }
-
-    /**
      * Metodo que se ejecuta cuando se esta editando la grilla del formulario
      *
      * @param event
@@ -282,17 +205,18 @@ public class MttoUsuarioMB implements Serializable {
         System.out.println("entro...");
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("PF('dialogoEmpleado').show();");
-
     }
-
+       
+    /**
+     * Metódo para seleccionar un empleado registrado
+     * @param event
+     */
     public void selEmpleado(SelectEvent event) {
         try {
             empleadoConst = (Empleado) event.getObject();
-            if (empleadoConst != null) {                   
-                codempleado = empleadoConst.getIdempleado();                
+            if (empleadoConst != null) {              
                 nombreEmpl = empleadoConst.getNombre();
             }
-            System.out.println("codigo" + codempleado);
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoEmpleado').hide();");
         } catch (Exception ex) {
@@ -300,6 +224,28 @@ public class MttoUsuarioMB implements Serializable {
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
+    }
+    
+    /**
+     * Metódo para seleccionar una fecha 
+     * @param event
+     */
+    public void SeleccionarFecha(CellEditEvent event) {
+        try {
+            if (this.dtUsuario.getRowData() != null) {                             
+                usuarioConst = this.lstUsuario.get(this.dtUsuario.getRowIndex());
+                
+                Date fecIng = usuarioConst.getFechaingreso();
+                Date fecBaj = usuarioConst.getFechabaja();
+                                               
+                System.out.println("fecha ingreso.." + fecIng);
+                System.out.println("fecha baja.." + fecBaj);                
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioMB.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }    
     }
 
     /**
@@ -317,6 +263,115 @@ public class MttoUsuarioMB implements Serializable {
         FacesMessage message = new FacesMessage(faces,
                 "Mensaje", mensaje.toString());
         RequestContext.getCurrentInstance().showMessageInDialog(message);
+    }
+    
+    /**
+     * Metodo que guarda un usuaio.
+     */
+    public void guardarUsuario() {
+        try {
+            if (codigoUsr == null || codigoUsr.equals("")) {
+                alert("Código de usuario es obligatorio.",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+            if (claveUsr == null) {
+                alert("Clave es obligatoria.",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+            if (confclaveUsr == null) {
+                alert("Confirmación de clave es obligatoria.",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+             if (!claveUsr.equals(confclaveUsr)) {
+                alert("Claves no coinciden",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+            if (codperfil==0) {
+                 alert("Seleccione un perfil",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }             
+            if (empleadoConst == null) {
+                alert("Empleado es obligatorio.",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+            
+            if (fechaIngreso ==null){
+            alert("Fecha ingreso es obligatoria.",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+           
+            activo = true;
+            
+            Empleado em = crud.buscarEntidad(Empleado.class, empleadoConst.getIdempleado());
+            Perfil perf = crud.buscarEntidad(Perfil.class, codperfil);
+            String password = String.valueOf(confclaveUsr.hashCode());           
+
+            usuarioConst = new Usuario();
+            usuarioConst.setIdusuario(codigoUsr);
+            usuarioConst.setIdperfil(perf);
+            usuarioConst.setIdempleado(em);
+            usuarioConst.setClave(password);
+            usuarioConst.setFechaingreso(fechaIngreso);
+            usuarioConst.setFechabaja(fechaBaja);
+            usuarioConst.setActivo(activo);
+            
+            
+            crud.guardarEntidad(usuarioConst);
+             alert("Usuario guardado exitosamente",FacesMessage.SEVERITY_INFO);
+            limpiarPantalla();
+            buscarUsuario();
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioMB.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Metódo para actualizar la informacion del usuario
+     */
+    public void actualizarUsuario() {
+        try {
+            if (this.dtUsuario.getRowData() != null) {                             
+                usuarioConst = this.lstUsuario.get(this.dtUsuario.getRowIndex());
+                
+                /*if (Boolean.FALSE.equals(usuarioConst.isActivo())) {
+                    System.out.println("Usuario desactivado.." + usuarioConst.isActivo());
+                }*/
+                Date fecIng = usuarioConst.getFechaingreso();
+                Date fecBaj = usuarioConst.getFechabaja();
+                                                
+                
+                System.out.println("fecha ingreso" + fecIng);
+                System.out.println("fecha baja" + fecBaj);
+                
+                if (fecBaj == null){
+                    alert("Fecha de baja no puede ser vacia. Verifique..",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+                }      
+                if (fecBaj.before(fecIng)){
+                    alert("Fecha de baja no debe ser menor a la de ingreso. Verifique..",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+                }                
+                crud.guardarEntidad(usuarioConst);
+                alert("Usuario actualizado exitosamente.",
+                        FacesMessage.SEVERITY_INFO);
+                this.usuarioConst = null;
+                this.lstUsuario = this.ejbBusqUsrLcal.buscarUsuario();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioMB.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
     }
 //</editor-fold >
 
@@ -345,6 +400,14 @@ public class MttoUsuarioMB implements Serializable {
         this.perfilConst = perfilConst;
     }
 
+    public AccordionPanel getFormPanel() {
+        return formPanel;
+    }
+
+    public void setFormPanel(AccordionPanel formPanel) {
+        this.formPanel = formPanel;
+    }
+    
     public SessionUsr getSesion() {
         return sesion;
     }
@@ -393,6 +456,22 @@ public class MttoUsuarioMB implements Serializable {
         this.nombrePerfil = nombrePerfil;
     }
 
+    public Date getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(Date fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
+
+    public Date getFechaBaja() {
+        return fechaBaja;
+    }
+
+    public void setFechaBaja(Date fechaBaja) {
+        this.fechaBaja = fechaBaja;
+    }
+    
     public Perfil getIdPerfil() {
         return idPerfil;
     }
@@ -409,22 +488,6 @@ public class MttoUsuarioMB implements Serializable {
         this.idEmpleado = idEmpleado;
     }
 
-    public int getCodperfil() {
-        return codperfil;
-    }
-
-    public void setCodperfil(int codperfil) {
-        this.codperfil = codperfil;
-    }
-
-    public int getCodempleado() {
-        return codempleado;
-    }
-
-    public void setCodempleado(int codempleado) {
-        this.codempleado = codempleado;
-    }
-
     public boolean isActivo() {
         return activo;
     }
@@ -433,13 +496,21 @@ public class MttoUsuarioMB implements Serializable {
         this.activo = activo;
     }
 
-    public Integer getParamEst() {
-        return paramEst;
+    /*public int getActivo() {
+        return activo;
     }
 
-    public void setParamEst(Integer paramEst) {
-        this.paramEst = paramEst;
+    public void setActivo(int activo) {
+        this.activo = activo;
+    }*/
+    
+    public int getCodperfil() {
+        return codperfil;
     }
+
+    public void setCodperfil(int codperfil) {
+        this.codperfil = codperfil;
+    }    
 
     public DataTable getDtUsuario() {
         return dtUsuario;
@@ -473,12 +544,20 @@ public class MttoUsuarioMB implements Serializable {
         this.lstEmpleado = lstEmpleado;
     }
 
-    public CrudBDCLocal getCrub() {
-        return crub;
+    public List getLstEstados() {
+        return LstEstados;
     }
 
-    public void setCrub(CrudBDCLocal crub) {
-        this.crub = crub;
+    public void setLstEstados(List LstEstados) {
+        this.LstEstados = LstEstados;
+    }        
+
+    public CrudBDCLocal getCrud() {
+        return crud;
+    }
+
+    public void setCrud(CrudBDCLocal crud) {
+        this.crud = crud;
     }
 
     public BusquedasUsuariosLocal getEjbBusqUsrLcal() {
@@ -489,6 +568,4 @@ public class MttoUsuarioMB implements Serializable {
         this.ejbBusqUsrLcal = ejbBusqUsrLcal;
     }
 //</editor-fold >      
-   
-
 }
