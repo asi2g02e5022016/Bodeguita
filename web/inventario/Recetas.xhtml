@@ -157,12 +157,14 @@ and open the template in the editor.
                 </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable id="tablad" 
-                                                                   
+                                 value="#{recetas.lstRecetaMon}"
+                                 var="#{det}"
+                                 rowKey="#{det.recetadetallePK.idreceta}"
                                  selectionMode="single" rows="19"  >                        
                         <p:ajax event="rowSelect" process="@all"  
                             />
                         <p:column  headerText="descripcion">
-                            <h:outputText   />
+                            <h:outputText value="#{det.producto.producto}"  />
                         </p:column>
                         <p:column headerText="medida"  >
                             <h:outputText   />
