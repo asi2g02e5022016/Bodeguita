@@ -31,13 +31,6 @@ and open the template in the editor.
                     <p:menuitem value="Imprimir" action="#{comprasBeans.imprimitCompra()}"
                                 icon="ui-icon-print" />
                     
-                     <p:menuitem value="Exportar" 
-                         icon="fa fa-file-excel-o" >
-                                     
-                        
-                     </p:menuitem>
-                    
-                    
                      <p:menuitem value="Monitor" action="#{comprasBeans.mostrarDialogoMonCompras()}"
                                 icon=" ui-icon-search" />
                      
@@ -81,7 +74,7 @@ and open the template in the editor.
 
                 <h:panelGrid >
                     <p:dataTable value="#{comprasBeans.lstCompradeta}"
-                                 id="tabladetalle" rows="2"
+                                 id="tabladetalle" rows="8"
                                  var="det"   emptyMessage=""    paginator="true">
                         <p:ajax event="rowEdit" listener="#{comprasBeans.onRowEdit}" />   
       
@@ -201,7 +194,7 @@ and open the template in the editor.
                     <p:dataTable id="tablaProdd" 
                                  value="#{comprasBeans.lstProducto}"
                                  var="dpro" rowKey="#{dpro.idproducto}"                                  
-                                 selectionMode="single" rows="19"  >                        
+                                 selectionMode="single" rows="10"  >                        
                         <p:ajax event="rowSelect" update="forprincipal" process="@all"  
                             listener="#{comprasBeans.onRowSelect}"/>
                         <p:column filterBy="#{dpro.producto}" headerText="descripcion">
@@ -241,9 +234,10 @@ and open the template in the editor.
                        <p:calendar value="#{comprasBeans.fechaFinMonitor}"/>
                 </h:panelGrid>
                 <h:panelGrid >
-                    <p:dataTable value="#{comprasBeans.lstCompraMonitor}" id="tablaCompras"
-                                 var="dcompra"  rowKey="#{dcompra.compraPK}"
-                                 selectionMode="single"  rows="19"  >                        
+                    <p:dataTable value="#{comprasBeans.lstCompraMonitor}"
+                                 id="tablaCompras"
+                                 var="dcompra"   rowKey="#{dcompra.compraPK}"
+                                 selectionMode="single"  rows="10"  >                        
                         <p:ajax event="rowSelect" update="forprincipal"
                                 listener="#{comprasBeans.onRowSelectCompra}" process="@all"  
                                 />

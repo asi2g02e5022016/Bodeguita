@@ -14,6 +14,8 @@ import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.EstadoEnum;
+import com.sun.imageio.spi.RAFImageInputStreamSpi;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,11 +63,18 @@ public class RecetasBeans implements Serializable{
     private List<Recetadetalle > lstRecetaDetalle;
         private List<Receta > lstRecetaMon;
         private List<Vwproductos > lstProducto;
+          private List<Vwproductos > lstProductoPT;
     private Receta receta;
+    private Recetadetalle recetaDetaPT;
     private Integer noreceta;
       private String descripProducto;
      private String descripcion;
     private String usuarioIniciador;
+       private String productoPT;
+      private Double cantidadPT;
+           private String medidaProductoMP;
+       private String productoMP;
+      private Double cantidadMP;
     private String productoTerminado;
     private boolean  mostrarGuardar;
     private Date fecha;
@@ -76,13 +85,27 @@ public class RecetasBeans implements Serializable{
     private Double cantidad;
     
     public void limpiarPantalla() {
+        productoMP = null;
+        medidaProductoMP = null;
+        cantidadMP= null;
+        cantidad = null;
+        cantidadPT = null;
+        descripProducto =  null;
+        descripcion =  null;
+        lstProducto = null;
+        lstProductoPT = null;
+        lstRecetaDetalle =  null;
+        lstRecetaMon = null;
         lstRecetaDetalle = null;
         receta  = null;
+        productoMP =  null;
+        productoPT = null;
+        productoTerminado = null;
         noreceta = null;
         descripcion = null;
         usuarioIniciador = null;
         productoTerminado = null;
-    mostrarGuardar = true;
+        mostrarGuardar = true;
         fecha =null;
     }
     
@@ -91,6 +114,10 @@ public class RecetasBeans implements Serializable{
         try {
             if(lstRecetaDetalle == null || lstRecetaDetalle.isEmpty()) {
                 alert("La receta no tiene detalle.", FacesMessage.SEVERITY_WARN);
+                return;
+            }
+            if (recetaDetaPT == null) {
+                alert("Debe elegor un produto PT", FacesMessage.SEVERITY_INFO);
                 return;
             }
             System.out.println("que paso...");
@@ -105,7 +132,7 @@ public class RecetasBeans implements Serializable{
             receta.setEstado(EstadoEnum.TERMINADO.getInteger());
             receta.setFechacreacion(new Date());
             receta.setIdusuariocrea(sesion.getUsuario().getIdusuario());
-            receta.setRecetadetalleList(lstRecetaDetalle);
+            mostrarGuardar =  false;
             for (Recetadetalle recetadetalle : lstRecetaDetalle) {
                 
             RecetadetallePK idDer = new RecetadetallePK();
@@ -114,6 +141,15 @@ public class RecetasBeans implements Serializable{
                 recetadetalle.setRecetadetallePK(idDer);
                 recetadetalle.setReceta(receta);
             } 
+            List <Recetadetalle> lstDeta = new ArrayList<>();
+            lstDeta.addAll(lstRecetaDetalle);
+            
+            RecetadetallePK idDer = new RecetadetallePK();
+            idDer.setIdreceta(receta.getIdreceta());
+            idDer.setIdproducto(recetaDetaPT.getProducto().getIdproducto());
+            recetaDetaPT.setReceta(receta);
+            recetaDetaPT.setRecetadetallePK(idDer);
+            receta.setRecetadetalleList(lstDeta);
             crudBDC.guardarEntidad(receta);
             alert("La receta se guardo exitosamente.", FacesMessage.SEVERITY_INFO);
         } catch (Exception ex) {
@@ -123,6 +159,11 @@ public class RecetasBeans implements Serializable{
     }
         
             public void mostrarDialogProd() {
+//                if (productoPT == null || 
+//                        productoPT.equals("")) {
+//                    alert("Debe selecionar un producto terminado", FacesMessage.SEVERITY_INFO);
+//                    return;
+//                }
      RequestContext requestContext = RequestContext.getCurrentInstance();
                 requestContext.execute("PF('dialogoProducto').show();");
     }
@@ -140,6 +181,28 @@ public class RecetasBeans implements Serializable{
             lstProducto = busquedasProductos.buscarProducto(filtro);
             System.out.println("lstProducto.." +lstProducto);
             if (lstProducto == null || lstProducto.isEmpty()) {
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+            }
+         } catch (Exception ex) {
+            Logger.getLogger(Receta.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
+        }
+      }
+        
+         public void buscarProductoPT() {
+        try {
+            Map filtro = new HashMap();
+            if (productoPT != null) {
+                filtro.put("producto", productoPT.trim());
+                
+            }
+            filtro.put("activo", 1);
+            filtro.put("tipo", 1);
+            
+            lstProductoPT = busquedasProductos.buscarProducto(filtro);
+            System.out.println("lstProducto.." +lstProductoPT);
+            if (lstProductoPT == null || lstProductoPT.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
          } catch (Exception ex) {
@@ -169,9 +232,15 @@ public class RecetasBeans implements Serializable{
             return valor;
         }
                 
-                
+     
      public void onRowSelectProduc(SelectEvent event) {
         try {
+            if (cantidadMP == null || 
+                    cantidadMP.equals(Double.parseDouble("0"))) {
+                alert("La cantidad tiene que ser mayor a cero. ", 
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
             Vwproductos idP  =  ((Vwproductos) event.getObject());
             System.out.println("w33");
             Producto pr = crudBDC.buscarEntidad(Producto.class, idP.getIdproducto());
@@ -180,11 +249,9 @@ public class RecetasBeans implements Serializable{
                 lstRecetaDetalle = new ArrayList<>();
             }
             Recetadetalle recDet = new Recetadetalle();
-            recDet.setCantidad(cantidad);
-            recDet.setFactorconvercion(cantidad);
-            recDet.setIdmedidacargo(idP.getIdmedida());
-            recDet.setSalida(noreceta);
-             recDet.setProducto(pr);
+            recDet.setCantidad(cantidadMP);
+            recDet.setSalida(1);
+            recDet.setProducto(pr);
            
             lstRecetaDetalle.add(0, recDet);
             System.out.println("lstCompradeta.." +lstRecetaDetalle);
@@ -226,7 +293,26 @@ public class RecetasBeans implements Serializable{
         try {
             receta =  (Receta) event.getObject();
             lstRecetaDetalle = new ArrayList<>();
-            lstRecetaDetalle.addAll(receta.getRecetadetalleList());
+            for (Recetadetalle recetadetalle : receta.getRecetadetalleList()) { 
+                if (recetadetalle.getSalida() == 1) {
+                    
+                    Producto p = crudBDC.buscarEntidad(Producto.class,
+                            recetadetalle.getRecetadetallePK().getIdproducto());
+                   recetadetalle.setProducto(p);
+                lstRecetaDetalle.add(recetadetalle);
+                } else {
+                    Producto p = crudBDC.buscarEntidad(Producto.class,
+                            recetadetalle.getRecetadetallePK().getIdproducto());
+                    productoPT =  p.getProducto();
+                    medidaProductoMP = p.getIdmedida().getMedida();
+                     medidaProductoMP = p.getIdmedida().getMedida();
+                     cantidadPT = recetadetalle.getCantidad();
+                     
+                    
+                }
+            }
+            descripcion = receta.getDescripcion();
+            mostrarGuardar =  false;
             System.out.println("lstCompradeta.." +lstRecetaDetalle);
             RequestContext requestContext = RequestContext.getCurrentInstance();
                 requestContext.execute("PF('dialogoRecetas').hide();");
@@ -364,9 +450,104 @@ public class RecetasBeans implements Serializable{
             throw new RuntimeException(e);
         }
     }
+
+
+
+    public String getProductoPT() {
+        return productoPT;
+    }
+
+    public void setProductoPT(String productoPT) {
+        this.productoPT = productoPT;
+    }
+
+    public Double getCantidadPT() {
+        return cantidadPT;
+    }
+
+    public void setCantidadPT(Double cantidadPT) {
+        this.cantidadPT = cantidadPT;
+    }
+
+    public String getMedidaProductoMP() {
+        return medidaProductoMP;
+    }
+
+    public void setMedidaProductoMP(String medidaProductoMP) {
+        this.medidaProductoMP = medidaProductoMP;
+    }
+
+    public String getProductoMP() {
+        return productoMP;
+    }
+
+    public void setProductoMP(String productoMP) {
+        this.productoMP = productoMP;
+    }
+
+    public Double getCantidadMP() {
+        return cantidadMP;
+    }
+
+    public void setCantidadMP(Double cantidadMP) {
+        this.cantidadMP = cantidadMP;
+        
+
+        
+    }
+
+    public List<Vwproductos> getLstProductoPT() {
+        return lstProductoPT;
+    }
+
+    public void setLstProductoPT(List<Vwproductos> lstProductoPT) {
+        this.lstProductoPT = lstProductoPT;
+    }
+    
+    
+
+            
+            public void mostrarDialogProdusStoPT() {
+
+//                }
+     RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProductoPT').show();");
+    }
     
     
     
-    
+     public void onRowSelectProducuctoPT(SelectEvent event) {
+        try {
+            if (cantidadPT == null || 
+                    cantidadPT.equals(Double.parseDouble("0"))) {
+                alert("La cantidad tiene que ser mayor a cero. ", 
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+            Vwproductos idP  =  ((Vwproductos) event.getObject());
+        
+            Producto pr = crudBDC.buscarEntidad(Producto.class, idP.getIdproducto());
+          
+            if (lstRecetaDetalle == null) {
+                lstRecetaDetalle = new ArrayList<>();
+            }
+            recetaDetaPT  = new Recetadetalle();
+            recetaDetaPT.setCantidad(cantidadPT);
+            recetaDetaPT.setSalida(0);
+            recetaDetaPT.setProducto(pr);
+           productoPT =  idP.getProducto();
+           medidaProductoMP = idP.getMedida();
+          //  lstRecetaDetalle.add(0, recDet);
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProducto').hide();");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.getLogger(Receta.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        
+    }
+     
     
 }

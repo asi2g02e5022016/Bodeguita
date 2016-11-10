@@ -33,10 +33,6 @@ public class Recetadetalle implements Serializable {
     private Integer salida;
     @Column(name = "cantidad")
     private Double cantidad;
-    @Column(name = "idmedidacargo")
-    private Integer idmedidacargo;
-    @Column(name = "factorconvercion")
-    private Double factorconvercion;
     @JoinColumn(name = "idreceta", referencedColumnName = "idreceta", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Receta receta;
@@ -78,22 +74,7 @@ public class Recetadetalle implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public Integer getIdmedidacargo() {
-        return idmedidacargo;
-    }
-
-    public void setIdmedidacargo(Integer idmedidacargo) {
-        this.idmedidacargo = idmedidacargo;
-    }
-
-    public Double getFactorconvercion() {
-        return factorconvercion;
-    }
-
-    public void setFactorconvercion(Double factorconvercion) {
-        this.factorconvercion = factorconvercion;
-    }
-
+ 
 
     public Receta getReceta() {
         return receta;

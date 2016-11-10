@@ -236,6 +236,10 @@ public class ComprasBeans implements  Serializable {
     */
    public void imprimitCompra() {
        try {
+           if (compraEnca == null) {
+               alert("Debe selecionar una compra", FacesMessage.SEVERITY_INFO);
+               return;
+           }
             Map param = new HashMap();
             param.put("CODSUC", String.valueOf(compraEnca.getCompraPK().getIdsucursal()));
             param.put("IDCOMPRA", String.valueOf(compraEnca.getCompraPK().getIdcompra()));
@@ -250,17 +254,10 @@ public class ComprasBeans implements  Serializable {
                     +"RptCompras.jasper");
             request.getSession().setAttribute("format","PDF");
             request.getSession().setAttribute("parameters", param);
-//            RequestContext context = RequestContext.getCurrentInstance();
-//             context.execute("window.open('resource.jsp', '_newtab')");
                         RequestContext context = RequestContext.getCurrentInstance();
              context.execute(             "window.open('" + url
                    + "','Rpt','location=0,menubar=0,resizable=1,"
                    + "status=0,toolbar=0');");
-//            JavascriptContext.addJavascriptCall(
-//                    FacesContext.getCurrentInstance(),
-//                    "window.open('" + url
-//                   + "','Rpt','location=0,menubar=0,resizable=1,"
-//                   + "status=0,toolbar=0');");
         } catch (Exception e) {
             alert(e.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
