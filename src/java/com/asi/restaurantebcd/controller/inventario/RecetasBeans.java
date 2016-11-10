@@ -13,6 +13,7 @@ import com.asi.restaurantbcd.modelo.Vwproductos;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.util.EstadoEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -81,16 +82,18 @@ public class RecetasBeans implements Serializable{
         descripcion = null;
         usuarioIniciador = null;
         productoTerminado = null;
+    mostrarGuardar = true;
         fecha =null;
     }
     
         public void guaradarReceta() {
-            
+            System.out.println("entro... ");
         try {
             if(lstRecetaDetalle == null || lstRecetaDetalle.isEmpty()) {
                 alert("La receta no tiene detalle.", FacesMessage.SEVERITY_WARN);
                 return;
             }
+            System.out.println("que paso...");
             if (descripcion == null) {
                 alert("La descripcion de la receta es obligatorio.",
                         FacesMessage.SEVERITY_WARN);
@@ -98,14 +101,19 @@ public class RecetasBeans implements Serializable{
             }
             receta = new Receta();
             receta.setDescripcion(descripcion);
-            receta.setEstado(1);
+            receta.setIdreceta(idRecdeta());
+            receta.setEstado(EstadoEnum.TERMINADO.getInteger());
             receta.setFechacreacion(new Date());
             receta.setIdusuariocrea(sesion.getUsuario().getIdusuario());
             receta.setRecetadetalleList(lstRecetaDetalle);
             for (Recetadetalle recetadetalle : lstRecetaDetalle) {
-                recetadetalle.getRecetadetallePK().setIdreceta(0);
+                
+            RecetadetallePK idDer = new RecetadetallePK();
+            idDer.setIdproducto(recetadetalle.getProducto().getIdproducto());
+            idDer.setIdreceta(receta.getIdreceta());
+                recetadetalle.setRecetadetallePK(idDer);
                 recetadetalle.setReceta(receta);
-            }
+            } 
             crudBDC.guardarEntidad(receta);
             alert("La receta se guardo exitosamente.", FacesMessage.SEVERITY_INFO);
         } catch (Exception ex) {
@@ -148,6 +156,20 @@ public class RecetasBeans implements Serializable{
                  
             
         }
+        
+        private Integer idRecdeta() {
+            Integer valor = null ;
+            
+            Query q = em.createNativeQuery("SELECT max(idreceta) FROM receta ");
+            valor = (Integer) q.getSingleResult();
+              if (valor == null) {
+            valor = Integer.parseInt("1");
+        }
+        valor   =  valor + 1;
+            return valor;
+        }
+                
+                
      public void onRowSelectProduc(SelectEvent event) {
         try {
             Vwproductos idP  =  ((Vwproductos) event.getObject());
@@ -157,17 +179,13 @@ public class RecetasBeans implements Serializable{
             if (lstRecetaDetalle == null) {
                 lstRecetaDetalle = new ArrayList<>();
             }
-            RecetadetallePK idDer = new RecetadetallePK();
-            idDer.setIdproducto(idP.getIdproducto());
-            idDer.setIdreceta(1);
-            
             Recetadetalle recDet = new Recetadetalle();
             recDet.setCantidad(cantidad);
             recDet.setFactorconvercion(cantidad);
             recDet.setIdmedidacargo(idP.getIdmedida());
             recDet.setSalida(noreceta);
              recDet.setProducto(pr);
-            recDet.setRecetadetallePK(idDer);
+           
             lstRecetaDetalle.add(0, recDet);
             System.out.println("lstCompradeta.." +lstRecetaDetalle);
             RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -223,6 +241,7 @@ public class RecetasBeans implements Serializable{
          public void alert(String mensaje, FacesMessage.Severity faces) {
         FacesMessage message = new FacesMessage(faces,
                 "Mensaje", mensaje);
+               RequestContext.getCurrentInstance().showMessageInDialog(message);
          } 
     
     
@@ -333,6 +352,17 @@ public class RecetasBeans implements Serializable{
 
     public void setMostrarGuardar(boolean mostrarGuardar) {
         this.mostrarGuardar = mostrarGuardar;
+    }
+
+    public void persist1(Object object) {
+        try {
+            utx.begin();
+            em.persist(object);
+            utx.commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
     }
     
     

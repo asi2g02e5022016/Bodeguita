@@ -31,10 +31,16 @@ and open the template in the editor.
                     <p:menuitem value="Imprimir" action="#{comprasBeans.imprimitCompra()}"
                                 icon="ui-icon-print" />
                     
-                     <p:menuitem value="Exportar"
-                                icon="fa fa-file-excel-o" />
+                     <p:menuitem value="Exportar" 
+                         icon="fa fa-file-excel-o" >
+                                     
+                        
+                     </p:menuitem>
+                    
+                    
                      <p:menuitem value="Monitor" action="#{comprasBeans.mostrarDialogoMonCompras()}"
                                 icon=" ui-icon-search" />
+                     
                 </p:menubar>
                 <h:panelGrid columns="2" width="100%">
                     <h:panelGrid columns="6" width="80%">
@@ -75,9 +81,11 @@ and open the template in the editor.
 
                 <h:panelGrid >
                     <p:dataTable value="#{comprasBeans.lstCompradeta}"
-                                 id="tabladetalle"
-                                 var="det"   emptyMessage=""   editable="true">
-                        <p:ajax event="rowEdit" listener="#{comprasBeans.onRowEdit}" />                      <p:column headerText="cod.">
+                                 id="tabladetalle" rows="2"
+                                 var="det"   emptyMessage=""    paginator="true">
+                        <p:ajax event="rowEdit" listener="#{comprasBeans.onRowEdit}" />   
+      
+                        <p:column headerText="cod.">
                             <h:outputText value="#{det.idproducto.idproducto}" />
                         </p:column>
 
@@ -125,6 +133,13 @@ and open the template in the editor.
                             </f:facet>
                             <p:rowEditor />
                         </p:column>
+                        <f:facet name="footer">
+          
+                        <h:commandLink>
+                <p:graphicImage value="/images/excel.png" width="18"/>
+                <p:dataExporter type="xls" target="tabladetalle" fileName="deta" />
+            </h:commandLink>
+        </f:facet>
                     </p:dataTable>
                 </h:panelGrid>
             </p:panel>

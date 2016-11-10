@@ -20,9 +20,11 @@ and open the template in the editor.
                     <p:menuitem value="Nuevo" update="forprincipal" 
                                 action="#{recetas.limpiarPantalla()}"
                                 icon="ui-icon-plus" />
-                    <p:menuitem value="Guardar"  action="#{recetas.guaradarReceta()}"
+                    <p:menuitem value="Guardar" 
+                                 update="forprincipal" 
+                                action="#{recetas.guaradarReceta()}"
                                 rendered="#{recetas.mostrarGuardar}"
-                                update="forprincipal"
+                               
                                 icon=" ui-icon-disk" />
                     <p:menuitem value="Monitor"  action="#{recetas.mostrarDialogMonitor()}"
                                 icon=" ui-icon-search" />
@@ -35,7 +37,7 @@ and open the template in the editor.
                         <p:inputText value="#{recetas.receta.idusuariocrea}"  readonly="true"  />
 
                          <h:outputLabel  value="Descricion "  />
-                         <p:inputText  readonly="true" value="#{recetas.receta.descripcion}"   />   
+                         <p:inputText    value="#{recetas.descripcion}"  />   
                         <h:outputLabel  value="Fecha "  />
                         <p:inputText readonly="true" value="#{recetas.receta.fechacreacion}"  >
                         <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -76,7 +78,7 @@ and open the template in the editor.
                         <p:column headerText="Total">
                             <h:outputText  />
                         </p:column>
-                        <p:column style="width:32px">
+                        <p:column style="width:32px"  rendered="#{recetas.mostrarGuardar}">
                             <f:facet name="header">
                                 <p:commandButton  
                                     id="iconOnly" 
@@ -144,39 +146,28 @@ and open the template in the editor.
                         <p:menuitem value="Limpiar"
                                     icon="ui-icon-plus" />
                         <p:menuitem value="Buscar" 
+                                    update="tablad"
                                     action="#{recetas.buscarRecetas()}"
                                     icon=" ui-icon-search" > 
                         </p:menuitem>
                     </p:menubar>
                 </h:panelGrid>
-                <h:panelGrid columns="2" width="80%">
-                                      <h:outputLabel  value="Cantidad    "  />
-                                      <p:inputText  />
-                    <h:outputLabel  value="Producto "  />
-                    <p:inputText   />
-                </h:panelGrid>
+                
                 <h:panelGrid >
                     <p:dataTable id="tablad" 
                                  value="#{recetas.lstRecetaMon}"
-                                 var="#{det}"
-                                 rowKey="#{det.recetadetallePK.idreceta}"
+                                 var="det"
+                                 rowKey="#{det.idreceta}"
                                  selectionMode="single" rows="19"  >                        
-                        <p:ajax event="rowSelect" process="@all"  
+                        <p:ajax event="rowSelect"  listener="#{recetas.onRowSelectMon}"
+                                update="forprincipal" process="@all"  
                             />
+                        <p:column headerText="id"  >
+                            <h:outputText value="#{det.idreceta}"  />
+                        </p:column>
+                        
                         <p:column  headerText="descripcion">
-                            <h:outputText value="#{det.producto.producto}"  />
-                        </p:column>
-                        <p:column headerText="medida"  >
-                            <h:outputText   />
-                        </p:column>
-                        <p:column headerText="tipo" >
-                            <h:outputText  />
-                        </p:column>
-                        <p:column headerText="grupo" >
-                            <h:outputText   />
-                            <p:column headerText="marca"  >
-                                <h:outputText   />
-                            </p:column>
+                            <h:outputText value="#{det.descripcion}"  />
                         </p:column>
                     </p:dataTable>
                 </h:panelGrid>
