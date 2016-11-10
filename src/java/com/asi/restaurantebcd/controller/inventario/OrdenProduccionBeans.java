@@ -5,7 +5,6 @@
  */
 package com.asi.restaurantebcd.controller.inventario;
 
-import com.asi.restaurantbcd.modelo.Compra;
 import com.asi.restaurantbcd.modelo.Estado;
 import com.asi.restaurantbcd.modelo.Ordenproduccion;
 import com.asi.restaurantbcd.modelo.OrdenproduccionPK;
@@ -20,6 +19,7 @@ import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.ConvercionesLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.base.ProcesosInventariosLocal;
+import com.asi.restaurantebcd.negocio.base.TransaccionesInventarioLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,6 +46,9 @@ import org.primefaces.event.SelectEvent;
 public class OrdenProduccionBeans implements Serializable {
 
     @EJB
+    private TransaccionesInventarioLocal transaccionesInventario;
+
+    @EJB
     private ConvercionesLocal converciones;
 
     /**
@@ -60,6 +63,9 @@ public class OrdenProduccionBeans implements Serializable {
      private List <Ordenproducciondetalle> lstOrdenProdDetalle;
       private Receta receta;
     private List <Receta> lstReceta;
+    private String descripcionReceta;
+    private String producoPT;
+    private String medidaPT;
     
     
      @EJB
@@ -77,6 +83,8 @@ public class OrdenProduccionBeans implements Serializable {
     @Resource
     private javax.transaction.UserTransaction utx;
     private Double cantidadArealizar;
+    
+    
     
     
     /**
@@ -111,6 +119,10 @@ public class OrdenProduccionBeans implements Serializable {
              
             int corel = 0;
             for (Ordenproducciondetalle det : lstOrdenProdDetalle) {
+                
+                if (true) {
+                    
+                }
                 corel++;
                     OrdenproducciondetallePK idPK = new OrdenproducciondetallePK();
                     idPK.setIdSucursal(idOrdenPK.getIdsucursal());
@@ -123,7 +135,7 @@ public class OrdenProduccionBeans implements Serializable {
             ordenProd.setOrdenproducciondetalleList(lstOrdenProdDetalle);
             ordenProd.setSucursal(sesion.getSucursal());
             ordenProd.setIdusuario(sesion.getUsuario());
-            crud.guardarEntidad(ordenProd);
+            transaccionesInventario.guardarOrdenCompra(ordenProd);
             alert("La orden fue ejecutada exitosamente.", FacesMessage.SEVERITY_INFO);
         } catch (Exception ex) {
             Logger.getLogger(OrdenProduccionBeans.class.getName())
@@ -139,7 +151,7 @@ public class OrdenProduccionBeans implements Serializable {
      RequestContext requestContext = RequestContext.getCurrentInstance();
                 requestContext.execute("PF('dialogoMonitor').show();");
     }
-           public void mostrarDialogRecetas() {
+            public void mostrarDialogRecetas() {
      RequestContext requestContext = RequestContext.getCurrentInstance();
                 requestContext.execute("PF('dialogoRecetas').show();");
     }
@@ -189,21 +201,24 @@ public class OrdenProduccionBeans implements Serializable {
             List <Recetadetalle> lstDet = buscarDetallesRecetas(receta.getIdreceta());            
             lstOrdenProdDetalle = new ArrayList<>();
             for (Recetadetalle recDeta : lstDet) {
-
+                if (recDeta.getSalida() == 1) {
                 Ordenproducciondetalle detaOP = new Ordenproducciondetalle();
-//
-//            Double cant = converciones.getValorConvercion(recDeta.getCantidad(),
-//                    recDeta.GET, cantidadArealizar);
                 detaOP.setCantidadconfirmada(recDeta.getCantidad().doubleValue());
                 detaOP.setCostounitario(recDeta.getCantidad().doubleValue());
                 Producto prod = crud.buscarEntidad(Producto.class,
                         recDeta.getRecetadetallePK().getIdproducto());
                 detaOP.setIdproducto(prod);
-//            detaOP.setIva(detaOP.getIva());
-//            detaOP.setPrecio(0);
                 lstOrdenProdDetalle.add(detaOP);
-
+                } else {
+                    Producto prod = crud.buscarEntidad(Producto.class,
+                        recDeta.getRecetadetallePK().getIdproducto());
+                    producoPT =  prod.getProducto();
+                    medidaPT =  prod.getIdmedida().getMedida();
+                    descripcionReceta = receta.getDescripcion();
+                    
+                }
             }
+            
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoRecetas').hide();");
         } catch (Exception ex) {
@@ -218,7 +233,10 @@ public class OrdenProduccionBeans implements Serializable {
             ordenProd = (Ordenproduccion) event.getObject();
             
             lstOrdenProdDetalle = new ArrayList<>();
-            lstOrdenProdDetalle.addAll(ordenProd.getOrdenproducciondetalleList());
+            for (Ordenproducciondetalle det : ordenProd.getOrdenproducciondetalleList()) {
+                
+                lstOrdenProdDetalle.add(det);
+            }
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoMonitor').hide();");
         } catch (Exception ex) {
@@ -290,20 +308,35 @@ public class OrdenProduccionBeans implements Serializable {
         return lstOrdenProdDetalle;
     }
 
+    public String getDescripcionReceta() {
+        return descripcionReceta;
+    }
+
+    public void setDescripcionReceta(String descripcionReceta) {
+        this.descripcionReceta = descripcionReceta;
+    }
+
     public void setLstOrdenProdDetalle(List<Ordenproducciondetalle> lstOrdenProdDetalle) {
         this.lstOrdenProdDetalle = lstOrdenProdDetalle;
     }
 
-    public void persist(Object object) {
-        try {
-            utx.begin();
-            em.persist(object);
-            utx.commit();
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
-        }
+    public String getProducoPT() {
+        return producoPT;
     }
+
+    public void setProducoPT(String producoPT) {
+        this.producoPT = producoPT;
+    }
+
+    public String getMedidaPT() {
+        return medidaPT;
+    }
+
+    public void setMedidaPT(String medidaPT) {
+        this.medidaPT = medidaPT;
+    }
+
+
 
    
     

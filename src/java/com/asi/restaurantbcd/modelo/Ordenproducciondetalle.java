@@ -33,9 +33,6 @@ public class Ordenproducciondetalle implements Serializable {
     @Basic(optional = false)
     @Column(name = "cantidadconfirmada")
     private Double cantidadconfirmada;
-        @Basic(optional = false)
-    @Column(name = "factorconvercion")
-    private Double factorconvercion ;
     @Column(name = "costounitario")
     private Double costounitario;
     @JoinColumns({
@@ -94,13 +91,6 @@ public class Ordenproducciondetalle implements Serializable {
         this.idproducto = idproducto;
     }
 
-    public Double getFactorconvercion() {
-        return factorconvercion;
-    }
-
-    public void setFactorconvercion(Double factorconvercion) {
-        this.factorconvercion = factorconvercion;
-    }
     
     
 

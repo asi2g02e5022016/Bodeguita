@@ -14,7 +14,7 @@ and open the template in the editor.
     <ui:define name="body">
         <h:form id="forprincipal" >
             <p:growl showDetail="true" showSummary="true" />
-            <p:panel id="basic" header="Compras a proveedores"  >
+            <p:panel id="basic" header="Ordenes de produccion"  >
                 <p:menubar>
                     <p:menuitem value="Nuevo" update="forprincipal" 
                                 action="#{ordenProduccionBeans.limpiarPantalla()}"
@@ -27,43 +27,44 @@ and open the template in the editor.
                                      action="#{ordenProduccionBeans.mostrarDialogMonirOT()}"
                                 icon=" ui-icon-search" />
                 </p:menubar>
-                <h:panelGrid columns="1" width="100%">
-                    <h:panelGrid columns="6" width="80%">
+                    <h:panelGrid columns="8" width="100%">
                         <h:outputLabel  value="No Documento : "/>
                         <p:inputText readonly="true"  
                                      value="#{ordenProduccionBeans.ordenProd.ordenproduccionPK.idordenproduccion}" />
-                        <h:outputLabel  value="Usuario: "  />
-                        <p:inputText readonly="true" value="#{ordenProduccionBeans.ordenProd.idusuario.idusuario}"  />
-                        <h:outputLabel  value="Sucursal "  />
-                        <p:inputText  readonly="true" value="#{ordenProduccionBeans.ordenProd.sucursal.sucursal}"   />
-                        <h:outputLabel  value="Estado "  />
-                        <p:inputText  readonly="true" value="#{ordenProduccionBeans.ordenProd.idestado.estado}"   />   
-                        <h:outputLabel  value="Fecha "  />
-                        <p:inputText readonly="true" value="#{ordenProduccionBeans.ordenProd.fechapedido}" >
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                       
-                        </p:inputText>
-                       
-                               <h:outputLabel  value="Receta "  />
+                    
+                          
+                        <h:outputLabel  value="Receta "  />
                                <h:panelGroup >
-                        <p:inputText readonly="true"   />
+                                   <p:inputText readonly="true" value="#{ordenProduccionBeans.descripcionReceta}"   />
                         
                         <p:commandButton    action="#{ordenProduccionBeans.mostrarDialogRecetas()}"
                                            id="iconOnly" 
                                            icon="ui-icon-search" title="Icon Only" />
-                               </h:panelGroup>  
-                                
+                       </h:panelGroup>  
+                        <h:outputLabel  value="Produto PT "  />
+                        <p:inputText  readonly="true" value="#{ordenProduccionBeans.producoPT}"  />
+                           <h:outputLabel  value="Medida "  />
+                           <p:inputText  readonly="true" value="#{ordenProduccionBeans.medidaPT}"    /> 
+                         
+                        <h:outputLabel  value="Fecha "  />
+                        <p:inputText readonly="true" value="#{ordenProduccionBeans.ordenProd.fechapedido}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:inputText>
+                            <h:outputLabel  value="Usuario: "  />
+                        <p:inputText readonly="true" 
+                                     value="#{ordenProduccionBeans.ordenProd.idusuario.idusuario}"  />
+     
+                        <h:outputLabel  value="Sucursal "  />
+                        <p:inputText  readonly="true" 
+                                      value="#{ordenProduccionBeans.ordenProd.sucursal.sucursal}"   />
+        
+                        <h:outputLabel  value="Estado "  />
+                        <p:inputText  readonly="true"
+                                      value="#{ordenProduccionBeans.ordenProd.idestado.estado}"   />         
                     </h:panelGrid>
-                </h:panelGrid>
-
                 <h:panelGrid >
                     <p:dataTable value="#{ordenProduccionBeans.lstOrdenProdDetalle}"
                                  var="det"   emptyMessage=""   editable="true">
-                      
-                        <p:column headerText="cod.">
-                            <h:outputText value="#{det.ordenproducciondetallePK.idordenproduccion}"  />
-                        </p:column>
-
                         <p:column headerText="Descripcion">
                             <h:outputText value="#{det.idproducto.producto}" />
                         </p:column>
@@ -74,11 +75,7 @@ and open the template in the editor.
                         <p:column headerText="Cantidad">
                             <h:outputText value="#{det.cantidadconfirmada}"  />
                         </p:column>
-                        <p:column headerText="Valor " >
-                        </p:column>
-                       <p:column headerText="tipo">
-                                    <h:outputText />
-                        </p:column>
+                  
                     </p:dataTable>
                 </h:panelGrid>
             </p:panel>

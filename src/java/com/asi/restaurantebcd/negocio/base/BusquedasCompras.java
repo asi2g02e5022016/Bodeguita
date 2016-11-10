@@ -40,7 +40,7 @@ public class BusquedasCompras implements BusquedasComprasLocal {
         Integer valor;
         StringBuilder slq = new StringBuilder();
         slq.append("SELECT ").append("MAX(").append(llave).append(") FROM ");
-        slq.append(clase.getSimpleName());
+        slq.append(clase.getSimpleName().toLowerCase());
         slq.append(" where 1 = 1 and ");
         if (identificador !=null) {
          slq.append(identificador);
