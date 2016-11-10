@@ -125,6 +125,10 @@ public class MttoUsuarioMB implements Serializable {
         lstUsuario = null;
         lstPerfil = null;
         lstEmpleado = null;
+        
+        buscarEmpleado();
+        buscarPerfil();
+        
     }
 
     /**
@@ -132,6 +136,10 @@ public class MttoUsuarioMB implements Serializable {
      */
     public void buscarUsuario() {
         try {
+            limpiarPantalla();
+            buscarEmpleado();
+            buscarPerfil();                    
+            
             lstUsuario = ejbBusqUsrLcal.buscarUsuario();
             if (lstUsuario == null || lstUsuario.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
@@ -272,12 +280,12 @@ public class MttoUsuarioMB implements Serializable {
         try {
             Date fechaAhora = new Date();
             
-            if (fechaIngreso.after(fechaAhora)){
+            /*if (fechaIngreso.after(fechaAhora)){
                  alert("Fecha de ingreso no puede ser mayor a fecha de hoy.",
                         FacesMessage.SEVERITY_INFO);
                 return;
-            }
-            
+            }*/
+            fechaIngreso = fechaAhora;
             
             
             if (codigoUsr == null || codigoUsr.equals("")) {
