@@ -270,6 +270,16 @@ public class MttoUsuarioMB implements Serializable {
      */
     public void guardarUsuario() {
         try {
+            Date fechaAhora = new Date();
+            
+            if (fechaIngreso.after(fechaAhora)){
+                 alert("Fecha de ingreso no puede ser mayor a fecha de hoy.",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+            
+            
+            
             if (codigoUsr == null || codigoUsr.equals("")) {
                 alert("Código de usuario es obligatorio.",
                         FacesMessage.SEVERITY_INFO);
