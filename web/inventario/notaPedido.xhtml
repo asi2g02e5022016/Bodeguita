@@ -25,7 +25,7 @@ and open the template in the editor.
                                 icon="ui-icon-disk" />
                     <p:menuitem value="Enviar nota de Pedido" 
                                 icon=" ui-icon-refresh"
-                                action="#{notaPedido.enviarNotaPedido()}"/>
+                                action="#{notaPedido.enviarNotaPedido()}" update="@all" process="@all"/>
                     
                     <p:menuitem value="Imprimir" action="#{notaPedido.imprimirReporteCompra()}"
                                 icon="ui-icon-print" />
@@ -71,9 +71,10 @@ and open the template in the editor.
                 
 
                 <h:panelGrid >
-                    <p:dataTable value="#{notaPedido.lstPeddeta}" 
-                                 var="det"   emptyMessage=""   editable="true">
-                        <p:ajax event="rowEdit" listener="#{notaPedido.onRowEdit}" />                      <p:column headerText="cod.">
+                    <p:dataTable value="#{notaPedido.lstPeddeta}"  
+                                 var="det"   emptyMessage=""   editable="true" id="tblPeddeta">
+                        <p:ajax event="rowEdit" listener="#{notaPedido.onRowEdit}" />                      
+                        <p:column headerText="cod.">
                             <h:outputText value="#{det.idproducto.idproducto}" />
                         </p:column>
 
@@ -91,7 +92,8 @@ and open the template in the editor.
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Cantidad Conf. " rendered="#{notaPedido.mostrarCantConfirmada}">
+                        <p:column headerText="Cantidad Conf. " 
+                                  rendered="#{notaPedido.mostrarCantConfirmada}">
                             <p:cellEditor>
                                 <f:facet name="output">
                                     <h:outputText value="#{det.cantidadconfirmada}" />
@@ -101,11 +103,8 @@ and open the template in the editor.
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Precio">
-                            <h:outputText value="#{det.precio}"  />
-                        </p:column>
                         <p:column headerText="Monto">
-                            <h:outputText value="#{det.monto}"  />
+                            <h:outputText value="#{det.costo}"  />
                         </p:column>
                         <p:column headerText="Total">
                             <h:outputText value="#{det.total}" />
@@ -138,8 +137,7 @@ and open the template in the editor.
                                  selectionMode="single" rowKey="#{suc.idsucursal}"  emptyMessage=""  >
                                
                         <p:ajax event="rowSelect" update="@all" 
-                                listener="#{notaPedido.onRowSelectSucursal}" 
-                        />
+                                listener="#{notaPedido.onRowSelectSucursal}" />
                         <p:column filterBy="#{suc.sucursal}" headerText="nombre">
                             <h:outputText value="#{suc.sucursal}"  />
                         </p:column>
@@ -176,7 +174,7 @@ and open the template in the editor.
                                  value="#{notaPedido.lstProducto}"
                                  var="dpro" rowKey="#{dpro.idproducto}"                                  
                                  selectionMode="single" rows="19"  >                        
-                        <p:ajax event="rowSelect" update="tablaProdd" process="@all"  
+                        <p:ajax event="rowSelect" update=":forprincipal:tblPeddeta" process="@all"  
                             listener="#{notaPedido.onRowSelect}"/>
                         <p:column filterBy="#{dpro.producto}" headerText="descripcion">
                             <h:outputText value="#{dpro.producto}"  />

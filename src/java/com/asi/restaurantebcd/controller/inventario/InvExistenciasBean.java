@@ -27,6 +27,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import com.asi.restaurantebcd.negocio.base.BusquedasExistenciasLocal;
 import java.util.ArrayList;
+import javax.inject.Inject;
 
 /**
  *
@@ -55,6 +56,7 @@ public class InvExistenciasBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().
                         redirect(url);
             }
+            codsucursal = sesion.getSucursal().getIdsucursal();
             this.ltsVwExistencias = ejbBucdaExistencias.buscarExistencias(null);
             this.lstSucursal = ejbBucdaExistencias.buscarSucursal();
         } catch (Exception e) {
@@ -78,6 +80,7 @@ public class InvExistenciasBean implements Serializable {
     private float costounitario; //Atributo que se muestra en pantalla el costo unitario del producto.
     private float valreservado;
     private float transito;
+    @Inject
     private SessionUsr sesion; //Busca beans session activa.
     private DataTable dtExistencia = new DataTable();
     private Sucursal sucursalConst;

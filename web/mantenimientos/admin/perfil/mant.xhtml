@@ -32,12 +32,10 @@ and open the template in the editor.
                                                             <h:outputLabel value="Codigo" for="cod" />
                                                                 <p:inputText id="cod" value="#{mttoPerfil.instance.codigo}"
                                                                              required="true"  requiredMessage="Codigo requerido">
-                                                                <p:ajax event="keyup" update="@none" process="@parent" />
                                                                 </p:inputText>
                                                                 <h:outputLabel value="Nombre" for="nom" />
                                                                 <p:inputText id="nom" value="#{mttoPerfil.instance.nombre}"
                                                                              required="true" requiredMessage="Nombre requerido" >
-                                                                <p:ajax event="keyup" />
                                                                 </p:inputText>
                                                                 
 							</h:panelGrid>
@@ -45,7 +43,6 @@ and open the template in the editor.
 								<h:outputLabel value="Descripcion" />
                                                                 <p:inputTextarea value="#{mttoPerfil.instance.descripcion}"
                                                                                  >
-                                                                    <p:ajax event="keyup"  />
                                                                 </p:inputTextarea>
 							</h:panelGrid>
 
@@ -83,9 +80,9 @@ and open the template in the editor.
                                                                 </p:commandButton>
                                                                 <p:commandButton action="lista?facesRedirect=true" actionListener="#{mttoPerfil.save}" 
 									rendered="#{mttoPerfil.instance.idPerfil==null}" icon="ui-icon-disk"
-                                                                        value="Guardar"  ajax="false" update="growl"  />
+                                                                        value="Guardar"  ajax="false" update="growl" process="@all" />
 								<p:commandButton rendered="#{mttoPerfil.instance.idPerfil!=null}"
-									icon="ui-icon-disk" value="Guardar E" onclick="PF('dlg').show();" />
+									icon="ui-icon-disk" value="Guardar" onclick="PF('dlg').show();" process="@all" />
                                                                 <p:commandButton type="button"
 									rendered="#{mttoPerfil.instance.idPerfil!=null}" icon="ui-icon-trash"
 									value="Eliminar" onclick="PF('dlgDelete').show();" />

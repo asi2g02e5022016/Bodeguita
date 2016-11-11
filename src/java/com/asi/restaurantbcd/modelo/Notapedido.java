@@ -59,10 +59,7 @@ public class Notapedido implements Serializable {
     @ManyToOne(optional = false)
     private Sucursal idSucursalOrigen;
     
-    @JoinColumn(name = "idusuariod", referencedColumnName = "idusuario")
-    @ManyToOne
-    private Usuario idusuariod;
-
+    
     public Notapedido() {
     }
 
@@ -136,13 +133,7 @@ public class Notapedido implements Serializable {
         this.sucursal = sucursal;
     }
 
-    public Usuario getIdusuariod() {
-        return idusuariod;
-    }
 
-    public void setIdusuariod(Usuario idusuariod) {
-        this.idusuariod = idusuariod;
-    }
 
     @Override
     public int hashCode() {

@@ -5,6 +5,7 @@
  */
 package com.asi.restaurantbcd.modelo;
 
+import com.asi.restaurantebcd.negocio.util.EstadoEnum;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -37,8 +39,8 @@ public class Notapedidodetalle implements Serializable {
     @Column(name = "cantidadconfirmada")
     private int cantidadconfirmada;
     @Basic(optional = false)
-    @Column(name = "precio")
-    private float precio;
+    @Column(name = "costo")
+    private float costo;
     @JoinColumns({
         @JoinColumn(name = "idnotapedido", referencedColumnName = "idnotapedido", insertable = false, updatable = false),
         @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)})
@@ -47,6 +49,9 @@ public class Notapedidodetalle implements Serializable {
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
     private Producto idproducto;
+    
+    @Transient
+    private float total;
 
     public Notapedidodetalle() {
     }
@@ -55,11 +60,11 @@ public class Notapedidodetalle implements Serializable {
         this.notapedidodetallePK = notapedidodetallePK;
     }
 
-    public Notapedidodetalle(NotapedidodetallePK notapedidodetallePK, int cantidadsolicitada, int cantidadconfirmada, float precio) {
+    public Notapedidodetalle(NotapedidodetallePK notapedidodetallePK, int cantidadsolicitada, int cantidadconfirmada, float costo) {
         this.notapedidodetallePK = notapedidodetallePK;
         this.cantidadsolicitada = cantidadsolicitada;
         this.cantidadconfirmada = cantidadconfirmada;
-        this.precio = precio;
+        this.costo = costo;
     }
 
     public Notapedidodetalle(int idnotapeddet, int idnotapedido, int idsucursal) {
@@ -90,12 +95,12 @@ public class Notapedidodetalle implements Serializable {
         this.cantidadconfirmada = cantidadconfirmada;
     }
 
-    public float getPrecio() {
-        return precio;
+    public float getCosto() {
+        return costo;
     }
 
-    public void setPrecio(float precio) {
-        this.precio = precio;
+    public void setCosto(float precio) {
+        this.costo = precio;
     }
 
     public Notapedido getNotapedido() {
@@ -138,5 +143,18 @@ public class Notapedidodetalle implements Serializable {
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Notapedidodetalle[ notapedidodetallePK=" + notapedidodetallePK + " ]";
     }
+
+    /**
+     * @return the total
+     */
+    public float getTotal() {
+        if(this.getNotapedido().getIdestado().getIdestado().equals(EstadoEnum.GENERADO.getInteger())){
+        total = this.getCantidadsolicitada()*this.getCosto();
+        }else{
+         total = this.getCantidadsolicitada()*this.getCosto(); 
+        }
+        return total;
+    }
+
     
 }

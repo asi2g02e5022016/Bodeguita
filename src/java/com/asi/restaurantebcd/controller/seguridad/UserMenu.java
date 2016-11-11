@@ -63,7 +63,7 @@ public class UserMenu implements Serializable {
           }
            
           for (Opcionmenu om : childList.getResultList()) {
-				if (menusUsuario.contains(om)) {
+				if (menusUsuario.contains(om) && om.isVisible()) {
 					buildMenuItem(om);
 			}
 		}

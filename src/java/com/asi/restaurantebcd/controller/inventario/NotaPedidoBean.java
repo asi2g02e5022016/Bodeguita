@@ -5,16 +5,21 @@
  */
 package com.asi.restaurantebcd.controller.inventario;
 
+import com.asi.restaurantbcd.modelo.Compra;
 import com.asi.restaurantbcd.modelo.Compradetalle;
 import com.asi.restaurantbcd.modelo.Estado;
 import com.asi.restaurantbcd.modelo.Notapedido;
+import com.asi.restaurantbcd.modelo.NotapedidoPK;
 import com.asi.restaurantbcd.modelo.Notapedidodetalle;
+import com.asi.restaurantbcd.modelo.NotapedidodetallePK;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Vwproductos;
 import com.asi.restaurantebcd.controller.compras.ComprasBeans;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
+import com.asi.restaurantebcd.negocio.base.BusquedaNotaPedido;
+import com.asi.restaurantebcd.negocio.base.BusquedaNotaPedidoLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal;
@@ -80,20 +85,23 @@ public class NotaPedidoBean implements Serializable{
     @EJB
     private CrudBDCLocal crud;
     
+    @EJB
+    private BusquedaNotaPedidoLocal ejbPedido;
+    
     @Inject
     private SessionUsr session;
     
     public void nuevoPedido(){
     Estado estadoPed=null;
         try {
-           estadoPed = crud.buscarEntidad(Estado.class, EstadoEnum.GENERADO);
+           estadoPed = crud.buscarEntidad(Estado.class, EstadoEnum.GENERADO.getInteger());
         }catch(Exception e){
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, e, null);
         }
         estado=estadoPed.getEstado();
         notaEnca=new Notapedido();
         notaEnca.setSucursal(session.getSucursal());
-        notaEnca.setIdusuariod(session.getUsuario());
+        notaEnca.setIdusuarios(session.getUsuario().getIdusuario());
         notaEnca.setFechaingreso(new Date());
         notaEnca.setIdestado(estadoPed);
         
@@ -117,7 +125,40 @@ public class NotaPedidoBean implements Serializable{
     
     public void guardarPedido(){};
     
-    public void enviarNotaPedido() {};
+    public void enviarNotaPedido() {
+        Integer codigoCom=0;
+        try {
+            codigoCom =  ejbPedido.obtenerCorreltivoPedido(session.getSucursal().getIdsucursal());
+            this.nodocu = codigoCom;
+        } catch (Exception ex) {
+            Logger.getLogger(NotaPedidoBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        NotapedidoPK pk = new NotapedidoPK();
+        pk.setIdnotapedido(codigoCom);
+        pk.setIdsucursal(session.getSucursal().getIdsucursal());
+        
+        notaEnca.setNotapedidoPK(pk);
+        
+        int correl = 0;
+        for (Notapedidodetalle det: lstPeddeta){
+           correl++;
+           NotapedidodetallePK pkdet = new NotapedidodetallePK();
+           pkdet.setIdnotapedido(this.nodocu);
+           pkdet.setIdnotapeddet(correl);
+           pkdet.setIdsucursal(session.getSucursal().getIdsucursal());
+           det.setNotapedidodetallePK(pkdet);
+        }
+        
+        notaEnca.setNotapedidodetalleList(lstPeddeta);
+        
+        try {
+            crud.guardarEntidad(notaEnca);
+        } catch (Exception ex) {
+            Logger.getLogger(NotaPedidoBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    };
     
     public void imprimirReporteCompra(){};
     
@@ -199,6 +240,7 @@ public class NotaPedidoBean implements Serializable{
     
       public void onRowSelectSucursal(SelectEvent event) {
           this.sucursalOrigen = ((Sucursal) event.getObject()).getSucursal();
+          this.notaEnca.setIdSucursalOrigen((Sucursal) event.getObject());
       }
       
       public void onRowSelect(SelectEvent event) {
@@ -224,9 +266,13 @@ public class NotaPedidoBean implements Serializable{
             notaDeta = new Notapedidodetalle();
             notaDeta.setIdproducto(pro);
             notaDeta.setCantidadsolicitada(cantidadSolic.intValue());
-            notaDeta.setPrecio(0);
+            notaDeta.setCantidadconfirmada(0);
+            notaDeta.setNotapedido(notaEnca);
+            notaDeta.setCosto(Double.valueOf(idP.getPreciocompra()).floatValue());
             lstPeddeta.add(0, notaDeta);
+            System.out.println("Preciocompra: " + idP.getPreciocompra());
             System.out.println("lstPeddeta.." +lstPeddeta);
+            
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoProducto').hide();");
         } catch (Exception ex) {
