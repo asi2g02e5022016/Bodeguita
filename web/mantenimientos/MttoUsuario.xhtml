@@ -104,16 +104,15 @@ and open the template in the editor.
                         </p:tab>
                     </p:accordionPanel>
                     <h:panelGrid >
-                        <p:dataTable id="tablaUsuarios" emptyMessage="" 
-                                     binding="#{mttoUsuario.dtUsuario}"
+                        <p:dataTable id="tablaUsuarios" emptyMessage=""                                      
                                      value="#{mttoUsuario.lstUsuario}" 
                                      var="dpro" rowKey="#{dpro.idusuario}"
                                      selectionMode="single" rows="3" 
                                      editable="true" paginator="true" 
                                      rowsPerPageTemplate="3" scrollable="true"
                                      scrollWidth="650" > 
-                            <!--<p:ajax event="cellEdit" listener="#{mttoUsuario.SeleccionarFecha}" update="tablaUsuarios" />-->
-                            <p:ajax event="rowEdit" listener="#{mttoUsuario.actualizarUsuario()}"     />
+                            <!--<p:ajax event="cellEdit" process="@this" listener="#{mttoUsuario.SeleccionarFecha}" update="tablaUsuarios" />-->
+                            <p:ajax event="rowEdit" listener="#{mttoUsuario.actualizarUsuario}"     />
                             <p:ajax event="rowEditCancel" listener="#{mttoUsuario.eventoCancel}"     />
 
                             <p:column headerText="Usuario" width="5%">
@@ -136,10 +135,7 @@ and open the template in the editor.
                                         <p:calendar disabled="true" value="#{dpro.fechabaja}" pattern="dd-MM-yyyy" mask="true" />
                                     </f:facet>
                                     <f:facet  name="input">
-                                        <p:calendar  disabled="false" value="#{dpro.fechabaja}" pattern="dd-MM-yyyy" mask="true" />
-                                        <!--<p:ajax event="dateSelect" oncomplete="PF('tablaUsuarios').filter()" update="tablaUsuarios" />
-                                        <p:ajax event="change"  oncomplete="PF('Table').filter()" update="tablaUsuarios"/>-->
-
+                                        <p:calendar disabled="false" value="#{dpro.fechabaja}" pattern="dd-MM-yyyy" mask="true" />   
                                     </f:facet>
                                 </p:cellEditor> 
                             </p:column>

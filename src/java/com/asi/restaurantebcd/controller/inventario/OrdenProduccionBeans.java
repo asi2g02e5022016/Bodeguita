@@ -16,7 +16,7 @@ import com.asi.restaurantbcd.modelo.Recetadetalle;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
-import com.asi.restaurantebcd.negocio.base.ConvercionesLocal;
+//import com.asi.restaurantebcd.negocio.base.ConvercionesLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.base.ProcesosInventariosLocal;
 import com.asi.restaurantebcd.negocio.base.TransaccionesInventarioLocal;
@@ -47,9 +47,6 @@ public class OrdenProduccionBeans implements Serializable {
 
     @EJB
     private TransaccionesInventarioLocal transaccionesInventario;
-
-    @EJB
-    private ConvercionesLocal converciones;
 
     /**
      * Creates a new instance of OrdenProduccion

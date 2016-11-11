@@ -26,11 +26,7 @@ Vista xhtl de Mantenimientos de companias.
                     </p:menubar>
                     <h:panelGrid columns="2" width="80%">
                         <h:outputLabel  value="Medida: " />
-                        <p:inputText value="#{mttoMedidas.medida}" style="width: 100%"   />
-                        <h:outputLabel  value="Referencia: " />
-                        <p:inputText value="#{mttoMedidas.referencia}" style="width: 100%"   />
-                        <h:outputLabel  value="Valor de conversión: " />
-                        <p:inputText value="#{mttoMedidas.conversion}" style="width: 100%"   />
+                        <p:inputText value="#{mttoMedidas.medida}" style="width: 100%"   />                        
                     </h:panelGrid>
                     <h:panelGrid >
                         <p:dataTable id="tablaProd" emptyMessage="" value="#{mttoMedidas.lstMedida}"
@@ -40,13 +36,7 @@ Vista xhtl de Mantenimientos de companias.
                             </p:column> 
                             <p:column headerText="Medida" width="40%">
                                 <h:outputText value="#{p.medida}"  />
-                            </p:column> 
-                            <p:column headerText="Refencia" width="40%">
-                                <h:outputText value="#{p.referencia}"  />
-                            </p:column> 
-                            <p:column headerText="Conversión" width="40%">
-                                <h:outputText value="#{p.conversion}"  />
-                            </p:column> 
+                            </p:column>                             
                         </p:dataTable>
                     </h:panelGrid>
                 </p:panel>

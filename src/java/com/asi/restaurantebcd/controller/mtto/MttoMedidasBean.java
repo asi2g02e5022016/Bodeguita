@@ -101,19 +101,10 @@ public class MttoMedidasBean implements Serializable {
                 alert("El nombre medida es obligatorio", FacesMessage.SEVERITY_ERROR);
                 return;
             }
-            if (referencia == null || referencia.equals("")) {
-                alert("El campo referencia es obligatoria", FacesMessage.SEVERITY_ERROR);
-                return;
-            }
-            if (conversion == 0) {
-                alert("Ingrese un valor de conversion", FacesMessage.SEVERITY_ERROR);
-                return;
-            }
+            
 
             medidaConst = new Medida();
-            medidaConst.setMedida(medida);
-            medidaConst.setReferencia(referencia);
-            medidaConst.setConversion(conversion);
+            medidaConst.setMedida(medida);           
             crudBDC.guardarEntidad(medidaConst);
             alert("La medida se ha guardado con exito", FacesMessage.SEVERITY_INFO);
             buscarMedidas();
