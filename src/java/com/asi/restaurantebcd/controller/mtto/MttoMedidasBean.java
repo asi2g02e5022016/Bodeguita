@@ -100,8 +100,7 @@ public class MttoMedidasBean implements Serializable {
             if (medida == null || medida.equals("")) {
                 alert("El nombre medida es obligatorio", FacesMessage.SEVERITY_ERROR);
                 return;
-            }
-            
+            }           
 
             medidaConst = new Medida();
             medidaConst.setMedida(medida);           
