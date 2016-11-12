@@ -143,6 +143,7 @@ public class MttoDepartamento implements Serializable{
             alert("Departamento ingresado exitosamente.",
                     FacesMessage.SEVERITY_INFO);
             this.departamentoConstructor = null;
+            this.departamento = null;
 //            this.companiaConstructor = null;
             this.lstDepartamento = this.ejbBusqMtto.buscarDepartamento();
            
@@ -156,49 +157,48 @@ public class MttoDepartamento implements Serializable{
     }
     
     ///////////////////////////////////////
-    public void actualizarDepartamento() {
-        try {
-            if (this.tablaDepartamento.getRowData() != null) {
-                Departamento imp = this.lstDepartamento.get(this.tablaDepartamento.getRowIndex());                
-//                this.impuestoConstructor = (Impuesto) tablaImpuesto.getRowData();
-//                companiaConstructor = new Compania();
-//                companiaConstructor.setIdcompania(idCompania);
-//                imp.setIdcompania(companiaConstructor);
-//                this.impuestoConstructor.setIdcompania(companiaConstructor);
-//                System.out.println(this.impuestoConstructor);
-                crud.guardarEntidad(imp);
+    public void actualizarDepartamento(RowEditEvent event) {
+        
+         try {
+            if (event.getObject() != null) {
+                Departamento imp = (Departamento) event.getObject();                
+                 crud.guardarEntidad(imp);
+                
                 alert("Impuesto actualizado exitosamente.",
                         FacesMessage.SEVERITY_INFO);
                 this.departamentoConstructor = null;
-//            this.companiaConstructor = null;
+                this.departamento = null;
             imp = null;
            this.lstDepartamento= this.ejbBusqMtto.buscarDepartamento();
             }
       }catch (Exception ex) {
             Logger.getLogger(MttoImp.class.getName())
                     .log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+            alert("error aqui ", FacesMessage.SEVERITY_ERROR);
         }
-    }
+         }
     
     
     // eliminar departamentos
      public void eliminarDepartamento() {
         try {
+                       
             if (tablaDepartamento.getRowData() != null) {
-
                 Departamento imp = this.lstDepartamento.get(this.tablaDepartamento.getRowIndex());
                 if (crud.eliminarEntidad(imp) == true) {
                     lstDepartamento.remove(this.tablaDepartamento.getRowIndex());
                     alert("Registro eliminado exitosamente.",
                             FacesMessage.SEVERITY_INFO);
-                    this.lstDepartamento = this.ejbBusqMtto.buscarDepartamento();
-                    this.departamentoConstructor = null;
+                    
+                     this.departamentoConstructor = null;
+
+            this.lstDepartamento = this.ejbBusqMtto.buscarDepartamento();
+
 
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(MttoImp.class.getName())
+            Logger.getLogger(MttoDepartamento.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
@@ -212,7 +212,7 @@ public class MttoDepartamento implements Serializable{
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
         } catch (Exception ex) {
-            Logger.getLogger(MttoImp.class.getName())
+            Logger.getLogger(MttoDepartamento.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
