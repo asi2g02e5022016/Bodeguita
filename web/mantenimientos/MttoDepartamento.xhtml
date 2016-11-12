@@ -31,23 +31,19 @@ and open the template in the editor.
                                      readonly ="true" style ="width: 40px"/>
                         <h:outputLabel value ="Departamento "/>
                         <p:inputText style="width: 100%" value ="#{mttoDepartamento.departamento}"/>
-                        <h:outputLabel value ="Compañia:" />
-                     <!--   <p:selectOneMenu id="listCompania"  value ="#{mttoDepartamento.idCompania}" >
-                            <f:selectItems value="#{mttoDepartamento.lstCompania}"
-                                           var="inp" itemLabel="#{inp.compania}" itemValue="#{inp.idcompania}"/>                                       
-                        </p:selectOneMenu> -->
-                      
+                        
+                                           
                     </h:panelGrid>
                       <!-- //////////////////////////////////////////////////7-->
                     <h:panelGrid >
                         <p:dataTable id="tablaDept" emptyMessage="" 
-                                     binding="#{mttoDepartamento.tablaDepartamento}"
                                      value="#{mttoDepartamento.lstDepartamento}"
                                      var="dimp" rowKey="#{dimp.iddepartamento}"
-                                     selectionMode="single" rows="19" 
-                                     editable="true">
+                                     rows="6" 
+                                    editable="true" paginator="true" 
+                                    rowsPerPageTemplate="6">
 
-                            <p:ajax event="rowEdit" listener="#{mttoDepartamento.actualizarDepartamento()}" />
+                            <p:ajax event="rowEdit" listener="#{mttoDepartamento.actualizarDepartamento}" />
                             <p:ajax event="rowEditCancel" listener="#{mttoDepartamento.onCancel}"  />
 
                             <p:column headerText="Id" width="10%">
@@ -65,20 +61,6 @@ and open the template in the editor.
                                 </p:cellEditor>   
                             </p:column>
 
-                            <!--<p:column headerText="Compañia" width="100%">
-                                <p:cellEditor>
-                                     <f:facet  name="output">
-                                        <h:outputText value="#{dimp.idcompania.compania}" />  
-                                    </f:facet>
-                                    <f:facet name="input">  
-                                          <p:selectOneMenu id="listCompania"  value ="#{mttoDepartamento.idCompania}" style="width: 100%"  >
-                                            <f:selectItems value="#{mttoDepartamento.lstCompania}"
-                                                           var="inp" itemLabel="#{inp.compania}" itemValue="#{inp.idcompania}"/>                                       
-                                        </p:selectOneMenu> 
-                                    </f:facet> 
-                                </p:cellEditor>
-
-                            </p:column>-->
                             <p:column headerText="Fecha de Creación" width="30%">
                                 <p:cellEditor>
                                     <f:facet  name="output">
@@ -87,7 +69,7 @@ and open the template in the editor.
                                         </h:outputText>  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:inputText value="#{dimp.fechacreacion}" style="width:100%">
+                                        <p:inputText value="#{dimp.fechacreacion}" style="width:100%" disabled="true">
                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                         </p:inputText> 
                                     </f:facet> 
@@ -95,15 +77,14 @@ and open the template in the editor.
 
                             </p:column>
 
-
                             <p:column style="width:50px; align-content: center" headerText="Modificar">
                                 <p:rowEditor />
                             </p:column>
 
                             <p:column style="width:60px; align-content: center" headerText="Eliminar">                               
                                   
-                                    <p:commandButton   value="Eliminar" 
-                                                       action="#{mttoDepartamento.eliminarDepartamento()}"
+                                <p:commandButton  value="Eliminar" 
+                                                       action="#{mttoDepartamento.eliminarDepartamento}"
                                                       />
                                
                             </p:column >
