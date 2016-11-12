@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+<ui:define name="body">
+    <center>
+        <h:form id="forprincipal">
+            <p:growl showDetail="true" showSummary="true" />
+            <p:panel id="basic" header="Mantenimiento de Caja" style="width: 50%"  >
+                <p:menubar>
+                    <p:menuitem value="Nuevo" update="forprincipal" action="#{mttoCaja.limpiarPantalla()}"
+                                    icon="ui-icon-plus" />
+                    <p:menuitem value="Guardar" update="forprincipal" action="#{mttoCaja.guardarCaja()}"
+                                    icon="ui-icon-disk" />
+                    <p:menuitem value="Buscar" update="forprincipal" action="#{mttoCaja.buscarCaja()}"
+                                    icon=" ui-icon-search" />
+                    </p:menubar>
+                
+                <h:panelGrid columns="4" width="80%">
+                        <h:outputLabel value="Id Caja "/>
+                        <p:inputText value ="#{mttoCaja.idCaja}"
+                                     readonly ="true" style ="width: 40px"/>
+                        
+                        <p:outputLabel value="Sucursal"/>
+                        <p:selectOneMenu id="listSucursal" autoWidth="40" value ="#{mttoCaja.idSucursal}" >
+                            <f:selectItem 
+                                           itemLabel="Sucursal" itemValue=""/>
+                            <f:selectItems value="#{mttoCaja.lstSucursal}"
+                                           var="ca" itemLabel="#{ca.sucursal}" itemValue="#{ca.idsucursal}"/>                                       
+                        </p:selectOneMenu> 
+                        
+                        <h:outputLabel value ="Caja "/>
+                        <p:inputText style="width: 50%" value ="#{mttoCaja.caja}"/>
+                        
+                        <h:outputText value="Activo:" />
+                        <p:selectBooleanButton id="Activo" value="#{mttoCaja.activo}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px" >
+                         </p:selectBooleanButton>
+                        
+                    </h:panelGrid>
+                
+                <h:panelGrid>
+                    <p:dataTable id="tablaProd" emptyMessage=""
+                                 value="#{mttoCaja.lstCaja}"
+                                 var="dimp" rowKey="#{dimp.idcaja}"
+                                 rows="6" 
+                                 editable="true" paginator="true" 
+                                 rowsPerPageTemplate="6"  >
+                        
+                            <p:column headerText="Id" width="10%">
+                            <h:outputText value="#{dimp.idcaja}"  />                                
+                            </p:column>
+                            
+                        <p:column headerText="Sucrusal" width="35%" filterBy="#{dimp.idsucursal.sucursal}">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.idsucursal.sucursal}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu id="listSucursal"  value ="#{dimp.idsucursal.idsucursal}" style="width: 100%"  >
+                                            <f:selectItems value="#{mttoCaja.lstSucursal}"
+                                                           var="cj" itemLabel="#{cj.sucursal}" itemValue="#{cj.idsucursal}"/>                                       
+                                        </p:selectOneMenu> 
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+
+                        <p:column headerText="Producto" width="35%" filterBy="#{dimp.caja}">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.caja}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.caja}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+                        
+                        <p:column headerText="Activo" width="15%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <p:selectBooleanButton id="act" value="#{dimp.activo}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:40px" >
+                                        </p:selectBooleanButton> 
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectBooleanButton value="#{dimp.activo}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:40px" >
+                                        </p:selectBooleanButton>  
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+                        
+                        <p:ajax event="rowEdit"  listener="#{mttoCaja.actualizarCaja}" />
+                           <p:ajax event="rowEditCancel"  listener="#{mttoProducto.onCancel}"/>
+                           
+                           <p:column style="width:50px; align-content: center" headerText="Modificar">
+                                <p:rowEditor />
+                            </p:column>
+                    
+                    </p:dataTable>
+                  </h:panelGrid>
+                 
+            </p:panel>
+            </h:form>    
+            </center>        
+    </ui:define>   
+</ui:composition>
