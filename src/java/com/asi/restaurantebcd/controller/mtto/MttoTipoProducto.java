@@ -163,15 +163,14 @@ public class MttoTipoProducto implements Serializable {
          }
      }
      
-     public void actualizarTipoProducto(){
-         
+     public void actualizarTipoProducto(RowEditEvent event){
          
          try {
-            if (this.tablaTipoProducto.getRowData() != null) {
-                Tipoproducto tp = this.lstTipoProducto.get(this.tablaTipoProducto.getRowIndex());
+            if (event.getObject() != null) {
+                Tipoproducto tp = (Tipoproducto) event.getObject();
                                      
-                crud.guardarEntidad(tp);
-                alert("tipo de Producto actualizado exitosamente.",
+               crud.guardarEntidad(tp);
+                alert("Tipo de producto actualizado exitosamente.",
                         FacesMessage.SEVERITY_INFO);
                 this.tproductoConstructor=null;
                 this.tproductoConstructor=null;
