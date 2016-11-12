@@ -15,7 +15,7 @@ and open the template in the editor.
       <center>
           <h:form id="forprincipal">
                <p:growl showDetail="true" showSummary="true" />
-               <p:panel id="basic" header="Mantenimiento de Productos" style="width: 70%"  >
+               <p:panel id="basic" header="Mantenimiento de Productos" style="width: 80%"  >
                    <p:menubar>
                        <p:menuitem value="Nuevo" update="forprincipal" action="#{mttoProducto.limpiarPantalla()}"
                                     icon="ui-icon-plus" />
@@ -33,24 +33,32 @@ and open the template in the editor.
                         
                         <p:outputLabel value="Grupo Producto"/>
                         <p:selectOneMenu id="listGrupo" autoWidth="40" value ="#{mttoProducto.idGrupoProducto}" >
+                            <f:selectItem 
+                                           itemLabel="Grupo de Producto" itemValue=""/>
                             <f:selectItems value="#{mttoProducto.lstGrupoProducto}"
                                            var="gp" itemLabel="#{gp.grupoproducto}" itemValue="#{gp.idgrupoproducto}"/>                                       
-                        </p:selectOneMenu>
-                        
+                        </p:selectOneMenu>                       
+                       
                         <p:outputLabel value="Marca Producto"/>
                         <p:selectOneMenu id="listMarca" autoWidth="40"  value ="#{mttoProducto.idMarcaProducto}" >
+                            <f:selectItem 
+                                           itemLabel="Marca de Producto" itemValue=""/>
                             <f:selectItems value="#{mttoProducto.lstMarcaProducto}"
                                            var="gp" itemLabel="#{gp.marcaproducto}" itemValue="#{gp.idmarcaproducto}"/>                                       
                         </p:selectOneMenu>
                         
                         <p:outputLabel value="Tipo Producto"/>
                         <p:selectOneMenu id="listTipo"  value ="#{mttoProducto.idTipoProducto}" >
+                            <f:selectItem 
+                                           itemLabel="Tipo de Producto" itemValue=""/>
                             <f:selectItems value="#{mttoProducto.lstTipoProducto}"
                                            var="tp" itemLabel="#{tp.tipoproducto}" itemValue="#{tp.idtipoproducto}"/>                                       
                         </p:selectOneMenu>
                         
                         <p:outputLabel value="Medida"/>
                         <p:selectOneMenu id="listMedida"  value ="#{mttoProducto.idMedida}" >
+                            <f:selectItem 
+                                           itemLabel="Medida" itemValue=""/>
                             <f:selectItems value="#{mttoProducto.lstMedida}"
                                            var="md" itemLabel="#{md.medida}" itemValue="#{md.idmedida}"/>                                       
                         </p:selectOneMenu>
@@ -63,13 +71,10 @@ and open the template in the editor.
                          </p:selectBooleanButton>
                         
                        
-                       
-                         <h:outputLabel value ="Precio de Compra Sin IVA "/>
-                         <p:inputNumber id="pcompra" value="#{mttoProducto.preciocompra}">  
+                        <h:outputLabel value ="Precio de Compra Sin IVA "/>
+                         <p:inputNumber id="pcompra" value="#{mttoProducto.preciocompra}">                      
                         </p:inputNumber>
                          
-                        
-                        
                            <h:outputText value="Vendible: " />
                          <p:selectBooleanButton id="vendible" value="#{mttoProducto.vendible}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px" >
                          </p:selectBooleanButton>
@@ -87,22 +92,22 @@ and open the template in the editor.
                        <p:dataTable id="tablaProd" emptyMessage=""
                                     value="#{mttoProducto.lstProducto}"
                                     var="dimp" rowKey="#{dimp.idproducto}"
-                                     rows="5" 
-                                     editable="true" paginator="true" 
-                                     rowsPerPageTemplate="5"  >
+                                    rows="6" 
+                                    editable="true" paginator="true" 
+                                    rowsPerPageTemplate="6"  >
                            
                            
                             <p:column headerText="Id" width="10%">
                                 <h:outputText value="#{dimp.idproducto}"  />                                
                             </p:column>
                            
-                           <p:column headerText="Marca" width="30%">
+                           <p:column headerText="Marca" width="35%" filterBy="#{dimp.idmarcaproducto.marcaproducto}">
                                 <p:cellEditor>
                                     <f:facet  name="output">
                                         <h:outputText value="#{dimp.idmarcaproducto.marcaproducto}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:selectOneMenu id="listMarca"  value ="#{mttoProducto.idMarcaProducto}" style="width: 100%"  >
+                                        <p:selectOneMenu id="listMarca"  value ="#{dimp.idmarcaproducto.idmarcaproducto}" style="width: 100%"  >
                                             <f:selectItems value="#{mttoProducto.lstMarcaProducto}"
                                                            var="mp" itemLabel="#{mp.marcaproducto}" itemValue="#{mp.idmarcaproducto}"/>                                       
                                         </p:selectOneMenu> 
@@ -111,7 +116,7 @@ and open the template in the editor.
                             </p:column>
 
                            
-                           <p:column headerText="Grupo" width="30%">
+                           <p:column headerText="Grupo" width="35%" filterBy="#{dimp.idgrupoproducto.grupoproducto}" >
                                 <p:cellEditor>
                                     <f:facet  name="output">
                                         <h:outputText value="#{dimp.idgrupoproducto.grupoproducto}" />  
@@ -126,7 +131,7 @@ and open the template in the editor.
                             </p:column>
 
                            
-                           <p:column headerText="Tipo" width="20%">
+                           <p:column headerText="Tipo" width="35%" filterBy="#{dimp.idtipoproducto.tipoproducto}">
                                 <p:cellEditor>
                                     <f:facet  name="output">
                                         <h:outputText value="#{dimp.idtipoproducto.tipoproducto}" />  
@@ -141,7 +146,7 @@ and open the template in the editor.
                             </p:column>
 
                            
-                           <p:column headerText="Medida" width="15%">
+                           <p:column headerText="Medida" width="35%" filterBy="#{dimp.idmedida.medida}">
                                 <p:cellEditor>
                                     <f:facet  name="output">
                                         <h:outputText value="#{dimp.idmedida.medida}" />  
@@ -156,7 +161,7 @@ and open the template in the editor.
                             </p:column>
 
                            
-                           <p:column headerText="Producto" width="30%">
+                           <p:column headerText="Producto" width="35%" filterBy="#{dimp.producto}">
                                 <p:cellEditor>
                                     <f:facet  name="output">
                                         <h:outputText value="#{dimp.producto}" />  
@@ -189,17 +194,20 @@ and open the template in the editor.
                                         <h:outputText value="#{dimp.preciocompra}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:inputText value="#{dimp.preciocompra}" style="width:100%"/>  
+                                       <p:inputNumber id="pcompra" value="#{dimp.preciocompra}">                   
+                                     </p:inputNumber>
                                     </f:facet> 
                                 </p:cellEditor>   
                             </p:column>
                            <p:column headerText="Precio Venta" width="15%">
                                 <p:cellEditor>
                                     <f:facet  name="output">
-                                        <h:outputText value="#{dimp.precioventa}" />  
+                                        <h:outputText value="#{dimp.precioventa}"/>  
                                     </f:facet>
-                                    <f:facet name="input">  
-                                        <p:inputText value="#{dimp.preciocompra}" style="width:100%"/>  
+                                    <f:facet name="input"> 
+                                        <p:inputNumber id="pventa" value="#{dimp.precioventa}">                   
+                                     </p:inputNumber>
+                                       
                                     </f:facet> 
                                 </p:cellEditor>   
                             </p:column>
@@ -256,20 +264,20 @@ and open the template in the editor.
                                 </p:cellEditor>
                            </p:column>
                            
-                           <p:ajax event="rowEdit"  update="@all" listener="#{mttoProducto.actualizarProducto}" />
+                           <p:ajax event="rowEdit"  listener="#{mttoProducto.actualizarProducto}" />
                            <p:ajax event="rowEditCancel"  listener="#{mttoProducto.onCancel}"/>
                            
                            <p:column style="width:50px; align-content: center" headerText="Modificar">
                                 <p:rowEditor />
                             </p:column>
 
-                            <p:column style="width:60px; align-content: center"  headerText="Eliminar">                               
+                           <!-- <p:column style="width:60px; align-content: center"  headerText="Eliminar">                               
                                   
                                     <p:commandButton   value="Eliminar" 
                                                        action="#{mttoProducto.eliminarProducto(dimp)}"
                                                       />
                                
-                            </p:column >
+                            </p:column > -->
                            
                                                          
                            
