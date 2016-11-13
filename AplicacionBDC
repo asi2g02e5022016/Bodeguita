@@ -1,0 +1,793 @@
+.
+├── AplicacionBDC
+├── build
+│   ├── empty
+│   ├── generated-sources
+│   │   └── ap-source-output
+│   └── web
+│       ├── compras
+│       │   └── CompraProductos.xhtml
+│       ├── home.xhtml
+│       ├── images
+│       │   ├── excel.png
+│       │   ├── loading5.gif
+│       │   ├── loading-bar.gif
+│       │   ├── logoCli.png
+│       │   ├── logoFull.png
+│       │   ├── miniKube.png
+│       │   ├── piso.jpg
+│       │   ├── table16.png
+│       │   ├── table_cancel.png
+│       │   ├── table_delete16.png
+│       │   ├── table_detail2.png
+│       │   ├── table_detail3.png
+│       │   └── table_edit16.png
+│       ├── inventario
+│       │   ├── AjusteExistencia.xhtml
+│       │   ├── InvExistenciaBean.xhtml
+│       │   ├── notaPedido.xhtml
+│       │   ├── OrdenesProduccion.xhtml
+│       │   ├── Recetas.xhtml
+│       │   └── RptExistencia.xhtml
+│       ├── layout
+│       │   ├── menu.xhtml
+│       │   └── templateBDC.xhtml
+│       ├── Loggin.xhtml
+│       ├── mantenimientos
+│       │   ├── admin
+│       │   │   ├── opcionMenu
+│       │   │   │   ├── lista.xhtml
+│       │   │   │   └── mant.xhtml
+│       │   │   └── perfil
+│       │   │       ├── lista.xhtml
+│       │   │       └── mant.xhtml
+│       │   ├── MttoCliente.xhtml
+│       │   ├── MttoCompania.xhtml
+│       │   ├── MttoCondicionPago.xhtml
+│       │   ├── MttoConfiguracion.xhtml
+│       │   ├── MttoDepartamento.xhtml
+│       │   ├── MttoEmpleado.xhtml
+│       │   ├── MttoEstado.xhtml
+│       │   ├── MttoFormaPago.xhtml
+│       │   ├── MttoGrupoProducto.xhtml
+│       │   ├── MttoImp.xhtml
+│       │   ├── MttoMarcaProducto.xhtml
+│       │   ├── MttoMedidas.xhtml
+│       │   ├── MttoMesa.xhtml
+│       │   ├── MttoPiso.xhtml
+│       │   ├── MttoProducto.xhtml
+│       │   ├── MttoProveedores.xhtml
+│       │   ├── MttoPuesto.xhtml
+│       │   ├── MttoSucursales.xhtml
+│       │   ├── MttoTipoDocumento.xhtml
+│       │   ├── MttoTipoProducto.xhtml
+│       │   └── MttoUsuario.xhtml
+│       ├── META-INF
+│       │   └── MANIFEST.MF
+│       ├── stylesheet
+│       │   ├── estilo.css
+│       │   ├── images
+│       │   │   ├── ui-bg_flat_0_aaaaaa_40x100.png
+│       │   │   ├── ui-bg_flat_75_f3f2f2_40x100.png
+│       │   │   ├── ui-bg_glass_55_fbf9ee_1x400.png
+│       │   │   ├── ui-bg_glass_65_f3f2f2_1x400.png
+│       │   │   ├── ui-bg_glass_75_5c88c1_1x400.png
+│       │   │   ├── ui-bg_glass_75_75a4d1_1x400.png
+│       │   │   ├── ui-bg_gloss-wave_75_5c88c1_500x100.png
+│       │   │   ├── ui-bg_inset-soft_95_fef1ec_1x100.png
+│       │   │   ├── ui-icons_000000_256x240.png
+│       │   │   ├── ui-icons_222222_256x240.png
+│       │   │   ├── ui-icons_2e83ff_256x240.png
+│       │   │   ├── ui-icons_454545_256x240.png
+│       │   │   ├── ui-icons_cd0a0a_256x240.png
+│       │   │   └── ui-icons_ffffff_256x240.png
+│       │   ├── movisoft.css
+│       │   └── styleBDC.css
+│       ├── ventas
+│       │   ├── MonitorFacturacion.xhtml
+│       │   ├── Pedidos.xhtml
+│       │   └── RptVta.xhtml
+│       └── WEB-INF
+│           ├── classes
+│           │   ├── com
+│           │   │   └── asi
+│           │   │       ├── restaurantbcd
+│           │   │       │   └── modelo
+│           │   │       │       ├── Ajuste_.class
+│           │   │       │       ├── Ajuste.class
+│           │   │       │       ├── Ajustedetalle_.class
+│           │   │       │       ├── Ajustedetalle.class
+│           │   │       │       ├── AjustedetallePK_.class
+│           │   │       │       ├── AjustedetallePK.class
+│           │   │       │       ├── AjustedetallePK.rapt
+│           │   │       │       ├── Ajustedetalle.rapt
+│           │   │       │       ├── AjustePK_.class
+│           │   │       │       ├── AjustePK.class
+│           │   │       │       ├── AjustePK.rapt
+│           │   │       │       ├── Ajuste.rapt
+│           │   │       │       ├── Caja_.class
+│           │   │       │       ├── Caja.class
+│           │   │       │       ├── Caja.rapt
+│           │   │       │       ├── Cliente_.class
+│           │   │       │       ├── Cliente.class
+│           │   │       │       ├── Cliente.rapt
+│           │   │       │       ├── Compra_.class
+│           │   │       │       ├── Compra.class
+│           │   │       │       ├── Compradetalle_.class
+│           │   │       │       ├── Compradetalle.class
+│           │   │       │       ├── CompradetallePK_.class
+│           │   │       │       ├── CompradetallePK.class
+│           │   │       │       ├── CompradetallePK.rapt
+│           │   │       │       ├── Compradetalle.rapt
+│           │   │       │       ├── CompraPK_.class
+│           │   │       │       ├── CompraPK.class
+│           │   │       │       ├── CompraPK.rapt
+│           │   │       │       ├── Compra.rapt
+│           │   │       │       ├── Condicionpago_.class
+│           │   │       │       ├── Condicionpago.class
+│           │   │       │       ├── Condicionpago.rapt
+│           │   │       │       ├── Configuracion_.class
+│           │   │       │       ├── Configuracion.class
+│           │   │       │       ├── Configuracion.rapt
+│           │   │       │       ├── Departamento_.class
+│           │   │       │       ├── Departamento.class
+│           │   │       │       ├── Departamento.rapt
+│           │   │       │       ├── Empleado_.class
+│           │   │       │       ├── Empleado.class
+│           │   │       │       ├── Empleado.rapt
+│           │   │       │       ├── Estado_.class
+│           │   │       │       ├── Estado.class
+│           │   │       │       ├── Estado.rapt
+│           │   │       │       ├── Existencia_.class
+│           │   │       │       ├── Existencia.class
+│           │   │       │       ├── ExistenciaPK_.class
+│           │   │       │       ├── ExistenciaPK.class
+│           │   │       │       ├── ExistenciaPK.rapt
+│           │   │       │       ├── Existencia.rapt
+│           │   │       │       ├── Facturaanulada_.class
+│           │   │       │       ├── Facturaanulada.class
+│           │   │       │       ├── Facturaanulada.rapt
+│           │   │       │       ├── Facturadetalle_.class
+│           │   │       │       ├── Facturadetalle.class
+│           │   │       │       ├── Facturadetalle.rapt
+│           │   │       │       ├── Facturaencabezado_.class
+│           │   │       │       ├── Facturaencabezado.class
+│           │   │       │       ├── FacturaencabezadoPK_.class
+│           │   │       │       ├── FacturaencabezadoPK.class
+│           │   │       │       ├── FacturaencabezadoPK.rapt
+│           │   │       │       ├── Facturaencabezado.rapt
+│           │   │       │       ├── Formapago_.class
+│           │   │       │       ├── Formapago.class
+│           │   │       │       ├── Formapago.rapt
+│           │   │       │       ├── Grupoproducto_.class
+│           │   │       │       ├── Grupoproducto.class
+│           │   │       │       ├── Grupoproducto.rapt
+│           │   │       │       ├── Impuesto_.class
+│           │   │       │       ├── Impuesto.class
+│           │   │       │       ├── Impuesto.rapt
+│           │   │       │       ├── Marcaproducto_.class
+│           │   │       │       ├── Marcaproducto.class
+│           │   │       │       ├── Marcaproducto.rapt
+│           │   │       │       ├── Medida_.class
+│           │   │       │       ├── Medida.class
+│           │   │       │       ├── Medida.rapt
+│           │   │       │       ├── Mesa_.class
+│           │   │       │       ├── Mesa.class
+│           │   │       │       ├── Mesa.rapt
+│           │   │       │       ├── Notapedido_.class
+│           │   │       │       ├── Notapedido.class
+│           │   │       │       ├── Notapedidodetalle_.class
+│           │   │       │       ├── Notapedidodetalle.class
+│           │   │       │       ├── NotapedidodetallePK_.class
+│           │   │       │       ├── NotapedidodetallePK.class
+│           │   │       │       ├── NotapedidodetallePK.rapt
+│           │   │       │       ├── Notapedidodetalle.rapt
+│           │   │       │       ├── NotapedidoPK_.class
+│           │   │       │       ├── NotapedidoPK.class
+│           │   │       │       ├── NotapedidoPK.rapt
+│           │   │       │       ├── Notapedido.rapt
+│           │   │       │       ├── Numerofiscal_.class
+│           │   │       │       ├── Numerofiscal.class
+│           │   │       │       ├── Numerofiscal.rapt
+│           │   │       │       ├── Opcionmenu_.class
+│           │   │       │       ├── Opcionmenu.class
+│           │   │       │       ├── Opcionmenu.rapt
+│           │   │       │       ├── Ordenpedido_.class
+│           │   │       │       ├── Ordenpedido.class
+│           │   │       │       ├── Ordenpedidodetalle_.class
+│           │   │       │       ├── Ordenpedidodetalle.class
+│           │   │       │       ├── OrdenpedidodetallePK_.class
+│           │   │       │       ├── OrdenpedidodetallePK.class
+│           │   │       │       ├── OrdenpedidodetallePK.rapt
+│           │   │       │       ├── Ordenpedidodetalle.rapt
+│           │   │       │       ├── OrdenpedidoPK_.class
+│           │   │       │       ├── OrdenpedidoPK.class
+│           │   │       │       ├── OrdenpedidoPK.rapt
+│           │   │       │       ├── Ordenpedido.rapt
+│           │   │       │       ├── Ordenproduccion_.class
+│           │   │       │       ├── Ordenproduccion.class
+│           │   │       │       ├── Ordenproducciondetalle_.class
+│           │   │       │       ├── Ordenproducciondetalle.class
+│           │   │       │       ├── OrdenproducciondetallePK_.class
+│           │   │       │       ├── OrdenproducciondetallePK.class
+│           │   │       │       ├── OrdenproducciondetallePK.rapt
+│           │   │       │       ├── Ordenproducciondetalle.rapt
+│           │   │       │       ├── OrdenproduccionPK_.class
+│           │   │       │       ├── OrdenproduccionPK.class
+│           │   │       │       ├── OrdenproduccionPK.rapt
+│           │   │       │       ├── Ordenproduccion.rapt
+│           │   │       │       ├── Pedidodetalle_.class
+│           │   │       │       ├── Pedidodetalle.class
+│           │   │       │       ├── PedidodetallePK_.class
+│           │   │       │       ├── PedidodetallePK.class
+│           │   │       │       ├── PedidodetallePK.rapt
+│           │   │       │       ├── Pedidodetalle.rapt
+│           │   │       │       ├── Pedidoencabezado_.class
+│           │   │       │       ├── Pedidoencabezado.class
+│           │   │       │       ├── PedidoencabezadoPK_.class
+│           │   │       │       ├── PedidoencabezadoPK.class
+│           │   │       │       ├── PedidoencabezadoPK.rapt
+│           │   │       │       ├── Pedidoencabezado.rapt
+│           │   │       │       ├── Perfil_.class
+│           │   │       │       ├── Perfil.class
+│           │   │       │       ├── Perfil.rapt
+│           │   │       │       ├── Piso_.class
+│           │   │       │       ├── Piso.class
+│           │   │       │       ├── Piso.rapt
+│           │   │       │       ├── Producto_.class
+│           │   │       │       ├── Producto.class
+│           │   │       │       ├── Producto.rapt
+│           │   │       │       ├── Proveedor_.class
+│           │   │       │       ├── Proveedor.class
+│           │   │       │       ├── Proveedor.rapt
+│           │   │       │       ├── Puesto_.class
+│           │   │       │       ├── Puesto.class
+│           │   │       │       ├── Puesto.rapt
+│           │   │       │       ├── Receta_.class
+│           │   │       │       ├── Receta.class
+│           │   │       │       ├── Recetadetalle_.class
+│           │   │       │       ├── Recetadetalle.class
+│           │   │       │       ├── RecetadetallePK_.class
+│           │   │       │       ├── RecetadetallePK.class
+│           │   │       │       ├── RecetadetallePK.rapt
+│           │   │       │       ├── Recetadetalle.rapt
+│           │   │       │       ├── Receta.rapt
+│           │   │       │       ├── Sucursal_.class
+│           │   │       │       ├── Sucursal.class
+│           │   │       │       ├── Sucursal.rapt
+│           │   │       │       ├── Tipodocumento_.class
+│           │   │       │       ├── Tipodocumento.class
+│           │   │       │       ├── Tipodocumento.rapt
+│           │   │       │       ├── Tipoproducto_.class
+│           │   │       │       ├── Tipoproducto.class
+│           │   │       │       ├── Tipoproducto.rapt
+│           │   │       │       ├── Usuario_.class
+│           │   │       │       ├── Usuario.class
+│           │   │       │       ├── Usuario.rapt
+│           │   │       │       ├── Vwexistencias_.class
+│           │   │       │       ├── Vwexistencias.class
+│           │   │       │       ├── VwexistenciasPK_.class
+│           │   │       │       ├── VwexistenciasPK.class
+│           │   │       │       ├── VwexistenciasPK.rapt
+│           │   │       │       ├── Vwexistencias.rapt
+│           │   │       │       ├── Vwproductos_.class
+│           │   │       │       ├── Vwproductos.class
+│           │   │       │       └── Vwproductos.rapt
+│           │   │       └── restaurantebcd
+│           │   │           ├── controller
+│           │   │           │   ├── compras
+│           │   │           │   │   └── ComprasBeans.class
+│           │   │           │   ├── inventario
+│           │   │           │   │   ├── AjusteExistenciaBean.class
+│           │   │           │   │   ├── AjusteExistencia.class
+│           │   │           │   │   ├── InvExistenciasBean.class
+│           │   │           │   │   ├── NotaPedidoBean.class
+│           │   │           │   │   ├── OrdenProduccionBeans.class
+│           │   │           │   │   ├── RecetasBeans.class
+│           │   │           │   │   └── RptExistenciasBeans.class
+│           │   │           │   ├── mtto
+│           │   │           │   │   ├── MttoCliente.class
+│           │   │           │   │   ├── MttoCondicionPago.class
+│           │   │           │   │   ├── MttoConfiguracion.class
+│           │   │           │   │   ├── MttoDepartamento.class
+│           │   │           │   │   ├── MttoEmpleado.class
+│           │   │           │   │   ├── MttoEstado.class
+│           │   │           │   │   ├── MttoFormaPago.class
+│           │   │           │   │   ├── MttoGrupoProducto.class
+│           │   │           │   │   ├── MttoImp.class
+│           │   │           │   │   ├── MttoMarcaProductos.class
+│           │   │           │   │   ├── MttoMedidasBean.class
+│           │   │           │   │   ├── MttoMenu.class
+│           │   │           │   │   ├── MttoMesa.class
+│           │   │           │   │   ├── MttoPerfilMB.class
+│           │   │           │   │   ├── MttoPiso.class
+│           │   │           │   │   ├── MttoProducto.class
+│           │   │           │   │   ├── MttoProveedor.class
+│           │   │           │   │   ├── MttoPuesto.class
+│           │   │           │   │   ├── MttoSucursalesBean.class
+│           │   │           │   │   ├── MttoTipoDocumento.class
+│           │   │           │   │   ├── MttoTipoProducto.class
+│           │   │           │   │   ├── MttoUsuarioContraseña.class
+│           │   │           │   │   └── MttoUsuarioMB.class
+│           │   │           │   ├── seguridad
+│           │   │           │   │   ├── LogginBean.class
+│           │   │           │   │   ├── LoginFilter.class
+│           │   │           │   │   ├── MenuChildList.class
+│           │   │           │   │   ├── MenuParentList.class
+│           │   │           │   │   ├── SessionUsr.class
+│           │   │           │   │   └── UserMenu.class
+│           │   │           │   └── ventas
+│           │   │           │       ├── MonitorFacturacion.class
+│           │   │           │       ├── PedidosBeans.class
+│           │   │           │       └── RptVentas.class
+│           │   │           ├── job
+│           │   │           │   ├── EmailJob.class
+│           │   │           │   └── QuartzListener.class
+│           │   │           ├── negocio
+│           │   │           │   ├── base
+│           │   │           │   │   ├── BusquedaAjustesExistencia.class
+│           │   │           │   │   ├── BusquedaAjustesExistenciaLocal.class
+│           │   │           │   │   ├── BusquedaConfiguracion.class
+│           │   │           │   │   ├── BusquedaConfiguracionLocal.class
+│           │   │           │   │   ├── BusquedasCliente.class
+│           │   │           │   │   ├── BusquedasClienteLocal.class
+│           │   │           │   │   ├── BusquedasCompras.class
+│           │   │           │   │   ├── BusquedasComprasLocal.class
+│           │   │           │   │   ├── BusquedasEstado.class
+│           │   │           │   │   ├── BusquedasEstadoLocal.class
+│           │   │           │   │   ├── BusquedasExistencias.class
+│           │   │           │   │   ├── BusquedasExistenciasLocal.class
+│           │   │           │   │   ├── BusquedasFormaPago.class
+│           │   │           │   │   ├── BusquedasFormaPagoLocal.class
+│           │   │           │   │   ├── BusquedasMarcaProducto.class
+│           │   │           │   │   ├── BusquedasMarcaProductoLocal.class
+│           │   │           │   │   ├── BusquedasMedidas.class
+│           │   │           │   │   ├── BusquedasMedidasLocal.class
+│           │   │           │   │   ├── BusquedasMtto.class
+│           │   │           │   │   ├── BusquedasMttoLocal.class
+│           │   │           │   │   ├── BusquedasMttoPuesto.class
+│           │   │           │   │   ├── BusquedasMttoPuestoLocal.class
+│           │   │           │   │   ├── BusquedasPisos.class
+│           │   │           │   │   ├── BusquedasPisosLocal.class
+│           │   │           │   │   ├── BusquedasProductos.class
+│           │   │           │   │   ├── BusquedasProductosLocal.class
+│           │   │           │   │   ├── BusquedasProveedores.class
+│           │   │           │   │   ├── BusquedasProveedoresLocal.class
+│           │   │           │   │   ├── BusquedasSucursal.class
+│           │   │           │   │   ├── BusquedasSucursalLocal.class
+│           │   │           │   │   ├── BusquedasTipoProducto.class
+│           │   │           │   │   ├── BusquedasTipoProductoLocal.class
+│           │   │           │   │   ├── BusquedasUsuarios.class
+│           │   │           │   │   ├── BusquedasUsuariosLocal.class
+│           │   │           │   │   ├── BusquedaTipoDocumento.class
+│           │   │           │   │   ├── BusquedaTipoDocumentoLocal.class
+│           │   │           │   │   ├── ConsumerWS.class
+│           │   │           │   │   ├── ConsumerWSLocal.class
+│           │   │           │   │   ├── Converciones.class
+│           │   │           │   │   ├── ConvercionesLocal.class
+│           │   │           │   │   ├── CrudBDC.class
+│           │   │           │   │   ├── CrudBDCLocal.class
+│           │   │           │   │   ├── CudBMT.class
+│           │   │           │   │   ├── CudBMTLocal.class
+│           │   │           │   │   ├── NotaPedidoEJB.class
+│           │   │           │   │   ├── NotaPedidoEJBLocal.class
+│           │   │           │   │   ├── ProcesosInv.class
+│           │   │           │   │   ├── ProcesosInventarios.class
+│           │   │           │   │   ├── ProcesosInventariosLocal.class
+│           │   │           │   │   ├── ProcesosInvLocal.class
+│           │   │           │   │   ├── TransaccionesInventario.class
+│           │   │           │   │   └── TransaccionesInventarioLocal.class
+│           │   │           │   └── util
+│           │   │           │       ├── Cache.class
+│           │   │           │       ├── ConexWS
+│           │   │           │       ├── EstadoEnum.class
+│           │   │           │       ├── ImpFactura.class
+│           │   │           │       ├── JasperRpt.class
+│           │   │           │       ├── LineaComandoUtils.class
+│           │   │           │       ├── MttoUtil.class
+│           │   │           │       ├── NavigationTreeFactory.class
+│           │   │           │       ├── QueryUtil.class
+│           │   │           │       ├── Recurso mail
+│           │   │           │       ├── ReponseWs.class
+│           │   │           │       ├── Reporte.class
+│           │   │           │       ├── TelnetUtils.class
+│           │   │           │       ├── UserNavigTreeFactory.class
+│           │   │           │       ├── Utilidades.class
+│           │   │           │       ├── Validator.class
+│           │   │           │       ├── WsException.class
+│           │   │           │       └── WsExceptionHandler.class
+│           │   │           ├── recursos
+│           │   │           │   └── webservices
+│           │   │           │       ├── MaestrosWS.class
+│           │   │           │       ├── VentasWS$1.class
+│           │   │           │       └── VentasWS.class
+│           │   │           └── reportes
+│           │   │               ├── compra
+│           │   │               │   ├── RptCompras.jasper
+│           │   │               │   └── RptCompras.jrxml
+│           │   │               └── inventario
+│           │   │                   ├── RptExistencias.jasper
+│           │   │                   └── RptExistencias.jrxml
+│           │   ├── jasypt-1.9.2.jar
+│           │   ├── META-INF
+│           │   │   └── persistence.xml
+│           │   └── resouces.res
+│           ├── glassfish-web.xml
+│           ├── lib
+│           │   ├── c3p0-0.9.1.1.jar
+│           │   ├── commons-beanutils-1.8.2.jar
+│           │   ├── commons-collections-3.2.1.jar
+│           │   ├── commons-digester-2.1.jar
+│           │   ├── commons-javaflow-20060411.jar
+│           │   ├── commons-lang3-3.5.jar
+│           │   ├── commons-logging-1.1.jar
+│           │   ├── commons-net-3.5.jar
+│           │   ├── groovy-all-2.0.1.jar
+│           │   ├── gson-2.2.4.jar
+│           │   ├── iText-2.1.7.js2.jar
+│           │   ├── jasperreports-5.5.0.jar
+│           │   ├── jasperreports-fonts-5.5.0.jar
+│           │   ├── jersey-bundle-1.9.1.jar
+│           │   ├── log4j-1.2.16.jar
+│           │   ├── png-encoder-1.5.jar
+│           │   ├── poi-3.7-20101029.jar
+│           │   ├── primefaces-6.0.jar
+│           │   ├── primefaces-extensions-6.0.0.jar
+│           │   ├── quartz-2.2.3.jar
+│           │   ├── quartz-jobs-2.2.3.jar
+│           │   ├── slf4j-api-1.7.7.jar
+│           │   └── slf4j-log4j12-1.7.7.jar
+│           └── web.xml
+├── build.xml
+├── lib
+│   ├── commons-lang
+│   │   └── commons-lang3-3.5.jar
+│   ├── commons-net
+│   │   └── commons-net-3.5.jar
+│   ├── CopyLibs
+│   │   └── org-netbeans-modules-java-j2seproject-copylibstask.jar
+│   ├── eclipselink
+│   │   ├── eclipselink.jar
+│   │   ├── javax.persistence-2.1.0-doc.zip
+│   │   ├── javax.persistence_2.1.0.v201304241213.jar
+│   │   └── org.eclipse.persistence.jpa.jpql_2.5.2.v20140319-9ad6abd.jar
+│   ├── eclipselinkmodelgen
+│   │   └── org.eclipse.persistence.jpa.modelgen_2.5.2.v20140319-9ad6abd.jar
+│   ├── gson-2.2.4.jar
+│   ├── iReport5.5.0
+│   │   ├── commons-beanutils-1.8.2.jar
+│   │   ├── commons-collections-3.2.1.jar
+│   │   ├── commons-digester-2.1.jar
+│   │   ├── commons-javaflow-20060411.jar
+│   │   ├── commons-logging-1.1.jar
+│   │   ├── groovy-all-2.0.1.jar
+│   │   ├── iText-2.1.7.js2.jar
+│   │   ├── jasperreports-5.5.0.jar
+│   │   ├── jasperreports-fonts-5.5.0.jar
+│   │   ├── png-encoder-1.5.jar
+│   │   └── poi-3.7-20101029.jar
+│   ├── jasypt
+│   │   └── jasypt-1.9.2.jar
+│   ├── javaee-endorsed-api-7.0
+│   │   ├── javaee-doc-api.jar
+│   │   ├── javax.annotation-api.jar
+│   │   ├── javax.xml.soap-api.jar
+│   │   ├── jaxb-api-osgi.jar
+│   │   ├── jaxws-api.jar
+│   │   └── jsr181-api.jar
+│   ├── jersey-bundle-1.8.jar
+│   ├── jersey-bundle-1.9.1.jar
+│   ├── nblibraries.properties
+│   ├── primefaces
+│   │   ├── primefaces-6.0.jar
+│   │   └── primefaces-extensions-6.0.0.jar
+│   └── quartz
+│       ├── c3p0-0.9.1.1.jar
+│       ├── log4j-1.2.16.jar
+│       ├── quartz-2.2.3.jar
+│       ├── quartz-jobs-2.2.3.jar
+│       ├── slf4j-api-1.7.7.jar
+│       └── slf4j-log4j12-1.7.7.jar
+├── nbproject
+│   ├── ant-deploy.xml
+│   ├── build-impl.xml
+│   ├── genfiles.properties
+│   ├── private
+│   │   ├── private.properties
+│   │   └── private.xml
+│   ├── project.properties
+│   ├── project.xml
+│   └── rest-build.xml
+├── README.md
+├── setup
+│   └── glassfish-resources.xml
+├── src
+│   ├── conf
+│   │   ├── MANIFEST.MF
+│   │   └── persistence.xml
+│   └── java
+│       └── com
+│           └── asi
+│               ├── restaurantbcd
+│               │   └── modelo
+│               │       ├── Ajustedetalle.java
+│               │       ├── AjustedetallePK.java
+│               │       ├── Ajuste.java
+│               │       ├── AjustePK.java
+│               │       ├── Caja.java
+│               │       ├── Cliente.java
+│               │       ├── Compradetalle.java
+│               │       ├── CompradetallePK.java
+│               │       ├── Compra.java
+│               │       ├── CompraPK.java
+│               │       ├── Condicionpago.java
+│               │       ├── Configuracion.java
+│               │       ├── Departamento.java
+│               │       ├── Empleado.java
+│               │       ├── Estado.java
+│               │       ├── Existencia.java
+│               │       ├── ExistenciaPK.java
+│               │       ├── Facturaanulada.java
+│               │       ├── Facturadetalle.java
+│               │       ├── Facturaencabezado.java
+│               │       ├── FacturaencabezadoPK.java
+│               │       ├── Formapago.java
+│               │       ├── Grupoproducto.java
+│               │       ├── Impuesto.java
+│               │       ├── Marcaproducto.java
+│               │       ├── Medida.java
+│               │       ├── Mesa.java
+│               │       ├── Notapedidodetalle.java
+│               │       ├── NotapedidodetallePK.java
+│               │       ├── Notapedido.java
+│               │       ├── NotapedidoPK.java
+│               │       ├── Numerofiscal.java
+│               │       ├── Opcionmenu.java
+│               │       ├── Ordenpedidodetalle.java
+│               │       ├── OrdenpedidodetallePK.java
+│               │       ├── Ordenpedido.java
+│               │       ├── OrdenpedidoPK.java
+│               │       ├── Ordenproducciondetalle.java
+│               │       ├── OrdenproducciondetallePK.java
+│               │       ├── Ordenproduccion.java
+│               │       ├── OrdenproduccionPK.java
+│               │       ├── Pedidodetalle.java
+│               │       ├── PedidodetallePK.java
+│               │       ├── Pedidoencabezado.java
+│               │       ├── PedidoencabezadoPK.java
+│               │       ├── Perfil.java
+│               │       ├── Piso.java
+│               │       ├── Producto.java
+│               │       ├── Proveedor.java
+│               │       ├── Puesto.java
+│               │       ├── Recetadetalle.java
+│               │       ├── RecetadetallePK.java
+│               │       ├── Receta.java
+│               │       ├── Sucursal.java
+│               │       ├── Tipodocumento.java
+│               │       ├── Tipoproducto.java
+│               │       ├── Usuario.java
+│               │       ├── Vwexistencias.java
+│               │       ├── VwexistenciasPK.java
+│               │       └── Vwproductos.java
+│               └── restaurantebcd
+│                   ├── controller
+│                   │   ├── compras
+│                   │   │   └── ComprasBeans.java
+│                   │   ├── inventario
+│                   │   │   ├── AjusteExistenciaBean.java
+│                   │   │   ├── AjusteExistencia.java
+│                   │   │   ├── InvExistenciasBean.java
+│                   │   │   ├── NotaPedidoBean.java
+│                   │   │   ├── OrdenProduccionBeans.java
+│                   │   │   ├── RecetasBeans.java
+│                   │   │   └── RptExistenciasBeans.java
+│                   │   ├── mtto
+│                   │   │   ├── MttoCliente.java
+│                   │   │   ├── MttoCondicionPago.java
+│                   │   │   ├── MttoConfiguracion.java
+│                   │   │   ├── MttoDepartamento.java
+│                   │   │   ├── MttoEmpleado.java
+│                   │   │   ├── MttoEstado.java
+│                   │   │   ├── MttoFormaPago.java
+│                   │   │   ├── MttoGrupoProducto.java
+│                   │   │   ├── MttoImp.java
+│                   │   │   ├── MttoMarcaProductos.java
+│                   │   │   ├── MttoMedidasBean.java
+│                   │   │   ├── MttoMenu.java
+│                   │   │   ├── MttoMesa.java
+│                   │   │   ├── MttoPerfilMB.java
+│                   │   │   ├── MttoPiso.java
+│                   │   │   ├── MttoProducto.java
+│                   │   │   ├── MttoProveedor.java
+│                   │   │   ├── MttoPuesto.java
+│                   │   │   ├── MttoSucursalesBean.java
+│                   │   │   ├── MttoTipoDocumento.java
+│                   │   │   ├── MttoTipoProducto.java
+│                   │   │   ├── MttoUsuarioContraseña.java
+│                   │   │   └── MttoUsuarioMB.java
+│                   │   ├── seguridad
+│                   │   │   ├── LogginBean.java
+│                   │   │   ├── LoginFilter.java
+│                   │   │   ├── MenuChildList.java
+│                   │   │   ├── MenuParentList.java
+│                   │   │   ├── SessionUsr.java
+│                   │   │   └── UserMenu.java
+│                   │   └── ventas
+│                   │       ├── MonitorFacturacion.java
+│                   │       ├── PedidosBeans.java
+│                   │       └── RptVentas.java
+│                   ├── job
+│                   │   ├── EmailJob.java
+│                   │   └── QuartzListener.java
+│                   ├── negocio
+│                   │   ├── base
+│                   │   │   ├── BusquedaAjustesExistencia.java
+│                   │   │   ├── BusquedaAjustesExistenciaLocal.java
+│                   │   │   ├── BusquedaConfiguracion.java
+│                   │   │   ├── BusquedaConfiguracionLocal.java
+│                   │   │   ├── BusquedasCliente.java
+│                   │   │   ├── BusquedasClienteLocal.java
+│                   │   │   ├── BusquedasCompras.java
+│                   │   │   ├── BusquedasComprasLocal.java
+│                   │   │   ├── BusquedasEstado.java
+│                   │   │   ├── BusquedasEstadoLocal.java
+│                   │   │   ├── BusquedasExistencias.java
+│                   │   │   ├── BusquedasExistenciasLocal.java
+│                   │   │   ├── BusquedasFormaPago.java
+│                   │   │   ├── BusquedasFormaPagoLocal.java
+│                   │   │   ├── BusquedasMarcaProducto.java
+│                   │   │   ├── BusquedasMarcaProductoLocal.java
+│                   │   │   ├── BusquedasMedidas.java
+│                   │   │   ├── BusquedasMedidasLocal.java
+│                   │   │   ├── BusquedasMtto.java
+│                   │   │   ├── BusquedasMttoLocal.java
+│                   │   │   ├── BusquedasMttoPuesto.java
+│                   │   │   ├── BusquedasMttoPuestoLocal.java
+│                   │   │   ├── BusquedasPisos.java
+│                   │   │   ├── BusquedasPisosLocal.java
+│                   │   │   ├── BusquedasProductos.java
+│                   │   │   ├── BusquedasProductosLocal.java
+│                   │   │   ├── BusquedasProveedores.java
+│                   │   │   ├── BusquedasProveedoresLocal.java
+│                   │   │   ├── BusquedasSucursal.java
+│                   │   │   ├── BusquedasSucursalLocal.java
+│                   │   │   ├── BusquedasTipoProducto.java
+│                   │   │   ├── BusquedasTipoProductoLocal.java
+│                   │   │   ├── BusquedasUsuarios.java
+│                   │   │   ├── BusquedasUsuariosLocal.java
+│                   │   │   ├── BusquedaTipoDocumento.java
+│                   │   │   ├── BusquedaTipoDocumentoLocal.java
+│                   │   │   ├── ConsumerWS.java
+│                   │   │   ├── ConsumerWSLocal.java
+│                   │   │   ├── Converciones.java
+│                   │   │   ├── ConvercionesLocal.java
+│                   │   │   ├── CrudBDC.java
+│                   │   │   ├── CrudBDCLocal.java
+│                   │   │   ├── CudBMT.java
+│                   │   │   ├── CudBMTLocal.java
+│                   │   │   ├── NotaPedidoEJB.java
+│                   │   │   ├── NotaPedidoEJBLocal.java
+│                   │   │   ├── ProcesosInventarios.java
+│                   │   │   ├── ProcesosInventariosLocal.java
+│                   │   │   ├── ProcesosInv.java
+│                   │   │   ├── ProcesosInvLocal.java
+│                   │   │   ├── TransaccionesInventario.java
+│                   │   │   └── TransaccionesInventarioLocal.java
+│                   │   └── util
+│                   │       ├── Cache.java
+│                   │       ├── ConexWS
+│                   │       ├── EstadoEnum.java
+│                   │       ├── ImpFactura.java
+│                   │       ├── JasperRpt.java
+│                   │       ├── LineaComandoUtils.java
+│                   │       ├── MttoUtil.java
+│                   │       ├── NavigationTreeFactory.java
+│                   │       ├── QueryUtil.java
+│                   │       ├── Recurso mail
+│                   │       ├── ReponseWs.java
+│                   │       ├── Reporte.java
+│                   │       ├── TelnetUtils.java
+│                   │       ├── UserNavigTreeFactory.java
+│                   │       ├── Utilidades.java
+│                   │       ├── Validator.java
+│                   │       ├── WsExceptionHandler.java
+│                   │       └── WsException.java
+│                   ├── recursos
+│                   │   └── webservices
+│                   │       ├── MaestrosWS.java
+│                   │       └── VentasWS.java
+│                   └── reportes
+│                       ├── compra
+│                       │   ├── RptCompras.jasper
+│                       │   └── RptCompras.jrxml
+│                       └── inventario
+│                           ├── RptExistencias.jasper
+│                           └── RptExistencias.jrxml
+├── test
+└── web
+    ├── compras
+    │   └── CompraProductos.xhtml
+    ├── home.xhtml
+    ├── images
+    │   ├── excel.png
+    │   ├── loading5.gif
+    │   ├── loading-bar.gif
+    │   ├── logoCli.png
+    │   ├── logoFull.png
+    │   ├── miniKube.png
+    │   ├── piso.jpg
+    │   ├── table16.png
+    │   ├── table_cancel.png
+    │   ├── table_delete16.png
+    │   ├── table_detail2.png
+    │   ├── table_detail3.png
+    │   └── table_edit16.png
+    ├── inventario
+    │   ├── AjusteExistencia.xhtml
+    │   ├── InvExistenciaBean.xhtml
+    │   ├── notaPedido.xhtml
+    │   ├── OrdenesProduccion.xhtml
+    │   ├── Recetas.xhtml
+    │   └── RptExistencia.xhtml
+    ├── layout
+    │   ├── menu.xhtml
+    │   └── templateBDC.xhtml
+    ├── Loggin.xhtml
+    ├── mantenimientos
+    │   ├── admin
+    │   │   ├── opcionMenu
+    │   │   │   ├── lista.xhtml
+    │   │   │   └── mant.xhtml
+    │   │   └── perfil
+    │   │       ├── lista.xhtml
+    │   │       └── mant.xhtml
+    │   ├── MttoCliente.xhtml
+    │   ├── MttoCompania.xhtml
+    │   ├── MttoCondicionPago.xhtml
+    │   ├── MttoConfiguracion.xhtml
+    │   ├── MttoDepartamento.xhtml
+    │   ├── MttoEmpleado.xhtml
+    │   ├── MttoEstado.xhtml
+    │   ├── MttoFormaPago.xhtml
+    │   ├── MttoGrupoProducto.xhtml
+    │   ├── MttoImp.xhtml
+    │   ├── MttoMarcaProducto.xhtml
+    │   ├── MttoMedidas.xhtml
+    │   ├── MttoMesa.xhtml
+    │   ├── MttoPiso.xhtml
+    │   ├── MttoProducto.xhtml
+    │   ├── MttoProveedores.xhtml
+    │   ├── MttoPuesto.xhtml
+    │   ├── MttoSucursales.xhtml
+    │   ├── MttoTipoDocumento.xhtml
+    │   ├── MttoTipoProducto.xhtml
+    │   └── MttoUsuario.xhtml
+    ├── stylesheet
+    │   ├── estilo.css
+    │   ├── images
+    │   │   ├── ui-bg_flat_0_aaaaaa_40x100.png
+    │   │   ├── ui-bg_flat_75_f3f2f2_40x100.png
+    │   │   ├── ui-bg_glass_55_fbf9ee_1x400.png
+    │   │   ├── ui-bg_glass_65_f3f2f2_1x400.png
+    │   │   ├── ui-bg_glass_75_5c88c1_1x400.png
+    │   │   ├── ui-bg_glass_75_75a4d1_1x400.png
+    │   │   ├── ui-bg_gloss-wave_75_5c88c1_500x100.png
+    │   │   ├── ui-bg_inset-soft_95_fef1ec_1x100.png
+    │   │   ├── ui-icons_000000_256x240.png
+    │   │   ├── ui-icons_222222_256x240.png
+    │   │   ├── ui-icons_2e83ff_256x240.png
+    │   │   ├── ui-icons_454545_256x240.png
+    │   │   ├── ui-icons_cd0a0a_256x240.png
+    │   │   └── ui-icons_ffffff_256x240.png
+    │   ├── movisoft.css
+    │   └── styleBDC.css
+    ├── ventas
+    │   ├── MonitorFacturacion.xhtml
+    │   ├── Pedidos.xhtml
+    │   └── RptVta.xhtml
+    └── WEB-INF
+        ├── glassfish-web.xml
+        └── web.xml
+
+92 directories, 698 files

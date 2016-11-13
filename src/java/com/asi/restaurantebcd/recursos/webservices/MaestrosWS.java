@@ -19,7 +19,7 @@ import javax.ws.rs.core.MediaType;
  *
  * @author samael lopez
  */
-@Path("Maestros/")
+@Path("/Maestros")
 public class MaestrosWS {
 
     @Context

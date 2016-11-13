@@ -64,9 +64,9 @@
         <welcome-file>home.xhtml</welcome-file>
     </welcome-file-list>
     <ejb-local-ref>
-        <ejb-ref-name>/procesaFacturasEJB</ejb-ref-name>
+        <ejb-ref-name>BusquedasProductos</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
-        <local-home>com.asi.restaurantebcd.job.TareaEJBLocal</local-home>
-        <ejb-link>/procesaFacturasEJB</ejb-link>
+        <local>com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal</local>
+        <ejb-link>BusquedasProductos</ejb-link>
     </ejb-local-ref>
 </web-app>

@@ -66,36 +66,6 @@ public ReponseWs validarAccesoSinTokenIntWS(String auth) throws Exception {
     }
     
     
-    
-        @POST
-    @Path("/respuestaAprobacion")
-    public String respuestaAprobacion(@HeaderParam("autorizacion")
-                                    String auth, String json) throws Exception {
-        ReponseWs resp;
-        try {
-            if (auth == null || auth.equals("")) {
-                throw new Exception("No vienen datos para autorizar acceso");
-            }
-            resp = lookupProcesosSeg().validarAccesoSinTokenIntWS(auth);
-            if (resp != null && resp.getError().equals("1")) {
-                throw new Exception(resp.getDescripcion());
-            }
-
-            resp = new ReponseWs();
-            resp.setContent("Se guardo existosamente.");
-            resp.setDescripcion("-");
-            resp.setError("0");
-            resp.setStatus(Response.Status.OK.getStatusCode());
-            return new Gson().toJson(resp);
-        } catch (Exception e) {
-            Logger.getLogger(PosResource.class.getName()).log(Level.SEVERE, null, e);
-            throw new WSATException(e.getMessage());
-        }
-    }
-    
-    
-    
-    
 
     
     

@@ -78,5 +78,4 @@ public class TransaccionesInventario implements TransaccionesInventarioLocal {
 
     }
     
-    
 }

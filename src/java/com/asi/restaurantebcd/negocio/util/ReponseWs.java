@@ -43,4 +43,10 @@ private int status ;
         this.status = status;
 
     }  
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+    
+    
 }

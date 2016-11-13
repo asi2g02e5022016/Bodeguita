@@ -5,6 +5,10 @@
  */
 package com.asi.restaurantebcd.negocio.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 import javax.faces.context.FacesContext;
 
@@ -36,4 +40,30 @@ public class Utilidades {
         }
         return (T) filtros.get(object);
     } 
+        public final Date getFiltroDeFecha(final Date fecha, final int modo)
+           throws Exception {
+        if (fecha == null) { return fecha; }
+        SimpleDateFormat sdf = null;
+        if (modo < 0 || modo > 2) {
+          sdf = new SimpleDateFormat(Validator.FORMATO_DE_FECHA_DDMMYYY);
+        } else {
+          sdf = new SimpleDateFormat(Validator.FORMATO_DE_FECHA_DDMMYYY_HHMMSS);
+        }
+        Calendar c = new GregorianCalendar();
+        String f = "";
+        c.setTime(fecha);
+        f = c.get(Calendar.DATE)
+          + "/"
+          + (c.get(Calendar.MONTH) + 1)
+          + "/"
+          + c.get(Calendar.YEAR);
+        if (modo == 0) {
+          f += " 00:00:00";
+        } else if (modo == 1) {
+          f += " 23:59:59";
+        }
+        return sdf.parse(f);
+    }
+   
+    
 }
