@@ -31,18 +31,20 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Programaciontareas.findAll", query = "SELECT p FROM Programaciontareas p")})
 public class Programaciontareas implements Serializable {
-
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "idprogramacion")
     private Integer idprogramacion;
+    @Column(name = "inicio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date inicio;
+    @Column(name = "fin")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fin;
+    @Column(name = "frecuencia")
     private Integer frecuencia;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idprogramacion")
     private List<Programaciondetalle> programaciondetalleList;
 
@@ -117,5 +119,7 @@ public class Programaciontareas implements Serializable {
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Programaciontareas[ idprogramacion=" + idprogramacion + " ]";
     }
+
+    
     
 }
