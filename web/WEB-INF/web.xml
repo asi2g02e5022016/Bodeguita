@@ -69,4 +69,10 @@
         <local>com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal</local>
         <ejb-link>BusquedasProductos</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>BusquedasSucursal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal</local>
+        <ejb-link>BusquedasSucursal</ejb-link>
+    </ejb-local-ref>
 </web-app>

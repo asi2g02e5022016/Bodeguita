@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -27,6 +28,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "vwproductos")
 @NamedQueries({
     @NamedQuery(name = "Vwproductos.findAll", query = "SELECT v FROM Vwproductos v")})
+@XmlRootElement
 public class Vwproductos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -76,7 +78,7 @@ public class Vwproductos implements Serializable {
     private double precioventa;
     @Basic(optional = false)
     @Column(name = "vendible")
-    private boolean vendible;
+    private Integer vendible;
     @Column(name = "excento")
     private Boolean excento;
 
@@ -199,13 +201,15 @@ public class Vwproductos implements Serializable {
         this.precioventa = precioventa;
     }
 
-    public boolean getVendible() {
+    public Integer getVendible() {
         return vendible;
     }
 
-    public void setVendible(boolean vendible) {
+    public void setVendible(Integer vendible) {
         this.vendible = vendible;
     }
+
+
 
     public Boolean getExcento() {
         return excento;

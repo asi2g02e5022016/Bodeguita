@@ -37,8 +37,8 @@ and open the template in the editor.
                 </p:menubar>
                 <h:panelGrid columns="2" width="100%">
                     <h:panelGrid columns="6" width="80%">
-                        <h:outputLabel  value="No Documento : "/>
-                        <p:inputText readonly="true" value="#{comprasBeans.nodocu}"  />
+                        <p:outputLabel  value="No Documento : " for="idPrue"/>
+                        <p:inputText readonly="true" id="idPrue" required="true" value="#{comprasBeans.nodocu}"  />
                         <h:outputLabel  value="Usuario: "  />
                         <p:inputText readonly="true" value="#{comprasBeans.usr}"  />
                         <h:outputLabel  value="Sucursal "  />
@@ -58,8 +58,8 @@ and open the template in the editor.
 
                     </h:panelGrid>
                     <h:panelGrid columns="3" width="20%">
-                        <h:outputLabel  value="Proveedor "  />
-                        <p:inputText readonly="true"  value="#{comprasBeans.nombreProveedor}"  style=" width: 100%" />
+                        <p:outputLabel  for="idr" value="Proveedor "  />
+                        <p:inputText readonly="true" id="idr"  required="true"   value="#{comprasBeans.nombreProveedor}"  style=" width: 100%" />
                         <p:commandButton   action="#{comprasBeans.mostrarDialogProveedor()}"
                                            id="iconOnly" 
                                            icon="ui-icon-search" title="Icon Only" />
@@ -186,7 +186,10 @@ and open the template in the editor.
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
                                       <h:outputLabel  value="Cantidad    "  />
-                                      <p:inputText id="cantidadSolic"  value="#{comprasBeans.cantidadSolic}" />
+                                      <p:inputNumber id="cantidadSolic" maxValue="9999"
+                                                     
+                                                     minValue="0"
+                                                   value="#{comprasBeans.cantidadSolic}" />
                     <h:outputLabel  value="Producto "  />
                     <p:inputText   value="#{comprasBeans.descripcionProducto}" />
                 </h:panelGrid>
