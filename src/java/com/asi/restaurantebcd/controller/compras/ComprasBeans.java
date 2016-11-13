@@ -409,6 +409,7 @@ public class ComprasBeans implements  Serializable {
             }
             compraDeta = new Compradetalle();
             compraDeta.setIdproducto(pro);
+            compraDeta.setCantidadconfirmada(cantidadSolic);
             compraDeta.setCantidadsolicitada(cantidadSolic);
             compraDeta.setPrecio(producto.getPrecioventa());
             compraDeta.setMonto(cantidadSolic * compraDeta.getPrecio());
