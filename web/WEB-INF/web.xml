@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    
     <listener>
-    <listener-class>com.asi.restaurantebcd.job.QuartzListener</listener-class>
+        <listener-class>com.asi.restaurantebcd.job.QuartzListener</listener-class>
     </listener>
-    
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
@@ -43,9 +41,8 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Reporte</servlet-name>
-         <url-pattern>/Reporte</url-pattern>
+        <url-pattern>/Reporte</url-pattern>
     </servlet-mapping>
-    
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
         <param-value>server</param-value>
@@ -54,7 +51,7 @@
         <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
         <param-value>true</param-value>
     </context-param>
-     <context-param>
+    <context-param>
         <param-name>javax.faces.VALIDATE_EMPTY_FIELDS</param-name>
         <param-value>false</param-value>
     </context-param>
@@ -66,4 +63,10 @@
     <welcome-file-list>
         <welcome-file>home.xhtml</welcome-file>
     </welcome-file-list>
+    <ejb-local-ref>
+        <ejb-ref-name>/procesaFacturasEJB</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local-home>com.asi.restaurantebcd.job.TareaEJBLocal</local-home>
+        <ejb-link>/procesaFacturasEJB</ejb-link>
+    </ejb-local-ref>
 </web-app>

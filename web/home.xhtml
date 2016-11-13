@@ -14,7 +14,10 @@ and open the template in the editor.
     <ui:define name="body">
       <br />
             <center>
-                <p:link  value="Paina Inicial" outcome="home" />
+                <h:form>
+                    <p:commandButton actionListener="#{jobController.procesarFacturas()}"
+                                     value="Procesar Pedido"/>
+                </h:form>
             </center>
       <br style="clear: both" />  
      </ui:define>

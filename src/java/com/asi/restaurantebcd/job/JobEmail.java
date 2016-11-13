@@ -25,11 +25,11 @@ import org.quartz.JobExecutionException;
  *
  * @author siman
  */
-public class EmailJob implements Job {
+public class JobEmail implements Job {
 
     @Override
     public void execute(JobExecutionContext jec) throws JobExecutionException {
-         Date dt  = new Date();
+                Date dt  = new Date();
                   System.out.println(dt.toString()+ "Email Service");
    
 

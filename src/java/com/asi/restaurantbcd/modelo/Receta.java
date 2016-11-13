@@ -29,6 +29,8 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Receta.findAll", query = "SELECT r FROM Receta r")})
 public class Receta implements Serializable {
+    @OneToMany(mappedBy = "idreceta")
+    private List<Producto> productoList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -125,6 +127,14 @@ public class Receta implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Receta[ idreceta=" + idreceta + " ]";
+    }
+
+    public List<Producto> getProductoList() {
+        return productoList;
+    }
+
+    public void setProductoList(List<Producto> productoList) {
+        this.productoList = productoList;
     }
     
 }

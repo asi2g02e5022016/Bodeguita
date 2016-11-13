@@ -13,9 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,8 +25,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "facturainterface", catalog = "ifbc", schema = "")
-@NamedQueries({
-    @NamedQuery(name = "Facturainterface.findAll", query = "SELECT f FROM Facturainterface f")})
 public class Facturainterface implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -71,19 +66,19 @@ public class Facturainterface implements Serializable {
     private String tipoDocumento;
     @Basic(optional = false)
     @NotNull
-    @Lob
     @Column(name = "anulado")
-    private byte[] anulado;
+    private boolean anulado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "doc_timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date docTimestamp;
+    
     @Basic(optional = false)
     @NotNull
-    @Lob
     @Column(name = "cargada")
-    private byte[] cargada;
+    private boolean cargada;
+    
     @Size(max = 255)
     @Column(name = "error")
     private String error;
@@ -95,7 +90,7 @@ public class Facturainterface implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Facturainterface(Integer secuencia, String caja, String serie, String cajero, byte[] anulado, Date docTimestamp, byte[] cargada) {
+    public Facturainterface(Integer secuencia, String caja, String serie, String cajero, boolean anulado, Date docTimestamp, boolean cargada) {
         this.secuencia = secuencia;
         this.caja = caja;
         this.serie = serie;
@@ -185,11 +180,11 @@ public class Facturainterface implements Serializable {
         this.tipoDocumento = tipoDocumento;
     }
 
-    public byte[] getAnulado() {
+    public boolean getAnulado() {
         return anulado;
     }
 
-    public void setAnulado(byte[] anulado) {
+    public void setAnulado(boolean anulado) {
         this.anulado = anulado;
     }
 
@@ -201,11 +196,11 @@ public class Facturainterface implements Serializable {
         this.docTimestamp = docTimestamp;
     }
 
-    public byte[] getCargada() {
+    public boolean getCargada() {
         return cargada;
     }
 
-    public void setCargada(byte[] cargada) {
+    public void setCargada(boolean cargada) {
         this.cargada = cargada;
     }
 

@@ -31,6 +31,10 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Ordenpedido.findAll", query = "SELECT o FROM Ordenpedido o")})
 public class Ordenpedido implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordenpedido")
+    private List<Facturaencabezado> facturaencabezadoList;
+    @Column(name = "mesa")
+    private Integer mesa;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -39,9 +43,6 @@ public class Ordenpedido implements Serializable {
     @Column(name = "fechapedido")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechapedido;
-    @Basic(optional = false)
-    @Column(name = "mesa")
-    private int mesa;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordenpedido")
     private List<Ordenpedidodetalle> ordenpedidodetalleList;
     @JoinColumn(name = "idcliente", referencedColumnName = "idcliente")
@@ -90,13 +91,6 @@ public class Ordenpedido implements Serializable {
         this.fechapedido = fechapedido;
     }
 
-    public int getMesa() {
-        return mesa;
-    }
-
-    public void setMesa(int mesa) {
-        this.mesa = mesa;
-    }
 
     public List<Ordenpedidodetalle> getOrdenpedidodetalleList() {
         return ordenpedidodetalleList;
@@ -161,6 +155,22 @@ public class Ordenpedido implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Ordenpedido[ ordenpedidoPK=" + ordenpedidoPK + " ]";
+    }
+
+    public Integer getMesa() {
+        return mesa;
+    }
+
+    public void setMesa(Integer mesa) {
+        this.mesa = mesa;
+    }
+
+    public List<Facturaencabezado> getFacturaencabezadoList() {
+        return facturaencabezadoList;
+    }
+
+    public void setFacturaencabezadoList(List<Facturaencabezado> facturaencabezadoList) {
+        this.facturaencabezadoList = facturaencabezadoList;
     }
     
 }

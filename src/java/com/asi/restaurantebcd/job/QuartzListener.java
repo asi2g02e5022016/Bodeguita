@@ -1,6 +1,7 @@
 package com.asi.restaurantebcd.job;
 
 
+
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
@@ -15,15 +16,18 @@ import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 
 public class QuartzListener implements ServletContextListener {
-        Scheduler scheduler = null;
+
+       Scheduler scheduler = null;
 
         @Override
         public void contextInitialized(ServletContextEvent servletContext) {
                 System.out.println("Context Initialized");
                 
                 try {
+                    
+                    
                         // Setup the Job class and the Job group
-                        JobDetail job = newJob(EmailJob.class).withIdentity(
+                        JobDetail job = newJob(JobEmail.class).withIdentity(
                                         "CronQuartzJob", "Group").build();
 
                         // Create a Trigger that fires every 5 minutes.

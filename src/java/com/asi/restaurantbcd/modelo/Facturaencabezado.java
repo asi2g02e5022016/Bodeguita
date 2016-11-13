@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,6 +33,12 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
     @NamedQuery(name = "Facturaencabezado.findAll", query = "SELECT f FROM Facturaencabezado f")})
 public class Facturaencabezado implements Serializable {
+   
+    @JoinColumns({
+        @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false),
+        @JoinColumn(name = "idordenpedido", referencedColumnName = "idordenpedido")})
+    @ManyToOne(optional = false)
+    private Ordenpedido ordenpedido;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -71,7 +78,7 @@ public class Facturaencabezado implements Serializable {
     private List<Facturaanulada> facturaanuladaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturaencabezado")
     private List<Facturadetalle> facturadetalleList;
-
+     
     public Facturaencabezado() {
     }
 
@@ -86,7 +93,7 @@ public class Facturaencabezado implements Serializable {
         this.anulado = anulado;
     }
 
-    public Facturaencabezado(int idfactura, int idserie, int idsucursal) {
+    public Facturaencabezado(int idfactura, String idserie, int idsucursal) {
         this.facturaencabezadoPK = new FacturaencabezadoPK(idfactura, idserie, idsucursal);
     }
 
@@ -209,6 +216,14 @@ public class Facturaencabezado implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Facturaencabezado[ facturaencabezadoPK=" + facturaencabezadoPK + " ]";
+    }
+
+    public Ordenpedido getOrdenpedido() {
+        return ordenpedido;
+    }
+
+    public void setOrdenpedido(Ordenpedido ordenpedido) {
+        this.ordenpedido = ordenpedido;
     }
     
 }

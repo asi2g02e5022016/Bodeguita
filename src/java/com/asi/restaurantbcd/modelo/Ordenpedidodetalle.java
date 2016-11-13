@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -53,7 +54,10 @@ public class Ordenpedidodetalle implements Serializable {
         @JoinColumn(name = "idSucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Ordenpedido ordenpedido;
-
+    
+    @Transient
+    private Facturadetinterface factDetInterface;
+    
     public Ordenpedidodetalle() {
     }
 
@@ -161,6 +165,20 @@ public class Ordenpedidodetalle implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Ordenpedidodetalle[ ordenpedidodetallePK=" + ordenpedidodetallePK + " ]";
+    }
+
+    /**
+     * @return the factDetInterface
+     */
+    public Facturadetinterface getFactDetInterface() {
+        return factDetInterface;
+    }
+
+    /**
+     * @param factDetInterface the factDetInterface to set
+     */
+    public void setFactDetInterface(Facturadetinterface factDetInterface) {
+        this.factDetInterface = factDetInterface;
     }
     
 }

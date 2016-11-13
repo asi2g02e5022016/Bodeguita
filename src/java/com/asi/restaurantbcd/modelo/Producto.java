@@ -35,7 +35,12 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p")})
 public class Producto implements Serializable {
-
+    @JoinColumn(name = "idreceta", referencedColumnName = "idreceta")
+    @ManyToOne
+    private Receta idreceta;
+    @Column(name = "excento")
+    private Boolean excento;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,8 +70,6 @@ public class Producto implements Serializable {
    @Column(name ="vendible")
    private boolean vendible;
     
-   @Column(name ="excento")
-   private boolean excento;
     
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
@@ -129,13 +132,6 @@ public class Producto implements Serializable {
         this.vendible = vendible;
     }
 
-    public boolean isExcento() {
-        return excento;
-    }
-
-    public void setExcento(boolean excento) {
-        this.excento = excento;
-    }
 
     public void setIdproducto(Integer idproducto) {
         this.idproducto = idproducto;
@@ -236,5 +232,21 @@ public class Producto implements Serializable {
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Producto[ idproducto=" + idproducto + " ]";
     }
-    
+
+    public Boolean getExcento() {
+        return excento;
+    }
+
+    public void setExcento(Boolean excento) {
+        this.excento = excento;
+    }
+
+    public Receta getIdreceta() {
+        return idreceta;
+    }
+
+    public void setIdreceta(Receta idreceta) {
+        this.idreceta = idreceta;
+    }
+
 }

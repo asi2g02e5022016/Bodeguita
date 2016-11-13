@@ -25,7 +25,7 @@ public class FacturaencabezadoPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "idserie")
-    private int idserie;
+    private String idserie;
     @Basic(optional = false)
     @NotNull
     @Column(name = "idsucursal")
@@ -34,7 +34,7 @@ public class FacturaencabezadoPK implements Serializable {
     public FacturaencabezadoPK() {
     }
 
-    public FacturaencabezadoPK(int idfactura, int idserie, int idsucursal) {
+    public FacturaencabezadoPK(int idfactura, String idserie, int idsucursal) {
         this.idfactura = idfactura;
         this.idserie = idserie;
         this.idsucursal = idsucursal;
@@ -48,11 +48,11 @@ public class FacturaencabezadoPK implements Serializable {
         this.idfactura = idfactura;
     }
 
-    public int getIdserie() {
+    public String getIdserie() {
         return idserie;
     }
 
-    public void setIdserie(int idserie) {
+    public void setIdserie(String idserie) {
         this.idserie = idserie;
     }
 
@@ -68,7 +68,7 @@ public class FacturaencabezadoPK implements Serializable {
     public int hashCode() {
         int hash = 0;
         hash += (int) idfactura;
-        hash += (int) idserie;
+        hash +=  idserie.hashCode();
         hash += (int) idsucursal;
         return hash;
     }
