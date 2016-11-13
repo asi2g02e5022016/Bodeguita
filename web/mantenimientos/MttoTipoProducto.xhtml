@@ -36,14 +36,14 @@ and open the template in the editor.
                 
                     <h:panelGrid >
                         <p:dataTable id="tablaProd" emptyMessage=""
-                                     binding="#{mttoTipoProd.tablaTipoProducto}"
                                      value="#{mttoTipoProd.lstTipoProducto}" 
                                      var="dpro" rowKey="#{dpro.idtipoproducto}"
-                                     selectionMode="single" rows="19" 
-                                     editable="true">
+                                     rows="7" 
+                                     editable="true" paginator="true" 
+                                    rowsPerPageTemplate="5">
                         <!--Botones de edicion probar  Botones de edicion probar-->
                         
-                        <p:ajax event="rowEdit" listener="#{mttoTipoProd.actualizarTipoProducto()}"  />  
+                        <p:ajax event="rowEdit" listener="#{mttoTipoProd.actualizarTipoProducto}"  />  
                         <p:ajax event="rowEditCancel" listener="#{mttoTipoProd.onCancel}"  /> 
                       
                          

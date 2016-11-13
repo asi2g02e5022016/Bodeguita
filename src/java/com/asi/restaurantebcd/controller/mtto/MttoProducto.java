@@ -69,10 +69,12 @@ public class MttoProducto implements Serializable {
          this.lstTipoProducto = this.ejbBusqMttoo.buscarTipoProducto();
          this.lstMedida = this.busquedasMedidas.buscarMedida();
          this.activo = true;
+         this.preciocompra=0.0;
+         this.precioventa = 0.0;
                   
+          
          
-         
-
+               
 //      List <SelectItem> lstTemp = new ArrayList<>();
 //            for (Grupoproducto grupo : lstGrupoProducto) {
 //                SelectItemGroup grItem  = new SelectItemGroup(grupo.getGrupoproducto());
@@ -167,6 +169,7 @@ public class MttoProducto implements Serializable {
     private List<Tipoproducto> lstTipoProducto;
     private List<Medida> lstMedida;
     private List<Usuario> lstUsario;
+//    private DataTable tablaProducto = new DataTable();
     
     
 
@@ -203,26 +206,17 @@ public class MttoProducto implements Serializable {
        idGrupoProducto= null;
        idTipoProducto = null;
        idMedida = null;
-       idUsuario = null;
+//       idUsuario = null;
        producto = null;
-       fechaCreacion = null;
+//       fechaCreacion = null;
        lstProducto = null;
-       preciocompra=null;
-       precioventa=null;
+       
        
        
        } 
     public void guardarProducto() {
         try {
-            if (producto == null || producto.equals("")) {
-                alert("Descripcion de departamento es obligatoria.",
-                        FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            if (idMarcaProducto == null) {
-                alert("Selecione una Tipo de Producto.", FacesMessage.SEVERITY_WARN);
-                return;
-            }
+            
             if (idGrupoProducto == null) {
                 alert("Selecione una Grupo de Producto.", FacesMessage.SEVERITY_WARN);
                 return;
@@ -231,6 +225,17 @@ public class MttoProducto implements Serializable {
                 alert("Selecione una Tipo de Producto.", FacesMessage.SEVERITY_WARN);
                 return;
             }
+            
+            if (producto == null || producto.equals("")) {
+                alert("Descripcion de departamento es obligatoria.",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+            if (idMarcaProducto == null) {
+                alert("Selecione una Marca de Producto.", FacesMessage.SEVERITY_WARN);
+                return;
+            }
+            
             if (idMedida == null) {
                 alert("Selecione una Medida.", FacesMessage.SEVERITY_WARN);
                 return;
@@ -278,12 +283,12 @@ public class MttoProducto implements Serializable {
             alert("Producto ingresado exitosamente.",
                     FacesMessage.SEVERITY_INFO);
           
-            this.productoConstructor = null;
-            this.gproductoConstructor = null;
-            this.marcaConstructor = null;
-            this.medidaConstructor = null;
-            this.tproductoConstructor = null;
-            this.usuarioConstructor = null;
+//            this.productoConstructor = null;
+//            this.gproductoConstructor = null;
+//            this.marcaConstructor = null;
+//            this.medidaConstructor = null;
+//            this.tproductoConstructor = null;
+//            this.usuarioConstructor = null;
             
                this.lstProducto = this.ejbBusqMttoP.buscarProd();
                                      
@@ -300,13 +305,14 @@ public class MttoProducto implements Serializable {
     public void actualizarProducto(RowEditEvent event) {
         System.out.println("Entro...");
         try {
+            
             if (event.getObject() != null) {
                         System.out.println("Debug 1...");
             Producto imp = (Producto) event.getObject();                
 
                 System.out.println("Debug 2..." + imp.getProducto());
                 crud.guardarEntidad(imp);
-                System.out.println("Actualizado..." + imp.getProducto());
+                System.out.println("Actualizado..." + imp.getPreciocompra());
                 alert("Impuesto actualizado exitosamente.",
                         FacesMessage.SEVERITY_INFO);
             this.productoConstructor = null;
@@ -316,7 +322,7 @@ public class MttoProducto implements Serializable {
             this.tproductoConstructor = null;
             this.usuarioConstructor = null;
             
-            
+            this.lstProducto = this.ejbBusqMttoP.buscarProd();
             imp = null;
 //           this.lstProducto= this.ejbBusMtto.buscarProducto();
             }else{
