@@ -22,37 +22,35 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author JAEM
+ * @author siman
  */
 @Entity
-@Table(name = "programaciondetalle")
+@Table(name = "programaciondetalle", catalog = "ifbc", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Programaciondetalle.findAll", query = "SELECT p FROM Programaciondetalle p")})
 public class Programaciondetalle implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "Id")
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(nullable = false)
+    @Column(name = "orden")
     private int orden;
     @Size(max = 255)
-    @Column(length = 255)
+    @Column(name = "parametros")
     private String parametros;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
-    private int host;
-    @JoinColumn(name = "idprogramacion", referencedColumnName = "idprogramacion", nullable = false)
+    @JoinColumn(name = "idprogramacion", referencedColumnName = "idprogramacion")
     @ManyToOne(optional = false)
     private Programaciontareas idprogramacion;
     @JoinColumn(name = "idtarea", referencedColumnName = "idtarea")
     @ManyToOne
     private Tarea idtarea;
+    @JoinColumn(name = "host", referencedColumnName = "idconfiguracion")
+    @ManyToOne(optional = false)
+    private Configuracion host;
 
     public Programaciondetalle() {
     }
@@ -61,10 +59,9 @@ public class Programaciondetalle implements Serializable {
         this.id = id;
     }
 
-    public Programaciondetalle(Integer id, int orden, int host) {
+    public Programaciondetalle(Integer id, int orden) {
         this.id = id;
         this.orden = orden;
-        this.host = host;
     }
 
     public Integer getId() {
@@ -91,14 +88,6 @@ public class Programaciondetalle implements Serializable {
         this.parametros = parametros;
     }
 
-    public int getHost() {
-        return host;
-    }
-
-    public void setHost(int host) {
-        this.host = host;
-    }
-
     public Programaciontareas getIdprogramacion() {
         return idprogramacion;
     }
@@ -113,6 +102,14 @@ public class Programaciondetalle implements Serializable {
 
     public void setIdtarea(Tarea idtarea) {
         this.idtarea = idtarea;
+    }
+
+    public Configuracion getHost() {
+        return host;
+    }
+
+    public void setHost(Configuracion host) {
+        this.host = host;
     }
 
     @Override

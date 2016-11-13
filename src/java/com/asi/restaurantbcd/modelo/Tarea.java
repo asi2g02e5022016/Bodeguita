@@ -13,7 +13,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -30,27 +32,28 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Tarea.findAll", query = "SELECT t FROM Tarea t")})
 public class Tarea implements Serializable {
-    private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Column(name = "activo")
+    private boolean activo;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "idtarea")
     private Integer idtarea;
-    @Basic(optional = false)    
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 50)
-    @Column(nullable = false, length = 50)
+    @Column(name = "nombre")
     private String nombre;
-    @Basic(optional = false)    
-    @Size(min = 1, max = 5)
-    @Column(nullable = false, length = 5)
-    private String idtipotarea;
     @Size(max = 255)
-    @Column(length = 255)
+    @Column(name = "ejecutable")
     private String ejecutable;
-    @Basic(optional = false)    
-    @Lob
-    @Column(nullable = false)
-    private byte[] activo;
+    @JoinColumn(name = "idtipotarea", referencedColumnName = "idtipotarea")
+    @ManyToOne(optional = false)
+    private Tipotarea idtipotarea;
+
     @OneToMany(mappedBy = "idtarea")
     private List<Programaciondetalle> programaciondetalleList;
 
@@ -61,10 +64,9 @@ public class Tarea implements Serializable {
         this.idtarea = idtarea;
     }
 
-    public Tarea(Integer idtarea, String nombre, String idtipotarea, byte[] activo) {
+    public Tarea(Integer idtarea, String nombre, String idtipotarea, boolean activo) {
         this.idtarea = idtarea;
         this.nombre = nombre;
-        this.idtipotarea = idtipotarea;
         this.activo = activo;
     }
 
@@ -84,13 +86,6 @@ public class Tarea implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getIdtipotarea() {
-        return idtipotarea;
-    }
-
-    public void setIdtipotarea(String idtipotarea) {
-        this.idtipotarea = idtipotarea;
-    }
 
     public String getEjecutable() {
         return ejecutable;
@@ -100,13 +95,6 @@ public class Tarea implements Serializable {
         this.ejecutable = ejecutable;
     }
 
-    public byte[] getActivo() {
-        return activo;
-    }
-
-    public void setActivo(byte[] activo) {
-        this.activo = activo;
-    }
 
     public List<Programaciondetalle> getProgramaciondetalleList() {
         return programaciondetalleList;
@@ -140,5 +128,24 @@ public class Tarea implements Serializable {
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Tarea[ idtarea=" + idtarea + " ]";
     }
+
+    public Tipotarea getIdtipotarea() {
+        return idtipotarea;
+    }
+
+    public void setIdtipotarea(Tipotarea idtipotarea) {
+        this.idtipotarea = idtipotarea;
+    }
+
+    public boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+ 
+
     
 }
