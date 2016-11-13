@@ -29,9 +29,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Configuracion.findAll", query = "SELECT c FROM Configuracion c")})
 public class Configuracion implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "host")
-    private List<Programaciondetalle> programaciondetalleList;
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -101,12 +99,4 @@ public class Configuracion implements Serializable {
         return "com.asi.restaurantbcd.modelo.Configuracion[ idconfiguracion=" + idconfiguracion + " ]";
     }
 
-    public List<Programaciondetalle> getProgramaciondetalleList() {
-        return programaciondetalleList;
-    }
-
-    public void setProgramaciondetalleList(List<Programaciondetalle> programaciondetalleList) {
-        this.programaciondetalleList = programaciondetalleList;
-    }
-  
 }
