@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -79,6 +80,12 @@ public class Facturaencabezado implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturaencabezado")
     private List<Facturadetalle> facturadetalleList;
      
+    @Transient
+    private float iva;
+    
+    @Transient
+    private float subTotal;
+    
     public Facturaencabezado() {
     }
 
@@ -225,5 +232,29 @@ public class Facturaencabezado implements Serializable {
     public void setOrdenpedido(Ordenpedido ordenpedido) {
         this.ordenpedido = ordenpedido;
     }
+
+    /**
+     * @return the iva
+     */
+    public float getIva() {
+        iva=0;
+        for(Facturadetalle fdet:this.getFacturadetalleList()){
+          iva=+ fdet.getIva();
+        }
+        return iva;
+    }
+
+
+    /**
+     * @return the subTotal
+     */
+    public float getSubTotal() {
+       subTotal=0;
+        for(Facturadetalle fdet:this.getFacturadetalleList()){
+          subTotal=+ fdet.getPrecio();
+        }
+        return subTotal;
+    }
+
     
 }
