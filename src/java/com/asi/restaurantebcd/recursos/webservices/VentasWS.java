@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.core.Context;
@@ -73,6 +72,7 @@ public class VentasWS {
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
          System.out.println("jhoads");
+         System.out.println(content);
     }
     
     
