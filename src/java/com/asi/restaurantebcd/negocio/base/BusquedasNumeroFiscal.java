@@ -5,7 +5,9 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Caja;
 import com.asi.restaurantbcd.modelo.Numerofiscal;
+import com.asi.restaurantbcd.modelo.Sucursal;
 
 import java.util.List;
 import javax.ejb.Stateless;
@@ -33,4 +35,20 @@ public class BusquedasNumeroFiscal implements BusquedasNumeroFiscalLocal{
         return query.getResultList();
     }    
     
+    
+     @Override
+    public List<Sucursal> buscarSucursal() throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Sucursal a ");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+    }    
+    
+     @Override
+    public List<Caja> buscarCaja() throws Exception {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT a FROM Caja a ");
+        Query query = em.createQuery(jpql.toString());
+        return query.getResultList();
+    }    
 }

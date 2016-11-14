@@ -5,7 +5,9 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Caja;
 import com.asi.restaurantbcd.modelo.Numerofiscal;
+import com.asi.restaurantbcd.modelo.Sucursal;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,5 +18,7 @@ import javax.ejb.Local;
 @Local
 public interface BusquedasNumeroFiscalLocal {
     public List <Numerofiscal> buscarNumeroFiscal () throws Exception;
+    public List <Sucursal> buscarSucursal () throws Exception;
+    public List <Caja> buscarCaja () throws Exception;
     
 }
