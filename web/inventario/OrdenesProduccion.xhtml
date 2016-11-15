@@ -92,17 +92,19 @@ and open the template in the editor.
                 </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable value="#{ordenProduccionBeans.lstReceta}" id="tablaCompras"
-                                 var="de"  rowKey="#{de.idreceta}"
+                                 var="d"  rowKey="#{de.idreceta}"
+                                 emptyMessage="" 
                                  selectionMode="single"  rows="19"  >                        
                         <p:ajax event="rowSelect" update="forprincipal"
                                 listener="#{ordenProduccionBeans.onRowSelectCompra}" process="@all"  
                                 />
-                        <p:column  headerText="receta">
-                            <h:outputText value="#{de.descripcion}"  />
+                             <p:column headerText="id" filterBy="#{d.idreceta}" >
+                                 <h:outputText value="#{d.idreceta}"  />
                         </p:column>
-                        <p:column headerText="media"  >
-                            <h:outputText value="#{de.descripcion}"  />
+                        <p:column  headerText="receta"  filterBy="#{d.descripcion}" >
+                            <h:outputText   value="#{d.descripcion}"  />
                         </p:column>
+                   
                     </p:dataTable>
                 </h:panelGrid>
             </p:dialog>
@@ -120,9 +122,11 @@ and open the template in the editor.
                     </p:menubar>
                 </h:panelGrid>
                 <h:panelGrid >
-                    <p:dataTable value="#{ordenProduccionBeans.lstOrdenProd}" id="tablaC"
+                    <p:dataTable value="#{ordenProduccionBeans.lstOrdenProd}"
+                                 emptyMessage=""  id="tablaC"
                                  var="de"  rowKey="#{de.ordenproduccionPK}"
-                                 selectionMode="single"  rows="19"  >                        
+                                 selectionMode="single"  rows="19"  >          
+                        
                         <p:ajax event="rowSelect" update="forprincipal"
                                 listener="#{ordenProduccionBeans.onRowSelectMonito}" process="@all"  
                                 />
