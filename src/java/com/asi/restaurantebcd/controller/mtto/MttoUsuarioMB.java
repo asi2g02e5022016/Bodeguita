@@ -139,7 +139,8 @@ public class MttoUsuarioMB implements Serializable {
             buscarEmpleado();
             buscarPerfil();
 
-            lstUsuario = ejbBusqUsrLcal.buscarUsuario();
+            //lstUsuario = ejbBusqUsrLcal.buscarUsuario();
+            lstUsuario = ejbBusqUsrLcal.buscarUsuario(null);
             if (lstUsuario == null || lstUsuario.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
@@ -155,7 +156,8 @@ public class MttoUsuarioMB implements Serializable {
      */
     public void buscarPerfil() {
         try {
-            lstPerfil = ejbBusqUsrLcal.buscarPerfil();
+            //lstPerfil = ejbBusqUsrLcal.buscarPerfil();
+            lstPerfil = ejbBusqUsrLcal.buscarPerfil(null);
             if (lstPerfil == null || lstPerfil.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
@@ -171,7 +173,8 @@ public class MttoUsuarioMB implements Serializable {
      */
     public void buscarEmpleado() {
         try {
-            lstEmpleado = ejbBusqUsrLcal.buscarEmpleado();
+            //lstEmpleado = ejbBusqUsrLcal.buscarEmpleado();
+            lstEmpleado = ejbBusqUsrLcal.buscarEmpleado(null);
             if (lstEmpleado == null || lstEmpleado.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
@@ -395,7 +398,8 @@ public class MttoUsuarioMB implements Serializable {
             alert("Usuario actualizado exitosamente.",
                     FacesMessage.SEVERITY_INFO);
             this.usuarioConst = null;
-            this.lstUsuario = this.ejbBusqUsrLcal.buscarUsuario();
+            //this.lstUsuario = this.ejbBusqUsrLcal.buscarUsuario();
+            this.lstUsuario = this.ejbBusqUsrLcal.buscarUsuario(null);
             //}
         } catch (Exception ex) {
             Logger.getLogger(MttoUsuarioMB.class.getName())
