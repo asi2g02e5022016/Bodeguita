@@ -69,11 +69,7 @@ public class Producto implements Serializable {
     
    @Column(name ="vendible")
    private boolean vendible;
-    
-    
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
-    private List<Pedidodetalle> pedidodetalleList;
     @JoinColumn(name = "idgrupoproducto", referencedColumnName = "idgrupoproducto")
     @ManyToOne(optional = false)
     private Grupoproducto idgrupoproducto;
@@ -161,13 +157,6 @@ public class Producto implements Serializable {
         this.activo = activo;
     }
 
-    public List<Pedidodetalle> getPedidodetalleList() {
-        return pedidodetalleList;
-    }
-
-    public void setPedidodetalleList(List<Pedidodetalle> pedidodetalleList) {
-        this.pedidodetalleList = pedidodetalleList;
-    }
 
     public Grupoproducto getIdgrupoproducto() {
         return idgrupoproducto;

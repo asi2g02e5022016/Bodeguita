@@ -58,7 +58,7 @@ public class GuardarPedido {
     
             Map hast =  new Gson().fromJson(auth, HashMap.class);
             String json = getParemetro("json", hast);
-            Pedidoencabezado pedi = new Gson().fromJson(json, Pedidoencabezado.class);
+            Ordenpedido pedi = new Gson().fromJson(json, Ordenpedido.class);
             System.out.println("pedi");
             resp = new ReponseWs();
             resp.setContent("se guardo exitosamente.");
