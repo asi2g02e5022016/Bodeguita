@@ -24,7 +24,6 @@ public interface BusquedasComprasLocal {
      * @throws Exception  Error generico.
      */
     
-    public List <Proveedor> buscarProveedores(Map map) throws Exception;
 
     public Integer obtenerCorreltivoCompra(Integer codsuc, Class clase,
             String identificador, String llave)

@@ -39,12 +39,14 @@ public class BusquedasProveedores implements BusquedasProveedoresLocal {
         jpql.append("SELECT o FROM Proveedor o WHERE 1 = 1 ");
         if (filtroMap.containsKey("nombre") 
                 && filtroMap.get("nombre") != null) {
-            jpql.append(" o.proveedor LIKE  ");
+            jpql.append(" AND UPPER(o.proveedor) like :nombre ");
+            
         }
         Query query = em.createQuery(jpql.toString());
                 if (filtroMap.containsKey("nombre") 
                 && filtroMap.get("nombre") != null) {
-          query.setParameter("nombre", filtroMap.get("nombre").toString());
+         query.setParameter("nombre", "%" 
+                 + filtroMap.get("nombre").toString().toUpperCase() + "%");
         }
         
         

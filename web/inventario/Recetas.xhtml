@@ -51,9 +51,9 @@ and open the template in the editor.
                          <p:inputText readonly="true"  value="#{recetas.medidaProductoMP}" />
                     </h:panelGrid>
                 <h:panelGrid >
-                    <p:dataTable 
+                    <p:dataTable   id="tablaDetalle"
                         var="det" value="#{recetas.lstRecetaDetalle}"
-                        id="tabladeta" emptyMessage=""  
+                        emptyMessage=""  
                         rowKey="#{det.recetadetallePK.idproducto}"
                         editable="true">
                         
@@ -87,6 +87,13 @@ and open the template in the editor.
                             </f:facet>
                             <p:rowEditor />
                         </p:column>
+                                                <f:facet name="footer">
+          
+                        <h:commandLink>
+                <p:graphicImage value="/images/excel.png" width="18"/>
+                <p:dataExporter type="xls" target="tablaDetalle" fileName="detallerecetas" />
+            </h:commandLink>
+        </f:facet>
                     </p:dataTable>
                 </h:panelGrid>
             </p:panel>
@@ -113,6 +120,7 @@ and open the template in the editor.
                 <h:panelGrid >
                     <p:dataTable id="tablaProdd" 
                                  value="#{recetas.lstProducto}"
+                                 emptyMessage=""
                                   var="dpro" rowKey="#{dpro.idproducto}"       
                                  selectionMode="single" rows="19"  >                        
                         <p:ajax event="rowSelect"  update="forprincipal"  process="@all"
@@ -157,18 +165,26 @@ and open the template in the editor.
                     <p:dataTable id="tablad" 
                                  value="#{recetas.lstRecetaMon}"
                                  var="det"
+                                 emptyMessage=""
                                  rowKey="#{det.idreceta}"
                                  selectionMode="single" rows="19"  >                        
                         <p:ajax event="rowSelect"  listener="#{recetas.onRowSelectMon}"
                                 update="forprincipal" process="@all"  
                             />
-                        <p:column headerText="id"  >
+                        <p:column filterBy="#{det.idreceta}" headerText="id"  >
                             <h:outputText value="#{det.idreceta}"  />
                         </p:column>
                         
-                        <p:column  headerText="descripcion">
+                        <p:column filterBy="#{det.descripcion}" headerText="descripcion">
                             <h:outputText value="#{det.descripcion}"  />
                         </p:column>
+                        <f:facet name="footer">
+          
+                        <h:commandLink>
+                <p:graphicImage value="/images/excel.png" width="18"/>
+                <p:dataExporter type="xls" target="tablad" fileName="recetas" />
+            </h:commandLink>
+        </f:facet>
                     </p:dataTable>
                 </h:panelGrid>
             </p:dialog>
@@ -185,16 +201,17 @@ and open the template in the editor.
                         </p:menuitem>
                     </p:menubar>
                 </h:panelGrid>
-                <h:panelGrid columns="4" width="80%">
+                <h:panelGrid columns="2" width="80%">
                 
+                            <h:outputLabel  value="Cantidad    "  />
+                            <p:inputText value="#{recetas.cantidadPT}"  />
                      <h:outputLabel  value="Producto "  />
                      <p:inputText  value="#{recetas.productoPT}" />
                       
-                            <h:outputLabel  value="Cantidad    "  />
-                            <p:inputText value="#{recetas.cantidadPT}"  />
                 </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable id="tablaProddPT" 
+                                 emptyMessage=""
                                  value="#{recetas.lstProductoPT}"
                                   var="dpro" rowKey="#{dpro.idproducto}"       
                                  selectionMode="single" rows="19"  >                        
@@ -213,10 +230,11 @@ and open the template in the editor.
                         </p:column>
                         <p:column headerText="grupo" filterBy="#{dpro.grupoproducto}">
                             <h:outputText value="#{dpro.grupoproducto}"  />
-                            <p:column headerText="marca"  filterBy="#{dpro.marcaproducto}">
+                         
+                        </p:column>
+                           <p:column headerText="marca"  filterBy="#{dpro.marcaproducto}">
                                 <h:outputText value="#{dpro.marcaproducto}"  />
                             </p:column>
-                        </p:column>
                     </p:dataTable>
                 </h:panelGrid>
             </p:dialog>

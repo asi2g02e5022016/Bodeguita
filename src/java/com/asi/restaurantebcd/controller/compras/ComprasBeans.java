@@ -16,6 +16,7 @@ import com.asi.restaurantbcd.modelo.Vwproductos;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasComprasLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
+import com.asi.restaurantebcd.negocio.base.BusquedasProveedoresLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.base.ProcesosInventariosLocal;
 import com.asi.restaurantebcd.negocio.util.EstadoEnum;
@@ -89,6 +90,8 @@ public class ComprasBeans implements  Serializable {
     private CrudBDCLocal crud;
     @EJB
     private BusquedasComprasLocal ejbBusComp;
+      @EJB
+    private BusquedasProveedoresLocal ejbBuqProv;
     @EJB
     private BusquedasProductosLocal ejbBusProd;
         @EJB
@@ -273,11 +276,11 @@ public class ComprasBeans implements  Serializable {
       public void buscarProveedor() {
         try {
             Map filtro = new HashMap();
-            if (nombreProveedor != null && !nombreProveedor.equals("")) {
+            if (nombreProveedor != null && !nombreProveedor.trim().equals("")) {
                 filtro.put("nombre", nombreProveedor.trim());
                 
             }
-            lstProveedor = ejbBusComp.buscarProveedores(filtro);
+            lstProveedor = ejbBuqProv.buscarProveedors(filtro);
             System.out.println("proveedre.." +lstProveedor);
             if (lstProveedor == null || lstProveedor.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
@@ -309,7 +312,7 @@ public class ComprasBeans implements  Serializable {
                 
             }
             filtro.put("activo", 1);
-            filtro.put("tipo", 1);
+           // filtro.put("tipo", 1);
             
             lstProducto = ejbBusProd.buscarProducto(filtro);
             System.out.println("lstProducto.." +lstProducto);

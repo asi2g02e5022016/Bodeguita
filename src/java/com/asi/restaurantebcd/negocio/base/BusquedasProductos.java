@@ -81,7 +81,8 @@ public class BusquedasProductos implements BusquedasProductosLocal {
             jpql.append(" AND p.idproducto = :codigoProducto ");
         }
         if (descripcion != null) {
-            jpql.append(" AND p.producto = :descripcion ");
+          
+            jpql.append(" AND UPPER(p.producto) like :descripcion ");
         }
         if (tipo != null) {
             jpql.append(" AND p.idtipoproducto = :tipo  ");
@@ -107,7 +108,8 @@ public class BusquedasProductos implements BusquedasProductosLocal {
             query.setParameter("codigoProducto", codigoProducto);
         }
         if (descripcion != null) {
-            query.setParameter("descripcion", descripcion);
+             query.setParameter("descripcion", "%" + descripcion.toUpperCase() + "%");
+           
         }
         if (tipo != null) {
             query.setParameter("tipo", tipo);

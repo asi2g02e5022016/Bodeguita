@@ -131,14 +131,22 @@ public class RecetasBeans implements Serializable{
             receta.setFechacreacion(new Date());
             receta.setIdusuariocrea(sesion.getUsuario().getIdusuario());
             mostrarGuardar =  false;
+            Producto idRecero =  null;
             for (Recetadetalle recetadetalle : lstRecetaDetalle) {
-                
+            if (recetadetalle.getSalida().toString().equals("0"))    {
+                idRecero =  recetadetalle.getProducto();
+            }
             RecetadetallePK idDer = new RecetadetallePK();
             idDer.setIdproducto(recetadetalle.getProducto().getIdproducto());
             idDer.setIdreceta(receta.getIdreceta());
                 recetadetalle.setRecetadetallePK(idDer);
                 recetadetalle.setReceta(receta);
             } 
+            if (idRecero == null) {
+                alert("No se pudo encontrar la receta a cargar a inventario.",
+                        FacesMessage.SEVERITY_WARN);
+                return;
+            }
             List <Recetadetalle> lstDeta = new ArrayList<>();
             lstDeta.addAll(lstRecetaDetalle);
             
@@ -149,6 +157,8 @@ public class RecetasBeans implements Serializable{
             recetaDetaPT.setRecetadetallePK(idDer);
             receta.setRecetadetalleList(lstDeta);
             crudBDC.guardarEntidad(receta);
+            idRecero.setIdreceta(receta);
+            crudBDC.guardarEntidad(idRecero);
             alert("La receta se guardo exitosamente.", FacesMessage.SEVERITY_INFO);
         } catch (Exception ex) {
             alert("Error: " + ex.getMessage(), FacesMessage.SEVERITY_ERROR);
@@ -174,8 +184,6 @@ public class RecetasBeans implements Serializable{
                 
             }
             filtro.put("activo", 1);
-            filtro.put("tipo", 1);
-            
             lstProducto = busquedasProductos.buscarProducto(filtro);
             System.out.println("lstProducto.." +lstProducto);
             if (lstProducto == null || lstProducto.isEmpty()) {

@@ -58,28 +58,7 @@ public class BusquedasCompras implements BusquedasComprasLocal {
         valor   =  valor + 1;
         return valor;
     }
-    /**
-     * Buscar Proveedores por medio de una MAP filtros.
-     * @param map Map.
-     * @return Lista de proveedores.
-     * @throws Exception  Error generico.
-     */
-    @Override
-    public List <Proveedor> buscarProveedores(Map map) throws Exception {
-        if (map == null){
-            return null;
-        }
-        StringBuilder jpql = new StringBuilder();
-        jpql.append("SELECT a FROM Proveedor a ");
-        if (map.containsKey("nombre") && map.get("nombre") != null) {
-            jpql.append(" WHERE a.proveedor = :nombre ");
-        }
-        Query query = em.createQuery(jpql.toString());
-        if (map.containsKey("nombre") && map.get("nombre") != null) {
-            query.setParameter("nombre", map.get("nombre").toString());
-        }
-        return query.getResultList();
-    }
+    
     
     /**
      * 
