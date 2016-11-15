@@ -24,7 +24,10 @@ and open the template in the editor.
                         <p:menuitem value="Guardar" update="forprincipal" action="#{mttoPuesto.insertarPuesto()}"
                                     icon="ui-icon-disk"  id="btnGuardar" disabled="false" />
                                                 
-                       
+                            <p:menuitem value="Buscar"
+                                        update="forprincipal" action="#{mttoPuesto.buscarPuesto()}"
+                                    icon="ui-icon-search"  id="btnBuscar" disabled="false" />
+                                                
                     </p:menubar>
                     <p:accordionPanel   binding="#{mttoPuesto.formPanel}"  multiple="false" id="forPanel" activeIndex="" >
                         <p:tab title="Ingresar Puesto"  closable="true"   >
@@ -44,32 +47,28 @@ and open the template in the editor.
                     </p:accordionPanel>
       
                     <h:panelGrid>
-                        <p:dataTable id="tablaPuesto" emptyMessage="" binding="#{mttoPuesto.tablaPuesto}"
+                        <p:dataTable id="tablaPuesto" emptyMessage=""
+                                     
                                      value="#{mttoPuesto.lstPuesto}"
-                                     var="dimp" rowKey="#{dimp.idpuesto}"
-                                     selectionMode="single" rows="5" 
-                                     editable="true" paginator="true" 
-                                     rowsPerPageTemplate="5" scrollable="true"
-                                     scrollWidth="650" >
-                            <p:ajax event="rowEdit" listener="#{mttoPuesto.onSelect()}" update=":forprincipal:forPanel"   />
-                            <p:column headerText="Id" width="25" style="align-content: center" >
-                                <h:outputText value="#{dimp.idpuesto}"   />                                
+                                     var="d" 
+                                     rows="10" 
+                                     rowKey="#{d.idpuesto}"
+                                     editable="true" paginator="true" >
+             
+                            <p:column headerText="Id" style="align-content: center" >
+                                <h:outputText value="#{d.idpuesto}" />                                
                             </p:column>
-                            <p:column headerText="Puestos: " width="150"  style=" align-content: center" filterBy="#{dimp.puesto}"  >
-                                <h:outputText value="#{dimp.idpuesto}"   />                                
+                            <p:column headerText="Puestos: "   style=" align-content: center"  >
+                                <h:outputText   value="#{d.puesto}"   />                                
                             </p:column>
-                            <p:column headerText="Departamento" width="150" style="align-content: center" filterBy="#{dimp.iddepartamento.departamento}"  >
-                                <h:outputText value="#{dimp.iddepartamento.departamento}"  />                                
+                            <p:column headerText="Departamento" style="align-content: center"  >
+                                <h:outputText value="#{d.iddepartamento.departamento}" />                                
                             </p:column>
                             
-                            <p:column style=" align-content: center" headerText="Modificar" width="75">
+                            <p:column  width="20px">
                                 <p:rowEditor     />
                             </p:column>
-                            <p:column style="text-align: center" headerText="Eliminar" width="75">
-                                <p:commandButton   value="Eliminar" 
-                                                   action="#{mttoPuesto.eliminarPuesto()}"
-                                                   update="@all"  />
-                            </p:column>
+                   
                         </p:dataTable>
 
                     </h:panelGrid>

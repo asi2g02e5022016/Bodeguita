@@ -166,12 +166,6 @@ public class ComprasBeans implements  Serializable {
             compraEnca.setSucursal(sesion.getSucursal());
             compraEnca.setIdusuario(sesion.getUsuario());
             compraEnca.setObservacion(observacion);
-            System.out.println("lista" + compraEnca.getCompradetalleList());
-            System.out.println(est); 
-            System.out.println("compranenca.. " +compraEnca);
-            System.out.println("sesion..." +sesion);
-            System.out.println("usuario.. " +   sesion.getUsuario());
-            System.out.println("sucursal... " +  sesion.getSucursal());
             crud.guardarEntidad(compraEnca);
             alert("El documento se guardo exitosamente", FacesMessage.SEVERITY_INFO);
             nodocu = compraEnca.getCompraPK().getIdsucursal();
@@ -222,6 +216,7 @@ public class ComprasBeans implements  Serializable {
 
           compraEnca.setIdestado(estad);
           crud.guardarEntidad(compraEnca);
+          mostrarBtnActualizarExit  = false;
           } catch (Exception ex) {
                   Logger.getLogger(ComprasBeans.class.getName())
                           .log(Level.SEVERE, null, ex);

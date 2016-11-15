@@ -3,25 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.asi.restaurantebcd.recursos.webservices;
+package com.asi.restaurantbcd.modelo;
 
-import com.asi.restaurantbcd.modelo.Sucursal;
-import com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal;
 import com.asi.restaurantebcd.negocio.util.ReponseWs;
 import com.asi.restaurantebcd.negocio.util.WsException;
 import com.asi.restaurantebcd.recursos.webservices.VentasWS;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
@@ -34,23 +29,19 @@ import javax.ws.rs.core.Response;
  *
  * @author samaelopez
  */
-@Path("/SucursalWS")
-public class SucursalesWS {
-
-    BusquedasSucursalLocal busquedasSucursal = lookupBusquedasSucursalLocal();
+@Path("/GuardarPedido")
+public class GuardarPedido {
 
     @Context
     private UriInfo context;
 
     /**
-     * Creates a new instance of SucursalesWS
+     * Creates a new instance of GuardarPedido
      */
-    public SucursalesWS() {
+    public GuardarPedido() {
     }
 
-    
-    
-    @GET
+ @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson(@HeaderParam("autorizacion")
                                     String auth) throws WsException {
@@ -64,18 +55,13 @@ public class SucursalesWS {
 //            if (resp != null && resp.getError().equals("1")) {
 //                throw new Exception(resp.getDescripcion());
 //            }
-
-
-            List <Sucursal > lstProduc = 
-                    busquedasSucursal.buscarSucursal();
-            if (lstProduc == null || lstProduc.isEmpty()) {
-                throw new Exception("No se encontraron resultados.");
-            }
-            String jsonRetu = 
-                    new Gson().toJson(lstProduc,
-                            new TypeToken<ArrayList<Sucursal>>() {}.getType());
+    
+            Map hast =  new Gson().fromJson(auth, HashMap.class);
+            String json = getParemetro("json", hast);
+            Pedidoencabezado pedi = new Gson().fromJson(json, Pedidoencabezado.class);
+            System.out.println("pedi");
             resp = new ReponseWs();
-            resp.setContent(jsonRetu);
+            resp.setContent("se guardo exitosamente.");
             resp.setDescripcion("-");
             resp.setError("0");
             resp.setStatus(Response.Status.OK.getStatusCode());
@@ -83,31 +69,25 @@ public class SucursalesWS {
             return new Gson().toJson(resp);
             
         } catch (Exception e) {
-            Logger.getLogger(VentasWS.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(VentasWS.class.getName())
+                    .log(Level.SEVERE, null, e);
             throw new WsException(e.getMessage());
         }
     }
-    
+
+
     /**
-     * PUT method for updating or creating an instance of SucursalesWS
+     * PUT method for updating or creating an instance of GuardarPedido
      * @param content representation for the resource
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
     }
-
-    private BusquedasSucursalLocal lookupBusquedasSucursalLocal() {
-        try {
-            javax.naming.Context c = new InitialContext();
-            return (BusquedasSucursalLocal) c.lookup("java:global/RestaurantBDC/BusquedasSucursal!com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal");
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
+        public static < T> T getParemetro(Object object, Map filtros) {
+        if (filtros == null || object == null) {
+            return null;
         }
-    }
-    
-    
-    
-    
+        return (T) filtros.get(object);
+    } 
 }

@@ -104,6 +104,7 @@ public MttoPuesto(){
         idDepartamento = null;
         Puesto = null;
         this.actualizar = false;
+        lstPuesto = null;
         this.formPanel.setActiveIndex("0");
         } 
     public void insertarPuesto() {

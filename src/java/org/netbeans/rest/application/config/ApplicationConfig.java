@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.asi.restaurantbcd.modelo.GuardarPedido.class);
         resources.add(com.asi.restaurantebcd.negocio.util.WsExceptionHandler.class);
         resources.add(com.asi.restaurantebcd.recursos.webservices.MaestrosWS.class);
         resources.add(com.asi.restaurantebcd.recursos.webservices.SucursalesWS.class);

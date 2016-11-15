@@ -29,7 +29,7 @@ public class BusquedasMttoPuesto implements BusquedasMttoPuestoLocal {
     @Override
     public List <Puesto> buscarPuesto() throws Exception {
         StringBuilder jpql = new StringBuilder();
-        jpql.append("SELECT a FROM Estado a ");
+        jpql.append("SELECT a FROM Puesto a ");
         Query query = em.createQuery(jpql.toString());
         return query.getResultList();
     }
@@ -50,9 +50,9 @@ public class BusquedasMttoPuesto implements BusquedasMttoPuestoLocal {
 
     @Override
     public List<Departamento> buscarDepartamento() throws Exception {
-        StringBuilder jpql = new StringBuilder();
-        jpql.append("SELECT a FROM departamento a ");
-        Query query = em.createQuery(jpql.toString());
+//        StringBuilder jpql = new StringBuilder();
+//        jpql.append("SELECT a FROM departamento a ");
+        Query query = em.createNamedQuery("Departamento.findAll");
         return query.getResultList();
     }
 
