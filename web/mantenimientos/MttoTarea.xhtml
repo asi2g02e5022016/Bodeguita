@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="body"    >
+        <center>
+            <h:form id="forprincipal">
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="pBotones" header="Mantenimiento de tareas">
+                    <p:menubar id="mbNav">
+                        <p:menuitem value="Nuevo" action="#{mttoTarea.nuevo()}"
+                                    icon="ui-icon-plus" update="forprincipal" immediate="true" />
+                        <p:menuitem value="Guardar" update="forprincipal"
+                                    icon="ui-icon-disk" action="#{mttoTarea.guardarTarea()}" />
+                        <p:menuitem value="Cerrar" update="forprincipal" action="#{mttoEmpleado.cerrar()}"
+                                    icon=" ui-icon-close" rendered="#{mttoTarea.mostrarCerrar}" /> 
+                    </p:menubar>                    
+
+                    <h:panelGrid columns="4" width="80%">
+                        <h:outputLabel value="Nombre: " />
+                        <p:inputText id="txtNombre"  disabled="#{mttoTarea.txtNombredis}" 
+                                      label="Nombre:" value="#{mttoTarea.nombre}"  />
+                        <h:outputLabel value="Tipo de tarea: "/>
+                        <p:selectOneMenu id="cbTipotares" disabled="#{mttoTarea.cbTipoTarDis}" value="#{mttoTarea.idTipoTarea}"   >
+
+                            <f:selectItems value="#{mttoTarea.lstTipoTarea}"
+                                           var="inp" itemLabel="#{inp.descripcion}" itemValue="#{inp.idtipotarea}"/>                                       
+
+                        </p:selectOneMenu>
+                        <h:outputLabel value="Ejecutable:" />
+                        <p:inputText value="#{mttoTarea.ejecutable}" disabled="#{mttoTarea.txtEjecDis}" />
+                        <h:outputLabel  value="Activo: "  />
+                        <p:selectBooleanButton id="bobtn"  value="#{mttoTarea.activo}"
+                                               onLabel="Yes" offLabel="No" 
+                                               style="width:60px" disabled="#{mttoTarea.btnActivo}" />                        
+                    </h:panelGrid>
+                    <h:panelGrid>
+                        <p:dataTable id="dtTarea" emptyMessage="" value="#{mttoTarea.lstTarea}"
+                                     var="dimp" rowKey="#{dimp.idtarea}"
+                                     selectionMode="single" rows="5" 
+                                     editable="true" binding="#{mttoTarea.dtTarea}">
+                            <p:ajax event="rowEdit" update="@all" listener="#{mttoTarea.actualizarTarea}" />
+                            <p:ajax event="rowEditCancel"   />
+                            <p:column headerText="Id" width="25" style="align-content: center" >
+                                <h:outputText value="#{dimp.idtarea}"   />                                
+                            </p:column>
+                            <p:column headerText="Nombre" width="150"  style=" align-content: center" filterBy="#{dimp.nombre}"  >
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.nombre}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.nombre}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>                                                            
+                            </p:column>
+                            <p:column headerText="Tipo tarea">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{dimp.idtipotarea.descripcion}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu id="cbTipotareas"  value="#{mttoTarea.idTipoTarea}"   >
+                                            <f:selectItems value="#{mttoTarea.lstTipoTarea}"
+                                                           var="inp" itemLabel="#{inp.descripcion}" itemValue="#{inp.idtipotarea}"/>                                       
+
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            
+                            <p:column headerText="Ejecutable" width="150"  style=" align-content: center" filterBy="#{dimp.ejecutable}"  >
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.ejecutable}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.ejecutable}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>                                                            
+                            </p:column>
+                            <p:column  headerText="Activo" >
+                                <p:selectBooleanButton value="#{dimp.activo}" onLabel="Yes" offLabel="No"   />
+                            </p:column>
+                            <p:column style="width:50px; align-content: center" headerText="Modificar" >
+                                <p:rowEditor />
+                            </p:column>
+
+                            <p:column style="width:50px; align-content: center" headerText="Eliminar">                               
+
+                                <p:commandButton   value="Eliminar" 
+                                                   action="#{mttoTarea.eliminarTarea}"
+                                                   update="dtTarea"/>
+
+                            </p:column >
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
