@@ -39,7 +39,7 @@ public class Facturadetalle implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad")
-    private int cantidad;
+    private float cantidad;
     @Basic(optional = false)
     @NotNull
     @Column(name = "precio")
@@ -85,11 +85,11 @@ public class Facturadetalle implements Serializable {
         this.idfactdet = idfactdet;
     }
 
-    public int getCantidad() {
+    public float getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(float cantidad) {
         this.cantidad = cantidad;
     }
 

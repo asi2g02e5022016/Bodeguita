@@ -33,10 +33,10 @@ public class Ordenpedidodetalle implements Serializable {
     protected OrdenpedidodetallePK ordenpedidodetallePK;
     @Basic(optional = false)
     @Column(name = "cantidadsolicitada")
-    private int cantidadsolicitada;
+    private float cantidadsolicitada;
     @Basic(optional = false)
     @Column(name = "cantidadconfirmada")
-    private int cantidadconfirmada;
+    private float cantidadconfirmada;
     @Basic(optional = false)
     @Column(name = "precio")
     private float precio;
@@ -86,19 +86,19 @@ public class Ordenpedidodetalle implements Serializable {
         this.ordenpedidodetallePK = ordenpedidodetallePK;
     }
 
-    public int getCantidadsolicitada() {
+    public float getCantidadsolicitada() {
         return cantidadsolicitada;
     }
 
-    public void setCantidadsolicitada(int cantidadsolicitada) {
+    public void setCantidadsolicitada(float cantidadsolicitada) {
         this.cantidadsolicitada = cantidadsolicitada;
     }
 
-    public int getCantidadconfirmada() {
+    public float getCantidadconfirmada() {
         return cantidadconfirmada;
     }
 
-    public void setCantidadconfirmada(int cantidadconfirmada) {
+    public void setCantidadconfirmada(float cantidadconfirmada) {
         this.cantidadconfirmada = cantidadconfirmada;
     }
 
