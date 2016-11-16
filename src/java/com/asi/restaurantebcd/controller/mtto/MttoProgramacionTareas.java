@@ -9,6 +9,7 @@ import com.asi.restaurantbcd.modelo.Configuracion;
 import com.asi.restaurantbcd.modelo.Programaciondetalle;
 import com.asi.restaurantbcd.modelo.Programaciontareas;
 import com.asi.restaurantbcd.modelo.Tarea;
+import com.asi.restaurantebcd.job.JobEJBLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedaProgramacionTareasLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import java.io.Serializable;
@@ -36,6 +37,8 @@ import org.primefaces.event.SelectEvent;
 
 public class MttoProgramacionTareas implements Serializable {
 
+    @EJB
+    JobEJBLocal ejbLoca;
     /**
      * Creates a new instance of MttoProgramacionTareas
      */
@@ -294,12 +297,15 @@ public class MttoProgramacionTareas implements Serializable {
                     constructorProgTar.setProgramaciondetalleList(lstDetalle);
                     constructorProgTar.setProgramaciondetalleList(lstDetalle);
                     crud.guardarEntidad(constructorProgTar);
+                    ejbLoca.startProgramacionTareas(idProgramacion);//inicia la programación
                     alert("Registro ingresado exitosamente", FacesMessage.SEVERITY_INFO);
                     limpiarDet();
                     limpiarEnc();
                     lstDetalle = null;
                     lstPrograTar = null;
                     mostrarGuardar = false;
+                    System.out.println("idProgramacion: " + idProgramacion);
+                   
                 }
             } else if (actualizacion == true) {
                 System.out.print("entro en el actualizar");
@@ -319,6 +325,7 @@ public class MttoProgramacionTareas implements Serializable {
                     mostrarGuardar = false;
                 }
             }
+            
         } catch (Exception ex) {
             Logger.getLogger(MttoProgramacionTareas.class
                     .getName())

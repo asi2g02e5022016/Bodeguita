@@ -5,7 +5,9 @@
  */
 package com.asi.restaurantebcd.negocio.util;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import org.apache.commons.net.telnet.TelnetClient;
 
@@ -18,8 +20,9 @@ public class TelnetUtils
   private TelnetClient telnet = new TelnetClient();
   private InputStream in;
   private PrintStream out;
-  private String prompt = "$";
-
+  private String prompt = ">";
+BufferedReader br;
+        
   public TelnetUtils(String pIp, String pUser, String pPass ) {
    try {
      // Conectar al servidor:
@@ -29,10 +32,11 @@ public class TelnetUtils
      in = telnet.getInputStream();
      out = new PrintStream( telnet.getOutputStream() );
 
+     br = new BufferedReader (new InputStreamReader (in));
      // Realizar login
      readUntil("login:" );
      write( pUser );
-     readUntil(pUser+"'s Password:" );
+     readUntil("password:" );
      write( pPass );     
     
      // Avanza al prompt
@@ -43,18 +47,6 @@ public class TelnetUtils
    }
   }
 
-  public void su( String password ) {
-    try {
-      write( "su" );
-      readUntil( "Password: " );
-      write( password );
-      prompt = "$";
-      readUntil( prompt );
-    }
-    catch( Exception e ) {
-      e.printStackTrace();
-    }
-  }
 
   public String readUntil( String pattern ) {
    try {
@@ -64,11 +56,12 @@ public class TelnetUtils
      int i=0;
      char ch = ( char )in.read();
      while( i<=100000 ) {
-      System.out.print( ch );
+      
       sb.append( ch );
       if( ch == lastChar ) {
         if( sb.toString().endsWith(pattern ) ) {
          i = 100000;
+         System.out.print( sb.toString() );
          return sb.toString();
         }
       }
@@ -137,223 +130,5 @@ public class TelnetUtils
    }
    return null;
   }  
-   public static void comando_zip(String pfile, String pstore, String ptype, String p_Ip, String p_User, String p_Pass) {
-        try {
-
-    //Comando para menejo de archvios de ventas
-             TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);            
-             telnet.sendCommand( "cd $FRANQ_TOP" );
-             telnet.sendCommand( "unzip -L "+pfile);
-
-             telnet.disconnect();        
-             
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-    }
-   public static void comando_zipvta(String pfile, String pstore, String ptype, String p_Ip, String p_User, String p_Pass) {  
-        try {
-
-    //Comando para menejo de archvios de ventas   
-             TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass); 
-             telnet.sendCommand( "cd $FRANQ_TOP" );
-             telnet.sendCommand( "unzip -L "+pfile+" "+ptype+pstore+".ter");
-             Thread.sleep(6000);
-             telnet.disconnect();        
-             
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-    }
-  
-  public static void comando_remane( String pstore, String ptype, String p_Ip, String p_User, String p_Pass) {
-        try {
-
-    //Comando para menejo de archvios de ventas 
-             TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);
-             telnet.sendCommand( "cd $FRANQ_TOP" );
-             telnet.sendCommand( "mv "+ptype+pstore+".ter "+ptype.toUpperCase()+"XXXX.TER");
-             Thread.sleep(5000);
-             telnet.disconnect();        
-             
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-    }
-  public static void comando_borrafile( String pfile, String p_Ip, String p_User, String p_Pass) {
-        try {
-
-    //Comando para menejo de archvios de ventas
-             TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);            
-             telnet.sendCommand( "cd $FRANQ_TOP" );
-             telnet.sendCommand( "rm -rf "+pfile);
-             Thread.sleep(5000);
-             telnet.disconnect();        
-             
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-    }
-  
-    public static void comando_borra( String pfile, String p_Ip, String p_User, String p_Pass) {
-          try {
-
-    //Comando para menejo de archvios de ventas
-             TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);            
-             telnet.sendCommand( "cd $FRANQ_TOP" );
-             telnet.sendCommand( "rm -rf *");
-             Thread.sleep(5000);
-             telnet.disconnect();        
-             
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-    }
-    public static void comando_lineas(String p_Ip, String p_User, String p_Pass)
-  {
-   // Guarda la informacion de lineas por arhcivos TER en archivo LONGFILE.VER 
-    TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);            
-    telnet.sendCommand( "cd $FRANQ_TOP" );
-    telnet.sendCommand( "wc -lw *TER > LONGFILE.VER");
-    telnet.sendCommand("chmod 777 *");
-    telnet.disconnect();   
-   
-  }
-   public static void comando_zipcom(String pfile, String p_Ip, String p_User, String p_Pass) {
-         try {
-
-    //Comando para menejo de archvios de  compra
-             TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);
-             telnet.sendCommand( "cd $FRANQ_TOP" );
-             telnet.sendCommand( "unzip -L "+pfile);
-             Thread.sleep(6000);
-             telnet.disconnect();        
-             
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-    }
-
-  public static void comando_remane_compra( String pexten, String pfile, String p_Ip, String p_User, String p_Pass) {  
-        try {
-
-    //Comando para menejo de archvios de ventas   
-             TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);
-             telnet.sendCommand( "cd $FRANQ_TOP" );
-             telnet.sendCommand( "mv *"+pexten+" "+pfile);
-             Thread.sleep(5000);
-             telnet.disconnect();        
-             
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-    }
-     public static void comando_wc_compra(String p_prefi, String p_Ip, String p_User, String p_Pass)
-  {
-   // Guarda la informacion de lineas por arhcivos TER en archivo LONGFILE.VER 
-    TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);            
-    telnet.sendCommand( "cd $FRANQ_TOP" );
-    telnet.sendCommand( "wc -lw "+p_prefi+"* > LONGFILEC.VER");
-    telnet.sendCommand("chmod 777 *");
-    telnet.disconnect();   
-  }   
-   public static void comando_zipArt(String pfile, String p_Ip, String p_User, String p_Pass) {
-        try {
-
-    //Comando para menejo de archvios de  compra
-             TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);            
-             telnet.sendCommand( "cd $FRANQ_TOP" );
-             telnet.sendCommand( "unzip "+pfile);
-             Thread.sleep(5000);
-             telnet.disconnect();        
-             
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-    }
-     public static void comando_lineasArt(String p_Ip, String p_User, String p_Pass)
-  {
-   // Guarda la informacion de lineas por arhcivos TER en archivo LONGFILE.VER 
-    TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);            
-    telnet.sendCommand( "cd $FRANQ_TOP" );
-    telnet.sendCommand( "wc -lw ART*TER > LONGFILEA.VER");
-    telnet.sendCommand("chmod 777 *");
-
-    telnet.disconnect();   
-   
-  }
-       public static void comando_movfile(String p_Ip, String p_User, String p_Pass, String pArchivo , String pArchivoName )
-  {
-   // Guarda la informacion de lineas por arhcivos TER en archivo LONGFILE.VER 
-    TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);            
-    telnet.sendCommand("cd $FRANQ_TOP" );
-    telnet.sendCommand("cd ../tempfranq" );
-    telnet.sendCommand("cp "+pArchivo+" ../franquicias");
-    telnet.sendCommand("cd ../franquicias" );
-    telnet.sendCommand("mv "+pArchivo+" "+pArchivoName);
-    telnet.disconnect();   
-   
-  }
-  
-   public static void comando_ftp( String p_Ip, String p_User, String p_Pass, String p_IpFtp, String p_UserFtp, String p_PassFtp,String pArchivo, String p_DirLoc, String p_DirRemo) {
-        try {
-
-    //Comando para menejo de ftp
-             TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);  
-                       
-             telnet.write("ftp "+ p_IpFtp);
-             telnet.readUntil("Name ("+p_IpFtp+":franquse):"); 
-             telnet.write( p_UserFtp );
-             telnet.readUntil("Password:");
-             telnet.write( p_PassFtp );
-             telnet.readUntil("ftp>");
-             telnet.write("cd "+p_DirRemo );
-             telnet.readUntil("ftp>");
-             telnet.write("lcd "+p_DirLoc );
-             telnet.readUntil("ftp>");
-             telnet.write("bin" );
-             telnet.readUntil("ftp>");
-             telnet.write("get "+pArchivo );
-             telnet.readUntil("ftp>");
-             telnet.write("quit" );
-             telnet.readUntil("$");
-             telnet.sendCommand("cd "+p_DirLoc);
-             telnet.sendCommand("chmod 777 *");
-             
-             telnet.disconnect();        
-             
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-    } 
-      
-  public static void comando_log_vta(String p_prefi, String p_Ip, String p_User, String p_Pass)
-  {
-   // Guarda la informacion de lineas por arhcivos TER en archivo LONGFILE.VER 
-    TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);            
-    telnet.sendCommand( "cd $FRANQ_TOP" );
-    telnet.sendCommand( "cd ../tempfranq/log" );
-    telnet.sendCommand( "echo "+p_prefi+" > ArchivosVta.log");
-    telnet.disconnect();   
-  }  
-  
-  public static void comando_log_art(String p_prefi, String p_Ip, String p_User, String p_Pass)
-  {
-   // Guarda la informacion de lineas por arhcivos TER en archivo LONGFILE.VER 
-    TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);            
-    telnet.sendCommand( "cd $FRANQ_TOP" );
-    telnet.sendCommand( "cd ../tempfranq/log" );
-    telnet.sendCommand( "echo "+p_prefi+" > ArchivosArt.log");
-    telnet.disconnect();   
-  }   
-  
-  public static void comando_log_cmp(String p_prefi, String p_Ip, String p_User, String p_Pass)
-  {
-   // Guarda la informacion de lineas por arhcivos TER en archivo LONGFILE.VER 
-    TelnetUtils telnet = new TelnetUtils(p_Ip, p_User, p_Pass);            
-    telnet.sendCommand( "cd $FRANQ_TOP" );
-    telnet.sendCommand( "cd ../tempfranq/log" );
-    telnet.sendCommand( "echo "+p_prefi+" > ArchivosCmp.log");
-    telnet.disconnect();   
-  }  
+     
 }

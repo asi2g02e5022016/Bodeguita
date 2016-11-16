@@ -27,12 +27,19 @@ public class LineaComandoUtils {
            
            while (aux!=null)
             {
-                salida=salida+aux;                            
+                salida=salida+aux+"\n";                            
                 aux = br.readLine();
             }  
            
+           InputStream ise = p.getErrorStream();
+           BufferedReader bre = new BufferedReader (new InputStreamReader (ise));
+           String error="";
+           for (int i = 0; i < ise.available(); i++) {
+            error = error+ bre.readLine();
+            }
+           
             
-           return salida;
+           return salida+error;
            
       }
       catch (Exception e){

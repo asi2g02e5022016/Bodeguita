@@ -14,9 +14,9 @@ and open the template in the editor.
 
     <ui:define name ="body">
         <center>
-            <h:form id="forprincipal">
+            <h:form id="forprincipal" style="width: 100%">
                 <p:growl showDetail="true" showSummary="true" />
-                <p:panel id="basic" header="Mantenimiento de Clientes" style="width: 50%"  >
+                <p:panel id="basic" header="Mantenimiento de Clientes" style="width: 100%"  >
                     <p:menubar>
                         <p:menuitem value="Nuevo" action="#{mttoCliente.limpiarpantalla()}" update="@all"
                                     icon="ui-icon-plus"   />
@@ -30,10 +30,10 @@ and open the template in the editor.
 
                     <p:accordionPanel   binding="#{mttoCliente.formPanel}"  multiple="false" id="forPanel" activeIndex="" >
                         <p:tab title="Ingresar cliente"  closable="true"   >
-                            <h:panelGrid columns="4" width="80%" >
+                            <h:panelGrid columns="4"  >
                                 <h:outputLabel value ="Id empleado:"/>
                                 <p:inputText value ="#{mttoCliente.idCliente}"
-                                             readonly ="true" style ="width: 40px"/>
+                                             readonly ="true" disabled="true" />
                                 <h:outputLabel value="Nombre:"/>
                                 <p:inputText value="#{mttoCliente.nomCliente}" />
                                 <h:outputLabel value="Apellido:"/>
@@ -43,9 +43,9 @@ and open the template in the editor.
                                 <h:outputLabel value="Direcciòn:"/>
                                 <p:inputTextarea rows="2" cols="20" value ="#{mttoCliente.dirCliente}" />
                                 <h:outputLabel value="DUI:"/>
-                                <p:inputText id="iDui" value="#{mttoCliente.duiCliente}" />
+                                <p:inputMask id="iDui" value="#{mttoCliente.duiCliente}" mask="99999999-9" />
                                 <h:outputLabel value="NIT:"/>
-                                <p:inputText id="iNit" value="#{mttoCliente.nitCliente}" />
+                                <p:inputMask id="iNit" value="#{mttoCliente.nitCliente}" mask="9999-999999-999-9"  />
                                 <h:outputLabel value="NRC:"/>
                                 <p:inputText id="iNcr" value="#{mttoCliente.nrcCliente}" />
                             </h:panelGrid>
@@ -59,38 +59,38 @@ and open the template in the editor.
                                      selectionMode="single" rows="5" 
                                      editable="true" paginator="true" 
                                      rowsPerPageTemplate="5" scrollable="true"
-                                     scrollWidth="650" >
+                                     >
                             <p:ajax event="rowEdit" listener="#{mttoCliente.onSelect()}" update=":forprincipal:forPanel"   />
-                            <p:column headerText="Id" width="25" style="align-content: center" >
+                            <p:column headerText="Id"  style="align-content: center" >
                                 <h:outputText value="#{dimp.idcliente}"   />                                
                             </p:column>
-                            <p:column headerText="Nombres" width="150"  style=" align-content: center" filterBy="#{dimp.nombre}"  >
+                            <p:column headerText="Nombres"  style=" align-content: center" filterBy="#{dimp.nombre}"  >
                                 <h:outputText value="#{dimp.nombre}"   />                                
                             </p:column>
-                            <p:column headerText="Apellidos" width="150" style=" align-content: center" filterBy="#{dimp.apellido}"  >
+                            <p:column headerText="Apellidos" style=" align-content: center" filterBy="#{dimp.apellido}"  >
                                 <h:outputText value="#{dimp.apellido}"  />                                
                             </p:column>
-                            <p:column headerText="Telefono" width="75" style=" align-content: center"  >
+                            <p:column headerText="Telefono" style=" align-content: center"  >
                                 <h:outputText value="#{dimp.telefono}"  />                                
                             </p:column>
-                            <p:column headerText="Dirección" width="300" style=" align-content: center" filterBy="#{dimp.direccion}"  >
+                            <p:column headerText="Dirección" style="align-content: center" filterBy="#{dimp.direccion}"  >
                                 <h:outputText value="#{dimp.direccion}"  />                                
                             </p:column>
-                            <p:column headerText="DUI" width="200" style=" align-content: center" filterBy="#{dimp.dui}"  >
+                            <p:column headerText="DUI" style=" align-content: center" filterBy="#{dimp.dui}"  >
                                 <h:outputText value="#{dimp.dui}"  />                                
                             </p:column>
-                            <p:column headerText="NIT" width="200" style=" align-content: center" filterBy="#{dimp.nit}"  >
+                            <p:column headerText="NIT" style=" align-content: center" filterBy="#{dimp.nit}"  >
                                 <h:outputText value="#{dimp.nit}"  />                                
                             </p:column>
-                            <p:column headerText="NRC" width="200" style=" align-content: center" filterBy="#{dimp.nrc}"  >
+                            <p:column headerText="NRC" style=" align-content: center" filterBy="#{dimp.nrc}"  >
                                 <h:outputText value="#{dimp.nrc}"  />                                
                             </p:column>
                             
                             
-                            <p:column style=" align-content: center" headerText="Modificar" width="75">
+                            <p:column style=" align-content: center" headerText="Modificar" >
                                 <p:rowEditor     />
                             </p:column>
-                            <p:column style="text-align: center" headerText="Eliminar" width="75">
+                            <p:column style="text-align: center" headerText="Eliminar">
                                 <p:commandButton   value="Eliminar" 
                                                    action="#{mttoCliente.eliminarCliente()}"
                                                    update="@all"  />

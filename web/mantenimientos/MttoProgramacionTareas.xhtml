@@ -27,14 +27,17 @@ and open the template in the editor.
 
 
                     <h:panelGrid columns="4">
-                        <h:outputLabel value="Fecha inicio:"/>
-                        <p:calendar id="dtFechaIni" value="#{mttoProgramacionTareas.inicio}" disabled="#{mttoProgramacionTareas.deshabilitarInicio}" />
+                        <p:outputLabel value="Fecha inicio:" for="dtFechaIni"/>
+                        <p:calendar id="dtFechaIni" value="#{mttoProgramacionTareas.inicio}" disabled="#{mttoProgramacionTareas.deshabilitarInicio}" required="true" requiredMessage="Fecha incio requerida" />
                         <h:outputLabel value="Fecha fin:"/>
                         <p:calendar id="dtFechaFin" value="#{mttoProgramacionTareas.fin}" disabled="#{mttoProgramacionTareas.deshabilitarFin}" />
-                        <h:outputLabel value="Frecuencia (horas):"/>
+                        <h:panelGroup>
+                        <h:outputLabel value="Frecuencia (minutos):"/>
+                        </h:panelGroup>
                         <p:inputNumber id="inputFrecuencia" value="#{mttoProgramacionTareas.frecuencia}" 
-                                       minValue="0.00" maxValue="24.00"
-                                       disabled="#{mttoProgramacionTareas.deshabilitarFrecuencia}" />  
+                                       minValue="0" maxValue="1440" 
+                                       disabled="#{mttoProgramacionTareas.deshabilitarFrecuencia}" /> 
+                        <p:watermark for="inputFrecuencia" value="Valor de 0 a 1440" id="watermark" />
                         <p:commandButton id="btnTareas"  value="Agregar Tarea" 
                                          styleClass="ui-priority-primary"
                                          update="dTareas"   action="#{mttoProgramacionTareas.mostrarDialogoDetalle()}"

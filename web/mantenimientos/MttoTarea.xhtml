@@ -21,23 +21,23 @@ and open the template in the editor.
                                     icon="ui-icon-plus" update="forprincipal" immediate="true" />
                         <p:menuitem value="Guardar" update="forprincipal"
                                     icon="ui-icon-disk" action="#{mttoTarea.guardarTarea()}" />
-                        <p:menuitem value="Cerrar" update="forprincipal" action="#{mttoEmpleado.cerrar()}"
-                                    icon=" ui-icon-close" rendered="#{mttoTarea.mostrarCerrar}" /> 
+                        <p:menuitem value="Cerrar" update="forprincipal" action="#{mttoTarea.cerrar()}"
+                                    icon=" ui-icon-close" rendered="#{mttoTarea.mostrarCerrar}" immediate="true" /> 
                     </p:menubar>                    
 
                     <h:panelGrid columns="4" width="80%">
-                        <h:outputLabel value="Nombre: " />
+                        <p:outputLabel value="Nombre: " for="txtNombre" />
                         <p:inputText id="txtNombre"  disabled="#{mttoTarea.txtNombredis}" 
-                                      label="Nombre:" value="#{mttoTarea.nombre}"  />
-                        <h:outputLabel value="Tipo de tarea: "/>
-                        <p:selectOneMenu id="cbTipotares" disabled="#{mttoTarea.cbTipoTarDis}" value="#{mttoTarea.idTipoTarea}"   >
+                                     label="Nombre:" value="#{mttoTarea.nombre}" required="true"  requiredMessage="Nombre requerido" />
+                        <p:outputLabel value="Tipo de tarea: " for="cbTipotares" />
+                        <p:selectOneMenu id="cbTipotares" disabled="#{mttoTarea.cbTipoTarDis}" value="#{mttoTarea.idTipoTarea}" required="true" requiredMessage="Tipo Tarea requerido"   >
 
                             <f:selectItems value="#{mttoTarea.lstTipoTarea}"
                                            var="inp" itemLabel="#{inp.descripcion}" itemValue="#{inp.idtipotarea}"/>                                       
 
                         </p:selectOneMenu>
-                        <h:outputLabel value="Ejecutable:" />
-                        <p:inputText value="#{mttoTarea.ejecutable}" disabled="#{mttoTarea.txtEjecDis}" />
+                        <p:outputLabel value="Ejecutable:" for="idEjecutable" />
+                        <p:inputText id="idEjecutable" value="#{mttoTarea.ejecutable}" disabled="#{mttoTarea.txtEjecDis}" required="true" requiredMessage="Ejecutable requerido" />
                         <h:outputLabel  value="Activo: "  />
                         <p:selectBooleanButton id="bobtn"  value="#{mttoTarea.activo}"
                                                onLabel="Yes" offLabel="No" 

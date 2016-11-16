@@ -141,6 +141,7 @@ public class MttoTarea {
         txtEjecDis = false;
         mostrarCerrar = true;
         limpiar();
+        consutarTarea();
     }
 
     public void nuevo() {
