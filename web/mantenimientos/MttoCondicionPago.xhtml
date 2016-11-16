@@ -11,60 +11,73 @@ and open the template in the editor.
                 xmlns:p="http://primefaces.org/ui"
                 template="/layout/templateBDC.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:define name="body">
+    
+    <ui:define name="body"    >
         <center>
-            <h:form id="forprincipal" >
-                <p:growl showDetail="true" showSummary="true" />
-                <p:panel id="basic" header="Mantenimiento Condiciones de Pago" style="width: 50%"  >
-                    <p:menubar>
-                        <p:menuitem value="Nuevo"
-                                    icon="ui-icon-plus" />
-                        <p:menuitem value="Guardar"
+            <h:form id="forprincipal">
+            <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="basic" header="Mantenimiento de Condición de Pago" style="width: 60%" >    
+                <p:menubar>
+                    <p:menuitem value="Nuevo" update="forprincipal" action="#{mttoCondicionPago.limpiarpantalla()}"
+                                icon="ui-icon-plus" immediate="true"/>
+                    <p:menuitem value="Guardar" update="forprincipal" action="#{mttoCondicionPago.guardarCondicionpago()}"
                                     icon="ui-icon-disk" />
-                        <p:menuitem value="Buscar" update="forprincipal"
-                                        icon=" ui-icon-search" />
+                    <p:menuitem value="Buscar" update="forprincipal" action="#{mttoCondicionPago.buscarCondicionPago()}"
+                                icon=" ui-icon-search" immediate="true" />
                     </p:menubar>
-                    <h:panelGrid columns="2" width="80%">
-                        <h:outputLabel  value="Id Condicion Pago : "/>
-                        <p:inputText 
-                                     readonly="true" style="width: 40px" />
-                        <h:outputLabel  value="Nombre " />
-                        <p:inputText style="width: 100%"  />
-                    </h:panelGrid>
+                
+                    
+                    <h:panelGrid columns="4" width="60%">
+                        <h:outputLabel value="Id Condicion de Pago "/>
+                        <p:inputText  value ="#{mttoCondicionPago.idCondicionPago}"
+                                     readonly ="true" style ="width: 40px"/>
+                        <p:outputLabel  for="ipt1" value ="Condición de Pago "/>
+                        <p:inputText id="ipt1" style="width: 50%" value ="#{mttoCondicionPago.condicionPago}" required="true" requiredMessage="El campo Condicion de pago es obligatorio"/>
+                     </h:panelGrid>
+                
                     <h:panelGrid >
-                        <p:dataTable id="tablaProd" emptyMessage="" 
-                                     var="dpro"
-                                     selectionMode="single" rows="19"  >
-                            <p:ajax event="rowEdit" />  
-                    <p:ajax event="rowEditCancel" /> 
-
+                        <p:dataTable id="tablaConpago" emptyMessage="" 
+                                     value="#{mttoCondicionPago.lstCondicionpago}"
+                                     var="dimp" rowKey="#{dimp.idcondicionpago}"
+                                     rows="6" 
+                                    editable="true" paginator="true" 
+                                    rowsPerPageTemplate="6">
+                            
                             <p:column headerText="Id" width="10%">
-                                <h:outputText />
+                                <h:outputText value="#{dimp.idcondicionpago}"/>                                
                             </p:column>
-                            <p:column headerText="Nombre" width="80%">
-                 
-                        <p:cellEditor>  
-                            <f:facet name="output">  
-                                <h:outputText  />  
-                            </f:facet>  
-                            <f:facet name="input">  
-                                <p:inputText style="width:100%"/>  
-                            </f:facet>  
-                        </p:cellEditor>
+                            
+                            <p:column headerText="Condicion de Pago" width="40%">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.condicionpago}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{dimp.condicionpago}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>   
                             </p:column>
-                                <p:column width="10%">
-                                    <h:panelGrid >
-                                  <p:rowEditor/>
-                                  <p:commandButton  style="width: 12px; height: 12px;"
-                                                    
-                                     id="iconOnly"
-                                         icon="ui-icon-plus"  />
-                                   </h:panelGrid>
-                                </p:column>
+                            
+                            <p:column style="width:50px; align-content: center" headerText="Modificar">
+                                <p:rowEditor />
+                            </p:column>
+                            
+                    <!--        <p:column style="width:60px; align-content: center"  headerText="Eliminar">                               
+                                  
+                                    <p:commandButton   value="Eliminar" 
+                                                       action="#{mttoCondicionPago.eliminarCondicionP(dimp)                                                               .eliminarProducto(dimp)}"
+                                                      />
+                               
+                            </p:column > -->
+                                                   
+                            <p:ajax event="rowEdit" listener="#{mttoCondicionPago.actualizarCondicionP}" />
+                            <p:ajax event="rowEditCancel" listener="#{mttoCondicionPago.onCancel}"  />
+                        
                         </p:dataTable>
-                    </h:panelGrid>
+                        </h:panelGrid>
+                    
                 </p:panel>
             </h:form>
-        </center>
-    </ui:define>
-</ui:composition>
+            </center>
+      </ui:define>
+   </ui:composition>
