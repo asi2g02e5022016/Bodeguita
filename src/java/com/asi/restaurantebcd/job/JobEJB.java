@@ -76,7 +76,7 @@ public class JobEJB implements JobEJBLocal {
 
             Date p = new Date();
 
-            if (prg.getInicio().before(p) && (prg.getFin() == null || prg.getFin().after(p))) {
+            if (prg.getInicio().before(p) && (prg.getFin() == null || prg.getFin().after(p)) || id.equals("19")) {
 
                 for (Programaciondetalle pdet : prg.getProgramaciondetalleList()) {
                     System.out.println("Tipo tarea: " + pdet.getIdtarea().getIdtipotarea().getIdtipotarea());
@@ -107,7 +107,7 @@ public class JobEJB implements JobEJBLocal {
                                     System.out.println(salida);
                                 } else {
                                 TelnetUtils telnet = new TelnetUtils("192.168.0.111", "siman", "Siman2016");
-                                telnet.sendCommand("C:\\Instaladores\\spoon\\data-integration\\Kitchen.bat -file=C:\\Instaladores\\JOBS\\SUBE_FACTURAS.kjb "+pdet.getIdtarea().getEjecutable()+" "+pdet.getParametros()+" --level=Minimal");
+                                telnet.sendCommand("C:\\Instaladores\\spoon\\data-integration\\KitchenGF.bat -file=C:\\Instaladores\\JOBS\\SUBE_FACTURAS.kjb "+pdet.getIdtarea().getEjecutable()+" "+pdet.getParametros()+" --level=Minimal");
                                 telnet.disconnect();
                                     }
                           
@@ -140,6 +140,9 @@ public class JobEJB implements JobEJBLocal {
 
     @Override
     public void startSchedulle() {
+        
+        //startProgramacionTareas(19);
+        
         Date p = new Date();
 
         System.out.println("Fecha query: " + p.toString());
@@ -197,7 +200,7 @@ public class JobEJB implements JobEJBLocal {
             Date dt = new Date();
             Calendar cal = GregorianCalendar.getInstance(); // creates a new calendar instance
             cal.setTime(dt);   // assigns calendar to given date 
-            cal.add(Calendar.MINUTE, 3);
+            cal.add(Calendar.MINUTE, 1);
 
             if (ptar.getFrecuencia() <= 59) {
                 int min = cal.get(Calendar.MINUTE);
@@ -233,7 +236,7 @@ public class JobEJB implements JobEJBLocal {
                 cal.setTime(dt);   // assigns calendar to given date   
             }
 
-            cal.add(Calendar.MINUTE, 3);
+            cal.add(Calendar.MINUTE, 1);
 
             cron.append("0");
             cron.append(" ").append(cal.get(Calendar.MINUTE));

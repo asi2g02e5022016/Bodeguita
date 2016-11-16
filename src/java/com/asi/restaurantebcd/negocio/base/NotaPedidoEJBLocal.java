@@ -5,6 +5,10 @@
  */
 package com.asi.restaurantebcd.negocio.base;
 
+import com.asi.restaurantbcd.modelo.Notapedido;
+import com.asi.restaurantbcd.modelo.Sucursal;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +17,9 @@ import javax.ejb.Local;
  */
 @Local
 public interface NotaPedidoEJBLocal {
+    
+    public List <Sucursal> buscarSucursalOrigen(Map map) throws Exception;
+    
+    public List <Notapedido> buscarNotasPedido(Map map) throws Exception;
     
 }

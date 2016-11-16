@@ -34,6 +34,13 @@ public interface ProcesosInventariosLocal {
     public void afectarExistencia(Double cantidad, Producto producto,
             Usuario usr, Sucursal sucursal, Double costo, boolean descargaInv,
             boolean  calcularCstProm) throws Exception;
+    
+        public void afectarTransito(Double cantidad, Producto producto,
+            Usuario usr, Sucursal sucursal, Double costo, boolean descargaInv, boolean  calcularCstProm) throws Exception;
+
+       public void afectarReservado(Double cantidad, Producto producto,
+            Usuario usr, Sucursal sucursal, Double costo, boolean descargaInv, boolean  calcularCstProm) throws Exception;
+        
         /**
      * Metodo de busqueda de comras.
      * @param sucursal sucursal 

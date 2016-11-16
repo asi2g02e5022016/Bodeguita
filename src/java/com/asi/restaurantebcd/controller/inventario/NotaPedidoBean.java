@@ -15,6 +15,7 @@ import com.asi.restaurantbcd.modelo.NotapedidodetallePK;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
 import com.asi.restaurantbcd.modelo.Sucursal;
+import com.asi.restaurantbcd.modelo.Vwexistencias;
 import com.asi.restaurantbcd.modelo.Vwproductos;
 import com.asi.restaurantebcd.controller.compras.ComprasBeans;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
@@ -24,6 +25,8 @@ import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.base.NotaPedidoEJBLocal;
+import com.asi.restaurantebcd.negocio.base.ProcesosInventariosLocal;
 import com.asi.restaurantebcd.negocio.util.EstadoEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -54,6 +58,7 @@ public class NotaPedidoBean implements Serializable{
     
     private boolean mostrarBtnGuardar = false;
     private boolean mostrarCantConfirmada = false;
+    private boolean mostrarCantRecibida = false;
     
     private Integer nodocu;
     private String observacion;
@@ -61,7 +66,8 @@ public class NotaPedidoBean implements Serializable{
     private String usr;
     private String sucursalDestino;
     private Date fecha;
-    private String sucursalOrigen;
+    private String sucursalOrigenNombre;
+    private Sucursal sucursalOrigen;
     private List<Notapedidodetalle> lstPeddeta = new ArrayList<Notapedidodetalle>();
     private List<Sucursal> lstSucursalOrigen = new ArrayList<Sucursal>();
     private List<Vwproductos> lstProducto = new ArrayList<Vwproductos>();
@@ -75,9 +81,15 @@ public class NotaPedidoBean implements Serializable{
     private Vwproductos producto;
     private Notapedidodetalle notaDeta;
     private Notapedido notaEnca;
+    private boolean inactivarSelectorSucursal=true;
+    
+    private boolean mostrarBtnCancelar = false;
+    
+    private boolean mostrarBtnEnviar=false;
+    private boolean mostrarBtnRecibir=false;
     
     @EJB
-    private BusquedasSucursalLocal ejbSucursal;
+    private NotaPedidoEJBLocal ejbNota;
     
     @EJB
     private BusquedasProductosLocal ejbBusProd;
@@ -87,10 +99,103 @@ public class NotaPedidoBean implements Serializable{
     
     @EJB
     private BusquedaNotaPedidoLocal ejbPedido;
+    @PersistenceContext(unitName = "RestaurantBDC-WebPU")
+    private EntityManager em;
+    @Resource
+    private javax.transaction.UserTransaction utx;
     
     @Inject
     private SessionUsr session;
     
+    @EJB
+    ProcesosInventariosLocal ejbInv;
+    
+    
+    public void limpiarPantalla(){
+          notaEnca = null;
+          nodocu = null;
+          observacion = null;
+          usr=null;
+          sucursalDestino=null;
+          sucursalOrigen=null;
+          sucursalOrigenNombre=null;
+           sucursalOrigenNombre = null;
+            lstPeddeta = null;
+            sucursalFilter = null;
+            descripcionProducto = null;
+            fechaIniMonitor = null;
+            fechaFinMonitor = null;
+            cantidadSolic = null;
+            mostrarBtnGuardar = false;
+             mostrarBtnCancelar = false;
+             inactivarSelectorSucursal=true;
+             setMostrarBtnEnviar(false);
+    }
+
+    public void recibirPedido(){
+      try {
+            this.notaEnca = crud.buscarEntidad(Notapedido.class, notaEnca.getNotapedidoPK());
+            for(Notapedidodetalle pdet:notaEnca.getNotapedidodetalleList()){
+               if(pdet.getCantidadconfirmada()!=pdet.getCantidadrecibida() && (this.observacion==null||this.observacion.trim().equals(""))){
+                   alert("La observación es obligatoria cuando no se recibe completo",FacesMessage.SEVERITY_WARN);
+                   return;
+               }
+            
+            }
+            
+            for(Notapedidodetalle pdet:notaEnca.getNotapedidodetalleList()){
+                ejbInv.afectarExistencia((new Integer(pdet.getCantidadrecibida())).doubleValue(), pdet.getIdproducto() , session.getUsuario(), notaEnca.getSucursal(), 0D,false,false);
+                ejbInv.afectarTransito((new Integer(pdet.getCantidadconfirmada())).doubleValue(), pdet.getIdproducto() , session.getUsuario(), notaEnca.getSucursal(), (new Float(pdet.getCosto()).doubleValue()),true,false);
+                
+                // si hay inconsistencia entre lo confirmado y recibido
+                if(pdet.getCantidadconfirmada()!=pdet.getCantidadrecibida()){
+                    
+                    //si la cantidad recibida es mayor que la confirmada, se resta sino se sumara
+                    boolean signo=pdet.getCantidadrecibida()>pdet.getCantidadconfirmada();
+                    
+                    //usamos el valor absoluto
+                    int cantidad = Math.abs(pdet.getCantidadrecibida()-pdet.getCantidadconfirmada());
+                    
+                    ejbInv.afectarExistencia((new Integer(cantidad)).doubleValue(), pdet.getIdproducto() , session.getUsuario(), notaEnca.getIdSucursalOrigen(), 0D,signo,false);
+                
+                }
+                
+            
+            }
+             Estado estado = new Estado();
+            estado.setIdestado(EstadoEnum.TERMINADO.getInteger());
+            notaEnca.setIdestado(estado);
+            notaEnca.setObservacion(observacion);
+            crud.guardarEntidad(notaEnca);
+            
+            limpiarPantalla();
+            alert("Pedido recibido", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(NotaPedidoBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        public void enviarPedido(){
+            
+        try {
+            this.notaEnca = crud.buscarEntidad(Notapedido.class, notaEnca.getNotapedidoPK());
+            for(Notapedidodetalle pdet:notaEnca.getNotapedidodetalleList()){
+                ejbInv.afectarExistencia((new Integer(pdet.getCantidadconfirmada())).doubleValue(), pdet.getIdproducto() , session.getUsuario(), notaEnca.getIdSucursalOrigen(), 0D,true,false);
+                ejbInv.afectarTransito((new Integer(pdet.getCantidadconfirmada())).doubleValue(), pdet.getIdproducto() , session.getUsuario(), notaEnca.getSucursal(), (new Float(pdet.getCosto()).doubleValue()),false,true);
+                ejbInv.afectarReservado((new Integer(pdet.getCantidadsolicitada())).doubleValue(), pdet.getIdproducto() , session.getUsuario(), notaEnca.getIdSucursalOrigen(), 0D,true,false);
+            
+            }
+             Estado estado = new Estado();
+            estado.setIdestado(EstadoEnum.TRANSITO.getInteger());
+            notaEnca.setIdestado(estado);
+            notaEnca.setObservacion(observacion);
+            crud.guardarEntidad(notaEnca);
+            
+            limpiarPantalla();
+            alert("Pedido despachado", FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(NotaPedidoBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
     public void nuevoPedido(){
     Estado estadoPed=null;
         try {
@@ -102,31 +207,31 @@ public class NotaPedidoBean implements Serializable{
         notaEnca=new Notapedido();
         notaEnca.setSucursal(session.getSucursal());
         notaEnca.setIdusuarios(session.getUsuario().getIdusuario());
-        notaEnca.setFechaingreso(new Date());
+        notaEnca.setFechageneracion(new Date());
         notaEnca.setIdestado(estadoPed);
         
     nodocu = null;
     observacion = null;
-    
+    inactivarSelectorSucursal = false;
     usr = session.getUsuario().getIdusuario();
     sucursalDestino=session.getSucursal().getSucursal();
     
     
     fecha = new Date();
-    sucursalOrigen = null;
+    sucursalOrigenNombre = null;
     lstPeddeta.clear();
     sucursalFilter = null;
     descripcionProducto = null;
     fechaIniMonitor = null;
     fechaFinMonitor = null;
     cantidadSolic = null;
+    mostrarBtnGuardar = true;
+     mostrarBtnCancelar = false;
     
     }
     
-    public void guardarPedido(){};
-    
-    public void enviarNotaPedido() {
-        Integer codigoCom=0;
+    public void guardarPedido(){
+          Integer codigoCom=0;
         try {
             codigoCom =  ejbPedido.obtenerCorreltivoPedido(session.getSucursal().getIdsucursal());
             this.nodocu = codigoCom;
@@ -153,9 +258,41 @@ public class NotaPedidoBean implements Serializable{
         notaEnca.setNotapedidodetalleList(lstPeddeta);
         
         try {
+            notaEnca.setObservacion(observacion);
             crud.guardarEntidad(notaEnca);
+            for(Notapedidodetalle pdet:lstPeddeta){
+                System.out.println("Reservando:"  + pdet.getIdproducto().getProducto());
+                ejbInv.afectarReservado((new Integer(pdet.getCantidadsolicitada())).doubleValue(), pdet.getIdproducto() , session.getUsuario(), notaEnca.getIdSucursalOrigen(), 0D,false,false);
+            }
+            limpiarPantalla();
+            alert("Pedido guardado", FacesMessage.SEVERITY_INFO);
+            
         } catch (Exception ex) {
             Logger.getLogger(NotaPedidoBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    };
+    
+    public void cancelarPedido() {
+        try {
+             if((this.observacion==null||this.observacion.trim().equals(""))){
+                   alert("La observación es obligatoria cuando se anula un pedido",FacesMessage.SEVERITY_WARN);
+                   return;
+               }
+             
+            Estado estado = new Estado();
+            estado.setIdestado(EstadoEnum.ANULADO.getInteger());
+            notaEnca.setIdestado(estado);
+            notaEnca.setObservacion(observacion);
+            crud.guardarEntidad(notaEnca);
+            
+            for(Notapedidodetalle pdet:this.lstPeddeta){
+                ejbInv.afectarReservado((new Integer(pdet.getCantidadsolicitada())).doubleValue(), pdet.getIdproducto() , session.getUsuario(), notaEnca.getIdSucursalOrigen(), 0D,true,false);
+            }
+            alert("Pedido cancelado", FacesMessage.SEVERITY_INFO);
+            limpiarPantalla();
+        } catch (Exception ex) {
+            Logger.getLogger(NotaPedidoBean.class.getName()).log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
         
     };
@@ -178,20 +315,20 @@ public class NotaPedidoBean implements Serializable{
     };
     
     public void limpiarSucursalOrigen() {
-         this.setSucursalOrigen(null);
+         this.setSucursalOrigenNombre(null);
          notaEnca.setIdSucursalOrigen(null);
     };
     
     public void buscarSucursal() {
        try {
             Map filtro = new HashMap();
-            if (sucursalFilter != null && !sucursalFilter.equals("")) {
-                filtro.put("sucursal", sucursalFilter.trim()); 
-            }
-            lstSucursalOrigen = ejbSucursal.buscarSucursal(filtro);
+            
+               filtro.put("sucursal", session.getSucursal().getSucursal()); 
+          
+            lstSucursalOrigen = ejbNota.buscarSucursalOrigen(filtro);
             System.out.println("sucursal.." +lstSucursalOrigen);
             if (lstSucursalOrigen == null || lstSucursalOrigen.isEmpty()) {
-               // alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
          } catch (Exception ex) {
             Logger.getLogger(ComprasBeans.class.getName()).log(
@@ -210,10 +347,10 @@ public class NotaPedidoBean implements Serializable{
                 
             }
             filtro.put("activo", 1);
-            filtro.put("tipo", 1);
+            //filtro.put("tipo", 2);  Solo materia Prima
             
             lstProducto = ejbBusProd.buscarProducto(filtro);
-            System.out.println("lstProducto.." +lstProducto);
+            System.out.println("lstProduto.." +lstProducto);
             if (lstProducto == null || lstProducto.isEmpty()) {
                 alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
@@ -224,12 +361,39 @@ public class NotaPedidoBean implements Serializable{
         }
     };
     
-    public void buscarPedidos() {};
+    public void buscarPedidos() {
+    
+        try {
+            if (fechaIniMonitor != null
+                    && fechaFinMonitor != null) {
+                if (fechaIniMonitor.after(fechaFinMonitor)) {
+                    alert("La fecha inicial tiene que ser menor que la final.",
+                            FacesMessage.SEVERITY_WARN);
+                    return;
+                }
+            }
+            
+            Map filterMap;
+            filterMap = new HashMap<String,Object>();
+            
+            filterMap.put("sucursal", session.getSucursal());
+            lstPedidoMonitor = ejbNota.buscarNotasPedido(filterMap);
+            if (lstPedidoMonitor == null || lstPedidoMonitor.isEmpty()) {
+                alert("NO se encontraron resultados.", FacesMessage.SEVERITY_WARN);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(NotaPedidoBean.class.getName()).log(Level.SEVERE, null, ex);
+            alert("Error: " + ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        
+    };
     
     public void onRowEdit(RowEditEvent event) {
         try {
-            //compraDeta =  (Compradetalle) event.getObject();
-           // crud.guardarEntidad(compraDeta);
+           notaDeta =  (Notapedidodetalle) event.getObject();
+           if(!mostrarBtnGuardar)
+           crud.guardarEntidad(notaDeta);
+           
         } catch (Exception ex) {
             Logger.getLogger(ComprasBeans.class.getName())
                     .log(Level.SEVERE, null, ex);
@@ -239,7 +403,7 @@ public class NotaPedidoBean implements Serializable{
     }
     
       public void onRowSelectSucursal(SelectEvent event) {
-          this.sucursalOrigen = ((Sucursal) event.getObject()).getSucursal();
+          this.sucursalOrigenNombre = ((Sucursal) event.getObject()).getSucursal();
           this.notaEnca.setIdSucursalOrigen((Sucursal) event.getObject());
       }
       
@@ -256,8 +420,6 @@ public class NotaPedidoBean implements Serializable{
 //                requestContext.execute("PF('dialogoProducto').show();");
                 return;
             }
-            System.out.println("producto,.. " +producto);
-            System.out.println("u..");
             Producto pro = crud.buscarEntidad(Producto.class,
                     producto.getIdproducto());
             if (lstPeddeta == null ) {
@@ -269,6 +431,7 @@ public class NotaPedidoBean implements Serializable{
             notaDeta.setCantidadconfirmada(0);
             notaDeta.setNotapedido(notaEnca);
             notaDeta.setCosto(Double.valueOf(idP.getPreciocompra()).floatValue());
+            notaDeta.setLineaNueva(true);
             lstPeddeta.add(0, notaDeta);
             System.out.println("Preciocompra: " + idP.getPreciocompra());
             System.out.println("lstPeddeta.." +lstPeddeta);
@@ -284,8 +447,61 @@ public class NotaPedidoBean implements Serializable{
     }
       
     public void onRowSelectPedido(SelectEvent event) {
-
+     notaEnca = (Notapedido) event.getObject();
+        if (notaEnca == null) {
+            alert("No se a podido obtener el objeto compra.", FacesMessage.SEVERITY_ERROR);
+            return;
+        }
+        System.out.println("notaEnca.getSucursal().getIdsucursal() " + notaEnca.getSucursal().getIdsucursal());
+        System.out.println("session.getSucursal().getIdsucursal() " + session.getSucursal().getIdsucursal());
+        System.out.println("notaEnca.getIdestado().getIdestado() " + notaEnca.getIdestado().getIdestado());
+        System.out.println("EstadoEnum.GENERADO.getInteger() " + EstadoEnum.GENERADO.getInteger());
         
+        
+        
+        if(notaEnca.getIdestado().getIdestado().equals(EstadoEnum.GENERADO.getInteger())){
+            mostrarBtnCancelar = true; System.out.println("true"); } else {mostrarBtnCancelar = false; System.out.println("false");}
+       
+        inactivarSelectorSucursal=true;
+                
+         if(notaEnca.getIdSucursalOrigen().getIdsucursal().equals(session.getSucursal().getIdsucursal()) 
+               && notaEnca.getIdestado().getIdestado().equals(EstadoEnum.GENERADO.getInteger())){
+            setMostrarBtnEnviar(true);mostrarCantConfirmada = true; System.out.println("true"); } else {setMostrarBtnEnviar(false); mostrarCantConfirmada = false; System.out.println("false");}
+        
+          if(notaEnca.getSucursal().getIdsucursal().equals(session.getSucursal().getIdsucursal()) 
+               && notaEnca.getIdestado().getIdestado().equals(EstadoEnum.TRANSITO.getInteger())){
+            setMostrarBtnRecibir(true);setMostrarCantRecibida(true); System.out.println("true"); } else {setMostrarBtnRecibir(false); setMostrarCantRecibida(false); System.out.println("false");}
+          
+        nodocu = notaEnca.getNotapedidoPK().getIdnotapedido();
+     estado = notaEnca.getIdestado().getEstado();
+    usr = notaEnca.getIdusuarios();
+     sucursalDestino = notaEnca.getSucursal().getSucursal();
+      fecha = notaEnca.getFechageneracion();
+     sucursalOrigenNombre = notaEnca.getIdSucursalOrigen().getSucursal();
+      sucursalOrigen = notaEnca.getIdSucursalOrigen();
+    
+    
+    List<Notapedidodetalle> lstPeddNv = new ArrayList<Notapedidodetalle>();
+     
+    for(Notapedidodetalle pdet:notaEnca.getNotapedidodetalleList()){
+       Vwexistencias pex=null;
+         try{ 
+      if(mostrarCantConfirmada){
+       pex = (Vwexistencias) em.createQuery("select p from Vwexistencias p where p.idproducto = :id and p.idsucursal = :idsuc")
+                        .setParameter("id", pdet.getIdproducto().getIdproducto())
+                         .setParameter("idsuc", notaEnca.getIdSucursalOrigen().getIdsucursal())
+                        .getSingleResult();}}catch(Exception ex){ex.printStackTrace();}
+         
+    if(pex==null){
+          pdet.setExistencia(0);
+     }else{
+          pdet.setExistencia(pex.getValor());
+    }
+      lstPeddNv.add(pdet);
+    }
+
+    lstPeddeta = lstPeddNv; 
+    observacion = notaEnca.getObservacion();
     }
 
     public boolean isMostrarCantConfirmada() {
@@ -396,17 +612,17 @@ public class NotaPedidoBean implements Serializable{
     }
 
     /**
-     * @return the sucursalOrigen
+     * @return the sucursalOrigenNombre
      */
-    public String getSucursalOrigen() {
-        return sucursalOrigen;
+    public String getSucursalOrigenNombre() {
+        return sucursalOrigenNombre;
     }
 
     /**
-     * @param sucursalOrigen the sucursalOrigen to set
+     * @param sucursalOrigenNombre the sucursalOrigenNombre to set
      */
-    public void setSucursalOrigen(String sucursalOrigen) {
-        this.sucursalOrigen = sucursalOrigen;
+    public void setSucursalOrigenNombre(String sucursalOrigenNombre) {
+        this.sucursalOrigenNombre = sucursalOrigenNombre;
     }
 
     /**
@@ -555,6 +771,90 @@ public class NotaPedidoBean implements Serializable{
      */
     public void setNotaEnca(Notapedido notaEnca) {
         this.notaEnca = notaEnca;
+    }
+
+    /**
+     * @return the sucursalOrigen
+     */
+    public Sucursal getSucursalOrigen() {
+        return sucursalOrigen;
+    }
+
+    /**
+     * @param sucursalOrigen the sucursalOrigen to set
+     */
+    public void setSucursalOrigen(Sucursal sucursalOrigen) {
+        this.sucursalOrigen = sucursalOrigen;
+    }
+
+    /**
+     * @return the mostrarBtnCancelar
+     */
+    public boolean isMostrarBtnCancelar() {
+        return mostrarBtnCancelar;
+    }
+
+    /**
+     * @param mostrarBtnCancelar the mostrarBtnCancelar to set
+     */
+    public void setMostrarBtnCancelar(boolean mostrarBtnCancelar) {
+        this.mostrarBtnCancelar = mostrarBtnCancelar;
+    }
+
+    /**
+     * @return the inactivarSelectorSucursal
+     */
+    public boolean isInactivarSelectorSucursal() {
+        return inactivarSelectorSucursal;
+    }
+
+    /**
+     * @param inactivarSelectorSucursal the inactivarSelectorSucursal to set
+     */
+    public void setInactivarSelectorSucursal(boolean inactivarSelectorSucursal) {
+        this.inactivarSelectorSucursal = inactivarSelectorSucursal;
+    }
+
+    /**
+     * @return the mostrarBtnEnviar
+     */
+    public boolean isMostrarBtnEnviar() {
+        return mostrarBtnEnviar;
+    }
+
+    /**
+     * @param mostrarBtnEnviar the mostrarBtnEnviar to set
+     */
+    public void setMostrarBtnEnviar(boolean mostrarBtnEnviar) {
+        this.mostrarBtnEnviar = mostrarBtnEnviar;
+    }
+
+    /**
+     * @return the mostrarBtnRecibir
+     */
+    public boolean isMostrarBtnRecibir() {
+        return mostrarBtnRecibir;
+    }
+
+    /**
+     * @param mostrarBtnRecibir the mostrarBtnRecibir to set
+     */
+    public void setMostrarBtnRecibir(boolean mostrarBtnRecibir) {
+        this.mostrarBtnRecibir = mostrarBtnRecibir;
+    }
+
+    /**
+     * @return the mostrarCantRecibida
+     */
+    public boolean isMostrarCantRecibida() {
+        return mostrarCantRecibida;
+    }
+
+    /**
+     * @param mostrarCantRecibida the mostrarCantRecibida to set
+     */
+    public void setMostrarCantRecibida(boolean mostrarCantRecibida) {
+        this.mostrarCantRecibida = mostrarCantRecibida;
     }
     
 }

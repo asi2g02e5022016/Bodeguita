@@ -35,9 +35,9 @@ public class ProcesaFacturasEJB implements TareaEJBLocal {
      List<Facturainterface> encabezados;
             
     public void process(Map<String,String> args)  {
-        System.out.println("Entro.. facturas");
+        System.out.println("Procesando.. facturas1");
         encabezados = em.createQuery("select f from Facturainterface f where f.cargada = false").getResultList();
-        System.out.println("encabezados..");
+        System.out.println("encabezados.." + encabezados.size());
         for(Facturainterface f:encabezados){
             try {
                 creaFacturaEJB.procesarFactura(f);
@@ -50,7 +50,9 @@ public class ProcesaFacturasEJB implements TareaEJBLocal {
             } catch (NamingException ex) {
                 Logger.getLogger(ProcesaFacturasEJB.class.getName()).log(Level.SEVERE, null, ex);
             }
-    } }
+    } 
+    System.out.println("termino encabezados..");
+    }
   
 
   }

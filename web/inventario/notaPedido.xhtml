@@ -16,19 +16,30 @@ and open the template in the editor.
             <p:growl showDetail="true" showSummary="true" />
             <p:panel id="basic" header="Notas de Pedido"  >
                 <p:menubar>
-                    <p:menuitem value="Nuevo" update="forprincipal" action="#{notaPedido.nuevoPedido()}"
+                    <p:menuitem value="Nuevo" update="forprincipal" process="@this"
+                                action="#{notaPedido.nuevoPedido()}"
                                 icon="ui-icon-plus" />
                     <p:menuitem value="Guardar" id="btnGuardarDat"
                                 update="forprincipal" 
                                 rendered="#{notaPedido.mostrarBtnGuardar}" 
                                 action="#{notaPedido.guardarPedido()}" 
                                 icon="ui-icon-disk" />
-                    <p:menuitem value="Enviar nota de Pedido" 
-                                icon=" ui-icon-refresh"
-                                action="#{notaPedido.enviarNotaPedido()}" update="@all" process="@all"/>
+                    <p:menuitem value="Anular" 
+                                update="forprincipal" 
+                                rendered="#{notaPedido.mostrarBtnCancelar}" 
+                                action="#{notaPedido.cancelarPedido()}" 
+                                icon="ui-icon-disk" />
                     
-                    <p:menuitem value="Imprimir" action="#{notaPedido.imprimirReporteCompra()}"
-                                icon="ui-icon-print" />
+                    <p:menuitem value="Enivar Pedido" 
+                                update="forprincipal" 
+                                rendered="#{notaPedido.mostrarBtnEnviar}" 
+                                action="#{notaPedido.enviarPedido()}" 
+                                icon="ui-icon-disk" />
+                    <p:menuitem value="Recibir Pedido" 
+                                update="forprincipal" 
+                                rendered="#{notaPedido.mostrarBtnRecibir}" 
+                                action="#{notaPedido.recibirPedido()}" 
+                                icon="ui-icon-disk" />
                     
                      <p:menuitem value="Exportar"
                                 icon="fa fa-file-excel-o" />
@@ -56,10 +67,10 @@ and open the template in the editor.
                     </h:panelGrid>
                     <h:panelGrid columns="3" width="20%">
                         <h:outputLabel  value="Sucursal Origen "  />
-                        <p:inputText readonly="true"  value="#{notaPedido.sucursalOrigen}"  style=" width: 100%" />
+                        <p:inputText readonly="true"  value="#{notaPedido.sucursalOrigenNombre}"  style=" width: 100%" />
                         <p:commandButton   action="#{notaPedido.mostrarDialogOrigen()}"
-                                           id="iconOnly" 
-                                           icon="ui-icon-search" title="Icon Only" />
+                                           id="iconOnly" disabled="#{inactivarSelectorSucursal}"
+                                           icon="ui-icon-search" title="Icon Only"  />
 
 
                         <h:outputLabel  value="Observaciones "  />
@@ -72,8 +83,8 @@ and open the template in the editor.
 
                 <h:panelGrid >
                     <p:dataTable value="#{notaPedido.lstPeddeta}"  
-                                 var="det"   emptyMessage=""   editable="true" id="tblPeddeta">
-                        <p:ajax event="rowEdit" listener="#{notaPedido.onRowEdit}" />                      
+                                 var="det"   emptyMessage=""   editable="true" id="tblPeddeta">   
+                        <p:ajax event="rowEdit" listener="#{notaPedido.onRowEdit}" />
                         <p:column headerText="cod.">
                             <h:outputText value="#{det.idproducto.idproducto}" />
                         </p:column>
@@ -88,26 +99,35 @@ and open the template in the editor.
                                     <h:outputText value="#{det.cantidadsolicitada}" />
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText id="modelInput" value="#{det.cantidadsolicitada}" style="width:70%"/>
+                                    <p:inputText id="modelInput" value="#{det.cantidadsolicitada}" style="width:70%" disabled="#{det.lineaNueva==false}"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Cantidad Conf. " 
-                                  rendered="#{notaPedido.mostrarCantConfirmada}">
+                        <p:column headerText="Cantidad Conf. " >
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{det.cantidadconfirmada}" />
+                                    <h:outputText value="#{det.cantidadconfirmada}"    />
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText  value="#{det.cantidadconfirmada}" style="width:70%"/>
+                                    <p:inputNumber  value="#{det.cantidadconfirmada}" style="width:70%" 
+                                                    maxValue="#{det.existencia}" minValue="0" 
+                                                    disabled="#{!notaPedido.mostrarCantConfirmada}"  >
+                                                                            </p:inputNumber>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Monto">
-                            <h:outputText value="#{det.costo}"  />
-                        </p:column>
-                        <p:column headerText="Total">
-                            <h:outputText value="#{det.total}" />
+                        <p:column headerText="Recepcion " >
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{det.cantidadrecibida}"    />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputNumber  value="#{det.cantidadrecibida}" style="width:70%" 
+                                                    minValue="0"  maxValue="10000"
+                                                    disabled="#{!notaPedido.mostrarCantRecibida}"  >
+                                                                            </p:inputNumber>
+                                </f:facet>
+                            </p:cellEditor>
                         </p:column>
                         <p:column style="width:32px">
                             <f:facet name="header">
@@ -164,7 +184,7 @@ and open the template in the editor.
                     </p:menubar>
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
-                                      <h:outputLabel  value="Cantidad    "  />
+                    <p:inputNumber  value="Cantidad    "  minValue="0" maxValue="10000" />
                                       <p:inputText id="cantidadSolic"  value="#{notaPedido.cantidadSolic}" />
                     <h:outputLabel  value="Producto "  />
                     <p:inputText   value="#{notaPedido.descripcionProducto}" />
@@ -173,7 +193,7 @@ and open the template in the editor.
                     <p:dataTable id="tablaProdd" 
                                  value="#{notaPedido.lstProducto}"
                                  var="dpro" rowKey="#{dpro.idproducto}"                                  
-                                 selectionMode="single" rows="19"  >                        
+                                 selectionMode="single" rows="10"  paginator="true" paginatorPosition="top" >                        
                         <p:ajax event="rowSelect" update=":forprincipal:tblPeddeta" process="@all"  
                             listener="#{notaPedido.onRowSelect}"/>
                         <p:column filterBy="#{dpro.producto}" headerText="descripcion">
@@ -195,7 +215,7 @@ and open the template in the editor.
                 </h:panelGrid>
             </p:dialog>
             
-            <p:dialog header="Monitor Compras" widgetVar="dialogoNotaPedidos"
+            <p:dialog header="Monitor Pedidos" widgetVar="dialogoNotaPedidos"
                       width="50%" >
                 <h:panelGrid columns="1" width="100%"  >
                     <p:menubar>
@@ -214,27 +234,27 @@ and open the template in the editor.
                 </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable value="#{notaPedido.lstPedidoMonitor}" id="tablaCompras"
-                                 var="dpedido"  rowKey="#{dcompra.notapedidoPK}"
-                                 selectionMode="single"  rows="19"  >                        
-                        <p:ajax event="rowSelect" update="forprincipal"
+                                 var="dpedido"  rowKey="#{dpedido.notapedidoPK}"
+                                 selectionMode="single"  rows="10" paginator="true" paginatorPosition="top"  >                        
+                        <p:ajax event="rowSelect" update="@all"
                                 listener="#{notaPedido.onRowSelectPedido}" process="@all"  
                                 />
-                        <p:column  headerText="Numero">
+                        <p:column  headerText="Numero" >
                             <h:outputText value="#{dpedido.notapedidoPK.idnotapedido}"  />
                         </p:column>
                          <p:column  headerText="Sucursal Destino">
                              <h:outputText value="#{dpedido.sucursal.sucursal}"  />
                         </p:column>
                         <p:column headerText="Sucursal Origen"  >
-                            <h:outputText value="" />
+                            <h:outputText value="#{dpedido.idSucursalOrigen.sucursal}" />
                         </p:column>
-                        <p:column headerText="fecha" >
+                        <p:column headerText="Fecha Recinido" >
                             <h:outputText value="#{dpedido.fechaingreso}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="usuario" >
-                            <h:outputText  value="#{dpedido.idusuariod.idusuario}" />
+                            <h:outputText  value="#{dpedido.idusuarios}" />
                    
                         </p:column>
                           <p:column headerText="estado"  >

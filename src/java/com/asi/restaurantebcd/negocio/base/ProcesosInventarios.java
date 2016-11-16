@@ -84,7 +84,7 @@ public class ProcesosInventarios implements ProcesosInventariosLocal {
                     costoPromedioTotalActual = exisActual * exis.getValor();
                 }
             } else {
-                exisTotal = cantidad;
+                exisTotal = descargaInv?-cantidad:cantidad;
             }
             if (calcularCstProm) {
                 costoTotal = costoPromedioTotalActual + costoTotalTransaccion;
@@ -136,6 +136,90 @@ public class ProcesosInventarios implements ProcesosInventariosLocal {
             return null;
         } catch (Exception e) {
             throw new Exception(e);
+        }
+    }
+
+    @Override
+    public void afectarTransito(Double cantidad, Producto producto, Usuario usr, Sucursal sucursal, Double costo, boolean descargaInv, boolean  calcularCstProm) throws Exception {
+          try {
+            if (cantidad == null) {
+                throw new Exception("La cantidad es obligatorio.");
+            }
+            Double transitoActual;
+            Double transitoTotal;
+            ExistenciaPK idExis = new ExistenciaPK();
+            idExis.setIdsucursal(sucursal.getIdsucursal());
+            idExis.setIdproducto(producto.getIdproducto());
+            Existencia exis = crudBDC.buscarEntidad(Existencia.class, idExis);
+            if (exis == null) {
+                exis = new Existencia();
+                exis.setExistenciaPK(idExis);
+                exis.setReservado(0D);
+                exis.setValor(0D);
+                exis.setCostounitario(producto.getPreciocompra());
+            }
+            if (exis.getTransito()!= null
+                    && !exis.getTransito().equals(Double.valueOf("0"))) {
+                transitoActual = exis.getTransito();
+                if (descargaInv) {
+                    transitoTotal = transitoActual - cantidad;
+                } else {
+                    transitoTotal = transitoActual + cantidad;
+                }
+              
+            } else {
+                transitoTotal = descargaInv?-cantidad:cantidad;
+            }
+            
+            exis.setTransito(transitoTotal);
+            exis.setSucursal(sucursal);
+            crudBDC.guardarEntidad(exis);
+        } catch (Exception ex) {
+            Logger.getLogger(ProcesosInventarios.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public void afectarReservado(Double cantidad, Producto producto, Usuario usr, Sucursal sucursal, Double costo, boolean descargaInv, boolean calcularCstProm) throws Exception {
+        try {
+            if (cantidad == null) {
+                throw new Exception("La cantidad es obligatorio.");
+            }
+            Double reservadoActual;
+            Double reservadoTotal;
+            ExistenciaPK idExis = new ExistenciaPK();
+            idExis.setIdsucursal(sucursal.getIdsucursal());
+            idExis.setIdproducto(producto.getIdproducto());
+            Existencia exis = crudBDC.buscarEntidad(Existencia.class, idExis);
+            if (exis == null) {
+                exis = new Existencia();
+                exis.setExistenciaPK(idExis);
+                exis.setTransito(0D);
+                exis.setCostounitario(producto.getPreciocompra());
+                exis.setValor(0D);
+            }
+            if (exis.getReservado()!= null
+                    && !exis.getReservado().equals(Double.valueOf("0"))) {
+                reservadoActual = exis.getReservado();
+                if (descargaInv) {
+                    reservadoTotal = reservadoActual - cantidad;
+                } else {
+                    reservadoTotal = reservadoActual + cantidad;
+                }
+              
+            } else {
+                reservadoTotal = descargaInv?-cantidad:cantidad;
+            }
+            
+            exis.setReservado(reservadoTotal);
+            exis.setSucursal(sucursal);
+            crudBDC.guardarEntidad(exis);
+        } catch (Exception ex) {
+            Logger.getLogger(ProcesosInventarios.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            throw ex;
         }
     }
 

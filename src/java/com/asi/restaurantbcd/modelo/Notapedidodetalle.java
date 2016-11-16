@@ -39,6 +39,9 @@ public class Notapedidodetalle implements Serializable {
     @Column(name = "cantidadconfirmada")
     private int cantidadconfirmada;
     @Basic(optional = false)
+    @Column(name = "cantidadrecibida")
+    private int cantidadrecibida;
+    @Basic(optional = false)
     @Column(name = "costo")
     private float costo;
     @JoinColumns({
@@ -52,7 +55,13 @@ public class Notapedidodetalle implements Serializable {
     
     @Transient
     private float total;
-
+    
+    @Transient
+    private float existencia = 0;
+    
+    @Transient
+    private boolean lineaNueva=false;
+    
     public Notapedidodetalle() {
     }
 
@@ -154,6 +163,48 @@ public class Notapedidodetalle implements Serializable {
          total = this.getCantidadsolicitada()*this.getCosto(); 
         }
         return total;
+    }
+
+    /**
+     * @return the existencia
+     */
+    public float getExistencia() {
+        return existencia;
+    }
+
+    /**
+     * @param existencia the existencia to set
+     */
+    public void setExistencia(float existencia) {
+        this.existencia = existencia;
+    }
+
+    /**
+     * @return the cantidadrecibida
+     */
+    public int getCantidadrecibida() {
+        return cantidadrecibida;
+    }
+
+    /**
+     * @param cantidadrecibida the cantidadrecibida to set
+     */
+    public void setCantidadrecibida(int cantidadrecibida) {
+        this.cantidadrecibida = cantidadrecibida;
+    }
+
+    /**
+     * @return the lineaNueva
+     */
+    public boolean isLineaNueva() {
+        return lineaNueva;
+    }
+
+    /**
+     * @param lineaNueva the lineaNueva to set
+     */
+    public void setLineaNueva(boolean lineaNueva) {
+        this.lineaNueva = lineaNueva;
     }
 
     

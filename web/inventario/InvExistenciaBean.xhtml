@@ -52,8 +52,8 @@ and open the template in the editor.
                     <h:panelGrid >
                         <p:dataTable id="tablaProd" emptyMessage="" rowKey="#{dpro.vwexistenciasPk}"
                                      value="#{invExistenciasBean.ltsVwExistencias}" 
-                                     var="dpro" selectionMode="single" rows="5" paginator="true" 
-                                     rowsPerPageTemplate="5" scrollable="true">
+                                     var="dpro" selectionMode="single"  paginator="true" 
+                                     scrollable="true" rows="10">
                             <p:column headerText="Sucursal" width="40%" >
                                 <h:outputText value="#{dpro.sucursal}"  />
                             </p:column>

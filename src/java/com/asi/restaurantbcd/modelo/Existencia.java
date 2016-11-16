@@ -32,6 +32,15 @@ public class Existencia implements Serializable {
     @Basic(optional = false)
     @Column(name = "valor")
     private Double valor;
+    
+        @Basic(optional = false)
+    @Column(name = "valreservado")
+    private Double reservado;
+        
+            @Basic(optional = false)
+    @Column(name = "transito")
+    private Double transito;
+            
     @Basic(optional = false)
     @Column(name = "costounitario")
     private Double costounitario;
@@ -112,6 +121,34 @@ public class Existencia implements Serializable {
     @Override
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Existencia[ existenciaPK=" + existenciaPK + " ]";
+    }
+
+    /**
+     * @return the reservado
+     */
+    public Double getReservado() {
+        return reservado;
+    }
+
+    /**
+     * @param reservado the reservado to set
+     */
+    public void setReservado(Double reservado) {
+        this.reservado = reservado;
+    }
+
+    /**
+     * @return the transito
+     */
+    public Double getTransito() {
+        return transito;
+    }
+
+    /**
+     * @param transito the transito to set
+     */
+    public void setTransito(Double transito) {
+        this.transito = transito;
     }
     
 }

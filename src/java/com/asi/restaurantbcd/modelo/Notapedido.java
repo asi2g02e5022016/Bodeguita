@@ -46,6 +46,9 @@ public class Notapedido implements Serializable {
     @Basic(optional = false)
     @Column(name = "idusuarios")
     private String idusuarios;
+    @Basic(optional = true)
+    @Column(name = "observacion")
+    private String observacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "notapedido")
     private List<Notapedidodetalle> notapedidodetalleList;
     @JoinColumn(name = "idestado", referencedColumnName = "idestado")
@@ -55,7 +58,7 @@ public class Notapedido implements Serializable {
     @ManyToOne(optional = false)
     private Sucursal sucursal;
     
-    @JoinColumn(name = "idsucursalorigen", referencedColumnName = "idsucursal", insertable = false, updatable = false)
+    @JoinColumn(name = "idsucursalorigen", referencedColumnName = "idsucursal", insertable = true, updatable = true)
     @ManyToOne(optional = false)
     private Sucursal idSucursalOrigen;
     
@@ -172,6 +175,20 @@ public class Notapedido implements Serializable {
      */
     public void setIdSucursalOrigen(Sucursal idSucursalOrigen) {
         this.idSucursalOrigen = idSucursalOrigen;
+    }
+
+    /**
+     * @return the observacion
+     */
+    public String getObservacion() {
+        return observacion;
+    }
+
+    /**
+     * @param observacion the observacion to set
+     */
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
 }

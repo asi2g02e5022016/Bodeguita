@@ -28,6 +28,8 @@ import org.primefaces.context.RequestContext;
 import com.asi.restaurantebcd.negocio.base.BusquedasExistenciasLocal;
 import java.util.ArrayList;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -37,6 +39,9 @@ import javax.inject.Inject;
 @ViewScoped
 public class InvExistenciasBean implements Serializable {
 
+    @PersistenceContext(unitName = "RestaurantBDC-WebPU")
+    private EntityManager em;
+        
     @EJB
     private BusquedasExistenciasLocal BusquedasExistencias;
 
@@ -148,7 +153,9 @@ public class InvExistenciasBean implements Serializable {
     
     public void buscarExistencias() {
         try {
-                      
+            
+          em.getEntityManagerFactory().getCache().evictAll();
+                     
             Map filtro = new HashMap();
             
             if (codsucursal != 0){
