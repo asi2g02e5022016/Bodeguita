@@ -20,6 +20,9 @@ and open the template in the editor.
                                 icon="ui-icon-plus" action="#{monitorOrdenPedido.limpiar()}" />
                     <p:menuitem value="Monitor" update=":forprincipal"
                                 icon=" ui-icon-search"  actionListener ="#{monitorOrdenPedido.mostrarDialogoPedidos}"/>
+                    <p:menuitem value="Descargar Pedidos Web" update=":forprincipal"
+                                icon=" ui-icon-newwin"  actionListener ="#{monitorOrdenPedido.descargarPedidos()}"/>
+                   
                 </p:menubar>
                 <h:panelGrid columns="2" width="100%">
                     <h:panelGrid columns="6" width="80%">

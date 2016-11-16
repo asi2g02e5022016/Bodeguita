@@ -132,6 +132,14 @@ public class PedidoOnline implements PedidoOnlineLocal {
          crudBDC.guardarEntidad(ped);
         
     }
+    
+    public  List <Ordenpedido> lstPedido() {
+        StringBuilder jpql = new StringBuilder();
+            jpql.append(" SELECT o FROM Ordenpedido o ");
+            jpql.append(" WHERE o.idestado.idestado");
+            Query q = em.createQuery(jpql.toString());
+            return q.getResultList();
+    }
     /**
      * 
      * @return
