@@ -6,6 +6,7 @@
 package com.asi.restaurantebcd.negocio.base;
 
 import com.asi.restaurantbcd.modelo.Cliente;
+import com.asi.restaurantbcd.modelo.Ordenpedido;
 import com.asi.restaurantbcd.modelo.Ordenpedidodetalle;
 import java.util.List;
 import javax.ejb.Local;
@@ -25,5 +26,7 @@ public interface PedidoOnlineLocal {
   
   
       public  Cliente lstClientes(String usuario, String password) throws Exception ;
+
+    public List<Ordenpedido> lstPedido();
     
 }

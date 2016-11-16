@@ -5,6 +5,7 @@
  */
 package com.asi.restaurantebcd.controller.ventas;
 
+import com.asi.restaurantbcd.modelo.Configuracion;
 import com.asi.restaurantbcd.modelo.Ordenpedido;
 import com.asi.restaurantbcd.modelo.Ordenpedidodetalle;
 import com.asi.restaurantbcd.modelo.Sucursal;
@@ -12,6 +13,7 @@ import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedaPedido;
 import com.asi.restaurantebcd.negocio.base.BusquedaPedidoLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal;
+import com.asi.restaurantebcd.negocio.base.ConsumerWSLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -21,6 +23,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -36,6 +41,9 @@ import org.primefaces.event.SelectEvent;
 @ViewScoped
 
 public class MonitorOrdenPedido implements Serializable {
+
+    @EJB
+    private ConsumerWSLocal consumerWS;
 
     public MonitorOrdenPedido() {
     }
@@ -349,6 +357,50 @@ public class MonitorOrdenPedido implements Serializable {
         requestContext.execute("PF('dMonPed').show();");
     }
 
+    public void descargarPedidos() {
+        
+        try {
+            Configuracion config =  crud.buscarEntidad(Configuracion.class, 7);
+            if (config == null) {
+                alert("No existe configuracion de host para el servidor principal.", FacesMessage.SEVERITY_WARN);
+                return;
+            }
+            if (config.getValor() == null) {
+                alert("No existe valor de la configuracio.", 
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+            String url = config.getValor().trim();
+            String jsonRetur = this.consumerWS.consumirWebservices(
+                    "", "",
+                    url + "ConsultaPedosWS");
+            System.out.println("jsonRetur... " + jsonRetur);
+            lstOrdenPedido = new Gson().fromJson(jsonRetur,
+                    new TypeToken<ArrayList<Ordenpedido>>() {
+                    }.getType());
+            System.out.println("lstSucursal..." + lstSucursal);
+            if (lstOrdenPedido == null || lstOrdenPedido.isEmpty()) {
+                alert("No se encontraron resultados de pedidos.", 
+                        FacesMessage.SEVERITY_INFO);
+            }
+            List <Ordenpedido> lstPedido = new ArrayList<>();
+            
+            for (Ordenpedido ordenpedido : lstOrdenPedido) {
+                if (ordenpedido.getSucursal() != null
+                        && ordenpedido.getSucursal().getIdsucursal() != null
+                        && ordenpedido.getSucursal().getIdsucursal().equals(
+                                sesion.getSucursal().getIdsucursal())) {
+                    lstPedido.add(ordenpedido);
+                }
+            }
+            
+            crud.guardarEntidades(lstPedido);
+            
+        } catch (Exception ex) {
+            Logger.getLogger(MonitorOrdenPedido.class.getName()).log(Level.SEVERE, null, ex);
+            alert("Error: ", FacesMessage.SEVERITY_FATAL);
+        }
+    }
     private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
         if (mensaje == null) {
             mensaje = "-";
@@ -358,4 +410,7 @@ public class MonitorOrdenPedido implements Serializable {
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
     //</editor-fold>
+    
+    
+    
 }

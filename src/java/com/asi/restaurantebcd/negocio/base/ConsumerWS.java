@@ -37,9 +37,8 @@ public class ConsumerWS implements ConsumerWSLocal {
     @PersistenceContext(unitName = "RestaurantBDC-WebPU")
     private EntityManager em;
 
-public String consumirWebservices(String usr,
-            String metodo, String recurso, String jsonDatos,String URLBase) throws Exception {
-        String respuesta = null;
+public String consumirWebservices(String usr, String jsonDatos,String URLBase) throws Exception {
+      String respuesta = null;
         if (URLBase == null) {
             throw new Exception("La url base es obligatorio.");
         }   
@@ -57,17 +56,22 @@ public String consumirWebservices(String usr,
         mapHeader.put("User", usr);
         mapHeader.put("fecha", new Date().toString());
         mapHeader.put("Token", token);
+        mapHeader.put("json", jsonDatos);
         try {
             String jsonHeader = new Gson().toJson(mapHeader);
+            System.out.println("jsonHeader.. " +jsonHeader);
             Client client = Client.create();
-            WebResource webResource = client.resource("urlbase");
+            WebResource webResource = client.resource(URLBase);
             WebResource.Builder buildws;
-            buildws = webResource.path(recurso).path(metodo)
+            buildws = webResource
                     .header("autorizacion", jsonHeader);
+            System.out.println("buildws..." +buildws);
             ClientResponse response;
-            response = buildws.post(ClientResponse.class, jsonDatos);
+            response = buildws.get(ClientResponse.class);
+            System.out.println("response.." +response);
             String rs = response.getEntity(String.class);
                Gson json = new Gson();
+               System.out.println("rs,,,,." +rs);
         ReponseWs ws = json.fromJson(rs, ReponseWs.class);
             if (ws != null && ws.getError().equals("1")) {
                 throw new Exception("Peidos Ws: " +ws.getDescripcion());
@@ -77,6 +81,7 @@ public String consumirWebservices(String usr,
             }
             return respuesta;
         } catch (Exception e) {
+            e.printStackTrace();
             if (e instanceof ConnectException
                     || e instanceof ClientHandlerException
                     || e instanceof NoRouteToHostException) {
