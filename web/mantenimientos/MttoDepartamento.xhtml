@@ -17,21 +17,22 @@ and open the template in the editor.
             <h:form id="forprincipal">
                 <p:growl showDetail="true" showSummary="true" />
                 <p:panel id="basic" header="Mantenimiento de Departamento" style="width: 50%"  >
+                   <p:messages id="msgs" />
                     <p:menubar>
                         <p:menuitem value="Nuevo" update="forprincipal" action="#{mttoDepartamento.limpiarPantalla()}"
-                                    icon="ui-icon-plus" />
+                                    immediate="true" icon="ui-icon-plus" />
                         <p:menuitem value="Guardar" update="forprincipal" action="#{mttoDepartamento.guardarDepartamento()}"
                                     icon="ui-icon-disk" />
                         <p:menuitem value="Buscar" update="forprincipal" action="#{mttoDepartamento.buscarDepartamento()}"
-                                    icon=" ui-icon-search" />
+                                    icon=" ui-icon-search" immediate="true" />
                     </p:menubar>
                     <h:panelGrid columns="4" width="80%">
                         <h:outputLabel value="Id Departamento: "/>
                         <p:inputText value ="#{mttoDepartamento.idDepartamento}"
                                      readonly ="true" style ="width: 40px"/>
-                        <h:outputLabel value ="Departamento "/>
-                        <p:inputText style="width: 100%" value ="#{mttoDepartamento.departamento}"/>
-                        
+                        <p:outputLabel for="ipd" value ="Departamento "/>
+                        <p:inputText id="ipd" style="width: 100%" value ="#{mttoDepartamento.departamento}"  maxlength="50" required="true" requiredMessage="El campo departamento es obligatorio"/>
+                     
                                            
                     </h:panelGrid>
                       <!-- //////////////////////////////////////////////////7-->
@@ -81,13 +82,13 @@ and open the template in the editor.
                                 <p:rowEditor />
                             </p:column>
 
-                            <p:column style="width:60px; align-content: center" headerText="Eliminar">                               
+                    <!--        <p:column style="width:60px; align-content: center" headerText="Eliminar">                               
                                   
                                 <p:commandButton  value="Eliminar" 
                                                        action="#{mttoDepartamento.eliminarDepartamento}"
                                                       />
                                
-                            </p:column >
+                            </p:column > -->
                         </p:dataTable>
                     </h:panelGrid>
                     
