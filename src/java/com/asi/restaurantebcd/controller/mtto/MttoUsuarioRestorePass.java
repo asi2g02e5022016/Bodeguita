@@ -13,6 +13,7 @@ import com.asi.restaurantebcd.negocio.base.BusquedasUsuariosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +52,7 @@ public class MttoUsuarioRestorePass implements Serializable {
     private String nombreEmpl;
     private String nombrePerfil;
     private String email;
-    private Date fechaIngreso;
+    private String fechaIngreso;
     private List<Usuario> lstUsuario;
 
     private int codperfil;
@@ -61,6 +62,7 @@ public class MttoUsuarioRestorePass implements Serializable {
     private BusquedasUsuariosLocal ejbBusqUsrLcal;
 
 //</editor-fold >
+
 //<editor-fold  defaultstate="collapsed" desc="Inicializar" >
     public MttoUsuarioRestorePass() {
     }
@@ -164,7 +166,11 @@ public class MttoUsuarioRestorePass implements Serializable {
             nombreEmpl = emp.getNombre();
             nombrePerfil = per.getNombre();
             claveUsr = usuarioConst.getClave();
-            fechaIngreso = usuarioConst.getFechaingreso();
+            //fechaIngreso = usuarioConst.getFechaingreso();
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");  
+            fechaIngreso = sdf.format(usuarioConst.getFechaingreso()); 
+            
             email = emp.getEmail();
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoUsuario').hide();");
@@ -331,13 +337,21 @@ public class MttoUsuarioRestorePass implements Serializable {
         this.email = email;
     }   
 
-    public Date getFechaIngreso() {
+    /*public Date getFechaIngreso() {
         return fechaIngreso;
     }
 
     public void setFechaIngreso(Date fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
+    }*/
+
+    public String getFechaIngreso() {
+        return fechaIngreso;
     }
+
+    public void setFechaIngreso(String fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }   
 
     public int getCodperfil() {
         return codperfil;
