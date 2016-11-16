@@ -111,7 +111,6 @@ public class MttoUsuarioPass implements Serializable {
     public void buscarUsuario() {
         try {
             Map filtro = new HashMap();
-            codigoUsr = sesion.getUsuario().getIdusuario();
             if (codigoUsr != null) {
                 filtro.put("codusr", codigoUsr);
             }

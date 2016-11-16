@@ -50,7 +50,7 @@ public class BusquedasProveedores implements BusquedasProveedoresLocal {
         }
         
         
-        return null;
+        return query.getResultList();
         } catch(NoResultException nre) {
             return null;
         } catch (Exception e) {
