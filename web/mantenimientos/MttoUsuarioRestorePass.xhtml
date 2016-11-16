@@ -15,28 +15,50 @@ and open the template in the editor.
         <center>
             <h:form id="forprincipal" >
                 <p:growl showDetail="true" showSummary="true" />
-                <p:panel id="basic" header="Restaurar contraseña de usuario" style="width: 50%"  >
+                <p:panel id="basic" header="Restaurar contraseña de usuario" style="width: 35%"  >
                     <p:menubar>
-                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoEstado.buscarEstados()}"
-                                    icon=" ui-icon-search" />
-                        <p:menuitem value="Restaurar" update="forprincipal" action="#{mttoUsuarioPass.actualizarUsuario()}"  
+                        <p:menuitem value="Restaurar" update="forprincipal" action="#{mttoUsuarioRestorePass.restaurarPass()}"  
                                     icon="ui-icon-disk" />
                     </p:menubar> 
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="3">
                         <h:outputLabel value="Usuario: " />
-                        <h:outputLabel value="#{mttoUsuarioPass.codigoUsr}" />
+                        <h:inputText readonly="true" value="#{mttoUsuarioRestorePass.codigoUsr}" />
+                        <p:commandButton    action="#{mttoUsuarioRestorePass.mostrarDialogUsuario()}"
+                                                            id="iconOnly" update="forprincipal"
+                                                            icon="ui-icon-search" title="Icon Only" />
                         <h:outputLabel value="Empleado: "/>
-                        <h:outputLabel value="#{mttoUsuarioPass.nombreEmpl}"/>
+                        <h:inputText readonly="true" value="#{mttoUsuarioRestorePass.nombreEmpl}"/>
+                        <h:outputLabel value=" " />
                         <h:outputLabel value="Perfil: " />
-                        <h:outputLabel value="#{mttoUsuarioPass.nombrePerfil}" />
-                        <h:outputLabel value="Password anterior: " />
-                        <p:password id="OldPass" value="#{mttoUsuarioPass.confclaveOld}" feedback="true" />
-                        <h:outputLabel  value="Nuevo password: " />
-                        <p:password id="Pass" value="#{mttoUsuarioPass.claveUsr}" feedback="true" />
-                        <h:outputLabel  value="Confirmar nuevo password: " />
-                        <p:password id="PassConf" value="#{mttoUsuarioPass.confclaveUsr}" feedback="true" />      
+                        <h:inputText readonly="true" value="#{mttoUsuarioRestorePass.nombrePerfil}" />
+                        <h:outputLabel value=" " />
+                        <h:outputLabel value="Fecha ingreso: " />
+                        <h:inputText readonly="true" value="#{mttoUsuarioRestorePass.fechaIngreso}" /> 
+                        <h:outputLabel value=" " />
                     </h:panelGrid>                    
-                </p:panel>            
+                </p:panel>
+                <p:dialog header="Buscar Usuarios" width="30%" widgetVar="dialogoUsuario" minHeight="100">
+                    <h:panelGrid columns="1" width="30%">
+                        <p:menubar>
+                            <p:menuitem value="Buscar" update="tablaUsuario"
+                                        action="#{mttoUsuarioRestorePass.buscarUsuario()}"
+                                        icon=" ui-icon-search" />
+                        </p:menubar>
+                    </h:panelGrid>
+                    <h:panelGrid >
+                        <p:dataTable value="#{mttoUsuarioRestorePass.lstUsuario}"
+                                     id="tablaUsuario" widgetVar="tablaUsuario" var="dprov"
+                                     selectionMode="single" rowKey="#{dprov.idusuario}"  emptyMessage=""  >
+
+                            <p:ajax event="rowSelect" update="forprincipal" process="@all"
+                                    listener="#{mttoUsuarioRestorePass.selUsuario}" 
+                                    />
+                            <p:column filterBy="#{dprov.idusuario}" headerText="Codigo">
+                                <h:outputText value="#{dprov.idusuario}"  />
+                            </p:column>                                                    
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:dialog>                
             </h:form>
         </center>
     </ui:define>

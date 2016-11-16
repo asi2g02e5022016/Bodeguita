@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -27,6 +28,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.accordionpanel.AccordionPanel;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -48,19 +50,21 @@ public class MttoUsuarioRestorePass implements Serializable {
     private String claveUsr;
     private String nombreEmpl;
     private String nombrePerfil;
+    private String email;
     private Date fechaIngreso;
-   
+    private List<Usuario> lstUsuario;
+
     private int codperfil;
     @EJB
     private CrudBDCLocal crud;
     @EJB
     private BusquedasUsuariosLocal ejbBusqUsrLcal;
-    
-//</editor-fold >
 
+//</editor-fold >
 //<editor-fold  defaultstate="collapsed" desc="Inicializar" >
-    public MttoUsuarioRestorePass(){
+    public MttoUsuarioRestorePass() {
     }
+
     @PostConstruct
     public void postConstruction() {
         try {
@@ -73,6 +77,8 @@ public class MttoUsuarioRestorePass implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().
                         redirect(url);
             }
+            limpiarPantalla();
+            buscarUsuario();
         } catch (Exception e) {
             alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
             alert("error de post", FacesMessage.SEVERITY_FATAL);
@@ -83,6 +89,7 @@ public class MttoUsuarioRestorePass implements Serializable {
 //<editor-fold  defaultstate="collapsed" desc="Metodos" >
     /**
      * Metodo para limpiar informacion de pantalla.
+     *
      */
     private void alert(CharSequence mensaje, FacesMessage.Severity faces) {
         if (mensaje == null) {
@@ -92,38 +99,139 @@ public class MttoUsuarioRestorePass implements Serializable {
                 "Mensaje", mensaje.toString());
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
-    
-     /**
+
+    /**
+     * Metodo para limpiar informacion de pantalla.
+     */
+    private void limpiarPantalla() {
+        usuarioConst = null;
+        empleadoConst = null;
+        perfilConst = null;
+        this.formPanel.setActiveIndex("0");
+        codigoUsr = null;
+        claveUsr = null;
+        nombreEmpl = null;
+        nombrePerfil = null;
+        fechaIngreso = null;
+        idEmpleado = null;
+        idPerfil = null;
+        codperfil = 0;
+        lstUsuario = null;
+    }
+
+    /**
      * Metodo para buscar los usuarios ingresados.
      */
     public void buscarUsuario() {
         try {
-            Map filtro = new HashMap();
-            if (codigoUsr != null) {
-                filtro.put("codusr", codigoUsr);
+            limpiarPantalla();
+            lstUsuario = ejbBusqUsrLcal.buscarUsuario(null);
+            if (lstUsuario == null || lstUsuario.isEmpty()) {
+                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
             }
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioRestorePass.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
 
-            Usuario usr = crud.buscarEntidad(Usuario.class, codigoUsr);
-            
-            if (usr == null) {
+    /**
+     * Metódo para mostrar la pantalla de los usuarios registrados
+     */
+    public void mostrarDialogUsuario() {
+        System.out.println("entro...");
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('dialogoUsuario').show();");
+    }
+
+    /**
+     * Metódo para seleccionar un empleado registrado
+     *
+     * @param event
+     */
+    public void selUsuario(SelectEvent event) {
+        try {
+            usuarioConst = (Usuario) event.getObject();
+            if (usuarioConst == null) {
                 alert("Usuario no encontrado", FacesMessage.SEVERITY_INFO);
                 return;
             }
-            
-            Empleado emp = crud.buscarEntidad(Empleado.class, usr.getIdempleado().getIdempleado());
-            Perfil per = crud.buscarEntidad(Perfil.class, usr.getIdperfil().getIdPerfil());
+            Empleado emp = crud.buscarEntidad(Empleado.class, usuarioConst.getIdempleado().getIdempleado());
+            Perfil per = crud.buscarEntidad(Perfil.class, usuarioConst.getIdperfil().getIdPerfil());
 
-            codigoUsr = usr.getIdusuario();
+            codigoUsr = usuarioConst.getIdusuario();
             nombreEmpl = emp.getNombre();
             nombrePerfil = per.getNombre();
-            claveUsr = usr.getClave();
+            claveUsr = usuarioConst.getClave();
+            fechaIngreso = usuarioConst.getFechaingreso();
+            email = emp.getEmail();
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            requestContext.execute("PF('dialogoUsuario').hide();");
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioRestorePass.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
 
+    /**
+     * Metódo para actualizar la informacion del usuario
+     *
+     */
+    public void restaurarPass() {
+        try {                        
+            if (usuarioConst == null) {
+                alert("Seleccione un usuario..",FacesMessage.SEVERITY_INFO);                  
+                return;
+            }          
+            if (Boolean.FALSE.equals(usuarioConst.isActivo())) {
+                alert("Usuario seleccionado está desactivado..",FacesMessage.SEVERITY_INFO);
+                return;
+            }
+            
+            if (sesion.getUsuario().getIdusuario().equals(codigoUsr)){
+                alert("Seleccione un usuario distinto al login",FacesMessage.SEVERITY_INFO);                  
+                return;
+            }
+            
+            if (email == null || email.isEmpty()){
+                alert("Usuario no posee correo electronico",FacesMessage.SEVERITY_INFO);                  
+                return;
+            }
+            
+            //******************************************
+            //Generando contraseña aleatoria
+            //******************************************
+            String newPass = "";
+            Random rnd = new Random();
+            String abecedario = "ABCDEFGHIJKLMOPQRSTUVWXYZ";
+            String cadena = "";
+            int m = 0, pos = 0, num;
+            while (m < 1) {
+                pos = (int) (rnd.nextDouble() * abecedario.length() - 1 + 0);
+                num = (int) (rnd.nextDouble() * 9999 + 1000);
+                cadena = cadena + abecedario.charAt(pos) + num;
+                pos = (int) (rnd.nextDouble() * abecedario.length() - 1 + 0);
+                cadena = cadena + abecedario.charAt(pos);
+                newPass = cadena;
+                cadena = "";
+                m++;
+            }
+            //******************************************
+            
+            String passSql = String.valueOf(newPass.hashCode());
+            usuarioConst.setClave(passSql);
+            crud.guardarEntidad(usuarioConst);
+            alert("Contraseña restaurada exitosamente..." + newPass,FacesMessage.SEVERITY_INFO);                                
+            buscarUsuario();
         } catch (Exception ex) {
             Logger.getLogger(MttoUsuarioMB.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
+
 //</editor-fold >  
 
 //<editor-fold  defaultstate="collapsed" desc="Getter y Setter" >
@@ -215,6 +323,14 @@ public class MttoUsuarioRestorePass implements Serializable {
         this.nombrePerfil = nombrePerfil;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }   
+
     public Date getFechaIngreso() {
         return fechaIngreso;
     }
@@ -229,6 +345,14 @@ public class MttoUsuarioRestorePass implements Serializable {
 
     public void setCodperfil(int codperfil) {
         this.codperfil = codperfil;
+    }
+
+    public List<Usuario> getLstUsuario() {
+        return lstUsuario;
+    }
+
+    public void setLstUsuario(List<Usuario> lstUsuario) {
+        this.lstUsuario = lstUsuario;
     }
 
     public CrudBDCLocal getCrud() {
@@ -247,6 +371,4 @@ public class MttoUsuarioRestorePass implements Serializable {
         this.ejbBusqUsrLcal = ejbBusqUsrLcal;
     }
 //</editor-fold >  
-
-    
 }
