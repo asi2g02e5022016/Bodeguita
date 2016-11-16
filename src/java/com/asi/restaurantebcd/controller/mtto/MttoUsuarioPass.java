@@ -110,10 +110,7 @@ public class MttoUsuarioPass implements Serializable {
      */
     public void buscarUsuario() {
         try {
-            Map filtro = new HashMap();
-            if (codigoUsr != null) {
-                filtro.put("codusr", codigoUsr);
-            }
+            codigoUsr = sesion.getUsuario().getIdusuario();
 
             Usuario usr = crud.buscarEntidad(Usuario.class, codigoUsr);
             Empleado emp = crud.buscarEntidad(Empleado.class, usr.getIdempleado().getIdempleado());
