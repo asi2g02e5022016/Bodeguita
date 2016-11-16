@@ -16,34 +16,37 @@ and open the template in the editor.
         <center>
             <h:form id="forprincipal">
                 <p:growl showDetail="true" showSummary="true" />
-                <p:panel id="basic" header="Mantenimiento de empleados" style="width: 50%"  >
+                <p:panel id="basic" header="Mantenimiento de empleados"   >
                     <p:menubar>
                         <p:menuitem value="Nuevo" action="#{mttoEmpleado.limpiarPantalla()}" update="@all"
-                                    icon="ui-icon-plus"   />
+                                    icon="ui-icon-plus" immediate="true"   />
                         <p:menuitem value="Guardar" update="forprincipal" action="#{mttoEmpleado.insertarEmpleado()}"
                                     icon="ui-icon-disk"  id="btnGuardar" disabled="false" />
-                                                
-                       <!-- <p:menuitem value="Buscar" update="forprincipal" action="#{mttoEmpleado.buscarEmpleado()}"
-                                    icon=" ui-icon-search" /> -->
+                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoEmpleado.buscarEmpleado()}"
+                                    icon="ui-icon-search"  id="btnBuscar" disabled="false" immediate="true"   />
+                        <p:menuitem value="Cerrar" update="forprincipal" action="#{mttoEmpleado.cerrar()}"
+                                    icon=" ui-icon-close" rendered="#{mttoEmpleado.mostrarCerrar}" immediate="true" /> 
                     </p:menubar>
 
 
                     <p:accordionPanel   binding="#{mttoEmpleado.formPanel}"  multiple="false" id="forPanel" activeIndex="" >
                         <p:tab title="Ingresar empleado"  closable="true"   >
-                            <h:panelGrid columns="4" width="80%" >
+                            <h:panelGrid columns="6" width="80%" >
                                 <h:outputLabel value ="Id empleado:"/>
                                 <p:inputText value ="#{mttoEmpleado.idEmpleado}"
                                              readonly ="true" style ="width: 40px"/>
-                                <h:outputLabel value="Nombre:"/>
-                                <p:inputText value="#{mttoEmpleado.nombre}" />
-                                <h:outputLabel value="Apellido:"/>
-                                <p:inputText value="#{mttoEmpleado.apellido}"/>
-                                <h:outputLabel value="telefono:"/>
-                                <p:inputMask id="iTel" value="#{mttoEmpleado.telefono}" mask="9999-9999"/>
-                                <h:outputLabel value="Direcciòn:"/>
-                                <p:inputTextarea rows="2" cols="20" value ="#{mttoEmpleado.direccion}" />
+                                <p:outputLabel value="Nombre:" for="txtNombre"/>
+                                <p:inputText value="#{mttoEmpleado.nombre}" maxlength="50"  id="txtNombre"  required="true"  requiredMessage="Nombre requerido" />
+                                <p:outputLabel value="Apellido:" for="txtApellido"/>
+                                <p:inputText id="txtApellido" maxlength="50" value="#{mttoEmpleado.apellido}" required="true"  requiredMessage="Apellido requerido"/>
+                                <p:outputLabel value="Teléfono:" for="iTel"/>
+                                <p:inputMask id="iTel" value="#{mttoEmpleado.telefono}" mask="9999-9999" required="true"  requiredMessage="Teléfono requerido"  />
+                                <p:outputLabel value="Direcciòn:"/>
+                                <p:inputTextarea rows="2" maxlength="150" cols="20" value ="#{mttoEmpleado.direccion}" required="true"  requiredMessage="Direeción requerida" />
                                 <h:outputLabel value="Email:"/>
-                                <p:inputText id="iEmail" value="#{mttoEmpleado.email}" />
+                                <p:inputText id="iEmail" value="#{mttoEmpleado.email}">
+                                   
+                                </p:inputText>
                                 <h:outputLabel value ="Puesto:" />
                                 <p:selectOneMenu id="listPuesto"  value ="#{mttoEmpleado.idPuesto}" >
                                     <f:selectItems value="#{mttoEmpleado.lstPuesto}"
@@ -58,41 +61,49 @@ and open the template in the editor.
                         </p:tab>
                     </p:accordionPanel>
 
-                    <h:panelGrid>
+                    <h:panelGrid >
                         <p:dataTable id="tablaEmpleado" emptyMessage="" binding="#{mttoEmpleado.tablaEmpleado}"
                                      value="#{mttoEmpleado.lstEmpleado}"
                                      var="dimp" rowKey="#{dimp.idempleado}"
                                      selectionMode="single" rows="5" 
                                      editable="true" paginator="true" 
                                      rowsPerPageTemplate="5" scrollable="true"
-                                     scrollWidth="650" >
+                                     style="width: auto"  
+                                     >
                             <p:ajax event="rowEdit" listener="#{mttoEmpleado.onSelect()}" update=":forprincipal:forPanel"   />
-                            <p:column headerText="Id" width="25" style="align-content: center" >
+                            <p:column headerText="Id" width="5%" style="align-content: center" >
                                 <h:outputText value="#{dimp.idempleado}"   />                                
                             </p:column>
-                            <p:column headerText="Nombres" width="150"  style=" align-content: center" filterBy="#{dimp.nombre}"  >
-                                <h:outputText value="#{dimp.nombre}"   />                                
+                            <p:column headerText="Nombres" width="15%"  
+                                      style=" align-content: center" filterBy="#{dimp.nombre}" 
+                                      filterStyle="width:80%" >
+                                <h:outputText value="#{dimp.nombre}" style="align-content: center" />                                
                             </p:column>
-                            <p:column headerText="Apellidos" width="150" style=" align-content: center" filterBy="#{dimp.apellido}"  >
-                                <h:outputText value="#{dimp.apellido}"  />                                
+                            <p:column headerText="Apellidos" width="15%" style=" align-content: center" filterBy="#{dimp.apellido}" 
+                                      filterStyle="width:80%" >
+                                <h:outputText value="#{dimp.apellido}" style="align-content: center" />                                
                             </p:column>
-                            <p:column headerText="Telefono" width="75" style=" align-content: center"  >
-                                <h:outputText value="#{dimp.telefono}"  />                                
+                            <p:column headerText="Telefono" width="10%" style=" align-content: center"  >
+                                <h:outputText value="#{dimp.telefono}" style="align-content: center" />                                
                             </p:column>
-                            <p:column headerText="Dirección" width="300" style=" align-content: center" filterBy="#{dimp.direccion}"  >
-                                <h:outputText value="#{dimp.direccion}"  />                                
+                            <p:column headerText="Dirección" width="20%" style=" align-content: center" 
+                                      filterBy="#{dimp.direccion}" filterStyle="width:80%" >
+                                <h:outputText value="#{dimp.direccion}" style="align-content: center" />                                
                             </p:column>
-                            <p:column headerText="Email" width="200" style=" align-content: center" filterBy="#{dimp.email}"  >
-                                <h:outputText value="#{dimp.email}"  />                                
+                            <p:column headerText="Email" width="10%" style=" align-content: center" 
+                                      filterBy="#{dimp.email}" filterStyle="width:80%" >
+                                <h:outputText value="#{dimp.email}" style="align-content: center" />                                
                             </p:column>
-                            <p:column headerText="Puesto" width="150" style="align-content: center" filterBy="#{dimp.idpuesto.puesto}"  >
-                                <h:outputText value="#{dimp.idpuesto.puesto}"  />                                
+                            <p:column headerText="Puesto" width="15%" style="align-content: center" 
+                                      filterBy="#{dimp.idpuesto.puesto}" filterStyle="width:80%">
+                                <h:outputText value="#{dimp.idpuesto.puesto}" style="align-content: center" />                                
                             </p:column>
-                            <p:column headerText="Sucursal" width="200" style="align-content: center" filterBy="#{dimp.idsucursal.sucursal}"  >
-                                <h:outputText value="#{dimp.idsucursal.sucursal}"  />                                
+                            <p:column headerText="Sucursal" width="10%" style="align-content: center" 
+                                      filterBy="#{dimp.idsucursal.sucursal}" filterMatchMode="contains" filterStyle="width:80%">
+                                <h:outputText value="#{dimp.idsucursal.sucursal}" style="align-content: center"  />                                
                             </p:column>
                             <p:column style=" align-content: center" headerText="Modificar" width="75">
-                                <p:rowEditor     />
+                                <p:rowEditor   style="align-content: center"  />
                             </p:column>
                             <p:column style="text-align: center" headerText="Eliminar" width="75">
                                 <p:commandButton   value="Eliminar" 
@@ -104,6 +115,42 @@ and open the template in the editor.
                     </h:panelGrid>
                 </p:panel> 
             </h:form>
+
+            <script type="text/javascript">
+                /**
+                 * Faces Validator
+                 */
+                PrimeFaces.validator['custom.emailValidator'] = {
+                    pattern: /\S+@\S+/,
+                    validate: function (element, value) {
+                        //use element.data() to access validation metadata, in this case there is none.
+                        if (!this.pattern.test(value)) {
+                            throw {
+                                summary: 'Error de validación',
+                                detail: value + ' no es un correo valido.'
+                            }
+                        }
+                    }
+                };
+
+                /**
+                 * Bean validator
+                 */
+                PrimeFaces.validator['Email'] = {
+                    pattern: /\S+@\S+/,
+                    MESSAGE_ID: 'org.primefaces.examples.validate.email.message',
+                    validate: function (element, value) {
+                        var vc = PrimeFaces.util.ValidationContext;
+
+                        if (!this.pattern.test(value)) {
+                            var msgStr = element.data('p-email-msg'),
+                                    msg = msgStr ? {summary: msgStr, detail: msgStr} : vc.getMessage(this.MESSAGE_ID);
+
+                            throw msg;
+                        }
+                    }
+                };
+            </script>
         </center>
     </ui:define>
 </ui:composition>

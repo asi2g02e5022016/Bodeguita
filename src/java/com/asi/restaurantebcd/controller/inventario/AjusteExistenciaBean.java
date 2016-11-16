@@ -10,10 +10,8 @@ import com.asi.restaurantbcd.modelo.AjustePK;
 import com.asi.restaurantbcd.modelo.Ajustedetalle;
 import com.asi.restaurantbcd.modelo.AjustedetallePK;
 import com.asi.restaurantbcd.modelo.Producto;
-import com.asi.restaurantbcd.modelo.Proveedor;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
-import com.asi.restaurantebcd.negocio.base.BusquedaAjustesExistencia;
 import com.asi.restaurantebcd.negocio.base.BusquedaAjustesExistenciaLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.base.ProcesosInventariosLocal;
@@ -54,8 +52,9 @@ public class AjusteExistenciaBean implements Serializable {
         try {
             System.out.println("entro al manage");
             sesion = Utilidades.findBean("sessionUsr");
-            idUsuarioCrea = sesion.getUsuario().getIdusuario().toUpperCase();
-            buscarProducto();
+//            fechaCreacion = new Date();
+//            idUsuarioCrea = sesion.getUsuario().getIdusuario().toUpperCase();
+//            buscarProducto();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,6 +63,14 @@ public class AjusteExistenciaBean implements Serializable {
     }
     //<editor-fold  defaultstate="collapsed" desc="LocalVariables" >
     private SessionUsr sesion;
+    //var navegación formulario principal
+    private boolean mostrarBtnGuardar = false;
+    private boolean habilitarObservacion = true;
+    private boolean mostrarBtnProductos = true;
+    private String sucursal;
+    // parametros de busqueda monitor
+    private Date fechaIni;
+    private Date fechaFin;
     //Encabezado
     private Integer idAjuste;
     private Integer idSucursal;
@@ -95,8 +102,80 @@ public class AjusteExistenciaBean implements Serializable {
     private Ajuste constructorAjuste;
 
     //</editor-fold>
+    public void nuevo() throws Exception {
+
+        idAjuste = null;
+        this.lstAjusteDet = null;
+        this.fechaCreacion = new Date();
+        this.observacion = "";
+        idUsuarioCrea = sesion.getUsuario().getIdusuario().toUpperCase();
+        mostrarBtnGuardar = true;
+        habilitarObservacion = false;
+        mostrarBtnProductos = false;
+        sucursal = sesion.getSucursal().getSucursal();
+        idAjuste = this.ejbBuscarAjuste.obtenerCorreltivoAjuste(sesion.getSucursal().getIdsucursal(), Ajuste.class, "idajuste");
+    }
+
+    public void limpiar() {
+        idUsuarioCrea = null;
+        this.lstAjusteDet = null;
+        this.fechaCreacion = null;
+        this.observacion = null;
+        mostrarBtnProductos = false;
+        mostrarBtnGuardar = false;
+        idAjuste = null;
+        idUsuarioCrea = null;
+        idSucursal = null;
+        sucursal = null;
+        habilitarObservacion = false;
+
+    }
+
+    public void limpiarProducto() {
+        this.cantidad = null;
+    }
+
+    public void mostrarDialogoAjustes() {
+        System.out.print("entro al mostrar");
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('dialogoMonAjustes').show();");
+    }
+
+    public void buscarAjustes() {
+        try {
+            //Validaciones de parametros de busqueda
+            if (fechaIni != null && fechaFin != null) {
+                if (fechaIni.after(fechaFin)) {
+                    alert("La fecha inicial tiene que ser menor que la final.",
+                            FacesMessage.SEVERITY_WARN);
+                    return;
+                }
+            } else {
+                alert("No puede dejar ningun parametro de busqueda vacio", FacesMessage.SEVERITY_FATAL);
+                return;
+            }
+            System.out.print(fechaIni + " " + fechaFin + " " + sesion.getSucursal());
+            lstAjusteEnc = ejbBuscarAjuste.buscarAjustesExistenciaEnc(sesion.getSucursal(),
+                    fechaIni, fechaFin);
+            if (lstAjusteEnc == null || lstAjusteEnc.isEmpty()) {
+                System.out.print("la lista esta vacia");
+                alert("No se encontrarón resultados.", FacesMessage.SEVERITY_FATAL);
+                return;
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(AjusteExistenciaBean.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_FATAL);
+        }
+
+    }
+
     public void guardar() {
         try {
+            System.out.println("ENTRO");
+            System.out.println(idAjuste);
+//             alert(idAjuste.toString(), FacesMessage.SEVERITY_INFO);
             if (lstAjusteDet == null || lstAjusteDet.isEmpty()) {
                 alert("El documento no tiene detalle.", FacesMessage.SEVERITY_FATAL);
                 return;
@@ -105,8 +184,10 @@ public class AjusteExistenciaBean implements Serializable {
                 alert("El campo de observación no puede quedar vacio.", FacesMessage.SEVERITY_FATAL);
                 return;
             }
-            idAjuste = this.ejbBuscarAjuste.obtenerCorreltivoAjuste(sesion.getSucursal().getIdsucursal(), Ajuste.class, "idajuste");
+//            idAjuste = this.ejbBuscarAjuste.obtenerCorreltivoAjuste(sesion.getSucursal().getIdsucursal(), Ajuste.class, "idajuste");
+//            alert(String.valueOf(idAjuste), FacesMessage.SEVERITY_INFO);
             if (idAjuste > 0) {
+                alert(idAjuste.toString(), FacesMessage.SEVERITY_INFO);
                 this.constructorAjuste = new Ajuste();
                 AjustePK pkIdAjute = new AjustePK();
                 pkIdAjute.setIdajuste(idAjuste);
@@ -122,7 +203,6 @@ public class AjusteExistenciaBean implements Serializable {
                     ajstDet.setAjustedetallePK(pkIdAjstDet);
                     ajstDet.setAjuste(constructorAjuste);
                 }
-//                constructorAjuste.setIdsucursal1(sesion.getSucursal().getIdsucursal());
                 constructorAjuste.setIdusuariocrea(idUsuarioCrea);
                 constructorAjuste.setAjustedetalleList(lstAjusteDet);
                 constructorAjuste.setFechacreacion(fechaCreacion);
@@ -130,12 +210,10 @@ public class AjusteExistenciaBean implements Serializable {
                 constructorAjuste.setObservacion(observacion);
                 System.out.println(pkIdAjute);
                 crud.guardarEntidad(constructorAjuste);
-                
-                alert("Guardo xd", FacesMessage.SEVERITY_INFO);
-                
-//                this.ajustarExistencia();
+                alert("Registro ingresado exitosamente", FacesMessage.SEVERITY_INFO);
+                this.ajustarExistencia();
+                limpiar();
             }
-
         } catch (Exception ex) {
             Logger.getLogger(AjusteExistenciaBean.class.getName()).log(
                     Level.SEVERE, null, ex);
@@ -143,40 +221,88 @@ public class AjusteExistenciaBean implements Serializable {
         }
     }
 
-    
-    public void ajustarExistencia() throws Exception{
-        if (lstAjusteDet != null){
-            boolean carga;
-            for(Ajustedetalle ajstDet : lstAjusteDet){
-                if (ajstDet.getCantidad()>0){
-                    carga = true;
-                }else{
-                    carga = false;
-                }
-                ejbProInv.afectarExistencia(
-                        ajstDet.getCantidad(),
-                        ajstDet.getIdproducto(),
-                        sesion.getUsuario(),
-                        sesion.getSucursal(),    
-                        ajstDet.getCostounitario(),
-                        carga,
-                        true 
-                );
+    public void eliminarDetalle() {
+        try {
+            if (dtDetAjuste.getRowData() != null) {
+                lstAjusteDet.remove(this.dtDetAjuste.getRowIndex());
+                dtDetAjuste.setValue(lstAjusteDet);
+                alert("Registro eliminado exitosamente.",
+                        FacesMessage.SEVERITY_INFO);
             }
+        } catch (Exception ex) {
+            Logger.getLogger(AjusteExistenciaBean.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
+
+    public void ajustarExistencia() throws Exception {
+        if (lstAjusteDet != null) {
+            boolean carga;
+            Integer i = 0;
+            Double can = 0.0;
+            for (Ajustedetalle ajstDet : lstAjusteDet) {
+                 can = ajstDet.getCantidad();
+                i++;
+                if (ajstDet.getCantidad() > 0) {
+                    carga = false;
+                } else {
+                    carga = true;
+                    can= can*-1;
+                }
+               
+                System.out.println("cantidad" + can);
+                System.out.println("producto" + ajstDet.getIdproducto());
+                System.out.println("usuario" + sesion.getUsuario());
+                System.out.println("sucursal" + ajstDet.getCostounitario());
+                System.out.println("Carga" + carga);
+
+                ejbProInv.afectarExistencia(
+                        can,
+                        ajstDet.getIdproducto(),
+                        sesion.getUsuario(),
+                        sesion.getSucursal(),
+                        ajstDet.getCostounitario(),
+                        carga,
+                        false                       
+                );
+                can=0.00;
+            }
+
+        }
+    }
+
+    public void onRowSelectAjuste(SelectEvent event) {
+        System.out.print("entro");
+        Ajuste ajt = (Ajuste) event.getObject();
+        System.out.print(ajt);
+        if (ajt != null) {
+            idAjuste = ajt.getAjustePK().getIdajuste();
+            idSucursal = ajt.getAjustePK().getIdsucursal();
+            fechaCreacion = ajt.getFechacreacion();
+            observacion = ajt.getObservacion();
+            idUsuarioCrea = ajt.getIdusuariocrea();
+            lstAjusteDet = ajt.getAjustedetalleList();
+            mostrarBtnGuardar = false;
+            lstAjusteEnc = null;
+            fechaIni = null;
+            fechaFin = null;
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            requestContext.execute("PF('dialogoMonAjustes').hide()");
+        }
+    }
+
     public void onRowSelectProducto(SelectEvent event) {
         if (cantidad != null && cantidad != 0) {
-
+            Double precioVenta;
             Producto pro = (Producto) event.getObject();
             if (pro != null) {
-//                idproducto = pro.getIdproducto();
-//                producto = pro.getProducto();
                 consturctorAjusteDet = new Ajustedetalle();
                 consturctorAjusteDet.setIdproducto(pro);
                 consturctorAjusteDet.setCantidad(cantidad);
-                consturctorAjusteDet.setCostounitario(pro.getPrecioventa());
-
+                precioVenta=pro.getPreciocompra();
+                
+                consturctorAjusteDet.setCostounitario(pro.getPreciocompra());
                 if (consturctorAjusteDet != null) {
                     if (lstAjusteDet == null) {
                         lstAjusteDet = new ArrayList<>();
@@ -184,23 +310,34 @@ public class AjusteExistenciaBean implements Serializable {
                     lstAjusteDet.add(consturctorAjusteDet);
 //                   
                 } else {
-                    alert("NULOOOOO",
+                    alert("Error por favor comunicarse con el administrador de sistemas.",
                             FacesMessage.SEVERITY_INFO);
                 }
 
             }
+            limpiarProducto();
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoProducto').hide();");
+
+        } else if (cantidad == 0) {
+            alert("La cantidad de productosno puede ser cero.",
+                    FacesMessage.SEVERITY_INFO);
+        } else {
+            alert("Ingresar la cantidad de productos que desea ajustar.",
+                    FacesMessage.SEVERITY_INFO);
         }
 
     }
 
     public void mostrarProducto() {
         try {
+            limpiarProducto();
+            buscarProducto();
             System.out.println("entro en el mostrar");
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoProducto').show();");
         } catch (Exception ex) {
+
             Logger.getLogger(AjusteExistenciaBean.class.getName()).log(
                     Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
@@ -237,6 +374,30 @@ public class AjusteExistenciaBean implements Serializable {
 
     public void setIdAjuste(Integer idAjuste) {
         this.idAjuste = idAjuste;
+    }
+
+    public boolean isMostrarBtnProductos() {
+        return mostrarBtnProductos;
+    }
+
+    public void setMostrarBtnProductos(boolean mostrarBtnProductos) {
+        this.mostrarBtnProductos = mostrarBtnProductos;
+    }
+
+    public boolean isHabilitarObservacion() {
+        return habilitarObservacion;
+    }
+
+    public void setHabilitarObservacion(boolean habilitarObservacion) {
+        this.habilitarObservacion = habilitarObservacion;
+    }
+
+    public boolean isMostrarBtnGuardar() {
+        return mostrarBtnGuardar;
+    }
+
+    public void setMostrarBtnGuardar(boolean mostrarBtnGuardar) {
+        this.mostrarBtnGuardar = mostrarBtnGuardar;
     }
 
     public SessionUsr getSesion() {
@@ -389,6 +550,30 @@ public class AjusteExistenciaBean implements Serializable {
 
     public void setDtDetAjuste(DataTable dtDetAjuste) {
         this.dtDetAjuste = dtDetAjuste;
+    }
+
+    public Date getFechaIni() {
+        return fechaIni;
+    }
+
+    public void setFechaIni(Date fechaIni) {
+        this.fechaIni = fechaIni;
+    }
+
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
     }
 
     public CrudBDCLocal getCrud() {

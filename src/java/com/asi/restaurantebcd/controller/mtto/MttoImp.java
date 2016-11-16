@@ -5,7 +5,6 @@
  */
 package com.asi.restaurantebcd.controller.mtto;
 
-
 import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasMttoLocal;
@@ -43,6 +42,7 @@ public class MttoImp implements Serializable {
 //    cargar la pagina
     @PostConstruct
     public void postContruction() {
+        
         try {
             sesion = Utilidades.findBean("sessionUsr");
             if (sesion == null) {
@@ -118,14 +118,14 @@ public class MttoImp implements Serializable {
                 return;
             }
 
-            if (idCompania == null) {
-                alert("Selecione una compania.", FacesMessage.SEVERITY_WARN);
-                return;
-            }
+//            if (idCompania == null) {
+//                alert("Selecione una compania.", FacesMessage.SEVERITY_WARN);
+//                return;
+//            }
             impuestoConstructor = new Impuesto();
 //            companiaConstructor = new Compania();
 //            companiaConstructor.setIdcompania(idCompania);
-           // impuestoConstructor.setIdcompania(companiaConstructor);
+            // impuestoConstructor.setIdcompania(companiaConstructor);
             impuestoConstructor.setImpuesto(impuesto.trim().toUpperCase());
             impuestoConstructor.setPorcentaje(porcentaje);
             crud.guardarEntidad(impuestoConstructor);
@@ -144,23 +144,17 @@ public class MttoImp implements Serializable {
     }
 
     //metodo para actualizar un impuesto
-    public void actualizarImpuesto() {
+    public void actualizarImpuesto(RowEditEvent event) {
         try {
-            if (this.tablaImpuesto.getRowData() != null) {
-                Impuesto imp = this.lstImpuesto.get(this.tablaImpuesto.getRowIndex());
-//                companiaConstructor = new Compania();
-//                companiaConstructor.setIdcompania(idCompania);
-//                imp.setIdcompania(companiaConstructor);
-                crud.guardarEntidad(imp);
-                alert("Impuesto actualizado exitosamente.",
-                        FacesMessage.SEVERITY_INFO);
-                this.impuestoConstructor = null;
-//                this.companiaConstructor = null;
-                imp = null;
-                this.tablaImpuesto = null;
-                this.lstImpuesto = this.ejbBusqMtto.buscarImpuesto();
 
-            }
+            Impuesto imp = (Impuesto) event.getObject();
+            crud.guardarEntidad(imp);
+            alert("Impuesto actualizado exitosamente.",
+                    FacesMessage.SEVERITY_INFO);
+            this.impuestoConstructor = null;
+            imp = null;
+            this.tablaImpuesto = null;
+            this.lstImpuesto = this.ejbBusqMtto.buscarImpuesto();
         } catch (Exception ex) {
             Logger.getLogger(MttoImp.class.getName())
                     .log(Level.SEVERE, null, ex);
@@ -281,8 +275,5 @@ public class MttoImp implements Serializable {
         this.impuestoConstructor = impuestoConstructor;
     }
 
-
-
     //</editor-fold>
-
 }

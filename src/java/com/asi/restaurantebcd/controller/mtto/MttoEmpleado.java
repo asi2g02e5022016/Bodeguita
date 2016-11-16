@@ -12,7 +12,8 @@ import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasMttoLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
-import java.awt.MenuBar;
+import com.asi.restaurantebcd.negocio.util.Validator;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,14 +23,13 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
+
 import javax.faces.bean.ViewScoped;
 import org.primefaces.component.accordionpanel.AccordionPanel;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.menuitem.UIMenuItem;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
-import org.primefaces.model.menu.MenuItem;
 
 /**
  *
@@ -51,18 +51,9 @@ public class MttoEmpleado implements Serializable {
     public void postContruction() {
         try {
             sesion = Utilidades.findBean("sessionUsr");
-            if (sesion == null) {
-                alert("Debe Iniciar Sesion", FacesMessage.SEVERITY_FATAL);
-                FacesContext.getCurrentInstance().getViewRoot().
-                        getViewMap().clear();
-                String url = "http://localhost:8080/RestaurantBDC";
-                FacesContext.getCurrentInstance().getExternalContext().
-                        redirect(url);
-            }
             this.lstPuesto = this.ejbBusqMtto.buscarPuesto();
             this.lstSucursal = this.ejbBusqMtto.buscarSucursales();
             this.lstEmpleado = this.ejbBusqMtto.buscarEmpleado();
-
         } catch (Exception e) {
             e.printStackTrace();
             alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
@@ -74,7 +65,7 @@ public class MttoEmpleado implements Serializable {
      * Busca beans session activa.
      */
     private Boolean actualizar;
-
+    private Boolean mostrarCerrar = false;
     private AccordionPanel formPanel = new AccordionPanel();
     private SessionUsr sesion;
     // Atributo que muestra en pantalla el codigo del empleado
@@ -131,6 +122,14 @@ public class MttoEmpleado implements Serializable {
 
     public void setActualizar(Boolean actualizar) {
         this.actualizar = actualizar;
+    }
+
+    public Boolean getMostrarCerrar() {
+        return mostrarCerrar;
+    }
+
+    public void setMostrarCerrar(Boolean mostrarCerrar) {
+        this.mostrarCerrar = mostrarCerrar;
     }
 
     public AccordionPanel getFormPanel() {
@@ -316,11 +315,27 @@ public class MttoEmpleado implements Serializable {
         this.formPanel.setActiveIndex("0");
         this.tablaEmpleado = null;
         this.lstEmpleado = null;
+        mostrarCerrar = true;
 
+    }
+
+    public void cerrar() {
+        idEmpleado = null;
+        idPuesto = null;
+        nombre = null;
+        apellido = null;
+        telefono = null;
+        direccion = null;
+        email = null;
+        idSucursal = null;
+        this.formPanel.setActiveIndex("");
+        buscarEmpleado();
+        mostrarCerrar = true;
     }
 
     public void insertarEmpleado() {
         try {
+
             System.out.println("entro");
 //            if (this.tablaEmpleado.getRowData() != null) {
             if (idEmpleado != null) {
@@ -389,6 +404,8 @@ public class MttoEmpleado implements Serializable {
             empleadoConstructor.setIdsucursal(sucursalConstructor);
 
             crud.guardarEntidad(this.empleadoConstructor);
+            buscarEmpleado();
+            this.formPanel.setActiveIndex("");
             alert("Empleado ingresado exitosamente.",
                     FacesMessage.SEVERITY_INFO);
 

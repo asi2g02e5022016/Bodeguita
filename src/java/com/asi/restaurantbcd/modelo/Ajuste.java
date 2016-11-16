@@ -43,7 +43,7 @@ public class Ajuste implements Serializable {
     @Basic(optional = false)
     
     
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String idusuariocrea;
     @Basic(optional = false)
     
@@ -52,7 +52,7 @@ public class Ajuste implements Serializable {
     @Basic(optional = false)
     
     
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false)
     private String observacion;
 //    @Basic(optional = false)
     

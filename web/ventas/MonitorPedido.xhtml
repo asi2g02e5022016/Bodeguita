@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml">
+    <ui:define name="body">
+        <h:form id="forprincipal" >
+            <p:growl showDetail="true" showSummary="true" />
+            <p:panel id="basic" header="Monitor de facturacion"  >
+                <p:menubar>
+                    <p:menuitem value="Limpiar" update="forprincipal" 
+                                icon="ui-icon-plus" action="#{monitorOrdenPedido.limpiar()}" />
+                    <p:menuitem value="Monitor" update=":forprincipal"
+                                icon=" ui-icon-search"  actionListener ="#{monitorOrdenPedido.mostrarDialogoPedidos}"/>
+                </p:menubar>
+                <h:panelGrid columns="2" width="100%">
+                    <h:panelGrid columns="6" width="80%">
+                        <h:outputLabel  value="No. Pedido"  />
+                        <p:inputText readonly="true" value="#{monitorOrdenPedido.idOrdenPedido}"/>
+                        <h:outputLabel  value="Sucursal:"  />
+                        <p:inputText readonly="true" value="#{monitorOrdenPedido.sucursal}"/>
+                        <h:outputLabel  value="Cliente:"  />
+                        <p:inputText readonly="true" value="#{monitorOrdenPedido.cliente}"/>
+                        <h:outputLabel  value="Estado:"  />
+                        <p:inputText readonly="true" value="#{monitorOrdenPedido.estado}"/>
+                        <h:outputLabel  value="Fecha de pedido:"  />
+                        <p:calendar id="cFecha" value="#{monitorOrdenPedido.fechaPedido}" />                     
+                        <h:outputLabel  value="Usuario"  />
+                        <p:inputText readonly="true" value="#{monitorOrdenPedido.idUsuario}"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" width="100%">                        
+                    </h:panelGrid>
+                </h:panelGrid>
+                <h:panelGrid >
+                    <p:dataTable id="dtDetPedido" value="#{monitorOrdenPedido.lstOrdenPedidoDet}"
+                                 var="det"   emptyMessage="" 
+                                 rowKey="#{det.ordenpedidodetallePK}"
+                                 selectionMode="single" rows="10" 
+                                 rowsPerPageTemplate="10" scrollable="true">
+                        <p:column headerText="Id">
+                            <h:outputText value="#{det.ordenpedidodetallePK.idordenpedido}" />
+                        </p:column>
+                        <p:column headerText="Producto">
+                            <h:outputText  value="#{det.idproducto.producto}"  />
+                        </p:column>
+
+                        <p:column headerText="Cantidad solicitada">
+                            <h:outputText value="#{det.cantidadsolicitada}"/>
+                        </p:column>
+                        <p:column headerText="Cantidad confirmada">
+                            <h:outputText value="#{det.cantidadconfirmada}"  />
+                        </p:column>
+                        <p:column headerText="Precio">
+                            <h:outputText value="#{det.precio}"  />
+                        </p:column>
+                        <p:column headerText="Costo">
+                            <h:outputText value="#{det.costo}"  />
+                        </p:column>
+                        <p:column headerText="IVA">
+                            <h:outputText value="#{det.iva}"  />
+                        </p:column>
+                        <f:facet name="footer">
+                            <h:commandLink>
+                                <p:graphicImage value="/images/excel.png" width="18"/>
+                                <p:dataExporter type="xls" target="dtDetPedido" fileName="Detalle" />
+                            </h:commandLink>
+                        </f:facet>
+                    </p:dataTable>
+                </h:panelGrid>
+
+                <p:dialog id="dMonitorPedido" widgetVar="dMonPed" header="Monitor de pedidos" 
+                          width="80%" minWidth="25">
+                    <p:panel id="pMonitorFact" >
+                        <p:menubar id="menuMonitorPedido" >
+                            <p:menuitem id="idBuscarPed" value="Buscar Pedido" 
+                                        action="#{monitorOrdenPedido.buscarOrdenPedido}"                                            
+                                        icon="ui-icon-search" update=":forprincipal:dtPedido" > 
+                            </p:menuitem>
+                        </p:menubar>
+
+                        <h:panelGrid columns="4" width="100%" >
+                            <h:outputLabel value ="Fecha inicio:"/>
+                            <p:calendar id="dtpFechaIni" value="#{monitorOrdenPedido.fechaIni}"/>
+                            <h:outputLabel value ="Fecha fin:"/>
+                            <p:calendar id="dtpFechaFin" value="#{monitorOrdenPedido.fechaFin}"/>
+                            <h:outputLabel value ="Sucursal:"/>
+                            <p:selectOneMenu id="cbSucursal" value="#{monitorOrdenPedido.idSucursal}">
+                                <f:selectItems value ="#{monitorOrdenPedido.lstSucursal}"
+                                               var="inp" itemLabel ="#{inp.sucursal}" itemValue="#{inp.idsucursal}" />
+                            </p:selectOneMenu> 
+                        </h:panelGrid>
+
+                        <p:panel id="tabla">
+                            <p:dataTable id="dtPedido" emptyMessage=""
+                                         value="#{monitorOrdenPedido.lstOrdenPedido}"
+                                         var="op" rowKey ="#{op.ordenpedidoPK}"
+                                         paginator="true" selectionMode="single"
+                                         rows="10">                           
+                                <p:ajax event="rowSelect"   update=":forprincipal"
+                                        listener="#{monitorOrdenPedido.onRowSelectPedido}" process="@all" />
+                                <p:column headerText="No. Pedido" >
+                                    <h:outputText value="#{op.ordenpedidoPK.idordenpedido}"/>
+                                </p:column>                                             
+                                <p:column headerText="Sucursal" filterBy="#{op.sucursal.sucursal}" filterStyle="width:80%" >
+                                    <h:outputText value="#{op.sucursal.sucursal}"/>
+                                </p:column>             
+                                <p:column headerText="Nombre Cliente" filterBy="#{op.idcliente.nombre}" filterStyle="width:80%" >
+                                    <h:outputText value="#{op.idcliente.nombre}" />
+                                </p:column>  
+                                <p:column headerText="Apellido cliente" filterBy="#{op.idcliente.apellido}" filterStyle="width:80%" >
+                                    <h:outputText value="#{op.idcliente.apellido}" />
+                                </p:column>    
+                                <p:column headerText="Estado" filterBy="#{op.idestado.estado}" filterStyle="width:80%" >
+                                    <h:outputText value="#{op.idestado.estado}"/>
+                                </p:column>             
+                                <p:column headerText="Fecha de pedido" >
+                                    <h:outputText value="#{op.fechapedido}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>             
+                                        
+                                <p:column headerText="Usuario"  filterBy="#{op.idusuario.idusuario}" filterStyle="width:80%">
+                                    <h:outputText value="#{op.idusuario.idusuario}"/>
+                                </p:column>  
+                                <f:facet name="footer">
+                                    <h:commandLink>
+                                        <p:graphicImage value="/images/excel.png" width="18"/>
+                                        <p:dataExporter type="xls" target="dtPedido" fileName="Pedidos" />
+                                    </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+
+                        </p:panel>
+                    </p:panel>
+                </p:dialog>
+
+
+
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -17,89 +17,144 @@ and open the template in the editor.
             <p:panel id="basic" header="Monitor de facturacion"  >
                 <p:menubar>
                     <p:menuitem value="Limpiar" update="forprincipal" 
-                                icon="ui-icon-plus" />
-                     <p:menuitem value="Monitor" 
-                                icon=" ui-icon-search" />
+                                icon="ui-icon-plus" action="#{monitorFacturacion.limpiar()}" />
+                    <p:menuitem value="Monitor" update=":forprincipal"
+                                icon=" ui-icon-search"  actionListener ="#{monitorFacturacion.mostrarDialogoFacturas()}"/>
                 </p:menubar>
                 <h:panelGrid columns="2" width="100%">
                     <h:panelGrid columns="6" width="80%">
-                        
-                        <h:outputLabel  value="Cliente "  />
-                        <p:inputText readonly="true"  
-                                      />
-                
-                         
+                        <h:outputLabel  value="No. Factura"  />
+                        <p:inputText readonly="true" value="#{monitorFacturacion.idFactura}"/>
+                        <h:outputLabel  value="No. Serie "  />
+                        <p:inputText value="#{monitorFacturacion.idSerie}" readonly="true"     />
+                        <!--  <h:outputLabel  value="Sucursal "  />
+                          <p:inputText  readonly="true" value="#{monitorFacturacion.sucursal}"    />-->
+                        <h:outputLabel  value="Tipo de documento"  />
+                        <p:inputText  readonly="true" value="#{monitorFacturacion.tipoDocumento}"    />
+                        <h:outputLabel  value="Cliente "  />                    
+                        <p:inputText readonly="true" value="#{monitorFacturacion.cliente}"  />
                         <h:outputLabel  value="Forma pago "  />
-                        <p:inputText  readonly="true"   />
-                        
-                       
-                       
-                           <h:outputLabel  value="Serie "  />
-                        <p:inputText     />
-                        <h:outputLabel  value="Sucursal "  />
-                        <p:inputText  readonly="true"   />
-                       
-                         <h:outputLabel  value="Tipo Pago "  />
-                        <p:inputText readonly="true"  />
-                         <h:outputLabel  value="Codigo "  />
-                        <p:inputText  />
-            
-                         <h:outputLabel  value="Usuario: "  />
-                        <p:inputText readonly="true"  />
-                        <h:outputLabel  value="Estado "  />
-                        <p:inputText  readonly="true"  />   
-                         <h:outputLabel  value="Fecha "  />
-                        <p:inputText readonly="true"  >
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </p:inputText>  
-                        
-                     
-
+                        <p:inputText  readonly="true" value="#{monitorFacturacion.formaPago}"    />
+                        <h:outputLabel  value="Condición de Pago "  />
+                        <p:inputText readonly="true" value="#{monitorFacturacion.condicionPago}"   />
+                        <h:outputLabel  value="Fecha "  />
+                        <p:inputText readonly="true"  value="#{monitorFacturacion.fechaFactura}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:inputText>                          
+                        <h:outputLabel  value="Usuario: "     />
+                        <p:inputText readonly="true" value="#{monitorFacturacion.usuario}" />
+                        <h:outputLabel  value="Anulado: "  />
+                        <p:selectBooleanButton id="bobtn" value="#{monitorFacturacion.anulado}" onLabel="Yes" offLabel="No" style="width:60px" disabled="true" />                        
+                        <h:outputLabel  value="Caja: "     />
+                        <p:inputText readonly="true" value="#{monitorFacturacion.caja}" />                      
                     </h:panelGrid>
                     <h:panelGrid columns="2" width="20%">
                     </h:panelGrid>
-
                 </h:panelGrid>
 
                 <h:panelGrid >
-                    <p:dataTable 
-                                 var="det"   emptyMessage=""   editable="true">
-                      
-                        <p:column headerText="cod.">
-                            <h:outputText  />
+                    <p:dataTable id="dtFacturasDet" value="#{monitorFacturacion.lstFacturaDet}"
+                                 var="det"   emptyMessage="" 
+                                 rowKey="#{det.facturaencabezado.facturaencabezadoPK}"
+                                 selectionMode="single" rows="10" 
+                                 rowsPerPageTemplate="10" scrollable="true">
+                        <p:column headerText="Id">
+                            <h:outputText value="#{det.idfactdet}" />
                         </p:column>
 
-                        <p:column headerText="Descripcion">
-                            <h:outputText  />
+                        <p:column headerText="Producto">
+                            <h:outputText  value="#{det.idproducto.producto}"  />
                         </p:column>
 
                         <p:column headerText="Cantidad">
-                             <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText />
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText id="modelInput"  style="width:70%"/>
-                                </f:facet>
-                            </p:cellEditor>
+                            <h:outputText value="#{det.cantidad}"  />
                         </p:column>
                         <p:column headerText="Precio">
-                            <h:outputText  />
+                            <h:outputText value="#{det.precio}"  />
                         </p:column>
                         <p:column headerText="Monto">
-                            <h:outputText  />
+                            <h:outputText value="#{det.costo}"  />
                         </p:column>
-                        <p:column headerText="Imp">
-                            <h:outputText  />
+                        <p:column headerText="IVA">
+                            <h:outputText value="#{det.iva}"  />
                         </p:column>
-                        <p:column headerText="Total">
-                            <h:outputText  />
-                        </p:column>
+
                     </p:dataTable>
                 </h:panelGrid>
+
+                <p:dialog id="dMonitorFact" widgetVar="dMonFact" header="Monitor de facturas" 
+                          width="80%" minWidth="25">
+                    <p:panel id="pMonitorFact" >
+                        <p:menubar id="menuMonitorFactura" >
+                            <p:menuitem id="idBuscarFact" value="Buscar factura" 
+                                        action="#{monitorFacturacion.buscarFactura()}"                                            
+                                        icon="ui-icon-search" update=":forprincipal:dtfacturas" > 
+                            </p:menuitem>
+                        </p:menubar>
+                        <h:panelGrid columns="4" width="100%" >
+                            <h:outputLabel value ="Fecha inicio:"/>
+                            <p:calendar id="dtpFechaIni" value="#{monitorFacturacion.fechaIni}"/>
+                            <h:outputLabel value ="Fecha fin:"/>
+                            <p:calendar id="dtpFechaFin" value="#{monitorFacturacion.fechaFin}"/>
+                            <h:outputLabel value ="Sucursal:"/>
+                            <p:selectOneMenu id="cbSucursal" value="#{monitorFacturacion.idSucursal}">
+                                <f:selectItems value ="#{monitorFacturacion.lstSucursal}"
+                                               var="inp" itemLabel ="#{inp.sucursal}" itemValue="#{inp.idsucursal}" />
+                            </p:selectOneMenu> 
+                        </h:panelGrid>
+                        <p:panel id="tabla">
+                            <p:dataTable id="dtfacturas" emptyMessage=""
+                                         value="#{monitorFacturacion.lstFacturaEnc}"
+                                         var="ajst" rowKey ="#{ajst.facturaencabezadoPK}"
+                                         paginator="true" selectionMode="single"
+                                         rows="10">
+                                <p:ajax event="rowSelect"   update=":forprincipal"
+                                        listener="#{monitorFacturacion.onRowSelectFactura}" process="@all" />
+                                <p:column headerText="No. Documento" >
+                                    <h:outputText value="#{ajst.facturaencabezadoPK.idfactura}"/>
+                                </p:column>             
+                                <p:column headerText="No. Serie" >
+                                    <h:outputText value="#{ajst.facturaencabezadoPK.idserie}"/>
+                                </p:column>                                             
+                                <p:column headerText="Documento" filterBy="#{ajst.idtipodocumento.tipodocumento}" filterStyle="width:80%">
+                                    <h:outputText value="#{ajst.idtipodocumento.tipodocumento}" />
+                                </p:column>
+                                <p:column headerText="IVA" >
+                                    <h:outputText value="#{ajst.iva}"/>
+                                </p:column>
+                                <p:column headerText="Sub total" >
+                                    <h:outputText value="#{ajst.subTotal}"/>
+                                </p:column>
+                                <p:column headerText="Total" >
+                                    <h:outputText value="#{ajst.iva + ajst.subTotal }"/>
+                                </p:column>
+                                <p:column headerText="Cliente" filterBy="#{ajst.idcliente.nombre}" filterStyle="width:80%">
+                                    <h:outputText value="#{ajst.idcliente.nombre}" />
+                                </p:column>                                
+                                <p:column headerText="Fecha factura">
+                                    <h:outputText value="#{ajst.fechafactura}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Caja" filterBy="#{ajst.idcaja.caja}" filterStyle="width:80%">
+                                    <h:outputText value="#{ajst.idcaja.caja}"/>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <h:commandLink>
+                                        <p:graphicImage value="/images/excel.png" width="18"/>
+                                        <p:dataExporter type="xls" target="dtfacturas" fileName="Factura" />
+                                    </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+                        </p:panel>
+
+                    </p:panel>
+                </p:dialog>
+
+
             </p:panel>
-            
-            
+
+
         </h:form>
     </ui:define>
 </ui:composition>

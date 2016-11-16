@@ -19,23 +19,24 @@ and open the template in the editor.
                 <p:panel id="basic" header="Mantenimiento de impuestos" style="width: 50%"  >
                     <p:menubar>
                         <p:menuitem value="Nuevo" action="#{mttoImp.limpiarPantalla()}"
-                                    icon="ui-icon-plus" update="@all" />
+                                    icon="ui-icon-plus" update="@all" immediate="true"  />
                         <p:menuitem value="Guardar" update="forprincipal" action="#{mttoImp.guardarImpuesto()}"
                                     icon="ui-icon-disk" />
-                       
+                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoImp.buscarImpuesto()}"
+                                    icon="ui-icon-search" immediate="true" />
                     </p:menubar>
 
                     <h:panelGrid columns="4" width="80%">
                         <h:outputLabel value="Id Impuesto: "/>
                         <p:inputText value ="#{mttoImp.idImpuesto}"
                                      readonly ="true" style ="width: 40px"/>
-                        <h:outputLabel value ="Impuesto: "/>
-                        <p:inputText style="width: 100%" value ="#{mttoImp.impuesto}"/>
-                
-                        <h:outputLabel value ="Porcentaje:" />
-                        <p:inputText value ="#{mttoImp.porcentaje}" style="width:60px">
-                            <f:validateDoubleRange minimum="0.01" maximum="100" />
-                        </p:inputText>
+                        <p:outputLabel value ="Impuesto: " for="txtImpuesto"/>
+                        <p:inputText maxlength="20" style="width: 100%" value ="#{mttoImp.impuesto}" id="txtImpuesto" required="true" requiredMessage="Impuesto requerido" />
+
+                        <p:outputLabel value ="Porcentaje:"  for="txtPct"/>
+                        <p:inputNumber value ="#{mttoImp.porcentaje}" style="width:60px" 
+                                       maxValue="100" minValue="0.01" id="txtPct" 
+                                       required="true" requiredMessage="Campo requerido" />                           
 
 
                     </h:panelGrid>
@@ -46,7 +47,7 @@ and open the template in the editor.
                                      selectionMode="single" rows="5" 
                                      editable="true">
 
-                            <p:ajax event="rowEdit" listener="#{mttoImp.actualizarImpuesto()}" update="@all" />
+                            <p:ajax event="rowEdit" listener="#{mttoImp.actualizarImpuesto}" update="@all" />
                             <p:ajax event="rowEditCancel" listener="#{mttoImp.onCancel}"  />
 
                             <p:column headerText="Id" width="25">
@@ -64,14 +65,14 @@ and open the template in the editor.
                                 </p:cellEditor>   
                             </p:column>
 
-         
+
                             <p:column headerText="Porcentaje" width="50"  >
                                 <p:cellEditor>
                                     <f:facet  name="output">
                                         <h:outputText value="#{dimp.porcentaje}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:inputText value="#{dimp.porcentaje}" style="width:100%"/>  
+                                        <p:inputNumber value="#{dimp.porcentaje}" style="width:100%" maxValue="100"  minValue="0.01" />  
                                     </f:facet> 
                                 </p:cellEditor>
 
@@ -83,11 +84,11 @@ and open the template in the editor.
                             </p:column>
 
                             <p:column style="width:50px; align-content: center" headerText="Eliminar">                               
-                                  
-                                    <p:commandButton   value="Eliminar" 
-                                                      action="#{mttoImp.eliminarImpuesto()}"
-                                                      update="tablaImp"/>
-                               
+
+                                <p:commandButton   value="Eliminar" 
+                                                   action="#{mttoImp.eliminarImpuesto()}"
+                                                   update="tablaImp"/>
+
                             </p:column >
                         </p:dataTable>
                     </h:panelGrid>
