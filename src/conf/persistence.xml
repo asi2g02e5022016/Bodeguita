@@ -50,6 +50,10 @@
     <class>com.asi.restaurantbcd.modelo.Configuracion</class>
     <class>com.asi.restaurantbcd.modelo.Facturadetinterface</class>
     <class>com.asi.restaurantbcd.modelo.Facturainterface</class>
+    <class>com.asi.restaurantbcd.modelo.Programaciondetalle</class>
+    <class>com.asi.restaurantbcd.modelo.Programaciontareas</class>
+    <class>com.asi.restaurantbcd.modelo.Tarea</class>
+    <class>com.asi.restaurantbcd.modelo.Tipotarea</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.persistence-context.flush-mode" value="COMMIT"/>

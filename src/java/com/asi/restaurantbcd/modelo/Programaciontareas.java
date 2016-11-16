@@ -43,7 +43,7 @@ public class Programaciontareas implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fin;
     @Column(name = "frecuencia")
-    private Integer frecuencia;
+    private Double frecuencia;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idprogramacion")
     private List<Programaciondetalle> programaciondetalleList;
@@ -79,11 +79,11 @@ public class Programaciontareas implements Serializable {
         this.fin = fin;
     }
 
-    public Integer getFrecuencia() {
+    public Double getFrecuencia() {
         return frecuencia;
     }
 
-    public void setFrecuencia(Integer frecuencia) {
+    public void setFrecuencia(Double frecuencia) {
         this.frecuencia = frecuencia;
     }
 

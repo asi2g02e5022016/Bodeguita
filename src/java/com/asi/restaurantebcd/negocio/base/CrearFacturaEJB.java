@@ -20,6 +20,8 @@ import com.asi.restaurantbcd.modelo.OrdenpedidoPK;
 import com.asi.restaurantbcd.modelo.Ordenpedidodetalle;
 import com.asi.restaurantbcd.modelo.OrdenpedidodetallePK;
 import com.asi.restaurantbcd.modelo.Producto;
+import com.asi.restaurantbcd.modelo.Receta;
+import com.asi.restaurantbcd.modelo.Recetadetalle;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Tipodocumento;
 import com.asi.restaurantbcd.modelo.Usuario;
@@ -67,6 +69,8 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
     @EJB
     BusquedasExistenciasLocal ejbExistencias;
     
+    @EJB
+    ProcesosInventariosLocal ejbInventario;
 //    @Resource
  //   private UserTransaction trx;
     
@@ -257,6 +261,20 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
               f.setCargada(true);
               
               ejbCrud.persistirEntidad(f);
+            //afectarExistencia(Double cantidad, Producto producto,
+           // Usuario usr, Sucursal sucursal, Double costo, boolean descargaInv,
+           // boolean  calcularCstProm)          
+              for(Facturadetalle fdet:factDetalles){
+                   if(fdet.getIdproducto().getIdreceta()==null){
+                   ejbInventario.afectarExistencia(new Double(fdet.getCantidad()), fdet.getIdproducto() , fdet.getFacturaencabezado().getIdusuario(), fdet.getFacturaencabezado().getOrdenpedido().getSucursal(), new Double(fdet.getCosto()),true,false);
+                   }else {
+                     for(Recetadetalle rdet: fdet.getIdproducto().getIdreceta().getRecetadetalleList()){
+
+                         ejbInventario.afectarExistencia(new Double(fdet.getCantidad()*rdet.getCantidad()), rdet.getProducto() , fdet.getFacturaencabezado().getIdusuario(), fdet.getFacturaencabezado().getOrdenpedido().getSucursal(), new Double(rdet.getProducto().getPreciocompra()),true,false);
+                     }
+                   }
+              }
+              
     //          trx.commit();
           }catch(Exception ex){ 
               

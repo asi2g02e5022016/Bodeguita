@@ -9,6 +9,7 @@ import com.asi.restaurantbcd.modelo.Empleado;
 import com.asi.restaurantbcd.modelo.Perfil;
 import com.asi.restaurantbcd.modelo.Usuario;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -17,7 +18,11 @@ import javax.ejb.Local;
  */
 @Local
 public interface BusquedasUsuariosLocal {
-    public List <Usuario> buscarUsuario() throws Exception;
+    /*public List <Usuario> buscarUsuario() throws Exception;
     public List <Perfil> buscarPerfil() throws Exception;
-    public List <Empleado> buscarEmpleado() throws Exception;
+    public List <Empleado> buscarEmpleado() throws Exception;*/
+    
+    public List <Usuario> buscarUsuario(Map filtroUsr) throws Exception;
+    public List <Perfil> buscarPerfil(Map filtroPfl) throws Exception;
+    public List <Empleado> buscarEmpleado(Map filtroEmp) throws Exception;
 }

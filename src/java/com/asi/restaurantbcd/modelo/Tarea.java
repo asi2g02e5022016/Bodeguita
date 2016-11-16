@@ -34,7 +34,6 @@ import javax.validation.constraints.Size;
 public class Tarea implements Serializable {
     @Basic(optional = false)
     @NotNull
-    @Lob
     @Column(name = "activo")
     private boolean activo;
     @Id

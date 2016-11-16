@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="body">
+        <center>
+            <h:form id="forprincipal">
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="pBotones" header="Mantenimiento de programación de tareas"  >
+                    <p:menubar id="mbNavegacion">
+                        <p:menuitem value="Nuevo" action="#{mttoProgramacionTareas.nuevo()}"
+                                    icon="ui-icon-plus" update="forprincipal" />
+                        <p:menuitem value="Guardar" update="forprincipal" rendered="#{mttoProgramacionTareas.mostrarGuardar}"
+                                    icon="ui-icon-disk" action="#{mttoProgramacionTareas.guardarProgramacionTareas()}" />
+                        <p:menuitem value="Buscar" update=":forprincipal:dBusqTareas"
+                                    icon="ui-icon-search" action="#{mttoProgramacionTareas.buscarTareasProg()}" />
+                    </p:menubar>                  
+
+
+                    <h:panelGrid columns="4">
+                        <p:outputLabel value="Fecha inicio:" for="dtFechaIni"/>
+                        <p:calendar id="dtFechaIni" value="#{mttoProgramacionTareas.inicio}" disabled="#{mttoProgramacionTareas.deshabilitarInicio}" required="true" requiredMessage="Fecha incio requerida" />
+                        <h:outputLabel value="Fecha fin:"/>
+                        <p:calendar id="dtFechaFin" value="#{mttoProgramacionTareas.fin}" disabled="#{mttoProgramacionTareas.deshabilitarFin}" />
+                        <h:panelGroup>
+                        <h:outputLabel value="Frecuencia (minutos):"/>
+                        </h:panelGroup>
+                        <p:inputNumber id="inputFrecuencia" value="#{mttoProgramacionTareas.frecuencia}" 
+                                       minValue="0" maxValue="1440" 
+                                       disabled="#{mttoProgramacionTareas.deshabilitarFrecuencia}" /> 
+                        <p:watermark for="inputFrecuencia" value="Valor de 0 a 1440" id="watermark" />
+                        <p:commandButton id="btnTareas"  value="Agregar Tarea" 
+                                         styleClass="ui-priority-primary"
+                                         update="dTareas"   action="#{mttoProgramacionTareas.mostrarDialogoDetalle()}"
+                                         disabled="#{mttoProgramacionTareas.mostrarBuscar}" /> 
+                    </h:panelGrid>
+                    <h:panelGrid>
+                        <p:dataTable id ="dtDetTareas" emptyMessage="" 
+                                     rows="10"  selectionMode="single"
+                                     value="#{mttoProgramacionTareas.lstDetalle}" 
+                                     binding="#{mttoProgramacionTareas.dtDetalle}"
+                                     var="dt" rowKey="#{dt.idtarea}"  >
+
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{dt.idtarea.nombre}"   />                         
+                            </p:column>
+
+                            <p:column headerText="Descripción">
+                                <h:outputText value="#{dt.host.descripcion}"   />                         
+                            </p:column>
+                            <p:column headerText="Parametros">
+                                <h:outputText value="#{dt.parametros}"   />                        
+                            </p:column>
+                            <p:column>
+                                <p:commandButton   value="Eliminar" 
+                                                   action="#{mttoProgramacionTareas.eliminarDetalle()}"
+                                                   update="forprincipal"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+
+
+
+                    <p:dialog id  ="dTareas" widgetVar="dialogoTareas" header="Buscar tareas" >
+                        <h:panelGrid columns="4" width="80%">
+                            <h:outputLabel value ="Seleccione la tarea:"/>
+
+                            <p:selectOneMenu id="lstTar"  value ="#{mttoProgramacionTareas.idTarea}" >
+                                <f:selectItems value="#{mttoProgramacionTareas.lstTarea}"
+                                               var="inp" itemLabel="#{inp.nombre}" itemValue="#{inp.idtarea}"/>                                       
+                            </p:selectOneMenu>
+                            <!-- <p:commandButton value="Buscar" icon="ui-icon-search" 
+                                              action="#{mttoProgramacionTareas.mostrarDialogoTarea()}" 
+                                              update=":forprincipal:dCatTareas" process="@all"/>-->
+
+                            <h:outputLabel value ="Host:"/>
+
+                            <p:selectOneMenu id="lstConf"  value ="#{mttoProgramacionTareas.host }" >
+                                <f:selectItems value="#{mttoProgramacionTareas.lstConfig}"
+                                               var="inp" itemLabel="#{inp.descripcion}" itemValue="#{inp.idconfiguracion}"/>                                       
+                            </p:selectOneMenu>
+                            <!--<p:commandButton value="Buscar" icon="ui-icon-search" action="#{mttoProgramacionTareas.mostrarDialogoHost}" 
+                                             updat
+                            e=":forprincipal:dCatHost"/>-->
+
+                            <h:outputLabel value ="Orden:"/>
+                            <p:spinner id="spOrden" value="#{mttoProgramacionTareas.orden}" />
+                            <h:outputLabel value ="Parametros:"/>
+                            <p:inputText value="#{mttoProgramacionTareas.parametros}"/>
+                            <p:commandButton id="btnAdd"  value="Agregar" 
+                                             styleClass="ui-priority-primary"
+                                             update="forprincipal" action="#{mttoProgramacionTareas.agregarDetalle}" /> 
+                        </h:panelGrid>
+                    </p:dialog>
+
+                    <p:dialog id  ="dBusqTareas" widgetVar="dialogoBusqTareas" header="Buscar tareas programadas" width="50%" >
+                        <h:panelGrid>
+                            <p:dataTable id="dtPrograTareas" emptyMessage="" value="#{mttoProgramacionTareas.lstPrograTar}"
+                                         var="dimp" rowKey="#{dimp.idprogramacion}"
+                                         selectionMode="single" rows="5" 
+                                         editable="true">
+                                <p:ajax event="rowSelect"   update=":forprincipal"
+                                        listener="#{mttoProgramacionTareas.onRowSelectProg}" process="@all" />
+                                <p:column headerText="Id" width="25" style="align-content: center" >
+                                    <h:outputText value="#{dimp.idprogramacion}"   />                                
+                                </p:column>
+                                <p:column headerText="Inicio" width="25" style="align-content: center" >
+                                    <h:outputText value="#{dimp.inicio}">   
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Fin" width="25" style="align-content: center" >
+                                    <h:outputText value="#{dimp.fin}">     
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Frecuencia" width="25" style="align-content: center" >
+                                    <p:cellEditor>                                
+                                        <f:facet  name="output">
+                                            <h:outputText value="#{dimp.frecuencia}" />  
+                                        </f:facet>
+                                        <f:facet name="input">  
+                                            <p:inputNumber value="#{dimp.frecuencia}" minValue="0"  />
+                                        </f:facet> 
+                                    </p:cellEditor>                                     
+                                </p:column>
+                            </p:dataTable>      
+                        </h:panelGrid>
+                    </p:dialog>
+
+
+                </p:panel> 
+            </h:form>
+        </center>
+    </ui:define>
+
+</ui:composition>
