@@ -24,11 +24,11 @@ and open the template in the editor.
                         <h:outputLabel value="Usuario: " />
                         <h:outputLabel value="#{mttoUsuarioPass.codigoUsr}" />
                         <h:outputLabel value="Empleado: "/>
-                        <h:outputLabel value="#{mttoUsuarioPass.idEmpleado.nombre}"/>
+                        <h:outputLabel value="#{mttoUsuarioPass.nombreEmpl}"/>
                         <h:outputLabel value="Perfil: " />
-                        <h:outputLabel value="#{mttoUsuarioPass.idPerfil.nombre}" />
+                        <h:outputLabel value="#{mttoUsuarioPass.nombrePerfil}" />
                         <h:outputLabel value="Password anterior: " />
-                        <p:password id="OldPass" value="#{mttoUsuarioPass.claveOld}" feedback="true" />
+                        <p:password id="OldPass" value="#{mttoUsuarioPass.confclaveOld}" feedback="true" />
                         <h:outputLabel  value="Nuevo password: " />
                         <p:password id="Pass" value="#{mttoUsuarioPass.claveUsr}" feedback="true" />
                         <h:outputLabel  value="Confirmar nuevo password: " />
