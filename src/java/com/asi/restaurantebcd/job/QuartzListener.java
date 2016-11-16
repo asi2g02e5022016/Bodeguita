@@ -2,7 +2,7 @@ package com.asi.restaurantebcd.job;
 
 
 
-import com.asi.restaurantebcd.job.JobEmail;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
