@@ -18,11 +18,11 @@ and open the template in the editor.
                <p:panel id="basic" header="Mantenimiento de Productos"  >
                    <p:menubar>
                        <p:menuitem value="Nuevo" update="forprincipal" action="#{mttoProducto.limpiarPantalla()}"
-                                    icon="ui-icon-plus" />
+                                   icon="ui-icon-plus" immediate="true"/>
                        <p:menuitem value="Guardar" update="forprincipal" action="#{mttoProducto.guardarProducto()}"
                                     icon="ui-icon-disk" />
                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoProducto.buscarProducto()}"
-                                    icon=" ui-icon-search" />
+                                   icon=" ui-icon-search" immediate="true"/>
                     </p:menubar>
                    
                    <h:panelGrid columns="4" width="90%">
@@ -31,40 +31,40 @@ and open the template in the editor.
                         <p:inputText value ="#{mttoProducto.idProducto}"
                                      readonly ="true" style ="width: 40px"/> -->
                         
-                        <p:outputLabel value="Grupo Producto"/>
-                        <p:selectOneMenu id="listGrupo" autoWidth="40" value ="#{mttoProducto.idGrupoProducto}" >
+                      <p:outputLabel for="listGrupo" value="Grupo Producto"/>
+                      <p:selectOneMenu id="listGrupo" autoWidth="40" value ="#{mttoProducto.idGrupoProducto}" required="true" requiredMessage="Grupo producto es obligatorio" >
                             <f:selectItem 
                                            itemLabel="Grupo de Producto" itemValue=""/>
                             <f:selectItems value="#{mttoProducto.lstGrupoProducto}"
                                            var="gp" itemLabel="#{gp.grupoproducto}" itemValue="#{gp.idgrupoproducto}"/>                                       
                         </p:selectOneMenu>                       
                        
-                        <p:outputLabel value="Marca Producto"/>
-                        <p:selectOneMenu id="listMarca" autoWidth="40"  value ="#{mttoProducto.idMarcaProducto}" >
+                        <p:outputLabel for="listMarca" value="Marca Producto"/>
+                        <p:selectOneMenu id="listMarca" autoWidth="40"  value ="#{mttoProducto.idMarcaProducto}" required="true" requiredMessage="Marca producto es obligatorio" >
                             <f:selectItem 
                                            itemLabel="Marca de Producto" itemValue=""/>
                             <f:selectItems value="#{mttoProducto.lstMarcaProducto}"
                                            var="gp" itemLabel="#{gp.marcaproducto}" itemValue="#{gp.idmarcaproducto}"/>                                       
                         </p:selectOneMenu>
                         
-                        <p:outputLabel value="Tipo Producto"/>
-                        <p:selectOneMenu id="listTipo"  value ="#{mttoProducto.idTipoProducto}" >
+                        <p:outputLabel for="listTipo" value="Tipo Producto"/>
+                        <p:selectOneMenu id="listTipo"  value ="#{mttoProducto.idTipoProducto}" required="true" requiredMessage="Tipo producto es obligatorio">
                             <f:selectItem 
                                            itemLabel="Tipo de Producto" itemValue=""/>
                             <f:selectItems value="#{mttoProducto.lstTipoProducto}"
                                            var="tp" itemLabel="#{tp.tipoproducto}" itemValue="#{tp.idtipoproducto}"/>                                       
                         </p:selectOneMenu>
                         
-                        <p:outputLabel value="Medida"/>
-                        <p:selectOneMenu id="listMedida"  value ="#{mttoProducto.idMedida}" >
+                        <p:outputLabel for="listMedida" value="Medida"/>
+                        <p:selectOneMenu id="listMedida"  value ="#{mttoProducto.idMedida}" required="true" requiredMessage="El campo meida es obligatorio" >
                             <f:selectItem 
                                            itemLabel="Medida" itemValue=""/>
                             <f:selectItems value="#{mttoProducto.lstMedida}"
                                            var="md" itemLabel="#{md.medida}" itemValue="#{md.idmedida}"/>                                       
                         </p:selectOneMenu>
                         
-                        <h:outputLabel value ="Producto "/>
-                        <p:inputText style="width: 50%" value ="#{mttoProducto.producto}"/>
+                        <p:outputLabel for="iptP1" value ="Producto "/>
+                        <p:inputText id="iptP1" style="width: 50%" value ="#{mttoProducto.producto}" required="true" requiredMessage="El campo de producto es obligatorio"/>
                         
                         <h:outputText value="Activo:" />
                          <p:selectBooleanButton id="Activo" value="#{mttoProducto.activo}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px" >
@@ -72,7 +72,7 @@ and open the template in the editor.
                         
                        
                         <h:outputLabel value ="Precio de Compra Sin IVA "/>
-                         <p:inputNumber id="pcompra" value="#{mttoProducto.preciocompra}">                      
+                         <p:inputNumber id="pcompra" value="#{mttoProducto.preciocompra}" minValue="0"  maxlength="9">                      
                         </p:inputNumber>
                          
                            <h:outputText value="Vendible: " />
@@ -80,7 +80,7 @@ and open the template in the editor.
                          </p:selectBooleanButton>
                            
                          <h:outputLabel value ="Precio de Venta Sin IVA "/>
-                        <p:inputNumber id="pventa" value="#{mttoProducto.precioventa}">  
+                         <p:inputNumber id="pventa" value="#{mttoProducto.precioventa}" minValue="0" maxlength="9">  
                         </p:inputNumber>
                          
                          <h:outputText value="Excento: " />
@@ -181,7 +181,7 @@ and open the template in the editor.
                                         </h:outputText>  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:inputText value="#{dimp.fechacreacion}" style="width:100%">
+                                        <p:inputText value="#{dimp.fechacreacion}" style="width:100%" disabled="true">
                                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                                         </p:inputText> 
                                     </f:facet> 
@@ -271,7 +271,7 @@ and open the template in the editor.
                                 <p:rowEditor />
                             </p:column>
 
-                           <!-- <p:column style="width:60px; align-content: center"  headerText="Eliminar">                               
+                          <!--  <p:column style="width:60px; align-content: center"  headerText="Eliminar">                               
                                   
                                     <p:commandButton   value="Eliminar" 
                                                        action="#{mttoProducto.eliminarProducto(dimp)}"
