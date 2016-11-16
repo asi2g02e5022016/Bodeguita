@@ -54,7 +54,8 @@ public class Sucursal implements Serializable {
     @Size(min = 1, max = 9)
     @Column(name = "telefono")
     private String telefono;
-   
+     @Column(name = "email")
+    private String email;
 
     public Sucursal() {
     }

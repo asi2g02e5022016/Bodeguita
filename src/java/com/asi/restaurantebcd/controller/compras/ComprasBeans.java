@@ -61,6 +61,8 @@ public class ComprasBeans implements  Serializable {
     private String observacion;
     private String estado;
     private String usr;
+    private String sucursal;
+    
     private String codigo;
     private String serie;
     private String nombreProveedor;
@@ -112,6 +114,7 @@ public class ComprasBeans implements  Serializable {
        lstProveedor = null;
        nodocu = null;
        estado = null;
+       sucursal = null;
        nombreProveedor = null;
        fecha = null;
        observacion = null;
@@ -136,12 +139,7 @@ public class ComprasBeans implements  Serializable {
                 alert("El documento no tiene detalle.", FacesMessage.SEVERITY_FATAL);
                 return;
             }
-            if (codigo != null && !codigo.equals("")) {
-            compraEnca.setCodigofactura(codigo);
-            }
-             if (serie != null && !serie.equals("")) {
-            compraEnca.setCodigofactura(codigo);
-            }
+
             Integer codigoCom =  ejbBusComp.obtenerCorreltivoCompra(
                     sesion.getSucursal().getIdsucursal(),
                     Compra.class, "idsucursal","idcompra");
@@ -151,6 +149,12 @@ public class ComprasBeans implements  Serializable {
             idCompra.setIdcompra(codigoCom);
             idCompra.setIdsucursal(sesion.getSucursal().getIdsucursal());
             compraEnca.setCompraPK(idCompra);
+                        if (codigo != null && !codigo.equals("")) {
+            compraEnca.setCodigofactura(codigo);
+            }
+             if (serie != null && !serie.equals("")) {
+            compraEnca.setCodigofactura(codigo);
+            }
              int correl = 0;
             for (Compradetalle cmDet : lstCompradeta) {
                 correl++;
@@ -176,6 +180,8 @@ public class ComprasBeans implements  Serializable {
            // usr = compraEnca.getIdusuario().getIdempleado().getNombre();
             estado = compraEnca.getIdestado().getEstado();
             fecha = compraEnca.getFechacompra();
+            usr = compraEnca.getIdusuario().getIdusuario();
+            sucursal =  compraEnca.getSucursal().getSucursal();
             mostrarBtnGuardar = false;
             mostrarBtnActualizarExit = true;
             
@@ -217,10 +223,17 @@ public class ComprasBeans implements  Serializable {
                           false,
                           true);
           }
-
+                if (codigo != null && !codigo.equals("")) {
+            compraEnca.setCodigofactura(codigo);
+            }
+             if (serie != null && !serie.equals("")) {
+            compraEnca.setCodigofactura(codigo);
+            }
+          estado = estad.getEstado();
           compraEnca.setIdestado(estad);
           crud.guardarEntidad(compraEnca);
           mostrarBtnActualizarExit  = false;
+              alert("El documento se actualizo exitosamente.", FacesMessage.SEVERITY_INFO);
           } catch (Exception ex) {
                   Logger.getLogger(ComprasBeans.class.getName())
                           .log(Level.SEVERE, null, ex);
@@ -515,6 +528,8 @@ public class ComprasBeans implements  Serializable {
         usr = compraEnca.getIdusuario().getIdusuario();
         serie =  compraEnca.getSeriefactura();
         codigo = compraEnca.getCodigofactura();
+        usr =  compraEnca.getIdusuario().getIdusuario();
+        sucursal =  compraEnca.getSucursal().getSucursal();
         nombreProveedor = compraEnca.getIdproveedor().getProveedor();
         estado = compraEnca.getIdestado().getEstado();
         fecha = compraEnca.getFechacompra();
@@ -645,6 +660,14 @@ public class ComprasBeans implements  Serializable {
 
     public String getNombreProveedor() {
         return nombreProveedor;
+    }
+
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
     }
 
     public void setNombreProveedor(String nombreProveedor) {

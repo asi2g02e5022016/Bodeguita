@@ -141,15 +141,15 @@ and enca.idsucursal = $P{CODSUC}]]>
 				<text><![CDATA[FECHA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="370" y="67" width="100" height="20" uuid="e313e52d-6742-4a64-8555-3559308afddc"/>
+				<reportElement x="370" y="67" width="185" height="20" uuid="e313e52d-6742-4a64-8555-3559308afddc"/>
 				<textFieldExpression><![CDATA[$F{sucursal}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
 				<reportElement x="370" y="47" width="100" height="20" uuid="7a945397-e20b-498a-aedc-7828f73697ea"/>
 				<textFieldExpression><![CDATA[$F{fechacompra}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="47" width="100" height="20" uuid="7a019348-b472-4df0-9754-8c4988819443"/>
+				<reportElement x="100" y="47" width="170" height="20" uuid="7a019348-b472-4df0-9754-8c4988819443"/>
 				<textFieldExpression><![CDATA[$F{proveedor}]]></textFieldExpression>
 			</textField>
 			<textField>

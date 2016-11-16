@@ -16,14 +16,16 @@ and open the template in the editor.
             <p:growl showDetail="true" showSummary="true" />
             <p:panel id="basic" header="Compras a proveedores"  >
                 <p:menubar>
-                    <p:menuitem value="Nuevo" update="forprincipal" action="#{comprasBeans.nuevaCompra()}"
+                    <p:menuitem value="Nuevo" update="forprincipal" 
+                                action="#{comprasBeans.nuevaCompra()}"
                                 icon="ui-icon-plus" />
                     <p:menuitem value="Guardar" id="btnGuardarDat"
                                 update="forprincipal" 
                                 rendered="#{comprasBeans.mostrarBtnGuardar}" 
                                 action="#{comprasBeans.guardarCompra()}" 
                                 icon="ui-icon-disk" />
-                    <p:menuitem value="Ingreso a compra" 
+                    <p:menuitem value="Ingreso a compra"
+                                 update="forprincipal" 
                                 icon=" ui-icon-refresh"
                                 rendered="#{comprasBeans.mostrarBtnActualizarExit}"
                                 action="#{comprasBeans.ActualizarExistenciaCompra()}"/>
@@ -38,11 +40,12 @@ and open the template in the editor.
                 <h:panelGrid columns="2" width="100%">
                     <h:panelGrid columns="6" width="80%">
                         <p:outputLabel  value="No Documento : " for="idPrue"/>
-                        <p:inputText readonly="true" id="idPrue" required="true" value="#{comprasBeans.nodocu}"  />
+                        <p:inputText readonly="true" id="idPrue" 
+                                     required="true" value="#{comprasBeans.nodocu}"  />
                         <h:outputLabel  value="Usuario: "  />
                         <p:inputText readonly="true" value="#{comprasBeans.usr}"  />
                         <h:outputLabel  value="Sucursal "  />
-                        <p:inputText  readonly="true" value="#{comprasBeans.serie}"  />
+                        <p:inputText  readonly="true" value="#{comprasBeans.sucursal}"  />
                         <h:outputLabel  value="Codigo "  />
                         <p:inputText  value="#{comprasBeans.codigo}"  />
 
@@ -62,6 +65,7 @@ and open the template in the editor.
                         <p:inputText readonly="true" id="idr"  required="true"   value="#{comprasBeans.nombreProveedor}"  style=" width: 100%" />
                         <p:commandButton   action="#{comprasBeans.mostrarDialogProveedor()}"
                                            id="iconOnly" 
+                                           
                                            icon="ui-icon-search" title="Icon Only" />
 
 
@@ -118,7 +122,7 @@ and open the template in the editor.
                         <p:column headerText="Total">
                             <h:outputText value="#{det.total}" />
                         </p:column>
-                        <p:column style="width:32px">
+                        <p:column  rendered="#{comprasBeans.mostrarBtnGuardar}"  style="width:32px">
                             <f:facet name="header">
                                 <p:commandButton  
                                     id="iconOnly" action="#{comprasBeans.mostrarDialogProd()}"
@@ -144,7 +148,7 @@ and open the template in the editor.
                                     icon="ui-icon-plus" />
                         <p:menuitem value="Buscar" update="tablaProveedor"
                                     action="#{comprasBeans.buscarProveedor()}"
-                                    icon=" ui-icon-search" />
+                                    icon=" ui-icon-search"  />
                     </p:menubar>
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
@@ -244,22 +248,22 @@ and open the template in the editor.
                         <p:ajax event="rowSelect" update="forprincipal"
                                 listener="#{comprasBeans.onRowSelectCompra}" process="@all"  
                                 />
-                        <p:column  headerText="Numero">
+                        <p:column  headerText="Numero" filterBy="#{dcompra.compraPK.idcompra}">
                             <h:outputText value="#{dcompra.compraPK.idcompra}"  />
                         </p:column>
-                        <p:column headerText="Proveedor"  >
+                        <p:column headerText="Proveedor" filterBy="#{dcompra.idproveedor.proveedor}"  >
                             <h:outputText value="#{dcompra.idproveedor.proveedor}" />
                         </p:column>
-                        <p:column headerText="fecha" >
+                        <p:column headerText="fecha"  filterBy="#{dcompra.fechacompra}" >
                             <h:outputText value="#{dcompra.fechacompra}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
-                        <p:column headerText="usuario" >
+                        <p:column headerText="usuario" filterBy="#{dcompra.idusuario.idusuario}"  >
                             <h:outputText  value="#{dcompra.idusuario.idusuario}" />
                    
                         </p:column>
-                          <p:column headerText="estado"  >
+                          <p:column headerText="estado" filterBy="#{dcompra.idestado.estado}" >
                                 <h:outputText value="#{dcompra.idestado.estado}" />
                             </p:column>
                               <f:facet name="footer">
