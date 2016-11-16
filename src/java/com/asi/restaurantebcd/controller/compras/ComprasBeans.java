@@ -20,6 +20,7 @@ import com.asi.restaurantebcd.negocio.base.BusquedasProveedoresLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.base.ProcesosInventariosLocal;
 import com.asi.restaurantebcd.negocio.util.EstadoEnum;
+import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -496,9 +497,9 @@ public class ComprasBeans implements  Serializable {
                     return;
                 }
             }
-            
+            Utilidades util = new Utilidades();
             lstCompraMonitor = ejbProInv.buscarCompras(sesion.getSucursal(),
-                    fechaIniMonitor, fechaFinMonitor);
+                    util.getFiltroDeFecha(fechaIniMonitor, 0) ,   util.getFiltroDeFecha(fechaFinMonitor, 1)  );
             System.out.println("lstCompraMonitor,,,.. " + lstCompraMonitor);
             if (lstCompraMonitor == null || lstCompraMonitor.isEmpty()) {
                 alert("NO se encontraron resultados.", FacesMessage.SEVERITY_WARN);
