@@ -15,32 +15,32 @@ Vista xhtl de Mantenimientos de Proveedores.
         <center>
             <h:form id="forprincipal">
                 <p:growl showDetail= "true" showSummary="true" />
-                <p:panel id="basic" header="Mantenimiento de Proveedores" style="width: 50%"  >
+                <p:panel id="basic" header="Mantenimiento de Proveedores" >
                     <p:menubar>
                         <p:menuitem value="Nuevo" action= "#{mttoProveedor.limpiarPantalla()}" update="@all"
-                                    icon="ui-icon-plus"   />
+                                    icon="ui-icon-plus" immediate="true"  />
                         <p:menuitem value="Guardar" update="forprincipal" action="#{mttoProveedor.insertarProveedor()}"
                                     icon="ui-icon-disk"  id="btnGuardar" disabled="false" />
                                                 
                         <p:menuitem value="Buscar" update="forprincipal" action="#{mttoProveedor.buscarProveedor()}"
-                                    icon=" ui-icon-search" />
+                                    icon=" ui-icon-search" immediate="true" />
                     </p:menubar>
 
 
-                    <p:accordionPanel   binding="#{mttoProveedor.formPanel}"    multiple="false" id="forPanel" activeIndex="" >
+                    <p:accordionPanel    multiple="false" id="forPanel" activeIndex="" >
                         <p:tab title="Ingresar Proveedor"  closable="true"   >
-                            <h:panelGrid columns="4" width="80%" >
+                            <h:panelGrid columns="4" width="90%" >
                                 <h:outputLabel value ="Id Proveedor:"/>
                                 <p:inputText value ="#{mttoProveedor.idProveedor}"
                                              readonly ="true" style ="width: 40px"/>
-                                <h:outputLabel value="Nombre Proveedor:"/>
-                                <p:inputText value ="#{mttoProveedor.nomProveedor}"/>
-                                <h:outputLabel value="N° Registro:"/>
-                                <p:inputText value="#{mttoProveedor.noRegistro}"/>
-                                <h:outputLabel value="NIT:"/>
-                                <p:inputMask id="iNit" value="#{mttoProveedor.nitProveedor}" mask="9999-999999-999-9"/>
-                                <h:outputLabel value="Direccion:"/>
-                                <p:inputText value="#{mttoProveedor.direccion}"/>
+                                <p:outputLabel  for=" ipt1" value="Nombre Proveedor:"/>
+                                <p:inputText id="ipt1" value ="#{mttoProveedor.nomProveedor}" required="true" requiredMessage="Nombre de Proveedor es Obligatorio"/>
+                                <p:outputLabel for="ipt2" value="N° Registro:"/>
+                                <p:inputText id="ipt2" value="#{mttoProveedor.noRegistro}" required="true" requiredMessage="Numero de Registro es Obligatorio"/>
+                                <p:outputLabel for="iNit" value="NIT:"/>
+                                <p:inputMask id="iNit" value="#{mttoProveedor.nitProveedor}" mask="9999-999999-999-9" required="true" requiredMessage="NIT de Proveedor es Obligatorio"/>
+                                <p:outputLabel for="ipt3" value="Direccion:"/>
+                                <p:inputText id="ipt3" value="#{mttoProveedor.direccion}" required="true" requiredMessage="Direccion de Proveedor es Obligatorio"/>
                                 <h:outputLabel value="Telefono:"/>
                                 <p:inputMask id="iTel" value="#{mttoProveedor.telefono}" mask="9999-9999"/> 
                                 <h:outputLabel value ="Email" />
@@ -50,13 +50,13 @@ Vista xhtl de Mantenimientos de Proveedores.
                     </p:accordionPanel> 
 
                     <h:panelGrid>
-                        <p:dataTable id="tablaProveedor" emptyMessage="" binding="#{mttoProveedor.tablaProveedor}"
+                        <p:dataTable id="tablaProveedor" emptyMessage=""
                                      value="#{mttoProveedor.lstProveedor}"
                                      var="dimp" rowKey="#{dimp.idproveedor}"
-                                     selectionMode="single" rows="5" 
+                                     selectionMode="single" rows="10" 
                                      editable="true" paginator="true" 
                                      rowsPerPageTemplate="10" scrollable="true"
-                                     scrollWidth="650" >
+                                      >
                             <p:ajax event="rowEdit" listener="#{mttoProveedor.onSelect()}" update=":forprincipal:forPanel"   />
                             <p:column headerText="Id" width="25" style="align-content: center" >
                                 <h:outputText value="#{dimp.idproveedor}" />                                
@@ -79,14 +79,14 @@ Vista xhtl de Mantenimientos de Proveedores.
                             <p:column headerText="Email" width="200" style="align-content: center" filterBy="#{dimp.email}" >
                                 <h:outputText value="#{dimp.email}" />                                
                             </p:column>
+                            
+                            <p:ajax event="rowEdit"  listener="#{mttoProveedor.actualizarProveedor()}" />
+                            <p:ajax event="rowEditCancel"  listener="#{mttoProveedor.onEdit()}"/>
+                            
                             <p:column style=" align-content: center" headerText="Modificar" width="75">
                                 <p:rowEditor     />
                             </p:column>
-                            <p:column style="text-align: center" headerText="Eliminar" width="75">
-                                <p:commandButton   value="Eliminar" 
-                                                   action="#{mttoProveedor.eliminarProveedor()}"
-                                                   update="@all"  />
-                            </p:column>
+                            
                         </p:dataTable>
                     </h:panelGrid>
                 </p:panel> 

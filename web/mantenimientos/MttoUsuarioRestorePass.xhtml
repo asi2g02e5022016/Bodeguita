@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/templateBDC.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="body">
+        <center>
+            <h:form id="forprincipal" >
+                <p:growl showDetail="true" showSummary="true" />
+                <p:panel id="basic" header="Restaurar contraseña de usuario" style="width: 50%"  >
+                    <p:menubar>
+                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoEstado.buscarEstados()}"
+                                    icon=" ui-icon-search" />
+                        <p:menuitem value="Restaurar" update="forprincipal" action="#{mttoUsuarioPass.actualizarUsuario()}"  
+                                    icon="ui-icon-disk" />
+                    </p:menubar> 
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="Usuario: " />
+                        <h:outputLabel value="#{mttoUsuarioPass.codigoUsr}" />
+                        <h:outputLabel value="Empleado: "/>
+                        <h:outputLabel value="#{mttoUsuarioPass.nombreEmpl}"/>
+                        <h:outputLabel value="Perfil: " />
+                        <h:outputLabel value="#{mttoUsuarioPass.nombrePerfil}" />
+                        <h:outputLabel value="Password anterior: " />
+                        <p:password id="OldPass" value="#{mttoUsuarioPass.confclaveOld}" feedback="true" />
+                        <h:outputLabel  value="Nuevo password: " />
+                        <p:password id="Pass" value="#{mttoUsuarioPass.claveUsr}" feedback="true" />
+                        <h:outputLabel  value="Confirmar nuevo password: " />
+                        <p:password id="PassConf" value="#{mttoUsuarioPass.confclaveUsr}" feedback="true" />      
+                    </h:panelGrid>                    
+                </p:panel>            
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+
