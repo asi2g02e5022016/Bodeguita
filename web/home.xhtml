@@ -13,12 +13,11 @@ and open the template in the editor.
         template="/layout/templateBDC.xhtml">
     <ui:define name="body">
       <br />
-            <center>
-                <h:form>
-                    <p:commandButton actionListener="#{jobController.procesarFacturas()}"
-                                     value="Procesar Pedido"/>
-                </h:form>
-            </center>
+      
+      <div style="width: 90%;float: center">
+      <p:chart type="bar" model="#{chartView.barModel}" style="width: 45%;float: left;height: 20%" rendered="#{sessionUsr.token!=null}"/>
+      <p:chart type="bar" model="#{chartView.horizontalBarModel}" style="width: 45%;float: right;height: 20%" rendered="#{sessionUsr.token!=null}"/>
+      </div>
       <br style="clear: both" />  
      </ui:define>
 </ui:composition>
