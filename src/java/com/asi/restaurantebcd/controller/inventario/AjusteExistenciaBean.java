@@ -155,6 +155,8 @@ public class AjusteExistenciaBean implements Serializable {
                 return;
             }
             System.out.print(fechaIni + " " + fechaFin + " " + sesion.getSucursal());
+            Utilidades uti = new Utilidades();
+            fechaFin = uti.getFiltroDeFecha(fechaFin, 1);
             lstAjusteEnc = ejbBuscarAjuste.buscarAjustesExistenciaEnc(sesion.getSucursal(),
                     fechaIni, fechaFin);
             if (lstAjusteEnc == null || lstAjusteEnc.isEmpty()) {
