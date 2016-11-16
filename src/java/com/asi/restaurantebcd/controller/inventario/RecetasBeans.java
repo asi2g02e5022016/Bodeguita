@@ -119,7 +119,7 @@ public class RecetasBeans implements Serializable{
                 return;
             }
             System.out.println("que paso...");
-            if (descripcion == null) {
+            if (descripcion == null || descripcion.equals("")) {
                 alert("La descripcion de la receta es obligatorio.",
                         FacesMessage.SEVERITY_WARN);
                 return;
@@ -132,7 +132,11 @@ public class RecetasBeans implements Serializable{
             receta.setIdusuariocrea(sesion.getUsuario().getIdusuario());
             mostrarGuardar =  false;
             Producto idRecero =  null;
-            for (Recetadetalle recetadetalle : lstRecetaDetalle) {
+            
+            List <Recetadetalle> lstDeta = new ArrayList<>();
+            lstDeta.addAll(lstRecetaDetalle);
+            lstDeta.add(recetaDetaPT);
+            for (Recetadetalle recetadetalle : lstDeta) {
             if (recetadetalle.getSalida().toString().equals("0"))    {
                 idRecero =  recetadetalle.getProducto();
             }
@@ -147,8 +151,6 @@ public class RecetasBeans implements Serializable{
                         FacesMessage.SEVERITY_WARN);
                 return;
             }
-            List <Recetadetalle> lstDeta = new ArrayList<>();
-            lstDeta.addAll(lstRecetaDetalle);
             
             RecetadetallePK idDer = new RecetadetallePK();
             idDer.setIdreceta(receta.getIdreceta());

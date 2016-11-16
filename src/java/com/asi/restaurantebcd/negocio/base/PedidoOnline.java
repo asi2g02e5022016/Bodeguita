@@ -66,7 +66,7 @@ public class PedidoOnline implements PedidoOnlineLocal {
         OrdenpedidoPK idOt = new OrdenpedidoPK();
         Integer idCoorr = busquedasCompras
                 .obtenerCorreltivoCompra(idsucursal, 
-                        Ordenpedido.class, "idordenpedido", "idsucursal");
+                        Ordenpedido.class, "idsucursal", "idordenpedido");
         idOt.setIdordenpedido(idCoorr);
         idOt.setIdsucursal(idsucursal);
         
@@ -93,7 +93,8 @@ public class PedidoOnline implements PedidoOnlineLocal {
          Ordenpedidodetalle pedDet = new Ordenpedidodetalle();
         List <Ordenpedidodetalle> lstDet = new ArrayList<>();
         int corle = 0;
-        if (lstDetalle == null || lstDetalle.isEmpty()) {
+        System.out.println("lstDetalle.. " +lstDetalle);
+        if (lstDetalle != null && !lstDetalle.isEmpty()) {
             for (Ordenpedidodetalle ordenpedidodetalle : lstDetalle) {
                 corle++;
                 OrdenpedidodetallePK idOdeDet =new OrdenpedidodetallePK();
@@ -107,10 +108,10 @@ public class PedidoOnline implements PedidoOnlineLocal {
                 Existencia exist = crudBDC.buscarEntidad(Existencia.class, 
                         new ExistenciaPK(ordenpedidodetalle
                                 .getIdproducto().getIdproducto(), idsucursal));
-                if (exist != null || exist.getCostounitario() != null) {
+                if (exist != null && exist.getCostounitario() != null) {
                     pedDet.setCosto(exist.getCostounitario());
                 } else {
-                    pedDet.setCosto(exist.getCostounitario());
+                    pedDet.setCosto(Double.parseDouble("0"));
                 }
                 Producto pro = crudBDC.buscarEntidad(Producto.class, ordenpedidodetalle
                                 .getIdproducto().getIdproducto());
@@ -128,6 +129,7 @@ public class PedidoOnline implements PedidoOnlineLocal {
         ped.setOrdenpedidoPK(idOt);
         ped.setSucursal(suc);
          ped.setOrdenpedidodetalleList(lstDet);
+         crudBDC.guardarEntidad(ped);
         
     }
     /**
