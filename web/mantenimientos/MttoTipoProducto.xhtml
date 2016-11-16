@@ -19,19 +19,19 @@ and open the template in the editor.
             <p:panel id="basic" header="Mantenimiento Tipo de Producto" style="width: 50%"  >
                 <p:menubar>
                     <p:menuitem value="Nuevo"  update="forprincipal"  action="#{mttoTipoProd.limpiarPantalla()}"
-                                icon="ui-icon-plus" />
+                                icon="ui-icon-plus" immediate="true"/>
                     <p:menuitem value="Guardar"  update="forprincipal"  action="#{mttoTipoProd.guardarTipoProducto()}"
                                 icon="ui-icon-disk" />
                     <p:menuitem value="Buscar" update="forprincipal" action="#{mttoTipoProd.buscarTipoProducto()}"
-                                icon=" ui-icon-search" />  
+                                icon=" ui-icon-search" immediate="true" />  
                 </p:menubar>
                 
                     <h:panelGrid columns="2" width="50%">
                         <h:outputLabel  value="Id Tipo Producto : "/>
                         <p:inputText value="#{mttoTipoProd.idTipoProducto}"
                                      readonly="true" style="width: 40px" />
-                        <h:outputLabel  value="Nombre " />
-                        <p:inputText style="width: 100%"  value="#{mttoTipoProd.tipoProducto}"  />
+                        <p:outputLabel for="iptp" value="Nombre " />
+                        <p:inputText id="iptp" style="width: 100%"  value="#{mttoTipoProd.tipoProducto}" maxlength="99" required="true" requiredMessage="Campo Tipo Producto es obligatorio"/>
                     </h:panelGrid>
                 
                     <h:panelGrid >
