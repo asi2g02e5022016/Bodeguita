@@ -66,6 +66,7 @@ public class MttoSucursalesBean implements   Serializable {
     private String direccionSucursal;
     /**Atributo que se muestra en pantalla telefono de sucursal.*/
     private String telefonoSucursal;
+     private String email;
       /**Busca beans session activa.*/
     private SessionUsr sesion ;
       /**Entidad que guardara la Sucursal.*/
@@ -125,6 +126,9 @@ public class MttoSucursalesBean implements   Serializable {
             sucursal.setDireccion(direccionSucursal.trim().toUpperCase());
             sucursal.setSucursal(nombreSucursal.trim().toUpperCase());
             sucursal.setTelefono(telefonoSucursal.trim().toUpperCase());
+            if (email != null) {
+             sucursal.setEmail(email.trim());
+            }
             //sucursal.setIdcompania(sesion.getCompania());
             
             crud.guardarEntidad(sucursal);
@@ -264,6 +268,14 @@ public class MttoSucursalesBean implements   Serializable {
 
     public DataTable getTablaSucursal() {
         return tablaSucursal;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setTablaSucursal(DataTable tablaSucursal) {

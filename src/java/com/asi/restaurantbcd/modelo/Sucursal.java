@@ -103,6 +103,14 @@ public class Sucursal implements Serializable {
         this.telefono = telefono;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     
 
     @Override

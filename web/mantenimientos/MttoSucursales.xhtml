@@ -15,7 +15,7 @@ and open the template in the editor.
         <h:form id="forprincipal" >
             
             <p:growl showDetail="true" showSummary="true" />
-            <p:panel id="basic" header="Mantenimientos Sucursales" style="width: 50%"  >
+            <p:panel id="basic" header="Mantenimientos Sucursales" style="width: 100%"  >
                 <p:menubar>
                     <p:menuitem value="Nuevo"  update="forprincipal" 
                                 action="#{mttoSucursalesBean.limpiarPantalla()}"
@@ -27,15 +27,17 @@ and open the template in the editor.
                                 action="#{mttoSucursalesBean.buscarSucursal()}"
                                 icon=" ui-icon-search" />
                 </p:menubar>
-                    <h:panelGrid columns="4" width="80%">
+                    <h:panelGrid columns="6" width="100%">
                         <h:outputLabel  value="Codigo : "/>
-                        <p:inputText value="#{mttoSucursalesBean.idSucursal}" readonly="true" style="width: 40px" />
+                        <p:inputText value="#{mttoSucursalesBean.idSucursal}" readonly="true"  />
                          <h:outputLabel  value="Direccion " />
-                         <p:inputText value="#{mttoSucursalesBean.direccionSucursal}" style="width: 100%"   />
+                         <p:inputText value="#{mttoSucursalesBean.direccionSucursal}"   />
                         <h:outputLabel  value="Nombre " />
-                        <p:inputText value="#{mttoSucursalesBean.nombreSucursal}" style="width: 100%"   />
+                        <p:inputText value="#{mttoSucursalesBean.nombreSucursal}"    />
                          <h:outputLabel  value="Telefono " />
-                         <p:inputText value="#{mttoSucursalesBean.telefonoSucursal}" style="width: 100%"   />
+                         <p:inputText value="#{mttoSucursalesBean.telefonoSucursal}"  />
+                             <h:outputLabel  value="email " />
+                             <p:inputText value="#{mttoSucursalesBean.email}"  />
                     </h:panelGrid>
                     <h:panelGrid >
                         <p:dataTable id="tablaProd" emptyMessage="" 
