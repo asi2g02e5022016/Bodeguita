@@ -158,6 +158,7 @@ and open the template in the editor.
                 <h:panelGrid >
                     <p:dataTable value="#{comprasBeans.lstProveedor}"
                                  id="tablaProveedor" widgetVar="tablaProveedor" var="dprov"
+                                 paginator="true"  rows="7"
                                  selectionMode="single" rowKey="#{dprov.idproveedor}"  emptyMessage=""  >
                                
                         <p:ajax event="rowSelect" update="forprincipal" process="@all"
@@ -200,8 +201,9 @@ and open the template in the editor.
                 <h:panelGrid >
                     <p:dataTable id="tablaProdd" 
                                  value="#{comprasBeans.lstProducto}"
-                                 var="dpro" rowKey="#{dpro.idproducto}"                                  
-                                 selectionMode="single" rows="10"  >                        
+                                 var="dpro" rowKey="#{dpro.idproducto}"  
+                                 paginator="true"
+                                 selectionMode="single" rows="5"  >                        
                         <p:ajax event="rowSelect" update="forprincipal" process="@all"  
                             listener="#{comprasBeans.onRowSelect}"/>
                         <p:column filterBy="#{dpro.producto}" headerText="descripcion">
@@ -215,10 +217,11 @@ and open the template in the editor.
                         </p:column>
                         <p:column headerText="grupo" filterBy="#{dpro.grupoproducto}">
                             <h:outputText value="#{dpro.grupoproducto}"  />
-                            <p:column headerText="marca"  filterBy="#{dpro.marcaproducto}">
+                     
+                        </p:column>
+                               <p:column headerText="marca"  filterBy="#{dpro.marcaproducto}">
                                 <h:outputText value="#{dpro.marcaproducto}"  />
                             </p:column>
-                        </p:column>
                     </p:dataTable>
                 </h:panelGrid>
             </p:dialog>
