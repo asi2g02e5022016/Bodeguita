@@ -63,6 +63,7 @@ public class MttoUsuarioPass implements Serializable {
     private BusquedasUsuariosLocal ejbBusqUsrLcal;
 
 //</editor-fold >
+
 //<editor-fold  defaultstate="collapsed" desc="Inicializar" >
     /**
      * Creates a new instance of MttoUsuarioManagedBean
@@ -166,6 +167,7 @@ public class MttoUsuarioPass implements Serializable {
     }
 
 //</editor-fold >    
+
 //<editor-fold  defaultstate="collapsed" desc="Getter y Setter" >
     public Usuario getUsuarioConst() {
         return usuarioConst;

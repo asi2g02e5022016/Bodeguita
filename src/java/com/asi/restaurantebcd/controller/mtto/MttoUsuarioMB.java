@@ -15,7 +15,9 @@ import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -335,6 +337,18 @@ public class MttoUsuarioMB implements Serializable {
                         FacesMessage.SEVERITY_INFO);
                 return;
             }
+            
+            Map filtro = new HashMap();
+            if (codigoUsr != null) {
+                filtro.put("codusr", codigoUsr);
+            }
+            
+            List lstUserExist = ejbBusqUsrLcal.buscarUsuario(filtro);
+            if (!lstUserExist.isEmpty()) {
+                alert("Usuario ya existe", FacesMessage.SEVERITY_INFO);
+                return;
+            }        
+            
 
             activo = true;
 
@@ -377,7 +391,7 @@ public class MttoUsuarioMB implements Serializable {
             //Usuario usr = (Usuario) event.getObject
             /*if (Boolean.FALSE.equals(usuarioConst.isActivo())) {
                     System.out.println("Usuario desactivado.." + usuarioConst.isActivo());
-                }*/
+                }
             usuarioConst = (Usuario) event.getObject();
             Date fecIng = usuarioConst.getFechaingreso();
             Date fecBaj = usuarioConst.getFechabaja();
@@ -393,12 +407,24 @@ public class MttoUsuarioMB implements Serializable {
                 alert("Fecha de baja no debe ser menor a la de ingreso. Verifique..",
                         FacesMessage.SEVERITY_INFO);
                 return;
+            }*/
+            usuarioConst = (Usuario) event.getObject();
+                               
+            if (Boolean.FALSE.equals(usuarioConst.isActivo())) {
+                System.out.println("Usuario desactivado.." + usuarioConst.isActivo());
+                Date fecBaj = new Date();
+                usuarioConst.setFechabaja(fecBaj);
             }
+            if (usuarioConst.getFechabaja().before(usuarioConst.getFechaingreso())) {
+                alert("Fecha de baja no debe ser menor a la de ingreso. Verifique..",
+                        FacesMessage.SEVERITY_INFO);
+                return;
+            }
+
             crud.guardarEntidad(usuarioConst);
             alert("Usuario actualizado exitosamente.",
                     FacesMessage.SEVERITY_INFO);
             this.usuarioConst = null;
-            //this.lstUsuario = this.ejbBusqUsrLcal.buscarUsuario();
             this.lstUsuario = this.ejbBusqUsrLcal.buscarUsuario(null);
             //}
         } catch (Exception ex) {

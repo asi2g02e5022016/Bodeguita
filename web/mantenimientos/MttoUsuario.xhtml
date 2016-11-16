@@ -111,7 +111,6 @@ and open the template in the editor.
                                      editable="true" paginator="true" 
                                      rowsPerPageTemplate="3" scrollable="true"
                                      scrollWidth="650" > 
-                            <!--<p:ajax event="cellEdit" process="@this" listener="#{mttoUsuario.SeleccionarFecha}" update="tablaUsuarios" />-->
                             <p:ajax event="rowEdit" listener="#{mttoUsuario.actualizarUsuario}"     />
                             <p:ajax event="rowEditCancel" listener="#{mttoUsuario.eventoCancel}"     />
 
@@ -130,16 +129,19 @@ and open the template in the editor.
                                 </h:outputText> 
                             </p:column>
                             <p:column headerText="Baja" width="8%" style="text-align:center">
-                                <p:cellEditor >
+                                <h:outputText value="#{dpro.fechabaja}">  
+                                    <f:convertDateTime pattern="MM/dd/yyyy" />
+                                </h:outputText>
+                                <!--<p:cellEditor >
                                     <f:facet  name="output">
                                         <p:calendar disabled="true" value="#{dpro.fechabaja}" pattern="dd-MM-yyyy" mask="true" />
                                     </f:facet>
                                     <f:facet  name="input">
                                         <p:calendar disabled="false" value="#{dpro.fechabaja}" pattern="dd-MM-yyyy" mask="true" />   
                                     </f:facet>
-                                </p:cellEditor> 
+                                </p:cellEditor>--> 
                             </p:column>
-                            <!--<p:column headerText="Estatus" width="2%" style="text-align:center">
+                            <p:column headerText="Estatus" width="2%" style="text-align:center">
                                 <p:cellEditor >
                                     <f:facet  name="output">
                                         <p:selectBooleanCheckbox  disabled="true" value="#{dpro.activo}" />
@@ -148,7 +150,7 @@ and open the template in the editor.
                                         <p:selectBooleanCheckbox disabled="false" value="#{dpro.activo}" />  
                                     </f:facet>
                                 </p:cellEditor> 
-                            </p:column>-->                            
+                            </p:column>                            
                             <p:column  headerText="Modificar" width="2%" style="text-align:center">
                                 <p:rowEditor></p:rowEditor>  
                             </p:column>
