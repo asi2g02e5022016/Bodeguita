@@ -13,7 +13,7 @@ import com.asi.restaurantebcd.negocio.base.BusquedasUsuariosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +45,7 @@ public class MttoUsuarioPass implements Serializable {
     private SessionUsr sesion; //Busca beans session activa.
     private String codigoUsr;
     private String claveOld;
+    private String confclaveOld;
     private String claveUsr;
     private String confclaveUsr;
     private String nombreEmpl;
@@ -54,7 +55,7 @@ public class MttoUsuarioPass implements Serializable {
     private Perfil idPerfil;
     private Empleado idEmpleado;
     private int codperfil;
-    private List<Empleado> lstEmpleado;
+    private List<Usuario> lstUsuario;
 
     @EJB
     private CrudBDCLocal crud;
@@ -62,7 +63,6 @@ public class MttoUsuarioPass implements Serializable {
     private BusquedasUsuariosLocal ejbBusqUsrLcal;
 
 //</editor-fold >
-
 //<editor-fold  defaultstate="collapsed" desc="Inicializar" >
     /**
      * Creates a new instance of MttoUsuarioManagedBean
@@ -82,7 +82,7 @@ public class MttoUsuarioPass implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().
                         redirect(url);
             }
-            buscarEmpleado();
+            buscarUsuario();
 
         } catch (Exception e) {
             alert(e.getMessage(), FacesMessage.SEVERITY_FATAL);
@@ -107,20 +107,23 @@ public class MttoUsuarioPass implements Serializable {
     /**
      * Metodo para buscar los usuarios ingresados.
      */
-    public void buscarEmpleado() {
+    public void buscarUsuario() {
         try {
             Map filtro = new HashMap();
             codigoUsr = sesion.getUsuario().getIdusuario();
-            System.out.println("Hola usuario:" + codigoUsr);
-
             if (codigoUsr != null) {
                 filtro.put("codusr", codigoUsr);
             }
 
-            lstEmpleado = ejbBusqUsrLcal.buscarEmpleado(filtro);
-            if (lstEmpleado == null || lstEmpleado.isEmpty()) {
-                alert("No se encontraron resultados.", FacesMessage.SEVERITY_INFO);
-            }
+            Usuario usr = crud.buscarEntidad(Usuario.class, codigoUsr);
+            Empleado emp = crud.buscarEntidad(Empleado.class, usr.getIdempleado().getIdempleado());
+            Perfil per = crud.buscarEntidad(Perfil.class, usr.getIdperfil().getIdPerfil());
+
+            codigoUsr = usr.getIdusuario();
+            nombreEmpl = emp.getNombre();
+            nombrePerfil = per.getNombre();
+            claveOld = usr.getClave();
+
         } catch (Exception ex) {
             Logger.getLogger(MttoUsuarioMB.class.getName())
                     .log(Level.SEVERE, null, ex);
@@ -134,10 +137,26 @@ public class MttoUsuarioPass implements Serializable {
      */
     public void actualizarUsuario() {
         try {
-            //crud.guardarEntidad(usuarioConst);
+            if (!String.valueOf(
+                    confclaveOld.hashCode()).equals(claveOld)) {
+                alert("Clave anterior no coincide", FacesMessage.SEVERITY_INFO);
+                return;
+            }
+            if (!claveUsr.equals(confclaveUsr)) {
+                alert("Nuevo password y confirmación no coinciden", FacesMessage.SEVERITY_INFO);
+                return;
+            }
+
+            String password = String.valueOf(confclaveUsr.hashCode());
+
+            usuarioConst = crud.buscarEntidad(Usuario.class, codigoUsr);
+            usuarioConst.setClave(password);
+
+            crud.guardarEntidad(usuarioConst);
             alert("Usuario actualizado exitosamente.",
                     FacesMessage.SEVERITY_INFO);
             this.usuarioConst = null;
+            buscarUsuario();
 
         } catch (Exception ex) {
             Logger.getLogger(MttoUsuarioMB.class.getName())
@@ -202,6 +221,14 @@ public class MttoUsuarioPass implements Serializable {
 
     public void setClaveOld(String claveOld) {
         this.claveOld = claveOld;
+    }
+
+    public String getConfclaveOld() {
+        return confclaveOld;
+    }
+
+    public void setConfclaveOld(String confclaveOld) {
+        this.confclaveOld = confclaveOld;
     }
 
     public String getClaveUsr() {
@@ -276,14 +303,14 @@ public class MttoUsuarioPass implements Serializable {
         this.codperfil = codperfil;
     }
 
-    public List<Empleado> getLstEmpleado() {
-        return lstEmpleado;
+    public List<Usuario> getLstUsuario() {
+        return lstUsuario;
     }
 
-    public void setLstEmpleado(List<Empleado> lstEmpleado) {
-        this.lstEmpleado = lstEmpleado;
+    public void setLstUsuario(List<Usuario> lstUsuario) {
+        this.lstUsuario = lstUsuario;
     }
-    
+
     public CrudBDCLocal getCrud() {
         return crud;
     }
