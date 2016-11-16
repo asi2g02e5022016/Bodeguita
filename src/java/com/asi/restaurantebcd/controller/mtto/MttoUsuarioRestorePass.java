@@ -13,7 +13,7 @@ import javax.faces.bean.ViewScoped;
  *
  * @author "Joaquin Sanchez SA101110"
  */
-@ManagedBean(name = "mttoUsuarioPass")
+@ManagedBean(name = "mttoUsuarioRestorePass")
 @ViewScoped
 public class MttoUsuarioRestorePass implements Serializable{
     
