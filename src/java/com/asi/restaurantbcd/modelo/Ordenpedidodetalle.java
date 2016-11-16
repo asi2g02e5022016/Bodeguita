@@ -33,19 +33,19 @@ public class Ordenpedidodetalle implements Serializable {
     protected OrdenpedidodetallePK ordenpedidodetallePK;
     @Basic(optional = false)
     @Column(name = "cantidadsolicitada")
-    private float cantidadsolicitada;
+    private Double cantidadsolicitada;
     @Basic(optional = false)
     @Column(name = "cantidadconfirmada")
-    private float cantidadconfirmada;
+    private Double cantidadconfirmada;
     @Basic(optional = false)
     @Column(name = "precio")
-    private float precio;
+    private Double precio;
     @Basic(optional = false)
     @Column(name = "costo")
-    private float costo;
+    private Double costo;
     @Basic(optional = false)
     @Column(name = "iva")
-    private float iva;
+    private Double iva;
     @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
     private Producto idproducto;
@@ -65,14 +65,7 @@ public class Ordenpedidodetalle implements Serializable {
         this.ordenpedidodetallePK = ordenpedidodetallePK;
     }
 
-    public Ordenpedidodetalle(OrdenpedidodetallePK ordenpedidodetallePK, int cantidadsolicitada, int cantidadconfirmada, float precio, float costo, float iva) {
-        this.ordenpedidodetallePK = ordenpedidodetallePK;
-        this.cantidadsolicitada = cantidadsolicitada;
-        this.cantidadconfirmada = cantidadconfirmada;
-        this.precio = precio;
-        this.costo = costo;
-        this.iva = iva;
-    }
+
 
     public Ordenpedidodetalle(int idordenpedidodet, int idordenpedido, int idSucursal) {
         this.ordenpedidodetallePK = new OrdenpedidodetallePK(idordenpedidodet, idordenpedido, idSucursal);
@@ -86,46 +79,7 @@ public class Ordenpedidodetalle implements Serializable {
         this.ordenpedidodetallePK = ordenpedidodetallePK;
     }
 
-    public float getCantidadsolicitada() {
-        return cantidadsolicitada;
-    }
-
-    public void setCantidadsolicitada(float cantidadsolicitada) {
-        this.cantidadsolicitada = cantidadsolicitada;
-    }
-
-    public float getCantidadconfirmada() {
-        return cantidadconfirmada;
-    }
-
-    public void setCantidadconfirmada(float cantidadconfirmada) {
-        this.cantidadconfirmada = cantidadconfirmada;
-    }
-
-    public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
-    }
-
-    public float getCosto() {
-        return costo;
-    }
-
-    public void setCosto(float costo) {
-        this.costo = costo;
-    }
-
-    public float getIva() {
-        return iva;
-    }
-
-    public void setIva(float iva) {
-        this.iva = iva;
-    }
-
+   
     public Producto getIdproducto() {
         return idproducto;
     }
@@ -180,5 +134,47 @@ public class Ordenpedidodetalle implements Serializable {
     public void setFactDetInterface(Facturadetinterface factDetInterface) {
         this.factDetInterface = factDetInterface;
     }
+
+    public Double getCantidadsolicitada() {
+        return cantidadsolicitada;
+    }
+
+    public void setCantidadsolicitada(Double cantidadsolicitada) {
+        this.cantidadsolicitada = cantidadsolicitada;
+    }
+
+    public Double getCantidadconfirmada() {
+        return cantidadconfirmada;
+    }
+
+    public void setCantidadconfirmada(Double cantidadconfirmada) {
+        this.cantidadconfirmada = cantidadconfirmada;
+    }
+
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+
+    public Double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(Double costo) {
+        this.costo = costo;
+    }
+
+    public Double getIva() {
+        return iva;
+    }
+
+    public void setIva(Double iva) {
+        this.iva = iva;
+    }
+    
+    
     
 }

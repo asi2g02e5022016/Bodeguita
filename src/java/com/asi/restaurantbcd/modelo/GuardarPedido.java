@@ -5,6 +5,7 @@
  */
 package com.asi.restaurantbcd.modelo;
 
+import com.asi.restaurantebcd.negocio.base.PedidoOnlineLocal;
 import com.asi.restaurantebcd.negocio.util.ReponseWs;
 import com.asi.restaurantebcd.negocio.util.WsException;
 import com.asi.restaurantebcd.recursos.webservices.VentasWS;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -31,6 +34,8 @@ import javax.ws.rs.core.Response;
  */
 @Path("/GuardarPedido")
 public class GuardarPedido {
+
+    PedidoOnlineLocal pedidoOnline = lookupPedidoOnlineLocal();
 
     @Context
     private UriInfo context;
@@ -55,19 +60,29 @@ public class GuardarPedido {
 //            if (resp != null && resp.getError().equals("1")) {
 //                throw new Exception(resp.getDescripcion());
 //            }
-    
+        
             Map hast =  new Gson().fromJson(auth, HashMap.class);
             String json = getParemetro("json", hast);
             Ordenpedido pedi = new Gson().fromJson(json, Ordenpedido.class);
-            System.out.println("pedi");
+            System.out.println("pedi" +pedi);
+            if (pedi ==  null) {
+                throw new Exception("El pedido es obligatorio.");
+            }
+            if (pedi.getOrdenpedidodetalleList() == null) {
+             throw new Exception(" La lista de pedido es obligatorio. ");
+            }
+            
+            pedidoOnline.guardarPedidoOnline(
+                        pedi.getIdcliente().getIdcliente(), "lportillo", 
+                        pedi.getSucursal().getIdsucursal(),
+                        pedi.getOrdenpedidodetalleList());
+             
             resp = new ReponseWs();
             resp.setContent("se guardo exitosamente.");
             resp.setDescripcion("-");
             resp.setError("0");
             resp.setStatus(Response.Status.OK.getStatusCode());
-            
             return new Gson().toJson(resp);
-            
         } catch (Exception e) {
             Logger.getLogger(VentasWS.class.getName())
                     .log(Level.SEVERE, null, e);
@@ -90,4 +105,17 @@ public class GuardarPedido {
         }
         return (T) filtros.get(object);
     } 
+
+    private PedidoOnlineLocal lookupPedidoOnlineLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (PedidoOnlineLocal) c.lookup("java:global/RestaurantBDC/PedidoOnline!com.asi.restaurantebcd.negocio.base.PedidoOnlineLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+        
+        
+        
 }

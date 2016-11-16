@@ -33,6 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.asi.restaurantebcd.negocio.util.WsExceptionHandler.class);
         resources.add(com.asi.restaurantebcd.recursos.webservices.MaestrosWS.class);
         resources.add(com.asi.restaurantebcd.recursos.webservices.SucursalesWS.class);
+        resources.add(com.asi.restaurantebcd.recursos.webservices.UsuarioWS.class);
         resources.add(com.asi.restaurantebcd.recursos.webservices.VentasWS.class);
     }
     

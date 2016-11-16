@@ -20,6 +20,7 @@ import com.asi.restaurantebcd.negocio.base.BusquedasProductosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.base.ProcesosInventariosLocal;
 import com.asi.restaurantebcd.negocio.base.TransaccionesInventarioLocal;
+import com.asi.restaurantebcd.negocio.util.EstadoEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +48,7 @@ public class OrdenProduccionBeans implements Serializable {
 
     @EJB
     private TransaccionesInventarioLocal transaccionesInventario;
-
+    
     /**
      * Creates a new instance of OrdenProduccion
      */
@@ -111,7 +112,8 @@ public class OrdenProduccionBeans implements Serializable {
             idOrdenPK.setIdsucursal(sesion.getSucursal().getIdsucursal());
             ordenProd.setOrdenproduccionPK(idOrdenPK);
             ordenProd.setFechapedido(new Date());
-            Estado est = crud.buscarEntidad(Estado.class, 10);
+            Estado est = crud.buscarEntidad(Estado.class,
+                    EstadoEnum.TERMINADO.getInteger());
             ordenProd.setIdestado(est);
              
             int corel = 0;

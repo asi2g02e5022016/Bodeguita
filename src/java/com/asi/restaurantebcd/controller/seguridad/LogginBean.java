@@ -89,6 +89,12 @@ public class LogginBean implements Serializable {
                return null;
                
              }
+                  if (usr.getFechabaja() != null) {
+                      alert("El usuario esta inactivo.", 
+                              FacesMessage.SEVERITY_INFO);
+                      return null;
+                  }
+                  
                   if (sesion == null) {
                sesion = new SessionUsr();
            }

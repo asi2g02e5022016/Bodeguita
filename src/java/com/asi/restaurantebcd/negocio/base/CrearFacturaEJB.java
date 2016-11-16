@@ -155,8 +155,8 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
                         .setParameter("id", Integer.parseInt(det.getProducto()))
                         .getSingleResult();
                    pdet.setIdproducto(producto);
-                   pdet.setPrecio(det.getPrecio().floatValue());
-                   float iva = (new Double(det.getIva())).floatValue();
+                   pdet.setPrecio(det.getPrecio());
+                   Double iva = det.getIva();
                    pdet.setIva(iva);
                    
                    Vwexistencias pex = null;
@@ -166,9 +166,9 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
                          .setParameter("idsuc", sucursal.getIdsucursal().intValue())
                         .getSingleResult();}catch(Exception ex){ex.printStackTrace();}
                    
-                   float costoExtendido;
+                   Double costoExtendido;
                    if(pex==null){
-                     costoExtendido = 0;
+                     costoExtendido = Double.parseDouble("0");
                    }else{
                      costoExtendido = pex.getCostounitario()*det.getUnidades();
                    }

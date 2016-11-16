@@ -39,19 +39,19 @@ public class Facturadetalle implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad")
-    private float cantidad;
+    private Double cantidad;
     @Basic(optional = false)
     @NotNull
     @Column(name = "precio")
-    private float precio;
+    private Double precio;
     @Basic(optional = false)
     @NotNull
     @Column(name = "costo")
-    private float costo;
+    private Double costo;
     @Basic(optional = false)
     @NotNull
     @Column(name = "iva")
-    private float iva;
+    private Double iva;
     @JoinColumns({
         @JoinColumn(name = "idfactura", referencedColumnName = "idfactura"),
         @JoinColumn(name = "idserie", referencedColumnName = "idserie"),
@@ -69,7 +69,7 @@ public class Facturadetalle implements Serializable {
         this.idfactdet = idfactdet;
     }
 
-    public Facturadetalle(Integer idfactdet, int cantidad, float precio, float costo, float iva) {
+    public Facturadetalle(Integer idfactdet, Double cantidad, Double precio, Double costo, Double iva) {
         this.idfactdet = idfactdet;
         this.cantidad = cantidad;
         this.precio = precio;
@@ -85,37 +85,38 @@ public class Facturadetalle implements Serializable {
         this.idfactdet = idfactdet;
     }
 
-    public float getCantidad() {
+    public Double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(float cantidad) {
+    public void setCantidad(Double cantidad) {
         this.cantidad = cantidad;
     }
 
-    public float getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(float precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
-    public float getCosto() {
+    public Double getCosto() {
         return costo;
     }
 
-    public void setCosto(float costo) {
+    public void setCosto(Double costo) {
         this.costo = costo;
     }
 
-    public float getIva() {
+    public Double getIva() {
         return iva;
     }
 
-    public void setIva(float iva) {
+    public void setIva(Double iva) {
         this.iva = iva;
     }
+
 
     public Facturaencabezado getFacturaencabezado() {
         return facturaencabezado;

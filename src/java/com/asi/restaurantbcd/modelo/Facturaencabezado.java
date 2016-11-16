@@ -81,10 +81,10 @@ public class Facturaencabezado implements Serializable {
     private List<Facturadetalle> facturadetalleList;
      
     @Transient
-    private float iva;
+    private Double iva;
     
     @Transient
-    private float subTotal;
+    private Double subTotal;
     
     public Facturaencabezado() {
     }
@@ -236,8 +236,8 @@ public class Facturaencabezado implements Serializable {
     /**
      * @return the iva
      */
-    public float getIva() {
-        iva=0;
+    public Double getIva() {
+        iva=Double.parseDouble("0");
         for(Facturadetalle fdet:this.getFacturadetalleList()){
           iva=+ fdet.getIva();
         }
@@ -248,8 +248,8 @@ public class Facturaencabezado implements Serializable {
     /**
      * @return the subTotal
      */
-    public float getSubTotal() {
-       subTotal=0;
+    public Double getSubTotal() {
+       subTotal=Double.parseDouble("0");
         for(Facturadetalle fdet:this.getFacturadetalleList()){
           subTotal=+ fdet.getPrecio();
         }

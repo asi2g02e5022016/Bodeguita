@@ -5,22 +5,23 @@
  */
 package com.asi.restaurantebcd.recursos.webservices;
 
-import com.asi.restaurantbcd.modelo.Sucursal;
-import com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal;
+import com.asi.restaurantbcd.modelo.Cliente;
+import static com.asi.restaurantbcd.modelo.GuardarPedido.getParemetro;
+import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.base.PedidoOnlineLocal;
 import com.asi.restaurantebcd.negocio.util.ReponseWs;
 import com.asi.restaurantebcd.negocio.util.WsException;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
@@ -33,23 +34,29 @@ import javax.ws.rs.core.Response;
  *
  * @author samaelopez
  */
-@Path("/SucursalWS")
-public class SucursalesWS {
+@Path("/UsuarioWS")
+public class UsuarioWS {
 
-    BusquedasSucursalLocal busquedasSucursal = lookupBusquedasSucursalLocal();
+    PedidoOnlineLocal pedidoOnline = lookupPedidoOnlineLocal();
+
+    CrudBDCLocal crudBDC = lookupCrudBDCLocal();
 
     @Context
     private UriInfo context;
 
     /**
-     * Creates a new instance of SucursalesWS
+     * Creates a new instance of UsuarioWS
      */
-    public SucursalesWS() {
+    public UsuarioWS() {
     }
 
-    
-    
-    @GET
+    /**
+     * Retrieves representation of an instance of com.asi.restaurantebcd.recursos.webservices.UsuarioWS
+     * @param auth
+     * @return an instance of java.lang.String
+     * @throws com.asi.restaurantebcd.negocio.util.WsException
+     */
+     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson(@HeaderParam("autorizacion")
                                     String auth) throws WsException {
@@ -63,32 +70,36 @@ public class SucursalesWS {
 //            if (resp != null && resp.getError().equals("1")) {
 //                throw new Exception(resp.getDescripcion());
 //            }
-
-
-            List <Sucursal > lstProduc = 
-                    busquedasSucursal.buscarSucursal();
-            if (lstProduc == null || lstProduc.isEmpty()) {
-                throw new Exception("No se encontraron resultados.");
+        
+            Map hast =  new Gson().fromJson(auth, HashMap.class);
+            String json = getParemetro("json", hast);
+            Cliente cli = new Gson().fromJson(json, Cliente.class);
+            System.out.println("cli" +cli);
+            if (cli ==  null) {
+                throw new Exception("El clientes obligatorio,");
             }
-            String jsonRetu = 
-                    new Gson().toJson(lstProduc,
-                            new TypeToken<ArrayList<Sucursal>>() {}.getType());
+            
+            cli = pedidoOnline.lstClientes(cli.getUsuario(), cli.getPassword());
+            
+            String jsonReturn = new Gson().toJson(cli);
+             
             resp = new ReponseWs();
-            resp.setContent(jsonRetu);
+            resp.setContent(jsonReturn);
             resp.setDescripcion("-");
             resp.setError("0");
             resp.setStatus(Response.Status.OK.getStatusCode());
-            
             return new Gson().toJson(resp);
             
         } catch (Exception e) {
-            Logger.getLogger(VentasWS.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(VentasWS.class.getName())
+                    .log(Level.SEVERE, null, e);
             throw new WsException(e.getMessage());
         }
     }
-    
+
+
     /**
-     * PUT method for updating or creating an instance of SucursalesWS
+     * PUT method for updating or creating an instance of UsuarioWS
      * @param content representation for the resource
      */
     @PUT
@@ -96,16 +107,25 @@ public class SucursalesWS {
     public void putJson(String content) {
     }
 
-    private BusquedasSucursalLocal lookupBusquedasSucursalLocal() {
+    private CrudBDCLocal lookupCrudBDCLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (BusquedasSucursalLocal) c.lookup("java:global/RestaurantBDC/BusquedasSucursal!com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal");
+            return (CrudBDCLocal) c.lookup("java:global/RestaurantBDC/CrudBDC!com.asi.restaurantebcd.negocio.base.CrudBDCLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
-    
+
+    private PedidoOnlineLocal lookupPedidoOnlineLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (PedidoOnlineLocal) c.lookup("java:global/RestaurantBDC/PedidoOnline!com.asi.restaurantebcd.negocio.base.PedidoOnlineLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
     
     
     

@@ -30,6 +30,7 @@ public class BusquedasCompras implements BusquedasComprasLocal {
      * @param codsuc codigo de sucursal.
      * @param clase Clase que se quiere obtenerel correlativo.
      * @param identificador Identificados 
+     * @param llave 
      * @return Integrt.
      * @throws Exception  Error gnerico.
      */

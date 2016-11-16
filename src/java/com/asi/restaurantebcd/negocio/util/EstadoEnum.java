@@ -16,11 +16,13 @@ public enum EstadoEnum {
         /**constante de numero cero.*/
     GENERADO(new BigInteger("1")),
     /**constante de numero uno.*/
-    PENDIENTE_ALMACENAMIENTO(new BigInteger("1")),
+    PENDIENTE_ALMACENAMIENTO(new BigInteger("2")),
     /**constante de numero dos.*/
     INGRESO_INVENTARIO(new BigInteger("3")),
     /**constante de numero trs.*/
     TRANSITO(new BigInteger("4")),
+    
+    PENDIENTE_DESPACHAR(new BigInteger("5")),
     ANULADO(new BigInteger("9")),
     /**constante de numero cuatro.*/
     TERMINADO(new BigInteger("10"));

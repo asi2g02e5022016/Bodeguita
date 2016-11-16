@@ -57,7 +57,7 @@ public class Facturadetinterface implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "unidades")
-    private float unidades;
+    private Double unidades;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "precio")
     private Double precio;
@@ -73,7 +73,8 @@ public class Facturadetinterface implements Serializable {
         this.secuencialinea = secuencialinea;
     }
 
-    public Facturadetinterface(Integer secuencialinea, int linea, int documento, String serie, String caja, int unidades, double iva) {
+    public Facturadetinterface(Integer secuencialinea, int linea, int documento, 
+            String serie, String caja, Double unidades, double iva) {
         this.secuencialinea = secuencialinea;
         this.linea = linea;
         this.documento = documento;
@@ -131,11 +132,11 @@ public class Facturadetinterface implements Serializable {
         this.producto = producto;
     }
 
-    public float getUnidades() {
+    public Double getUnidades() {
         return unidades;
     }
 
-    public void setUnidades(float unidades) {
+    public void setUnidades(Double unidades) {
         this.unidades = unidades;
     }
 

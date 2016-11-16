@@ -163,7 +163,8 @@ public class ComprasBeans implements  Serializable {
             }
             compraEnca.setCompradetalleList(lstCompradeta);
             compraEnca.setFechacompra(new Date());
-            Estado est = crud.buscarEntidad(Estado.class, 1);
+            Estado est = crud.buscarEntidad(Estado.class, 
+                    EstadoEnum.PENDIENTE_ALMACENAMIENTO.getInteger());
             compraEnca.setIdestado(est);
             compraEnca.setIdproveedor(proveedor);
             compraEnca.setSucursal(sesion.getSucursal());

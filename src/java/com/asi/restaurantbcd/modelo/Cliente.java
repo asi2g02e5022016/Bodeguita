@@ -61,7 +61,12 @@ public class Cliente implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "dui")
     private String dui;
-
+        @Size(max = 100)
+    @Column(name = "usuario")
+    private String usuario;
+    @Size(max = 100)
+    @Column(name = "password")
+    private String password;
     public Cliente() {
     }
 
@@ -139,6 +144,22 @@ public class Cliente implements Serializable {
 
     public void setDui(String dui) {
         this.dui = dui;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
