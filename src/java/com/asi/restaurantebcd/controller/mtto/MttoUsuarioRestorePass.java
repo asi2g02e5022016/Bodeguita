@@ -11,9 +11,11 @@ import com.asi.restaurantbcd.modelo.Usuario;
 import com.asi.restaurantebcd.controller.seguridad.SessionUsr;
 import com.asi.restaurantebcd.negocio.base.BusquedasUsuariosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.base.GestorEmailLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -60,9 +62,10 @@ public class MttoUsuarioRestorePass implements Serializable {
     private CrudBDCLocal crud;
     @EJB
     private BusquedasUsuariosLocal ejbBusqUsrLcal;
+    @EJB
+    private GestorEmailLocal gestorEmail;
 
 //</editor-fold >
-
 //<editor-fold  defaultstate="collapsed" desc="Inicializar" >
     public MttoUsuarioRestorePass() {
     }
@@ -167,10 +170,10 @@ public class MttoUsuarioRestorePass implements Serializable {
             nombrePerfil = per.getNombre();
             claveUsr = usuarioConst.getClave();
             //fechaIngreso = usuarioConst.getFechaingreso();
-            
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");  
-            fechaIngreso = sdf.format(usuarioConst.getFechaingreso()); 
-            
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            fechaIngreso = sdf.format(usuarioConst.getFechaingreso());
+
             email = emp.getEmail();
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoUsuario').hide();");
@@ -181,31 +184,41 @@ public class MttoUsuarioRestorePass implements Serializable {
         }
     }
 
+    public void enviarcorreo(String correo, String newPass) {
+        try {
+            List< String> lst = new ArrayList<>();
+            lst.add(correo);
+            gestorEmail.enviarEmail(newPass, "Nueva contraseña Bodeguita", "Credenciales Bodeguita", lst, "Bodeguita del cerdito");
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Metódo para actualizar la informacion del usuario
      *
      */
     public void restaurarPass() {
-        try {                        
+        try {
             if (usuarioConst == null) {
-                alert("Seleccione un usuario..",FacesMessage.SEVERITY_INFO);                  
+                alert("Seleccione un usuario..", FacesMessage.SEVERITY_INFO);
                 return;
-            }          
+            }
             if (Boolean.FALSE.equals(usuarioConst.isActivo())) {
-                alert("Usuario seleccionado está desactivado..",FacesMessage.SEVERITY_INFO);
+                alert("Usuario seleccionado está desactivado..", FacesMessage.SEVERITY_INFO);
                 return;
             }
-            
-            if (sesion.getUsuario().getIdusuario().equals(codigoUsr)){
-                alert("Seleccione un usuario distinto al login",FacesMessage.SEVERITY_INFO);                  
+
+            if (sesion.getUsuario().getIdusuario().equals(codigoUsr)) {
+                alert("Seleccione un usuario distinto al login", FacesMessage.SEVERITY_INFO);
                 return;
             }
-            
-            if (email == null || email.isEmpty()){
-                alert("Usuario no posee correo electronico",FacesMessage.SEVERITY_INFO);                  
+
+            if (email == null || email.isEmpty()) {
+                alert("Usuario no posee correo electronico", FacesMessage.SEVERITY_INFO);
                 return;
             }
-            
+
             //******************************************
             //Generando contraseña aleatoria
             //******************************************
@@ -225,11 +238,26 @@ public class MttoUsuarioRestorePass implements Serializable {
                 m++;
             }
             //******************************************
-            
             String passSql = String.valueOf(newPass.hashCode());
+            try {
+                if (email != null) {
+                    enviarcorreo(email, newPass);
+
+                    Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.INFO,
+                            "El correo se envio exitosamente.");
+                } else {
+
+                    Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.INFO,
+                            "Destinatario desconocido... ");
+                }
+            } catch (Exception e) {
+                Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(
+                        Level.SEVERE, null, e.getMessage());
+            }
+
             usuarioConst.setClave(passSql);
             crud.guardarEntidad(usuarioConst);
-            alert("Contraseña restaurada exitosamente..." + newPass,FacesMessage.SEVERITY_INFO);                                
+            alert("Contraseña restaurada exitosamente..." + newPass, FacesMessage.SEVERITY_INFO);
             buscarUsuario();
         } catch (Exception ex) {
             Logger.getLogger(MttoUsuarioMB.class.getName())
@@ -239,7 +267,6 @@ public class MttoUsuarioRestorePass implements Serializable {
     }
 
 //</editor-fold >  
-
 //<editor-fold  defaultstate="collapsed" desc="Getter y Setter" >
     public Usuario getUsuarioConst() {
         return usuarioConst;
@@ -335,7 +362,7 @@ public class MttoUsuarioRestorePass implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }   
+    }
 
     /*public Date getFechaIngreso() {
         return fechaIngreso;
@@ -344,14 +371,13 @@ public class MttoUsuarioRestorePass implements Serializable {
     public void setFechaIngreso(Date fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
     }*/
-
     public String getFechaIngreso() {
         return fechaIngreso;
     }
 
     public void setFechaIngreso(String fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
-    }   
+    }
 
     public int getCodperfil() {
         return codperfil;
@@ -384,5 +410,14 @@ public class MttoUsuarioRestorePass implements Serializable {
     public void setEjbBusqUsrLcal(BusquedasUsuariosLocal ejbBusqUsrLcal) {
         this.ejbBusqUsrLcal = ejbBusqUsrLcal;
     }
+
+    public GestorEmailLocal getGestorEmail() {
+        return gestorEmail;
+    }
+
+    public void setGestorEmail(GestorEmailLocal gestorEmail) {
+        this.gestorEmail = gestorEmail;
+    }
+
 //</editor-fold >  
 }
