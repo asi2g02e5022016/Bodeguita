@@ -42,7 +42,7 @@ and open the template in the editor.
                                            icon="ui-icon-search" title="Icon Only" />
                         </h:panelGroup>
                          <h:outputLabel  value="cantidad "  />
-                         <p:inputText   value="#{recetas.cantidadPT}"  /> 
+                         <p:inputNumber   value="#{recetas.cantidadPT}"  /> 
                         <h:outputLabel  value="fecha  "  />
                         <p:inputText readonly="true"  value="#{recetas.receta.fechacreacion}" >
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
@@ -74,7 +74,7 @@ and open the template in the editor.
                                     <h:outputText value="#{det.cantidad}" />
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText  value="#{det.cantidad}" style="width:70%"/>
+                                    <p:inputNumber  value="#{det.cantidad}" style="width:70%"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
@@ -113,7 +113,7 @@ and open the template in the editor.
                 </h:panelGrid>
                 <h:panelGrid columns="2" width="80%">
                      <h:outputLabel  value="Cantidad    "  />
-                     <p:inputText id="cantidadSolic" value="#{recetas.cantidadMP}"  />
+                     <p:inputNumber id="cantidadSolic" value="#{recetas.cantidadMP}"  />
                      <h:outputLabel  value="Producto "  />
                      <p:inputText  value="#{recetas.productoMP}" />
                 </h:panelGrid>
@@ -204,7 +204,7 @@ and open the template in the editor.
                 <h:panelGrid columns="2" width="80%">
                 
                             <h:outputLabel  value="Cantidad    "  />
-                            <p:inputText value="#{recetas.cantidadPT}"  />
+                            <p:inputNumber value="#{recetas.cantidadPT}"  />
                      <h:outputLabel  value="Producto "  />
                      <p:inputText  value="#{recetas.productoPT}" />
                       

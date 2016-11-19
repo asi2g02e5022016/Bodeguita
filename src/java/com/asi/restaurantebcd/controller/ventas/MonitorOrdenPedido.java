@@ -371,13 +371,12 @@ public class MonitorOrdenPedido implements Serializable {
                 return;
             }
             String url = config.getValor().trim();
+            System.out.println("url.. " +url);
             String jsonRetur = this.consumerWS.consumirWebservices(
                     "", "",
-                    url + "ConsultaPedosWS");
+                    url + "ConsultaPedidosWS");
             System.out.println("jsonRetur... " + jsonRetur);
-            lstOrdenPedido = new Gson().fromJson(jsonRetur,
-                    new TypeToken<ArrayList<Ordenpedido>>() {
-                    }.getType());
+            Ordenpedido ped = new Gson().fromJson(jsonRetur,Ordenpedido.class);
             System.out.println("lstSucursal..." + lstSucursal);
             if (lstOrdenPedido == null || lstOrdenPedido.isEmpty()) {
                 alert("No se encontraron resultados de pedidos.", 
@@ -397,6 +396,7 @@ public class MonitorOrdenPedido implements Serializable {
             crud.guardarEntidades(lstPedido);
             
         } catch (Exception ex) {
+            ex.printStackTrace();
             Logger.getLogger(MonitorOrdenPedido.class.getName()).log(Level.SEVERE, null, ex);
             alert("Error: ", FacesMessage.SEVERITY_FATAL);
         }

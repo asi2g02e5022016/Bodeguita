@@ -6,11 +6,14 @@
 package com.asi.restaurantebcd.recursos.webservices;
 
 import com.asi.restaurantbcd.modelo.Ordenpedido;
+import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.base.PedidoOnlineLocal;
 import com.asi.restaurantebcd.negocio.util.ReponseWs;
 import com.asi.restaurantebcd.negocio.util.WsException;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +34,7 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author samaelopez
  */
-@Path("/ConsultaPedosWS")
+@Path("/ConsultaPedidosWS")
 public class ConsulPedidos {
     
     PedidoOnlineLocal pedidoOnline = lookupPedidoOnlineLocal();
@@ -61,10 +64,15 @@ public class ConsulPedidos {
         try {
     
             List <Ordenpedido> lstOrdenes =  lookupPedidoOnlineLocal().lstPedido();
+            System.out.println("lstOrdenes..." +lstOrdenes);
             if (lstOrdenes == null || lstOrdenes.isEmpty()) {
                 throw new Exception("No se encontraron resultados.");
             }
-             String jsonReturn = new Gson().toJson(lstOrdenes);
+            System.out.println("pasooo");
+            System.out.println("lstOrdenes.get(0).. " +lstOrdenes.get(0));
+             String jsonReturn = new Gson().toJson(lstOrdenes.get(0));
+             System.out.println("jsonReturn.. " +jsonReturn);
+               System.out.println("pasoo8888888888888888888888888o");
             resp = new ReponseWs();
             resp.setContent(jsonReturn);
             resp.setDescripcion("-");

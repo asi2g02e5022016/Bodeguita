@@ -157,7 +157,8 @@ public class OrdenProduccionBeans implements Serializable {
                     public void buscarOrdeneProd() {
              Query q = em.createNamedQuery("Ordenproduccion.findAll");
         lstOrdenProd = q.getResultList();
-        if (lstOrdenProd == null){
+                        System.out.println("lstOrdenProd.." +lstOrdenProd);
+        if (lstOrdenProd == null || lstOrdenProd.isEmpty()){
             alert("No se encontraron resultados.", FacesMessage.SEVERITY_WARN);
             return;
         }
