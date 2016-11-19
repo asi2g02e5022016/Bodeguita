@@ -88,6 +88,7 @@ public class PedidoOnline implements PedidoOnlineLocal {
         Usuario usuario = crudBDC.buscarEntidad(Usuario.class,  usr);
         ped.setIdusuario(usuario);
         ped.setMesa(null);
+         ped.setWeb(Integer.parseInt("1"));
         Sucursal suc = crudBDC.buscarEntidad(Sucursal.class, idsucursal);
         ped.setSucursal(suc);
          Ordenpedidodetalle pedDet = new Ordenpedidodetalle();

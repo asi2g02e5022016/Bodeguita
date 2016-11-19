@@ -43,6 +43,8 @@ public class Ordenpedido implements Serializable {
     @Column(name = "fechapedido")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechapedido;
+    @Column(name = "web")
+    private Integer web;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ordenpedido")
     private List<Ordenpedidodetalle> ordenpedidodetalleList;
     @JoinColumn(name = "idcliente", referencedColumnName = "idcliente")
@@ -172,5 +174,14 @@ public class Ordenpedido implements Serializable {
     public void setFacturaencabezadoList(List<Facturaencabezado> facturaencabezadoList) {
         this.facturaencabezadoList = facturaencabezadoList;
     }
+
+    public Integer getWeb() {
+        return web;
+    }
+
+    public void setWeb(Integer web) {
+        this.web = web;
+    }
+    
     
 }
