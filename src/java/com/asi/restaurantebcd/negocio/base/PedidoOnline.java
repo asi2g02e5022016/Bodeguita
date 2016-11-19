@@ -91,7 +91,7 @@ public class PedidoOnline implements PedidoOnlineLocal {
          ped.setWeb(Integer.parseInt("1"));
         Sucursal suc = crudBDC.buscarEntidad(Sucursal.class, idsucursal);
         ped.setSucursal(suc);
-         Ordenpedidodetalle pedDet = new Ordenpedidodetalle();
+         
         List <Ordenpedidodetalle> lstDet = new ArrayList<>();
         int corle = 0;
         System.out.println("lstDetalle.. " +lstDetalle);
@@ -102,7 +102,7 @@ public class PedidoOnline implements PedidoOnlineLocal {
                 idOdeDet.setIdSucursal(idsucursal);
                 idOdeDet.setIdordenpedido(idCoorr);
                 idOdeDet.setIdordenpedidodet(corle);
-               
+               Ordenpedidodetalle pedDet = new Ordenpedidodetalle();
                 pedDet.setOrdenpedidodetallePK(idOdeDet);
                 pedDet.setCantidadconfirmada(ordenpedidodetalle.getCantidadconfirmada());
                 pedDet.setCantidadsolicitada(ordenpedidodetalle.getCantidadsolicitada());
@@ -126,10 +126,11 @@ public class PedidoOnline implements PedidoOnlineLocal {
                 lstDet.add(pedDet);
             }
         }
-        
+        System.out.println("lstDet..." +lstDet);
         ped.setOrdenpedidoPK(idOt);
         ped.setSucursal(suc);
          ped.setOrdenpedidodetalleList(lstDet);
+         System.out.println("ped,,,,," +ped);
          crudBDC.guardarEntidad(ped);
         
     }
