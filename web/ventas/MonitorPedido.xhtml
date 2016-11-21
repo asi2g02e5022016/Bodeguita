@@ -20,6 +20,8 @@ and open the template in the editor.
                                 icon="ui-icon-plus" action="#{monitorOrdenPedido.limpiar()}" />
                     <p:menuitem value="Monitor" update=":forprincipal"
                                 icon=" ui-icon-search"  actionListener ="#{monitorOrdenPedido.mostrarDialogoPedidos}"/>
+                    <p:menuitem value="Enviar a Facturación" update="forprincipal" 
+                                icon="ui-icon-copy" action="#{monitorOrdenPedido.enviarPos}" rendered="#{monitorOrdenPedido.activarEnvioPOS}" />
                 </p:menubar>
                 <h:panelGrid columns="2" width="100%">
                     <h:panelGrid columns="6" width="80%">
@@ -35,6 +37,8 @@ and open the template in the editor.
                         <p:calendar id="cFecha" value="#{monitorOrdenPedido.fechaPedido}" />                     
                         <h:outputLabel  value="Usuario"  />
                         <p:inputText readonly="true" value="#{monitorOrdenPedido.idUsuario}"/>
+                        <h:outputLabel  value="Tipo Pedido:"  />
+                        <p:inputText readonly="true" value="#{monitorOrdenPedido.tipoPedido}"/>                        
                     </h:panelGrid>
                     <h:panelGrid columns="2" width="100%">                        
                     </h:panelGrid>
@@ -51,7 +55,6 @@ and open the template in the editor.
                         <p:column headerText="Producto">
                             <h:outputText  value="#{det.idproducto.producto}"  />
                         </p:column>
-
                         <p:column headerText="Cantidad solicitada">
                             <h:outputText value="#{det.cantidadsolicitada}"/>
                         </p:column>
@@ -130,6 +133,9 @@ and open the template in the editor.
                                 <p:column headerText="Usuario"  filterBy="#{op.idusuario.idusuario}" filterStyle="width:80%">
                                     <h:outputText value="#{op.idusuario.idusuario}"/>
                                 </p:column>  
+                                <p:column headerText="Tipo Pedido" filterBy="#{op.tipoPedido}" filterStyle="width:80%" >
+                                    <h:outputText value="#{op.tipoPedido}"/>
+                                </p:column>   
                                 <f:facet name="footer">
                                     <h:commandLink>
                                         <p:graphicImage value="/images/excel.png" width="18"/>

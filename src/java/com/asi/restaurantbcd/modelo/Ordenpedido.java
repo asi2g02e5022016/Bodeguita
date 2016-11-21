@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
@@ -59,6 +60,10 @@ public class Ordenpedido implements Serializable {
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idusuario;
+    
+    @Transient 
+     private String tipoPedido;
+            
 
     public Ordenpedido() {
     }
@@ -181,6 +186,14 @@ public class Ordenpedido implements Serializable {
 
     public void setWeb(Integer web) {
         this.web = web;
+    }
+
+    /**
+     * @return the tipoPedido
+     */
+    public String getTipoPedido() {
+        tipoPedido = web.equals(1)?"Web":"Local";
+        return tipoPedido;
     }
     
     

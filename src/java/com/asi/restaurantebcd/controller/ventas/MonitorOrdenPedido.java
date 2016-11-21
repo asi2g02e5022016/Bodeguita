@@ -15,6 +15,7 @@ import com.asi.restaurantebcd.negocio.base.BusquedaPedidoLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal;
 import com.asi.restaurantebcd.negocio.base.ConsumerWSLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
+import com.asi.restaurantebcd.negocio.util.EstadoEnum;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
@@ -62,6 +63,7 @@ public class MonitorOrdenPedido implements Serializable {
     private String sucursal;
     private String cliente;
     private String estado;
+    private String tipoPedido;
 
     private List<Ordenpedido> lstOrdenPedido;
     private List<Ordenpedidodetalle> lstOrdenPedidoDet;
@@ -79,6 +81,8 @@ public class MonitorOrdenPedido implements Serializable {
 
     private Ordenpedido constructorOrdenPedido;
     private Ordenpedidodetalle constructorOrdenPedDet;
+    
+    private boolean activarEnvioPOS = false;
 
     //</editor-fold>
 //<editor-fold  defaultstate="collapsed" desc="Get & Set" >
@@ -258,6 +262,10 @@ public class MonitorOrdenPedido implements Serializable {
         this.constructorOrdenPedDet = constructorOrdenPedDet;
     }
 
+        public void enviarPos() {
+            
+            
+        }
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos">
     public void buscarOrdenPedido() {
@@ -329,6 +337,13 @@ public class MonitorOrdenPedido implements Serializable {
                 mesa = op.getMesa();
                 idUsuario = op.getIdusuario().getIdusuario();
                 lstOrdenPedidoDet = op.getOrdenpedidodetalleList();
+                tipoPedido = op.getTipoPedido();
+                if(op.getWeb().equals(1) && op.getIdestado().getIdestado().equals(EstadoEnum.PENDIENTE_DESPACHAR.getInteger())){
+                  activarEnvioPOS = true;
+                }else
+                {
+                    activarEnvioPOS = false;
+                }
                 limpiarDialogo();
             }
         } catch (Exception ex) {
@@ -410,6 +425,34 @@ public class MonitorOrdenPedido implements Serializable {
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
     //</editor-fold>
+
+    /**
+     * @return the tipoPedido
+     */
+    public String getTipoPedido() {
+        return tipoPedido;
+    }
+
+    /**
+     * @param tipoPedido the tipoPedido to set
+     */
+    public void setTipoPedido(String tipoPedido) {
+        this.tipoPedido = tipoPedido;
+    }
+
+    /**
+     * @return the activarEnvioPOS
+     */
+    public boolean isActivarEnvioPOS() {
+        return activarEnvioPOS;
+    }
+
+    /**
+     * @param activarEnvioPOS the activarEnvioPOS to set
+     */
+    public void setActivarEnvioPOS(boolean activarEnvioPOS) {
+        this.activarEnvioPOS = activarEnvioPOS;
+    }
     
     
     
