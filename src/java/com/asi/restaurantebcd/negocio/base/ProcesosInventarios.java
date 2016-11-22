@@ -71,6 +71,8 @@ public class ProcesosInventarios implements ProcesosInventariosLocal {
             if (exis == null) {
                 exis = new Existencia();
                 exis.setExistenciaPK(idExis);
+                exis.setReservado(0D);
+                exis.setTransito(0D);
             }
             if (exis.getValor() != null
                     && !exis.getValor().equals(Double.valueOf("0"))) {
