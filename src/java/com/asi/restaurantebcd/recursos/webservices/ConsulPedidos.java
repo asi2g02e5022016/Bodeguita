@@ -5,16 +5,25 @@
  */
 package com.asi.restaurantebcd.recursos.webservices;
 
+import static com.asi.restaurantbcd.modelo.GuardarPedido.getParemetro;
 import com.asi.restaurantbcd.modelo.Ordenpedido;
+import com.asi.restaurantbcd.modelo.OrdenpedidoDTO;
+import com.asi.restaurantbcd.modelo.Ordenpedidodetalle;
+import com.asi.restaurantbcd.modelo.OrdenpedidodetalleDTO;
 import com.asi.restaurantbcd.modelo.Sucursal;
+import com.asi.restaurantebcd.negocio.base.BusquedaPedidoLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.base.PedidoOnlineLocal;
 import com.asi.restaurantebcd.negocio.util.ReponseWs;
+import com.asi.restaurantebcd.negocio.util.Utilidades;
 import com.asi.restaurantebcd.negocio.util.WsException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -36,6 +45,8 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("/ConsultaPedidosWS")
 public class ConsulPedidos {
+
+    BusquedaPedidoLocal busquedaPedido = lookupBusquedaPedidoLocal();
     
     PedidoOnlineLocal pedidoOnline = lookupPedidoOnlineLocal();
 
@@ -62,17 +73,55 @@ public class ConsulPedidos {
                                     String auth) throws WsException {
  ReponseWs resp;
         try {
-    
-            List <Ordenpedido> lstOrdenes =  lookupPedidoOnlineLocal().lstPedido();
-            System.out.println("lstOrdenes..." +lstOrdenes);
-            if (lstOrdenes == null || lstOrdenes.isEmpty()) {
+             Utilidades uti = new Utilidades();
+            Map hast =  new Gson().fromJson(auth, HashMap.class);
+            String json = getParemetro("json", hast);
+             Map params =  new Gson().fromJson(json, HashMap.class);
+             String idSuc  = getParemetro("idsucursal", params);
+            Date fechaInicial  = getParemetro("fechaInicial", params);
+             Date fechaFinal  = getParemetro("fechaFinal", params);
+            Sucursal suc = new Sucursal();
+
+            suc.setIdsucursal(Integer.parseInt(idSuc));
+            fechaFinal = uti.getFiltroDeFecha(fechaFinal, 1);
+            List <Ordenpedido> lstOrde = busquedaPedido.buscarOrdenPedido(suc, fechaInicial, fechaFinal);
+            System.out.println("lstOrdenes..." +lstOrde);
+            if (lstOrde == null || lstOrde.isEmpty()) {
                 throw new Exception("No se encontraron resultados.");
             }
-            System.out.println("pasooo");
-            System.out.println("lstOrdenes.get(0).. " +lstOrdenes.get(0));
-             String jsonReturn = new Gson().toJson(lstOrdenes.get(0));
-             System.out.println("jsonReturn.. " +jsonReturn);
-               System.out.println("pasoo8888888888888888888888888o");
+            List <OrdenpedidoDTO> lstDto  = new ArrayList<>();
+            for (Ordenpedido ordenpedido : lstOrde) {
+                OrdenpedidoDTO odT  = new OrdenpedidoDTO();
+                odT.setFechapedido(ordenpedido.getFechapedido());
+//                odT.setIdcliente(ordenpedido.getIdcliente());
+//                odT.setIdestado(ordenpedido.getIdestado());
+//                odT.setIdusuario(ordenpedido.getIdusuario());
+                odT.setMesa(ordenpedido.getMesa());
+                odT.setOrdenpedidoPK(ordenpedido.getOrdenpedidoPK());
+//                odT.setSucursal(ordenpedido.getSucursal());
+                List<OrdenpedidodetalleDTO> lstDetaDTO = new ArrayList<>();
+                if (ordenpedido.getOrdenpedidodetalleList() != null 
+                        && !ordenpedido.getOrdenpedidodetalleList().isEmpty()) {
+                for (Ordenpedidodetalle  cor :
+                        ordenpedido.getOrdenpedidodetalleList()) {
+                    OrdenpedidodetalleDTO detOt =  new OrdenpedidodetalleDTO();
+                    detOt.setCantidadconfirmada(cor.getCantidadconfirmada());
+                    detOt.setCantidadsolicitada(cor.getCantidadsolicitada());
+                    detOt.setCosto(cor.getCosto());
+//                    detOt.setIdproducto(cor.getIdproducto());
+                    detOt.setIva(cor.getIva());
+                    detOt.setOrdenpedidodetallePK(cor.getOrdenpedidodetallePK());
+                    detOt.setPrecio(cor.getPrecio());
+                    lstDetaDTO.add(detOt);
+                 }
+                }
+                odT.setOrdenpedidodetalleList(lstDetaDTO);
+                
+                lstDto.add(odT);
+            }
+            System.out.println("pasooo" +lstDto);
+            String jsonReturn = new Gson().toJson(lstDto,
+                            new TypeToken<ArrayList<OrdenpedidoDTO>>() {}.getType());
             resp = new ReponseWs();
             resp.setContent(jsonReturn);
             resp.setDescripcion("-");
@@ -116,7 +165,22 @@ public class ConsulPedidos {
             throw new RuntimeException(ne);
         }
     }
+
+    private BusquedaPedidoLocal lookupBusquedaPedidoLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (BusquedaPedidoLocal) c.lookup("java:global/RestaurantBDC/BusquedaPedido!com.asi.restaurantebcd.negocio.base.BusquedaPedidoLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
     
-    
+            public static < T> T getParemetro(Object object, Map filtros) {
+        if (filtros == null || object == null) {
+            return null;
+        }
+        return (T) filtros.get(object);
+    } 
     
 }
