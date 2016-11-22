@@ -19,9 +19,10 @@ public class OrdenpedidodetalleDTO implements Serializable {
     private Double cantidadsolicitada;
     private Double cantidadconfirmada;
     private Double precio;
+       private OrdenpedidoDTO ordenpedidoDTO;
     private Double costo;
     private Double iva;
-    private Producto idproducto;
+//    private Producto idproducto;
     private OrdenpedidoDTO ordenpedido;
     private Double monto;
     private Double total;
@@ -96,13 +97,13 @@ public class OrdenpedidodetalleDTO implements Serializable {
     }
 
 
-    public Producto getIdproducto() {
-        return idproducto;
-    }
-
-    public void setIdproducto(Producto idproducto) {
-        this.idproducto = idproducto;
-    }
+//    public Producto getIdproducto() {
+//        return idproducto;
+//    }
+//
+//    public void setIdproducto(Producto idproducto) {
+//        this.idproducto = idproducto;
+//    }
 
     public OrdenpedidoDTO getOrdenpedido() {
         return ordenpedido;
@@ -126,6 +127,14 @@ public class OrdenpedidodetalleDTO implements Serializable {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public OrdenpedidoDTO getOrdenpedidoDTO() {
+        return ordenpedidoDTO;
+    }
+
+    public void setOrdenpedidoDTO(OrdenpedidoDTO ordenpedidoDTO) {
+        this.ordenpedidoDTO = ordenpedidoDTO;
     }
 
     @Override
