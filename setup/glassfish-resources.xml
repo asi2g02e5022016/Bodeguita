@@ -29,17 +29,18 @@
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool> 
     <jdbc-resource enabled="true" jndi-name="jdbc/ifbc" object-type="user" pool-name="mysql_ifbc_rootPool"/>
-      <mail-resource debug="false" enabled="true" from="support@bodeguitadelcerdito.com" 
-                 host="192.168.0.6" jndi-name="mail/dbc" object-type="user" 
-                 store-protocol="smtp" store-protocol-class="com.sun.mail.imap.IMAPStore" 
-                 transport-protocol="smtp"
-                 transport-protocol-class="com.sun.mail.smtp.SMTPTransport"
-                 user="support@bodeguitadelcerdito.com">
-          <property name="mail-smtp-host" value="192.168.0.5"/>
+  <mail-resource debug="false" enabled="true" 
+                 from="noreply@bodeguitadelcerdito.com" host="192.168.0.5" 
+                 jndi-name="mail/bdc" object-type="user" 
+                 store-protocol="imap" store-protocol-class="com.sun.mail.imap.IMAPStore" 
+                 transport-protocol="smtp" transport-protocol-class="com.sun.mail.smtp.SMTPTransport" 
+                 user="noreply">
+    <description>Mail</description>
+    <property name="mail-smtp-host" value="192.168.0.5"/>
     <property name="mail-smtp-password" value="Pass123"/>
     <property name="mail-smtp-port" value="25"/>
-    <property name="mail-smtp-user" value="support@bodeguitadelcerdito.com"/>
+    <property name="mail-smtp-user" value="noreply@bodeguitadelcerdito.com"/>
     <property name="mail-smtp-starttls-enable" value="false"/>
-    <description>mail</description>
   </mail-resource>
 </resources>
+
