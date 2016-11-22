@@ -20,10 +20,10 @@ public class OrdenpedidoDTO implements Serializable {
     protected OrdenpedidoPK ordenpedidoPK;
     private Date fechapedido;
     private Integer mesa;
-    private Cliente idcliente;
-    private Estado idestado;
-    private Sucursal sucursal;
-    private Usuario idusuario;
+//    private Cliente idcliente;
+//    private Estado idestado;
+//    private Sucursal sucursal;
+//    private Usuario idusuario;
     private List<OrdenpedidodetalleDTO> ordenpedidodetalleList;
 
     public OrdenpedidoDTO() {
@@ -66,37 +66,37 @@ public class OrdenpedidoDTO implements Serializable {
         this.mesa = mesa;
     }
 
-    public Cliente getIdcliente() {
-        return idcliente;
-    }
+//    public Cliente getIdcliente() {
+//        return idcliente;
+//    }
+//
+//    public void setIdcliente(Cliente idcliente) {
+//        this.idcliente = idcliente;
+//    }
+//
+//    public Estado getIdestado() {
+//        return idestado;
+//    }
+//
+//    public void setIdestado(Estado idestado) {
+//        this.idestado = idestado;
+//    }
 
-    public void setIdcliente(Cliente idcliente) {
-        this.idcliente = idcliente;
-    }
-
-    public Estado getIdestado() {
-        return idestado;
-    }
-
-    public void setIdestado(Estado idestado) {
-        this.idestado = idestado;
-    }
-
-    public Sucursal getSucursal() {
-        return sucursal;
-    }
-
-    public void setSucursal(Sucursal sucursal) {
-        this.sucursal = sucursal;
-    }
-
-    public Usuario getIdusuario() {
-        return idusuario;
-    }
-
-    public void setIdusuario(Usuario idusuario) {
-        this.idusuario = idusuario;
-    }
+//    public Sucursal getSucursal() {
+//        return sucursal;
+//    }
+//
+//    public void setSucursal(Sucursal sucursal) {
+//        this.sucursal = sucursal;
+//    }
+//
+//    public Usuario getIdusuario() {
+//        return idusuario;
+//    }
+//
+//    public void setIdusuario(Usuario idusuario) {
+//        this.idusuario = idusuario;
+//    }
 
     public List<OrdenpedidodetalleDTO> getOrdenpedidodetalleList() {
         return ordenpedidodetalleList;
