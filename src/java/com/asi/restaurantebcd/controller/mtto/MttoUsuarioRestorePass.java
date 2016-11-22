@@ -13,13 +13,12 @@ import com.asi.restaurantebcd.negocio.base.BusquedasUsuariosLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.base.GestorEmailLocal;
 import com.asi.restaurantebcd.negocio.util.Utilidades;
+import static com.oracle.jrockit.jfr.Transition.To;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +28,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.security.auth.Subject;
 import org.primefaces.component.accordionpanel.AccordionPanel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -66,6 +72,7 @@ public class MttoUsuarioRestorePass implements Serializable {
     private GestorEmailLocal gestorEmail;
 
 //</editor-fold >
+
 //<editor-fold  defaultstate="collapsed" desc="Inicializar" >
     public MttoUsuarioRestorePass() {
     }
@@ -188,7 +195,39 @@ public class MttoUsuarioRestorePass implements Serializable {
         try {
             List< String> lst = new ArrayList<>();
             lst.add(correo);
-            gestorEmail.enviarEmail(newPass, "Nueva contraseña Bodeguita", "Credenciales Bodeguita", lst, "Bodeguita del cerdito");
+            gestorEmail.enviarEmail("El sistema generó su nueva contraseña: " + newPass, "Nueva contraseña Bodeguita", "Credenciales Bodeguita", lst, "Bodeguita del cerdito");
+        } catch (Exception ex) {
+            Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void SendMail(String destinatario,String asunto, String contenido ) {              
+        try {
+            String username = "bodeguitadelcerdito@gmail.com";
+            String password = "misterbodeguita";
+            
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.port", "587");
+
+            Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+            
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(destinatario));
+            message.setSubject(asunto);
+            message.setText(contenido);
+
+            Transport.send(message);
+
         } catch (Exception ex) {
             Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -239,20 +278,16 @@ public class MttoUsuarioRestorePass implements Serializable {
             }
             //******************************************
             String passSql = String.valueOf(newPass.hashCode());
-            try {
-                if (email != null) {
-                    enviarcorreo(email, newPass);
 
-                    Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.INFO,
-                            "El correo se envio exitosamente.");
-                } else {
-
-                    Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.INFO,
-                            "Destinatario desconocido... ");
-                }
-            } catch (Exception e) {
-                Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(
-                        Level.SEVERE, null, e.getMessage());
+            if (email != null) {
+                //enviarcorreo(email, newPass);
+                /*Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.INFO,
+                        "El correo se envio exitosamente.");*/
+                SendMail(email, "Cambio de contraseña", "Su nuevo password es:.. " + newPass);
+                
+            } else {
+                Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.INFO,
+                        "Destinatario desconocido... ");
             }
 
             usuarioConst.setClave(passSql);
@@ -260,13 +295,14 @@ public class MttoUsuarioRestorePass implements Serializable {
             alert("Contraseña restaurada exitosamente..." + newPass, FacesMessage.SEVERITY_INFO);
             buscarUsuario();
         } catch (Exception ex) {
-            Logger.getLogger(MttoUsuarioMB.class.getName())
+            Logger.getLogger(MttoUsuarioRestorePass.class.getName())
                     .log(Level.SEVERE, null, ex);
             alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
 
 //</editor-fold >  
+
 //<editor-fold  defaultstate="collapsed" desc="Getter y Setter" >
     public Usuario getUsuarioConst() {
         return usuarioConst;
