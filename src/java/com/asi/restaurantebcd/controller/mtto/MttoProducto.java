@@ -380,7 +380,7 @@ public class MttoProducto implements Serializable {
          this.lstGrupoProducto = this.ejbBusqMttoP.buscarGrupoProducto();
           this.lstTipoProducto = this.ejbBusqMttoo.buscarTipoProducto();
          this.lstMedida = this.busquedasMedidas.buscarMedida();
-        this.lstReceta = this.ejbBusqMttoP.buscarReceta();
+        //this.lstReceta = this.ejbBusqMttoP.buscarReceta();
          sesion = Utilidades.findBean("sessionUsr");
          idUsuario = sesion.getUsuario().getIdusuario();
          

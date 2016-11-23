@@ -115,7 +115,7 @@ public class RecetasBeans implements Serializable{
                 return;
             }
             if (recetaDetaPT == null) {
-                alert("Debe elegor un produto PT", FacesMessage.SEVERITY_INFO);
+                alert("Debe elegir un produto PT", FacesMessage.SEVERITY_INFO);
                 return;
             }
             System.out.println("que paso...");

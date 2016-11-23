@@ -203,13 +203,16 @@ public class MttoUsuarioRestorePass implements Serializable {
 
     public void SendMail(String destinatario,String asunto, String contenido ) {              
         try {
-            String username = "bodeguitadelcerdito@gmail.com";
-            String password = "misterbodeguita";
+            //String username = "bodeguitadelcerdito@gmail.com";
+             String username = "support@bodeguitadelcerdito.com";
+            //String password = "misterbodeguita";
+            String password = "Pass123";
             
             Properties props = new Properties();
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.starttls.enable", "true");
-            props.put("mail.smtp.host", "smtp.gmail.com");
+            //props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.host", "192.168.0.5");
             props.put("mail.smtp.port", "587");
 
             Session session = Session.getInstance(props,
