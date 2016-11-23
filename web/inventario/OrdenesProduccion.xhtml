@@ -90,21 +90,20 @@ and open the template in the editor.
                         </p:menuitem>
                     </p:menubar>
                 </h:panelGrid>
-                <h:panelGrid >
-                    <p:dataTable value="#{ordenProduccionBeans.lstReceta}" id="tablaCompras"
-                                 var="d"  rowKey="#{de.idreceta}"
-                                 emptyMessage="" 
-                                 selectionMode="single"  rows="19"  >                        
+                  <h:panelGrid >
+                      <p:dataTable value="#{ordenProduccionBeans.lstReceta}"
+                                 id="tablaCompras"
+                                 var="dcompra"   rowKey="#{dcompra.idreceta}"
+                                 selectionMode="single"  rows="10"  >                        
                         <p:ajax event="rowSelect" update="forprincipal"
                                 listener="#{ordenProduccionBeans.onRowSelectCompra}" process="@all"  
                                 />
-                             <p:column headerText="id" filterBy="#{d.idreceta}" >
-                                 <h:outputText value="#{d.idreceta}"  />
+                        <p:column  headerText="Numero" >
+                            <h:outputText value="#{dcompra.idreceta}" />
                         </p:column>
-                        <p:column  headerText="receta"  filterBy="#{d.descripcion}" >
-                            <h:outputText   value="#{d.descripcion}"  />
+                              <p:column  headerText="Numero" >
+                             <h:outputText value="#{dcompra.descripcion}" />
                         </p:column>
-                   
                     </p:dataTable>
                 </h:panelGrid>
             </p:dialog>
