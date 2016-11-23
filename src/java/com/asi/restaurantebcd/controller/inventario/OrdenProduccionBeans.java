@@ -169,6 +169,7 @@ public class OrdenProduccionBeans implements Serializable {
            public void buscarRecetas() {
              Query q = em.createNamedQuery("Receta.findAll");
         lstReceta = q.getResultList();
+               System.out.println("lstReceta.. " +lstReceta);
         if (lstReceta == null){
             alert("No se encontraron resultado.", FacesMessage.SEVERITY_WARN);
             return;
