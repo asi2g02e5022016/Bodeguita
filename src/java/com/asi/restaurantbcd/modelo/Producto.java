@@ -35,8 +35,9 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p")})
 public class Producto implements Serializable {
+   
     @JoinColumn(name = "idreceta", referencedColumnName = "idreceta")
-    @ManyToOne
+    @ManyToOne(optional= true)
     private Receta idreceta;
     @Column(name = "excento")
     private Boolean excento;
