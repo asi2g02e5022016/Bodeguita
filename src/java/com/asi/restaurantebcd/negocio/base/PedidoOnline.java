@@ -13,6 +13,7 @@ import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantbcd.modelo.Ordenpedido;
 import com.asi.restaurantbcd.modelo.OrdenpedidoPK;
 import com.asi.restaurantbcd.modelo.Ordenpedidodetalle;
+import com.asi.restaurantbcd.modelo.OrdenpedidodetalleDTO;
 import com.asi.restaurantbcd.modelo.OrdenpedidodetallePK;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Sucursal;
@@ -57,7 +58,7 @@ public class PedidoOnline implements PedidoOnlineLocal {
     @Override
     public void guardarPedidoOnline(Integer codigoCliente,
             String usr, Integer idsucursal,
-            List < Ordenpedidodetalle > lstDetalle) throws Exception {
+            List < OrdenpedidodetalleDTO > lstDetalle) throws Exception {
         Impuesto impuestos = crudBDC.buscarEntidad(Impuesto.class, 1);
         if (impuestos == null) {
             throw new Exception("No se encontraron resultados de IVA");
@@ -96,7 +97,7 @@ public class PedidoOnline implements PedidoOnlineLocal {
         int corle = 0;
         System.out.println("lstDetalle.. " +lstDetalle);
         if (lstDetalle != null && !lstDetalle.isEmpty()) {
-            for (Ordenpedidodetalle ordenpedidodetalle : lstDetalle) {
+            for (OrdenpedidodetalleDTO ordenpedidodetalle : lstDetalle) {
                 corle++;
                 OrdenpedidodetallePK idOdeDet =new OrdenpedidodetallePK();
                 idOdeDet.setIdSucursal(idsucursal);
@@ -108,14 +109,14 @@ public class PedidoOnline implements PedidoOnlineLocal {
                 pedDet.setCantidadsolicitada(ordenpedidodetalle.getCantidadsolicitada());
                 Existencia exist = crudBDC.buscarEntidad(Existencia.class, 
                         new ExistenciaPK(ordenpedidodetalle
-                                .getIdproducto().getIdproducto(), idsucursal));
+                                .getIdproducto(), idsucursal));
                 if (exist != null && exist.getCostounitario() != null) {
                     pedDet.setCosto(exist.getCostounitario());
                 } else {
                     pedDet.setCosto(Double.parseDouble("0"));
                 }
                 Producto pro = crudBDC.buscarEntidad(Producto.class, ordenpedidodetalle
-                                .getIdproducto().getIdproducto());
+                                .getIdproducto());
                 if (pro == null) {
                     throw new Exception("NO se encontro resultado de producto.");
                 }
