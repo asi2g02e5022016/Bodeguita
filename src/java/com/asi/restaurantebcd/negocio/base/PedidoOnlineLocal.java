@@ -8,6 +8,7 @@ package com.asi.restaurantebcd.negocio.base;
 import com.asi.restaurantbcd.modelo.Cliente;
 import com.asi.restaurantbcd.modelo.Ordenpedido;
 import com.asi.restaurantbcd.modelo.Ordenpedidodetalle;
+import com.asi.restaurantbcd.modelo.OrdenpedidodetalleDTO;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -20,7 +21,7 @@ public interface PedidoOnlineLocal {
 
   public void guardarPedidoOnline(Integer codigoCliente,
             String usr,
-            Integer idsucursal, List < Ordenpedidodetalle > lstDetalle)
+            Integer idsucursal, List < OrdenpedidodetalleDTO > lstDetalle)
             throws Exception;
   
   
