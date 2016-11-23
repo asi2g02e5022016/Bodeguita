@@ -16,16 +16,16 @@ import org.primefaces.component.inputnumber.InputNumber;
 public class InputNumberRenderer extends org.primefaces.component.inputnumber.InputNumberRenderer {
     
     @Override
-    protected void encodeMarkup(FacesContext context, InputNumber inputNumber)
+    protected void encodeOutput(FacesContext context, InputNumber inputNumber, String clientId)
     throws IOException
   {
-      String stly = inputNumber.getStyleClass();
+      String stly = inputNumber.getInputStyleClass();
       if(inputNumber.isRequired() && !inputNumber.isDisabled() ){
         stly = stly + " requiredInput"
                 ;
       }
-     inputNumber.setStyleClass(stly);
-     super.encodeMarkup(context, inputNumber);
+     inputNumber.setInputStyleClass(stly);
+     super.encodeOutput(context, inputNumber,  clientId);
      
   }
 }
