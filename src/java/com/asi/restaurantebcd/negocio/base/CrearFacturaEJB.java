@@ -15,6 +15,7 @@ import com.asi.restaurantbcd.modelo.Facturaencabezado;
 import com.asi.restaurantbcd.modelo.FacturaencabezadoPK;
 import com.asi.restaurantbcd.modelo.Facturainterface;
 import com.asi.restaurantbcd.modelo.Formapago;
+import com.asi.restaurantbcd.modelo.Numerofiscal;
 import com.asi.restaurantbcd.modelo.Ordenpedido;
 import com.asi.restaurantbcd.modelo.OrdenpedidoPK;
 import com.asi.restaurantbcd.modelo.Ordenpedidodetalle;
@@ -32,6 +33,8 @@ import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.EstadoEnum;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -232,7 +235,7 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
               factEnca.setIdcondicionpago(condicion);
               
               Tipodocumento tipoDoc = new Tipodocumento();
-              tipoDoc.setIdtipodocumento(1);
+              tipoDoc.setIdtipodocumento(3);
               factEnca.setIdtipodocumento(tipoDoc);
               
               factEnca.setIdusuario(pedido.getIdusuario());
@@ -283,4 +286,100 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
              // trx.rollback();
               }
         }
+  
+   public void procesarFactura(Ordenpedido p, String serie, Integer numeroDocu) throws IllegalStateException, SecurityException, SystemException, NamingException{
+           
+        try {
+            Ordenpedido pedido = p;
+            
+            FacturaencabezadoPK factPk = new FacturaencabezadoPK();
+            Facturaencabezado factEnca = new Facturaencabezado();
+            
+            Integer documento =numeroDocu;
+            
+            
+            factPk.setIdfactura(documento);
+            factPk.setIdserie(serie);
+            factPk.setIdsucursal(pedido.getSucursal().getIdsucursal());
+            
+            factEnca.setFacturaencabezadoPK(factPk);
+            
+            factEnca.setAnulado(false);
+            factEnca.setIdcliente(pedido.getIdcliente());
+            factEnca.setFechafactura(pedido.getFechapedido());
+            
+            Formapago formaPago = new Formapago();
+            
+            Integer idFomraPago  = 3;
+            
+            formaPago.setIdformapago(idFomraPago);
+            
+            
+            factEnca.setIdformapago(formaPago);
+            
+            Caja caja=null;
+            
+            
+            factEnca.setIdcaja(caja);
+            
+            Condicionpago condicion = new Condicionpago();
+            
+            condicion.setIdcondicionpago(1);
+            
+            factEnca.setIdcondicionpago(condicion);
+            
+            Tipodocumento tipoDoc = new Tipodocumento();
+            tipoDoc.setIdtipodocumento(1);
+            factEnca.setIdtipodocumento(tipoDoc);
+            
+            factEnca.setIdusuario(pedido.getIdusuario());
+            List<Facturadetalle> factDetalles = new ArrayList<Facturadetalle>();
+            for(Ordenpedidodetalle pdet:pedido.getOrdenpedidodetalleList()){
+                Facturadetalle fdet = new Facturadetalle();
+                
+                fdet.setFacturaencabezado(factEnca);
+                fdet.setCantidad(pdet.getCantidadconfirmada());
+                
+                fdet.setIdproducto(pdet.getIdproducto());
+                fdet.setCosto(pdet.getCosto());
+                fdet.setIva(pdet.getPrecio());
+                fdet.setPrecio(pdet.getPrecio());
+                
+                factDetalles.add(fdet);
+            }
+            
+            factEnca.setFacturadetalleList(factDetalles);
+            
+            
+            
+            factEnca.setOrdenpedido(pedido);
+            
+            for(Facturadetalle fdet:factDetalles){
+                   if(fdet.getIdproducto().getIdreceta()==null){
+                   ejbInventario.afectarExistencia(new Double(fdet.getCantidad()), fdet.getIdproducto() , fdet.getFacturaencabezado().getIdusuario(), fdet.getFacturaencabezado().getOrdenpedido().getSucursal(), new Double(fdet.getCosto()),true,false);
+                   }else {
+                     for(Recetadetalle rdet: fdet.getIdproducto().getIdreceta().getRecetadetalleList()){
+                         ejbInventario.afectarExistencia(new Double(fdet.getCantidad()*rdet.getCantidad()), rdet.getProducto() , fdet.getFacturaencabezado().getIdusuario(), fdet.getFacturaencabezado().getOrdenpedido().getSucursal(), new Double(rdet.getProducto().getPreciocompra()),true,false);
+                     }
+                   }
+              }
+            
+            ejbCrud.persistirEntidad(factEnca);
+            
+        } catch (Exception ex) {
+            Logger.getLogger(CrearFacturaEJB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
+
+    @Override
+    public List<Numerofiscal> numeroFiscalList(Sucursal s) throws IllegalStateException, SecurityException, SystemException, NamingException {
+             List<Numerofiscal> result;
+             
+             result = em.createQuery("select n from Numerofiscal n where n.idcaja.idsucursal = :s").setParameter("s", s).getResultList();
+             
+             return result;
+    }
+   
+   
+  
 }

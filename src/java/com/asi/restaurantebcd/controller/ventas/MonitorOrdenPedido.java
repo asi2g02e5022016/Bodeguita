@@ -6,6 +6,7 @@
 package com.asi.restaurantebcd.controller.ventas;
 
 import com.asi.restaurantbcd.modelo.Configuracion;
+import com.asi.restaurantbcd.modelo.Numerofiscal;
 import com.asi.restaurantbcd.modelo.Ordenpedido;
 import com.asi.restaurantbcd.modelo.Ordenpedidodetalle;
 import com.asi.restaurantbcd.modelo.Sucursal;
@@ -14,6 +15,7 @@ import com.asi.restaurantebcd.negocio.base.BusquedaPedido;
 import com.asi.restaurantebcd.negocio.base.BusquedaPedidoLocal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal;
 import com.asi.restaurantebcd.negocio.base.ConsumerWSLocal;
+import com.asi.restaurantebcd.negocio.base.CrearFacturaEJBLocal;
 import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.EstadoEnum;
 import javax.inject.Named;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.naming.NamingException;
+import javax.transaction.SystemException;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -43,8 +47,67 @@ import org.primefaces.event.SelectEvent;
 
 public class MonitorOrdenPedido implements Serializable {
 
+    /**
+     * @return the pedidoActual
+     */
+    public Ordenpedido getPedidoActual() {
+        return pedidoActual;
+    }
+
+    /**
+     * @param pedidoActual the pedidoActual to set
+     */
+    public void setPedidoActual(Ordenpedido pedidoActual) {
+        this.pedidoActual = pedidoActual;
+    }
+
+    /**
+     * @return the lstNumeroFiscal
+     */
+    public List<Numerofiscal> getLstNumeroFiscal() {
+        return lstNumeroFiscal;
+    }
+
+    /**
+     * @param lstNumeroFiscal the lstNumeroFiscal to set
+     */
+    public void setLstNumeroFiscal(List<Numerofiscal> lstNumeroFiscal) {
+        this.lstNumeroFiscal = lstNumeroFiscal;
+    }
+
+    /**
+     * @return the serie
+     */
+    public String getSerie() {
+        return serie;
+    }
+
+    /**
+     * @param serie the serie to set
+     */
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
+
+    /**
+     * @return the numeroFactura
+     */
+    public Integer getNumeroFactura() {
+        return numeroFactura;
+    }
+
+    /**
+     * @param numeroFactura the numeroFactura to set
+     */
+    public void setNumeroFactura(Integer numeroFactura) {
+        this.numeroFactura = numeroFactura;
+    }
+
     @EJB
     private ConsumerWSLocal consumerWS;
+    
+    @EJB 
+    private CrearFacturaEJBLocal ejbFactura;
 
     public MonitorOrdenPedido() {
     }
@@ -64,10 +127,14 @@ public class MonitorOrdenPedido implements Serializable {
     private String cliente;
     private String estado;
     private String tipoPedido;
+    private Integer numeroFactura;
+    private String serie;
+    private Ordenpedido pedidoActual;
 
     private List<Ordenpedido> lstOrdenPedido;
     private List<Ordenpedidodetalle> lstOrdenPedidoDet;
     private List<Sucursal> lstSucursal;
+    private List<Numerofiscal> lstNumeroFiscal;
 
     private DataTable dtOrdenPedido = new DataTable();
 
@@ -262,9 +329,23 @@ public class MonitorOrdenPedido implements Serializable {
         this.constructorOrdenPedDet = constructorOrdenPedDet;
     }
 
-        public void enviarPos() {
-            
-            
+        public void facturar() {
+        try {
+            ejbFactura.procesarFactura(pedidoActual, serie, numeroFactura);
+            alert("Factura creada satisfactoriamente",FacesMessage.SEVERITY_INFO);
+        } catch (IllegalStateException ex) {
+            alert(ex.getMessage(),FacesMessage.SEVERITY_ERROR);
+            Logger.getLogger(MonitorOrdenPedido.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            alert(ex.getMessage(),FacesMessage.SEVERITY_ERROR);
+            Logger.getLogger(MonitorOrdenPedido.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SystemException ex) {
+            alert(ex.getMessage(),FacesMessage.SEVERITY_ERROR);
+            Logger.getLogger(MonitorOrdenPedido.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NamingException ex) {
+            alert(ex.getMessage(),FacesMessage.SEVERITY_ERROR);
+            Logger.getLogger(MonitorOrdenPedido.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Metodos">
@@ -331,6 +412,7 @@ public class MonitorOrdenPedido implements Serializable {
                 idSucursal = op.getOrdenpedidoPK().getIdsucursal();
                 su.setIdsucursal(idSucursal);
                 sucursal = ejbBuscarPedido.nombreSucursal(su);
+                lstNumeroFiscal = ejbFactura.numeroFiscalList(op.getSucursal());
                 cliente = op.getIdcliente().getNombre() + " " + op.getIdcliente().getApellido();
                 estado = op.getIdestado().getEstado();
                 fechaPedido = op.getFechapedido();

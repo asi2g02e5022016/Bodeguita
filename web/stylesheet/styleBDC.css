@@ -417,6 +417,11 @@ body {
 	margin-right: 20px !important;
 	padding-right: 20px !important;
 }
+
+.requiredInput{
+    
+    background-color:  #F2F5A9 !important;
+}
 /* .ui-menu-parent{
 	padding: 0px 0px 0px 0px !important;
 	border-width: 1px !important;

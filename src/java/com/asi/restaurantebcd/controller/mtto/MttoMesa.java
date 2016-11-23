@@ -66,10 +66,7 @@ public class MttoMesa implements Serializable {
     /**
      * Bindin de DataTable que muestra companias.
      */
-    private DataTable tablaMesa = new DataTable();
-    /**
-     * EJB Quecon tiene metodos utilitarios como: Guardar, Eliminar, Buscar...
-     */
+    
     @EJB
     private CrudBDCLocal crud;
 
@@ -112,7 +109,6 @@ public class MttoMesa implements Serializable {
         nombre = null;
         x= null;
         y=null;
-        tablaMesa = new DataTable();
         this.setLstMesa(new ArrayList<Mesa>());
 
     }
@@ -151,10 +147,11 @@ public class MttoMesa implements Serializable {
     }
 
     //metodo para actualizar un impuesto
-    public void actualizarMesa() {
+    public void actualizarMesa(RowEditEvent event) {
         try {
-            if (this.tablaMesa.getRowData() != null) {
-                Mesa imp = this.getLstMesa().get(this.tablaMesa.getRowIndex());                
+            Mesa imp = (Mesa) event.getObject();
+            if (imp != null) {
+                               
 //                this.mesaConstructor = (Impuesto) tablaMesa.getRowData();
                 setPisoConstructor(new Piso());
                 getPisoConstructor().setIdpiso(imp.getIdpiso().getIdpiso());
@@ -177,28 +174,6 @@ public class MttoMesa implements Serializable {
         }
     }
 
-    public void eliminarPiso() {
-        try {
-            if (tablaMesa.getRowData() != null) {
-
-                Mesa imp = this.getLstMesa().get(this.tablaMesa.getRowIndex());
-                if (crud.eliminarEntidad(imp) == true) {
-                    getLstMesa().remove(this.tablaMesa.getRowIndex());
-                    alert("Registro eliminado exitosamente.",
-                            FacesMessage.SEVERITY_INFO);
-                    this.setLstMesa(this.ejbBusqPiso.buscarMesa(sesion.getSucursal()));
-                    this.setMesaConstructor(null);
-
-                }
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(MttoImp.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-
-    }
-
     public void buscarPiso() {
         try {
             this.setLstMesa(this.ejbBusqPiso.buscarMesa(sesion.getSucursal()));
@@ -213,13 +188,7 @@ public class MttoMesa implements Serializable {
 
     }
 
-    public void onEdit(RowEditEvent event) {
-        this.actualizarMesa();
-        alert("Registro modificado exitosamente.",
-                FacesMessage.SEVERITY_INFO);
-//        System.out.println("entro");
-//        System.out.println("event.getObject().." + event.getObject());
-    }
+
 
     public void onCancel(RowEditEvent event) {
         alert("Se ha cancelado la acción.",
@@ -245,14 +214,7 @@ public class MttoMesa implements Serializable {
         this.idMesa = idMesa;
     }
 
-    public DataTable getTablaMesa() {
-        return tablaMesa;
-    }
-
-    public void setTablaMesa(DataTable tablaMesa) {
-        this.tablaMesa = tablaMesa;
-    }
-
+    
     public String getNombre() {
         return nombre;
     }

@@ -18,10 +18,11 @@ and open the template in the editor.
                 <p:menubar>
                     <p:menuitem value="Limpiar" update="forprincipal" 
                                 icon="ui-icon-plus" action="#{monitorOrdenPedido.limpiar()}" />
-                    <p:menuitem value="Monitor" update=":forprincipal"
+                    <p:menuitem value="Monitor" update=":forprincipal" immediate="true"
                                 icon=" ui-icon-search"  actionListener ="#{monitorOrdenPedido.mostrarDialogoPedidos}"/>
                     <p:menuitem value="Enviar a Facturación" update="forprincipal" 
-                                icon="ui-icon-copy" action="#{monitorOrdenPedido.enviarPos}" rendered="#{monitorOrdenPedido.activarEnvioPOS}" />
+                                icon="ui-icon-copy" action="#{monitorOrdenPedido.facturar}" 
+                                rendered="#{monitorOrdenPedido.activarEnvioPOS}" />
                 </p:menubar>
                 <h:panelGrid columns="2" width="100%">
                     <h:panelGrid columns="6" width="80%">
@@ -38,7 +39,24 @@ and open the template in the editor.
                         <h:outputLabel  value="Usuario"  />
                         <p:inputText readonly="true" value="#{monitorOrdenPedido.idUsuario}"/>
                         <h:outputLabel  value="Tipo Pedido:"  />
-                        <p:inputText readonly="true" value="#{monitorOrdenPedido.tipoPedido}"/>                        
+                        <p:inputText readonly="true" value="#{monitorOrdenPedido.tipoPedido}"/>   
+                        <p:outputLabel  value="Serie:" for="lstSerie" rendered="#{monitorOrdenPedido.activarEnvioPOS}" />
+                        <p:selectOneMenu id="lstSerie" value="#{monitorOrdenPedido.serie}" 
+                                          required="true" 
+                                          requiredMessage="Número de serie requerido"
+                                         rendered="#{monitorOrdenPedido.activarEnvioPOS}"  >
+                            <f:selectItem itemLabel=""  />
+                            <f:selectItems value="#{monitorOrdenPedido.lstNumeroFiscal}" 
+                                           var="sr" itemLabel="#{sr.serie}" itemValue="#{sr.serie}"/>	   							
+                        </p:selectOneMenu>  
+                        <p:outputLabel  value="Número factura:" for="numFactura" rendered="#{monitorOrdenPedido.activarEnvioPOS}" />
+                        <p:inputNumber id="numFactura" 
+                                     value="#{monitorOrdenPedido.numeroFactura}" 
+                                     required="true" 
+                                     requiredMessage="Número de Factura requerido" 
+                                     rendered="#{monitorOrdenPedido.activarEnvioPOS}"
+                                     decimalPlaces="0"
+                                     minValue="1" maxValue="999999" />   
                     </h:panelGrid>
                     <h:panelGrid columns="2" width="100%">                        
                     </h:panelGrid>
@@ -108,7 +126,8 @@ and open the template in the editor.
                                          paginator="true" selectionMode="single"
                                          rows="10">                           
                                 <p:ajax event="rowSelect"   update=":forprincipal"
-                                        listener="#{monitorOrdenPedido.onRowSelectPedido}" process="@all" />
+                                        listener="#{monitorOrdenPedido.onRowSelectPedido}"
+                                        process="@all" />
                                 <p:column headerText="No. Pedido" >
                                     <h:outputText value="#{op.ordenpedidoPK.idordenpedido}"/>
                                 </p:column>                                             

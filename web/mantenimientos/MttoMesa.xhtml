@@ -52,16 +52,16 @@ and open the template in the editor.
 
                     </h:panelGrid>
                     <h:panelGrid >
-                        <p:dataTable id="tablaImp" emptyMessage="" binding="#{mttoMesa.tablaMesa}"
+                        <p:dataTable id="tablaImp" emptyMessage="" 
                                      value="#{mttoMesa.lstMesa}"
                                      var="dimp" rowKey="#{dimp.idmesa}"
-                                     selectionMode="single" rows="5" 
+                                     rows="5" 
                                      editable="true"
                                      paginator="true" 
                                      rowsPerPageTemplate="5" scrollable="true"
                                      scrollWidth="650">
 
-                            <p:ajax event="rowEdit" listener="#{mttoMesa.actualizarMesa()}" update="@all" />
+                            <p:ajax event="rowEdit" listener="#{mttoMesa.actualizarMesa}" update="@all" />
 
                             <p:column headerText="Id" width="10%">
                                 <h:outputText value="#{dimp.idmesa}"  />                                
@@ -117,15 +117,7 @@ and open the template in the editor.
                             </p:column>
                             <p:column style="width:50px; align-content: center" headerText="Modificar">
                                 <p:rowEditor />
-                            </p:column>
-
-                            <p:column style="width:60px; align-content: center" headerText="Eliminar">                               
-                                  
-                                    <p:commandButton   value="Eliminar" 
-                                                      action="#{mttoMesa.eliminarMesa()}"
-                                                      />
-                               
-                            </p:column >
+                            </p:column>                           
                         </p:dataTable>
                     </h:panelGrid>
 
