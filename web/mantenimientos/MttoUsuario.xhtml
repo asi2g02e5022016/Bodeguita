@@ -18,7 +18,7 @@ and open the template in the editor.
                 <p:growl showDetail="true" showSummary="true" />
                 <p:panel id="basic" header="Mantenimientos Usuarios"   >
                     <p:menubar>
-                        <p:menuitem value="Nuevo"  update="forprincipal" action="#{mttoUsuario.limpiarPantalla()}"
+                        <p:menuitem value="Nuevo"  update="forprincipal" immediate="true" action="#{mttoUsuario.limpiarPantalla()}"
                                     icon="ui-icon-plus" />
                         <p:menuitem value="Guardar" update="forprincipal" action="#{mttoUsuario.guardarUsuario()}"  
                                     icon="ui-icon-disk" />
@@ -34,7 +34,7 @@ and open the template in the editor.
                                         <h:outputLabel value="Usuario: " />
                                     </p:column>
                                     <p:column style="width: 65px">
-                                        <p:inputText value="#{mttoUsuario.codigoUsr}" />
+                                        <p:inputText  value="#{mttoUsuario.codigoUsr}" required="true"/>
                                     </p:column>
                                     <p:column style="width: 5px">
                                         <h:outputLabel value=" "/>
@@ -45,7 +45,7 @@ and open the template in the editor.
                                         <h:outputLabel value="Empleado: "/>
                                     </p:column>
                                     <p:column style="width: 65px">
-                                        <p:inputText readonly="true" value="#{mttoUsuario.nombreEmpl}"/>
+                                        <p:inputText readonly="true" value="#{mttoUsuario.nombreEmpl}" required="true"/>
                                     </p:column>
                                     <p:column>
                                         <p:commandButton    action="#{mttoUsuario.mostrarDialogEmpleado()}"
@@ -58,7 +58,7 @@ and open the template in the editor.
                                         <h:outputLabel  value="Perfil: " />
                                     </p:column>
                                     <p:column style="width: 65px">
-                                        <p:selectOneMenu id="listPerfil" style="width: 140px" value="#{mttoUsuario.codperfil}"  >
+                                        <p:selectOneMenu id="listPerfil" style="width: 140px" value="#{mttoUsuario.codperfil}" required="true"  >
                                             <f:selectItems value="#{mttoUsuario.lstPerfil}"
                                                            var="usr" itemLabel="#{usr.nombre}" itemValue="#{usr.idPerfil}"/>                                       
                                         </p:selectOneMenu>                                
@@ -72,7 +72,7 @@ and open the template in the editor.
                                         <h:outputLabel  value="Password: " />
                                     </p:column>
                                     <p:column style="width: 65px">
-                                        <p:password id="Pass" value="#{mttoUsuario.claveUsr}" feedback="true" />
+                                        <p:password id="Pass" value="#{mttoUsuario.claveUsr}" required="true" feedback="true" />
                                     </p:column>
                                     <p:column style="width: 5px">
                                         <h:outputLabel value=" "/>
