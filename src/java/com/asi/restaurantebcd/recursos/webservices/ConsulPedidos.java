@@ -97,6 +97,7 @@ public class ConsulPedidos {
 //                odT.setIdestado(ordenpedido.getIdestado());
 //                odT.setIdusuario(ordenpedido.getIdusuario());
                 odT.setMesa(ordenpedido.getMesa());
+                   odT.setCliente(ordenpedido.getIdcliente().getNombre());
                 odT.setOrdenpedidoPK(ordenpedido.getOrdenpedidoPK());
 //                odT.setSucursal(ordenpedido.getSucursal());
                 List<OrdenpedidodetalleDTO> lstDetaDTO = new ArrayList<>();
