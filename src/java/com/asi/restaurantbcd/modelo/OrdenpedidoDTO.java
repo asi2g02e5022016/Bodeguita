@@ -20,10 +20,11 @@ public class OrdenpedidoDTO implements Serializable {
     protected OrdenpedidoPK ordenpedidoPK;
     private Date fechapedido;
     private Integer mesa;
-//    private Cliente idcliente;
-//    private Estado idestado;
-//    private Sucursal sucursal;
-//    private Usuario idusuario;
+   private Integer idcliente;
+    private String cliente;
+   private Integer idestado;
+    private Integer sucursal;
+    private String idusuario;
     private List<OrdenpedidodetalleDTO> ordenpedidodetalleList;
 
     public OrdenpedidoDTO() {
@@ -44,6 +45,14 @@ public class OrdenpedidoDTO implements Serializable {
 
     public OrdenpedidoPK getOrdenpedidoPK() {
         return ordenpedidoPK;
+    }
+
+    public String getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
     }
 
     public void setOrdenpedidoPK(OrdenpedidoPK ordenpedidoPK) {
@@ -104,6 +113,38 @@ public class OrdenpedidoDTO implements Serializable {
 
     public void setOrdenpedidodetalleList(List<OrdenpedidodetalleDTO> ordenpedidodetalleList) {
         this.ordenpedidodetalleList = ordenpedidodetalleList;
+    }
+
+    public Integer getIdcliente() {
+        return idcliente;
+    }
+
+    public void setIdcliente(Integer idcliente) {
+        this.idcliente = idcliente;
+    }
+
+    public Integer getIdestado() {
+        return idestado;
+    }
+
+    public void setIdestado(Integer idestado) {
+        this.idestado = idestado;
+    }
+
+    public Integer getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Integer sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    public String getIdusuario() {
+        return idusuario;
+    }
+
+    public void setIdusuario(String idusuario) {
+        this.idusuario = idusuario;
     }
 
     @Override
