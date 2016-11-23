@@ -195,7 +195,9 @@ public class MttoUsuarioRestorePass implements Serializable {
         try {
             List< String> lst = new ArrayList<>();
             lst.add(correo);
-            gestorEmail.enviarEmail("El sistema generó su nueva contraseña: " + newPass, "Nueva contraseña Bodeguita", "Credenciales Bodeguita", lst, "Bodeguita del cerdito");
+            gestorEmail.enviarEmail("El sistema generó su nueva contraseña: " 
+                    + newPass, "Nueva contraseña Bodeguita", "Credenciales Bodeguita", 
+                    lst, "Bodeguita del cerdito");
         } catch (Exception ex) {
             Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -283,10 +285,10 @@ public class MttoUsuarioRestorePass implements Serializable {
             String passSql = String.valueOf(newPass.hashCode());
 
             if (email != null) {
-                //enviarcorreo(email, newPass);
-                /*Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.INFO,
-                        "El correo se envio exitosamente.");*/
-                SendMail(email, "Cambio de contraseña", "Su nuevo password es:.. " + newPass);
+                enviarcorreo(email, newPass);
+                Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.INFO,
+                        "El correo se envio exitosamente.");
+                //SendMail(email, "Cambio de contraseña", "Su nuevo password es:.. " + newPass);
                 
             } else {
                 Logger.getLogger(MttoUsuarioRestorePass.class.getName()).log(Level.INFO,

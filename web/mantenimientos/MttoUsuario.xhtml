@@ -16,7 +16,7 @@ and open the template in the editor.
             <h:form id="forprincipal" >
 
                 <p:growl showDetail="true" showSummary="true" />
-                <p:panel id="basic" header="Mantenimientos Usuarios" style="width: 50%"  >
+                <p:panel id="basic" header="Mantenimientos Usuarios"   >
                     <p:menubar>
                         <p:menuitem value="Nuevo"  update="forprincipal" action="#{mttoUsuario.limpiarPantalla()}"
                                     icon="ui-icon-plus" />
@@ -109,8 +109,7 @@ and open the template in the editor.
                                      var="dpro" rowKey="#{dpro.idusuario}"
                                      selectionMode="single" rows="3" 
                                      editable="true" paginator="true" 
-                                     rowsPerPageTemplate="3" scrollable="true"
-                                     scrollWidth="650" > 
+                                     rowsPerPageTemplate="3" scrollable="true"> 
                             <p:ajax event="rowEdit" listener="#{mttoUsuario.actualizarUsuario}"     />
                             <p:ajax event="rowEditCancel" listener="#{mttoUsuario.eventoCancel}"     />
 
