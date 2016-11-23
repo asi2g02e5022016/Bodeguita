@@ -63,7 +63,7 @@ public class GuardarPedido {
         
             Map hast =  new Gson().fromJson(auth, HashMap.class);
             String json = getParemetro("json", hast);
-            Ordenpedido pedi = new Gson().fromJson(json, Ordenpedido.class);
+            OrdenpedidoDTO pedi = new Gson().fromJson(json, OrdenpedidoDTO.class);
             System.out.println("pedi" +pedi);
             if (pedi ==  null) {
                 throw new Exception("El pedido es obligatorio.");
@@ -73,8 +73,8 @@ public class GuardarPedido {
             }
             
             pedidoOnline.guardarPedidoOnline(
-                        pedi.getIdcliente().getIdcliente(), "lportillo", 
-                        pedi.getSucursal().getIdsucursal(),
+                        pedi.getIdcliente(), "lportillo", 
+                        pedi.getSucursal(),
                         pedi.getOrdenpedidodetalleList());
              
             resp = new ReponseWs();
