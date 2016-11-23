@@ -146,6 +146,9 @@ public class JobEJB implements JobEJBLocal {
         Date p = new Date();
 
         System.out.println("Fecha query: " + p.toString());
+        if(em==null){
+         System.out.println("Entity manager nulo");
+        }
         List<Programaciontareas> lprg = em.createQuery("select p from Programaciontareas p")
                 .getResultList();
         System.out.println("Programs found: " + lprg.size());

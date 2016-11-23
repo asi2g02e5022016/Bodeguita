@@ -35,9 +35,9 @@ and open the template in the editor.
                         <p:inputText value ="#{mttoMesa.idMesa}"
                                      style ="width: 40px" disabled="true"/>
                         <h:outputLabel value ="Nombre "/>
-                        <p:inputText  value ="#{mttoMesa.nombre}"/>
+                        <p:inputText  value ="#{mttoMesa.nombre}" required="true" requiredMessage="Nombre de mesa requerido"/>
                         <h:outputLabel value ="Piso" />
-                        <p:selectOneMenu id="listCompania"  value ="#{mttoMesa.idPiso}" >
+                        <p:selectOneMenu id="listCompania"  value ="#{mttoMesa.idPiso}" required="true" requiredMessage="Piso requerido" >
                             <f:selectItem itemLabel="" itemValue=""/> 
                             <f:selectItems value="#{mttoMesa.lstPiso}"
                                            var="inp" itemLabel="#{inp.nombre}" itemValue="#{inp.idpiso}"/>                                       
@@ -73,7 +73,7 @@ and open the template in the editor.
                                         <h:outputText value="#{dimp.nombre}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:inputText value="#{dimp.nombre}" style="width:100%"/>  
+                                        <p:inputText value="#{dimp.nombre}" style="width:100%" required="true" />  
                                     </f:facet> 
                                 </p:cellEditor>   
                             </p:column>
@@ -84,7 +84,7 @@ and open the template in the editor.
                                         <h:outputText value="#{dimp.idpiso.nombre}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:selectOneMenu id="listPiso"  value ="#{dimp.idpiso.idpiso}" style="width: 100%"  >
+                                        <p:selectOneMenu id="listPiso"  value ="#{dimp.idpiso.idpiso}" style="width: 100%" required="true" >
                                             <f:selectItems value="#{mttoMesa.lstPiso}"
                                                            var="inp" itemLabel="#{inp.nombre}" itemValue="#{inp.idpiso}"/>                                       
                                         </p:selectOneMenu> 
@@ -98,7 +98,7 @@ and open the template in the editor.
                                         <h:outputText value="#{dimp.x}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:inputText value="#{dimp.x}" style="width:100%"/>  
+                                        <p:inputText value="#{dimp.x}" style="width:100%" required="true"/>  
                                     </f:facet> 
                                 </p:cellEditor>
 
@@ -110,7 +110,7 @@ and open the template in the editor.
                                         <h:outputText value="#{dimp.y}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:inputText value="#{dimp.y}" style="width:100%"/>  
+                                        <p:inputText value="#{dimp.y}" style="width:100%" required="true"/>  
                                     </f:facet> 
                                 </p:cellEditor>
 

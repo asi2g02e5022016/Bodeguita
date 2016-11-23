@@ -8,8 +8,21 @@
     <renderer>
         <component-family>org.primefaces.component</component-family>
         <renderer-type>org.primefaces.component.InputTextRenderer</renderer-type>
-        <renderer-class>com.asi.restaurantebcd.negocio.util.InputTextRenderer</renderer-class>
+        <renderer-class>com.asi.restaurantbcd.renderer.InputTextRenderer</renderer-class>
     </renderer>
+
+    <renderer>
+        <component-family>org.primefaces.component</component-family>
+        <renderer-type>org.primefaces.component.InputNumberRenderer</renderer-type>
+        <renderer-class>com.asi.restaurantbcd.renderer.InputNumberRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+        <component-family>org.primefaces.component</component-family>
+        <renderer-type>org.primefaces.component.SelectOneMenuRenderer</renderer-type>
+        <renderer-class>com.asi.restaurantbcd.renderer.SelectOneMenuRenderer</renderer-class>
+    </renderer>
+            
 </render-kit>
 
 </faces-config>

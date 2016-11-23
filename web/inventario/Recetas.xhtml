@@ -19,7 +19,7 @@ and open the template in the editor.
                 <p:menubar>
                     <p:menuitem value="Nuevo" update="forprincipal" 
                                 action="#{recetas.limpiarPantalla()}"
-                                icon="ui-icon-plus" />
+                                icon="ui-icon-plus" immediate="true" />
                     <p:menuitem value="Guardar" 
                                  update="forprincipal" 
                                 action="#{recetas.guaradarReceta()}"
@@ -31,24 +31,24 @@ and open the template in the editor.
                 </p:menubar>
                     <h:panelGrid columns="6" width="100%">
                         <h:outputLabel  value="No Receta : "/>
-                        <p:inputText value="#{recetas.receta.idreceta}" readonly="true"  />
+                        <p:inputText value="#{recetas.receta.idreceta}" readonly="true" disabled="true"  />
                          <h:outputLabel  value="Descricion "  />
-                         <p:inputText    value="#{recetas.descripcion}"  /> 
+                         <p:inputText    value="#{recetas.descripcion}" required="true" disabled="#{!recetas.mostrarGuardar}"  /> 
                         <h:outputLabel  value="Producto "  />
                         <h:panelGroup >
-                        <p:inputText value="#{recetas.productoPT}"  readonly="true"  />
+                            <p:inputText value="#{recetas.productoPT}"  readonly="true" required="true" disabled="#{!recetas.mostrarGuardar}" />
                         <p:commandButton rendered="#{recetas.mostrarGuardar}"   action="#{recetas.mostrarDialogProdusStoPT()}"
                                            id="iconOnly" 
-                                           icon="ui-icon-search" title="Icon Only" />
+                                           icon="ui-icon-search" title="Icon Only" immediate="true" />
                         </h:panelGroup>
                          <h:outputLabel  value="cantidad "  />
-                         <p:inputNumber   value="#{recetas.cantidadPT}"  /> 
+                         <p:inputNumber   value="#{recetas.cantidadPT}" required="true" disabled="#{!recetas.mostrarGuardar}" /> 
                         <h:outputLabel  value="fecha  "  />
-                        <p:inputText readonly="true"  value="#{recetas.receta.fechacreacion}" >
+                        <p:inputText readonly="true"  value="#{recetas.receta.fechacreacion}" disabled="true" >
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:inputText>
                          <h:outputLabel  value="Media  "  />
-                         <p:inputText readonly="true"  value="#{recetas.medidaProductoMP}" />
+                         <p:inputText readonly="true"  value="#{recetas.medidaProductoMP}" disabled="true"  />
                     </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable   id="tablaDetalle"
@@ -197,7 +197,7 @@ and open the template in the editor.
                                     icon="ui-icon-plus" />
                         <p:menuitem id="idBuscarProPT" value="Buscar" update="tablaProddPT"
                                     action="#{recetas.buscarProductoPT()}"
-                                    icon=" ui-icon-search" > 
+                                    icon=" ui-icon-search" immediate="true" > 
                         </p:menuitem>
                     </p:menubar>
                 </h:panelGrid>

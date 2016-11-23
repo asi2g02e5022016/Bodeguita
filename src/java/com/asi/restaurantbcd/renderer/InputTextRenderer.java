@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.asi.restaurantebcd.negocio.util;
+package com.asi.restaurantbcd.renderer;
 
 import org.primefaces.component.inputtext.InputText;
 
@@ -17,7 +17,7 @@ public class InputTextRenderer extends org.primefaces.component.inputtext.InputT
     @Override
     protected String createStyleClass(InputText inputText) {
       String stly = super.createStyleClass(inputText);
-      if(inputText.isRequired() && !inputText.isDisabled() &&  !inputText.isReadonly()){
+      if(inputText.isRequired() && !inputText.isDisabled() ){
         stly = stly + " requiredInput"
                 ;
       }
