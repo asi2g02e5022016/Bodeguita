@@ -38,7 +38,7 @@ public class Numerofiscal implements Serializable {
     @Column(name = "idnumfiscal")
     private Integer idnumfiscal;
     @Column(name = "serie")
-    private Integer serie;
+    private String serie;
     @Column(name = "fecharesolusion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecharesolusion;
@@ -70,11 +70,11 @@ public class Numerofiscal implements Serializable {
         this.idnumfiscal = idnumfiscal;
     }
 
-    public Integer getSerie() {
+    public String getSerie() {
         return serie;
     }
 
-    public void setSerie(Integer serie) {
+    public void setSerie(String serie) {
         this.serie = serie;
     }
 
