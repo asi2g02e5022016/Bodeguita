@@ -97,6 +97,8 @@ and open the template in the editor.
                                     editable="true" paginator="true" 
                                     rowsPerPageTemplate="6"  >
                            
+                           <p:ajax event="rowEdit"  listener="#{mttoProducto.actualizarProducto}" />
+                           <p:ajax event="rowEditCancel"  listener="#{mttoProducto.onCancel}"/>
                            
                             <p:column headerText="Id" width="10%">
                                 <h:outputText value="#{dimp.idproducto}"  />                                
@@ -123,7 +125,7 @@ and open the template in the editor.
                                         <h:outputText value="#{dimp.idgrupoproducto.grupoproducto}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:selectOneMenu id="listGrupo"  value ="#{mttoProducto.idGrupoProducto}" style="width: 100%"  >
+                                        <p:selectOneMenu id="listGrupo"  value ="#{dimp.idgrupoproducto.idgrupoproducto}" style="width: 100%"  >
                                             <f:selectItems value="#{mttoProducto.lstGrupoProducto}"
                                                            var="gp" itemLabel="#{gp.grupoproducto}" itemValue="#{gp.idgrupoproducto}"/>                                       
                                         </p:selectOneMenu> 
@@ -138,7 +140,7 @@ and open the template in the editor.
                                         <h:outputText value="#{dimp.idtipoproducto.tipoproducto}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:selectOneMenu id="listTipo"  value ="#{mttoProducto.idTipoProducto}" style="width: 100%"  >
+                                        <p:selectOneMenu id="listTipo"  value ="#{dimp.idtipoproducto.idtipoproducto}" style="width: 100%"  >
                                             <f:selectItems value="#{mttoProducto.lstTipoProducto}"
                                                            var="tp" itemLabel="#{tp.tipoproducto}" itemValue="#{tp.idtipoproducto}"/>                                       
                                         </p:selectOneMenu> 
@@ -153,10 +155,7 @@ and open the template in the editor.
                                         <h:outputText value="#{dimp.idmedida.medida}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:selectOneMenu id="listMedida"  value ="#{mttoProducto.idMedida}" style="width: 100%"  >
-                                            <f:selectItems value="#{mttoProducto.lstMedida}"
-                                                           var="inp" itemLabel="#{inp.medida}" itemValue="#{inp.idmedida}"/>                                       
-                                        </p:selectOneMenu> 
+                                         <h:outputText value="#{dimp.idmedida.medida}" /> 
                                     </f:facet> 
                                 </p:cellEditor>   
                             </p:column>
@@ -179,10 +178,7 @@ and open the template in the editor.
                                         <h:outputText value="#{dimp.idreceta.descripcion}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:selectOneMenu id="listReceta"  value ="#{mttoProducto.idReceta}" style="width: 100%"  >
-                                            <f:selectItems value="#{mttoProducto.lstReceta}"
-                                                           var="rec" itemLabel="#{rec.descripcion}" itemValue="#{rec.idreceta}"/>                                       
-                                        </p:selectOneMenu> 
+                                         <h:outputText value="#{dimp.idreceta.descripcion}" />  
                                     </f:facet> 
                                 </p:cellEditor>   
                             </p:column>
@@ -271,16 +267,12 @@ and open the template in the editor.
                                          <h:outputText value="#{dimp.idusuario.idusuario}" />  
                                     </f:facet>
                                     <f:facet name="input">  
-                                        <p:selectOneMenu id="listUsuario"  value ="#{mttoProducto.idUsuario}" style="width: 100%"  >
-                                            <f:selectItems value="#{mttoProducto.lstUsario}"
-                                                           var="inp" itemLabel="#{inp.idusuario}" itemValue="#{inp.idusuario}"/>                                       
-                                        </p:selectOneMenu> 
+                                        <h:outputText value="#{dimp.idusuario.idusuario}" />  
                                     </f:facet> 
                                 </p:cellEditor>
                            </p:column>
                            
-                           <p:ajax event="rowEdit"  listener="#{mttoProducto.actualizarProducto}" />
-                           <p:ajax event="rowEditCancel"  listener="#{mttoProducto.onCancel}"/>
+
                            
                            <p:column style="width:50px; align-content: center" headerText="Modificar">
                                 <p:rowEditor />

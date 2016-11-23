@@ -325,6 +325,23 @@ public class MttoProducto implements Serializable {
             Producto imp = (Producto) event.getObject();                
 
                 System.out.println("Debug 2..." + imp.getProducto());
+                
+                //Actualiza grupo producto
+                Grupoproducto gp = new  Grupoproducto();
+                gp.setIdgrupoproducto(imp.getIdgrupoproducto().getIdgrupoproducto());
+                imp.setIdgrupoproducto(gp);
+                
+                //Actualiza marca
+                Marcaproducto mc = new Marcaproducto();
+                mc.setIdmarcaproducto(imp.getIdmarcaproducto().getIdmarcaproducto());
+                imp.setIdmarcaproducto(mc);
+                
+                //Actualiza tipo
+                Tipoproducto tp = new Tipoproducto();
+                tp.setIdtipoproducto(imp.getIdtipoproducto().getIdtipoproducto());
+                imp.setIdtipoproducto(tp);
+
+                
                 crud.guardarEntidad(imp);
                 System.out.println("Actualizado..." + imp.getPreciocompra());
                 alert("Producto actualizado exitosamente.",
