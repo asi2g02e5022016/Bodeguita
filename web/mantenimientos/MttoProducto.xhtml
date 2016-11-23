@@ -18,7 +18,7 @@ and open the template in the editor.
                <p:panel id="basic" header="Mantenimiento de Productos"  >
                    <p:menubar>
                        <p:menuitem value="Nuevo" update="forprincipal" action="#{mttoProducto.limpiarPantalla()}"
-                                   icon="ui-icon-plus" immediate="true"/>
+                                   icon="ui-icon-plus" immediate="true" />
                        <p:menuitem value="Guardar" update="forprincipal" action="#{mttoProducto.guardarProducto()}"
                                     icon="ui-icon-disk" />
                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoProducto.buscarProducto()}"
@@ -63,6 +63,7 @@ and open the template in the editor.
                                            var="md" itemLabel="#{md.medida}" itemValue="#{md.idmedida}"/>                                       
                         </p:selectOneMenu>
                         
+                                            
                         <p:outputLabel for="iptP1" value ="Producto "/>
                         <p:inputText id="iptP1" style="width: 50%" value ="#{mttoProducto.producto}" required="true" requiredMessage="El campo de producto es obligatorio"/>
                         
@@ -168,6 +169,20 @@ and open the template in the editor.
                                     </f:facet>
                                     <f:facet name="input">  
                                         <p:inputText value="#{dimp.producto}" style="width:100%"/>  
+                                    </f:facet> 
+                                </p:cellEditor>   
+                            </p:column>
+                           
+                           <p:column headerText="Receta" width="35%" filterBy="#{dimp.idreceta.descripcion}">
+                                <p:cellEditor>
+                                    <f:facet  name="output">
+                                        <h:outputText value="#{dimp.idreceta.descripcion}" />  
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu id="listReceta"  value ="#{mttoProducto.idReceta}" style="width: 100%"  >
+                                            <f:selectItems value="#{mttoProducto.lstReceta}"
+                                                           var="rec" itemLabel="#{rec.descripcion}" itemValue="#{rec.idreceta}"/>                                       
+                                        </p:selectOneMenu> 
                                     </f:facet> 
                                 </p:cellEditor>   
                             </p:column>
