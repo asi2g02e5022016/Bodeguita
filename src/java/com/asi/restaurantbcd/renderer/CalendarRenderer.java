@@ -40,8 +40,7 @@ public class CalendarRenderer extends org.primefaces.component.calendar.Calendar
     {
      String inputStyleClass = "ui-inputfield ui-widget ui-state-default ui-corner-all";
       if(calendar.isRequired() && !calendar.isDisabled() ){
-        inputStyleClass = inputStyleClass + " requiredInput"
-                ;
+        inputStyleClass = inputStyleClass + " requiredInput";
       }
         
       if (calendar.isDisabled()) {
