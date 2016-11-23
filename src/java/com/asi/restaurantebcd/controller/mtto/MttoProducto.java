@@ -5,6 +5,7 @@ import com.asi.restaurantbcd.modelo.Grupoproducto;
 import com.asi.restaurantbcd.modelo.Marcaproducto;
 import com.asi.restaurantbcd.modelo.Medida;
 import com.asi.restaurantbcd.modelo.Producto;
+import com.asi.restaurantbcd.modelo.Receta;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantbcd.modelo.Tipoproducto;
 import com.asi.restaurantbcd.modelo.Usuario;
@@ -72,6 +73,7 @@ public class MttoProducto implements Serializable {
          this.preciocompra=0.0;
          this.precioventa = 0.0;
                   
+           
           
          
                
@@ -130,6 +132,9 @@ public class MttoProducto implements Serializable {
      /* variable de fk tabla usuario*/
     private String idUsuario;
     
+    private  Integer idReceta;
+//    private Integer idReceta;
+    
     /* variable de descripcion del producto*/
     private String producto;
     /* variable que contiene la fecha de creacion de producto*/
@@ -159,6 +164,7 @@ public class MttoProducto implements Serializable {
     /*constructor clase usuario*/
     private Usuario usuarioConstructor;
     
+    private Receta recetaConstructor;
     
     
     //atributo que muestra en pantalla listado de impuestos
@@ -169,6 +175,7 @@ public class MttoProducto implements Serializable {
     private List<Tipoproducto> lstTipoProducto;
     private List<Medida> lstMedida;
     private List<Usuario> lstUsario;
+    private List<Receta> lstReceta;
 //    private DataTable tablaProducto = new DataTable();
     
     
@@ -192,8 +199,6 @@ public class MttoProducto implements Serializable {
     private BusquedasMedidasLocal busquedasMedidas;
     @EJB
     private BusquedasTipoProductoLocal ejbBusqMttoo;
-
-    
     
   
  
@@ -206,12 +211,19 @@ public class MttoProducto implements Serializable {
        idGrupoProducto= null;
        idTipoProducto = null;
        idMedida = null;
-//       idUsuario = null;
+       preciocompra = null;
+       precioventa= null;
        producto = null;
-//       fechaCreacion = null;
        lstProducto = null;
+        this.productoConstructor = null;
+            this.gproductoConstructor = null;
+            this.marcaConstructor = null;
+            this.medidaConstructor = null;
+            this.tproductoConstructor = null;
+            this.usuarioConstructor = null;
        
        
+        System.err.println("si entra");
        
        } 
     public void guardarProducto() {
@@ -241,14 +253,16 @@ public class MttoProducto implements Serializable {
                 return;
             }
                         
-            productoConstructor = new Producto();
-            marcaConstructor = new Marcaproducto();
-            gproductoConstructor = new Grupoproducto();
-            tproductoConstructor = new Tipoproducto();
-            medidaConstructor = new Medida();
-            usuarioConstructor = new Usuario();
+           productoConstructor = new Producto();
+           marcaConstructor = new Marcaproducto();
+           gproductoConstructor = new Grupoproducto();
+           tproductoConstructor = new Tipoproducto();
+           medidaConstructor = new Medida();
+           usuarioConstructor = new Usuario();
+        
                        
                      
+                 
             marcaConstructor.setIdmarcaproducto(idMarcaProducto);
             productoConstructor.setIdmarcaproducto(marcaConstructor);
             
@@ -278,25 +292,25 @@ public class MttoProducto implements Serializable {
 //             productoConstructor.setIdusuario(usuarioConstructor);
             
             crud.guardarEntidad(this.productoConstructor);
-            this.limpiarPantalla();
+           
             
             alert("Producto ingresado exitosamente.",
                     FacesMessage.SEVERITY_INFO);
           
-//            this.productoConstructor = null;
-//            this.gproductoConstructor = null;
-//            this.marcaConstructor = null;
-//            this.medidaConstructor = null;
-//            this.tproductoConstructor = null;
-//            this.usuarioConstructor = null;
+            this.productoConstructor = null;
+            this.gproductoConstructor = null;
+            this.marcaConstructor = null;
+            this.medidaConstructor = null;
+            this.tproductoConstructor = null;
+            this.usuarioConstructor = null;
             
                this.lstProducto = this.ejbBusqMttoP.buscarProd();
                                      
         } catch (Exception ex) {
 
-            Logger.getLogger(MttoDepartamento.class.getName())
+            Logger.getLogger(MttoProducto.class.getName())
                     .log(Level.SEVERE, null, ex);
-            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+            alert("ERROR EN EL GUARDAR PRODUCTO", FacesMessage.SEVERITY_ERROR);
 
         }
     }
@@ -313,7 +327,7 @@ public class MttoProducto implements Serializable {
                 System.out.println("Debug 2..." + imp.getProducto());
                 crud.guardarEntidad(imp);
                 System.out.println("Actualizado..." + imp.getPreciocompra());
-                alert("Impuesto actualizado exitosamente.",
+                alert("Producto actualizado exitosamente.",
                         FacesMessage.SEVERITY_INFO);
             this.productoConstructor = null;
             this.gproductoConstructor = null;
@@ -321,6 +335,7 @@ public class MttoProducto implements Serializable {
             this.medidaConstructor = null;
             this.tproductoConstructor = null;
             this.usuarioConstructor = null;
+            this.recetaConstructor = null;
             
             this.lstProducto = this.ejbBusqMttoP.buscarProd();
             imp = null;
@@ -365,6 +380,7 @@ public class MttoProducto implements Serializable {
          this.lstGrupoProducto = this.ejbBusqMttoP.buscarGrupoProducto();
           this.lstTipoProducto = this.ejbBusqMttoo.buscarTipoProducto();
          this.lstMedida = this.busquedasMedidas.buscarMedida();
+        this.lstReceta = this.ejbBusqMttoP.buscarReceta();
          sesion = Utilidades.findBean("sessionUsr");
          idUsuario = sesion.getUsuario().getIdusuario();
          
@@ -404,6 +420,14 @@ public class MttoProducto implements Serializable {
     
     public SessionUsr getSesion() {
         return sesion;
+    }
+
+    public Integer getIdReceta() {
+        return idReceta;
+    }
+
+    public void setIdReceta(Integer idReceta) {
+        this.idReceta = idReceta;
     }
 
     public void setSesion(SessionUsr sesion) {
@@ -674,6 +698,22 @@ public class MttoProducto implements Serializable {
         this.ejbBusqMttoP = ejbBusqMttoP;
     }
     
+    public Receta getRecetaConstructor() {
+        return recetaConstructor;
+    }
+
+    public void setRecetaConstructor(Receta recetaConstructor) {
+        this.recetaConstructor = recetaConstructor;
+    }
+
+    public List<Receta> getLstReceta() {
+        return lstReceta;
+    }
+
+    public void setLstReceta(List<Receta> lstReceta) {
+        this.lstReceta = lstReceta;
+    }
+    
      //</editor-fold >
 
 //    public List<SelectItem> getLstGrupos() {
@@ -683,6 +723,9 @@ public class MttoProducto implements Serializable {
 //    public void setLstGrupos(List<SelectItem> lstGrupos) {
 //        this.lstGrupos = lstGrupos;
 //    }
+
+    
+
     
     
     
