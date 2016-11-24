@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <mime-mapping>
-      <extension>ttf</extension>
-      <mime-type>application/x-font-ttf</mime-type>
-   </mime-mapping>
-   <mime-mapping>
-      <extension>woff</extension>
-      <mime-type>application/x-font-woff</mime-type>
-   </mime-mapping>
-   <mime-mapping>
-      <extension>woff2</extension>
-      <mime-type>application/x-font-woff2</mime-type>
-   </mime-mapping>
-   <mime-mapping>
-      <extension>eot</extension>
-      <mime-type>application/x-font-eot</mime-type>
-   </mime-mapping>
-
+        <extension>ttf</extension>
+        <mime-type>application/x-font-ttf</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff</extension>
+        <mime-type>application/x-font-woff</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff2</extension>
+        <mime-type>application/x-font-woff2</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>eot</extension>
+        <mime-type>application/x-font-eot</mime-type>
+    </mime-mapping>
     <listener>
         <listener-class>com.asi.restaurantebcd.job.QuartzListener</listener-class>
     </listener>
@@ -92,7 +91,7 @@
         <local>com.asi.restaurantebcd.job.TareaEJBLocal</local>
         <ejb-link>/TestEJB</ejb-link>
     </ejb-local-ref>
-     <ejb-local-ref>
+    <ejb-local-ref>
         <ejb-ref-name>/JobEJB</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
         <local>com.asi.restaurantebcd.job.JobEJBLocal</local>
@@ -104,7 +103,7 @@
         <local>com.asi.restaurantebcd.job.TareaEJBLocal</local>
         <ejb-link>/procesaFacturasEJB</ejb-link>
     </ejb-local-ref>
-        <ejb-local-ref>
+    <ejb-local-ref>
         <ejb-ref-name>PedidoOnline</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
         <local>com.asi.restaurantebcd.negocio.base.PedidoOnlineLocal</local>
@@ -128,10 +127,16 @@
         <local>com.asi.restaurantebcd.negocio.base.PedidoOnlineLocal</local>
         <ejb-link>PedidoOnline</ejb-link>
     </ejb-local-ref>
-        <ejb-local-ref>
+    <ejb-local-ref>
         <ejb-ref-name>BusquedaPedido</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
         <local>com.asi.restaurantebcd.negocio.base.BusquedaPedidoLocal</local>
         <ejb-link>BusquedaPedido</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CrudBDC1</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>com.asi.restaurantebcd.negocio.base.CrudBDCLocal</local>
+        <ejb-link>CrudBDC</ejb-link>
     </ejb-local-ref>
 </web-app>
