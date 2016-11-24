@@ -22,7 +22,7 @@ and open the template in the editor.
                                     icon="ui-icon-plus" />
                         <p:menuitem value="Guardar" update="forprincipal" action="#{mttoUsuario.guardarUsuario()}"  
                                     icon="ui-icon-disk" />
-                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoUsuario.buscarUsuario()}"
+                        <p:menuitem value="Buscar" update="forprincipal" action="#{mttoUsuario.buscarUsuario()}" immediate="true"
                                     icon=" ui-icon-search" />
                     </p:menubar>
 
@@ -49,7 +49,7 @@ and open the template in the editor.
                                     </p:column>
                                     <p:column>
                                         <p:commandButton    action="#{mttoUsuario.mostrarDialogEmpleado()}"
-                                                            id="iconOnly" update="forprincipal"
+                                                            id="iconOnly" update="forprincipal" ajax="true" immediate="true"
                                                             icon="ui-icon-search" title="Icon Only" />
                                     </p:column>                        
                                 </p:row>
