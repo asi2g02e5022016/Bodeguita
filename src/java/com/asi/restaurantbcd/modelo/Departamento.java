@@ -40,12 +40,11 @@ public class Departamento implements Serializable {
     @Column(name = "iddepartamento")
     private Integer iddepartamento;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    
     @Column(name = "departamento")
     private String departamento;
     @Basic(optional = false)
-    @NotNull
+   
     @Column(name = "fechacreacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
