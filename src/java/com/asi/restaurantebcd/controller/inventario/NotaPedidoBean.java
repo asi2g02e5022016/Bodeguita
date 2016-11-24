@@ -178,6 +178,18 @@ public class NotaPedidoBean implements Serializable{
             
         try {
             this.notaEnca = crud.buscarEntidad(Notapedido.class, notaEnca.getNotapedidoPK());
+            boolean enviar = false;
+            for(Notapedidodetalle pdet:notaEnca.getNotapedidodetalleList()){
+                if(pdet.getCantidadconfirmada()>0){
+                 enviar=true;
+                }
+            }
+            
+            if(!enviar){
+              alert("No se puede enviar el pedido sin confirmar ninguna unidad",FacesMessage.SEVERITY_WARN);
+                   return;
+            }
+            
             for(Notapedidodetalle pdet:notaEnca.getNotapedidodetalleList()){
                 ejbInv.afectarExistencia((new Integer(pdet.getCantidadconfirmada())).doubleValue(), pdet.getIdproducto() , session.getUsuario(), notaEnca.getIdSucursalOrigen(), 0D,true,false);
                 ejbInv.afectarTransito((new Integer(pdet.getCantidadconfirmada())).doubleValue(), pdet.getIdproducto() , session.getUsuario(), notaEnca.getSucursal(), (new Float(pdet.getCosto()).doubleValue()),false,true);
@@ -466,7 +478,14 @@ public class NotaPedidoBean implements Serializable{
                 
          if(notaEnca.getIdSucursalOrigen().getIdsucursal().equals(session.getSucursal().getIdsucursal()) 
                && notaEnca.getIdestado().getIdestado().equals(EstadoEnum.GENERADO.getInteger())){
-            setMostrarBtnEnviar(true);mostrarCantConfirmada = true; System.out.println("true"); } else {setMostrarBtnEnviar(false); mostrarCantConfirmada = false; System.out.println("false");}
+            setMostrarBtnEnviar(true);mostrarCantConfirmada = true; 
+            System.out.println("No se permitira enviar cantidades mayores a la existencia actual"); 
+            alert("No se permitira enviar cantidades mayores a la existencia actual",FacesMessage.SEVERITY_INFO);
+         } else {
+              setMostrarBtnEnviar(false); 
+              mostrarCantConfirmada = false; 
+              System.out.println("false");
+         }
         
           if(notaEnca.getSucursal().getIdsucursal().equals(session.getSucursal().getIdsucursal()) 
                && notaEnca.getIdestado().getIdestado().equals(EstadoEnum.TRANSITO.getInteger())){

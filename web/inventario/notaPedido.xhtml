@@ -30,51 +30,58 @@ and open the template in the editor.
                                 action="#{notaPedido.cancelarPedido()}" 
                                 icon="ui-icon-disk" />
                     
-                    <p:menuitem value="Enivar Pedido" 
+                    <p:menuitem value="Enviar Pedido" 
                                 update="forprincipal" 
                                 rendered="#{notaPedido.mostrarBtnEnviar}" 
                                 action="#{notaPedido.enviarPedido()}" 
                                 icon="ui-icon-disk" />
+                    
                     <p:menuitem value="Recibir Pedido" 
                                 update="forprincipal" 
                                 rendered="#{notaPedido.mostrarBtnRecibir}" 
                                 action="#{notaPedido.recibirPedido()}" 
                                 icon="ui-icon-disk" />
                     
-                     <p:menuitem value="Exportar"
-                                icon="fa fa-file-excel-o" />
                      <p:menuitem value="Monitor" action="#{notaPedido.mostrarDialogoMonNotPedido()}"
-                                icon=" ui-icon-search" />
+                                 icon=" ui-icon-search" update="forprincipal"  process="@this" immediate="true"/>
                 </p:menubar>
                 <h:panelGrid columns="2" width="100%">
                     <h:panelGrid columns="6" width="80%">
                         <h:outputLabel  value="No Documento : "/>
-                        <p:inputText readonly="true" value="#{notaPedido.nodocu}"  />
+                        <p:inputText readonly="true" value="#{notaPedido.nodocu}" disabled="#{!notaPedido.mostrarBtnGuardar}"  />
                         <h:outputLabel  value="Usuario: "  />
-                        <p:inputText readonly="true" value="#{notaPedido.usr}"  />
+                        <p:inputText readonly="true" value="#{notaPedido.usr}" disabled="#{!notaPedido.mostrarBtnGuardar}"  />
                         
                         <h:outputLabel  value="Sucursal "  />
-                        <p:inputText  readonly="true" value="#{notaPedido.sucursalDestino}"  />
+                        <p:inputText  readonly="true" value="#{notaPedido.sucursalDestino}" disabled="#{!notaPedido.mostrarBtnGuardar}"  />
 
 
                         <h:outputLabel  value="Estado "  />
-                        <p:inputText  readonly="true" value="#{notaPedido.estado}"  />   
+                        <p:inputText  readonly="true" value="#{notaPedido.estado}" disabled="#{!notaPedido.mostrarBtnGuardar}"  />   
                         <h:outputLabel  value="Fecha "  />
-                        <p:inputText readonly="true" value="#{notaPedido.fecha}"  >
+                        <p:inputText readonly="true" value="#{notaPedido.fecha}" disabled="#{!notaPedido.mostrarBtnGuardar}" >
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                         </p:inputText>
 
                     </h:panelGrid>
                     <h:panelGrid columns="3" width="20%">
                         <h:outputLabel  value="Sucursal Origen "  />
-                        <p:inputText readonly="true"  value="#{notaPedido.sucursalOrigenNombre}"  style=" width: 100%" />
+                        <p:inputText readonly="true" 
+                                     value="#{notaPedido.sucursalOrigenNombre}" 
+                                     style=" width: 100%" 
+                                     required="true"
+                                     requiredMessage="Sucursal origen requerida"
+                                     disabled="#{!notaPedido.mostrarBtnGuardar}"/>
                         <p:commandButton   action="#{notaPedido.mostrarDialogOrigen()}"
-                                           id="iconOnly" disabled="#{inactivarSelectorSucursal}"
+                                           id="iconOnly" 
+                                           disabled="#{inactivarSelectorSucursal}"
+                                           rendered="#{notaPedido.mostrarBtnGuardar}"
                                            icon="ui-icon-search" title="Icon Only"  />
+                        <p:outputLabel value="" rendered="#{!notaPedido.mostrarBtnGuardar}" />
 
 
                         <h:outputLabel  value="Observaciones "  />
-                        <p:inputTextarea rows="3" cols="25" value="#{notaPedido.observacion}"  />
+                        <p:inputTextarea rows="3" cols="25" value="#{notaPedido.observacion}" disabled="#{!notaPedido.mostrarBtnGuardar and !notaPedido.mostrarBtnCancelar and !notaPedido.mostrarBtnEnviar and !notaPedido.mostrarBtnRecibir}"  />
 
                     </h:panelGrid>
 
@@ -99,7 +106,7 @@ and open the template in the editor.
                                     <h:outputText value="#{det.cantidadsolicitada}" />
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText id="modelInput" value="#{det.cantidadsolicitada}" style="width:70%" disabled="#{det.lineaNueva==false}"/>
+                                    <p:inputText id="modelInput" value="#{det.cantidadsolicitada}" style="width:70%" disabled="#{det.lineaNueva==false}" required="true"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
@@ -110,8 +117,8 @@ and open the template in the editor.
                                 </f:facet>
                                 <f:facet name="input">
                                     <p:inputNumber  value="#{det.cantidadconfirmada}" style="width:70%" 
-                                                    maxValue="#{det.existencia}" minValue="0" 
-                                                    disabled="#{!notaPedido.mostrarCantConfirmada}"  >
+                                                    maxValue="#{notaPedido.mostrarBtnRecibir?det.cantidadconfirmada:det.existencia}" minValue="0" 
+                                                    disabled="#{!notaPedido.mostrarCantConfirmada}" required="true"  >
                                                                             </p:inputNumber>
                                 </f:facet>
                             </p:cellEditor>
@@ -123,8 +130,8 @@ and open the template in the editor.
                                 </f:facet>
                                 <f:facet name="input">
                                     <p:inputNumber  value="#{det.cantidadrecibida}" style="width:70%" 
-                                                    minValue="0"  maxValue="10000"
-                                                    disabled="#{!notaPedido.mostrarCantRecibida}"  >
+                                                    minValue="0"  maxValue="#{det.cantidadconfirmada}"
+                                                    disabled="#{!notaPedido.mostrarCantRecibida}" required="true"  >
                                                                             </p:inputNumber>
                                 </f:facet>
                             </p:cellEditor>
@@ -139,6 +146,8 @@ and open the template in the editor.
                         </p:column>
                     </p:dataTable>
                 </h:panelGrid>
+                <h:outputText value="* No se permite enviar cantidades mayores a la existencia actual" style="background-color: yellow" rendered="#{notaPedido.mostrarBtnEnviar}" />
+                <h:outputText value="* No se permite recibir cantidades mayores a las confirmadas" style="background-color: yellow" rendered="#{notaPedido.mostrarBtnRecibir}" />
             </p:panel>
 
             <p:dialog header="Buscar Sucursal" width="50%" widgetVar="dialogoSucursal" minHeight="100">

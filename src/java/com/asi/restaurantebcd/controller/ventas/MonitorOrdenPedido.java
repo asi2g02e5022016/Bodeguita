@@ -364,6 +364,7 @@ public class MonitorOrdenPedido implements Serializable {
         public void facturar() {
         try {
             ejbFactura.procesarFactura(pedidoActual, serie, numeroFactura, idCaja);
+            limpiar();
             alert("Factura creada satisfactoriamente",FacesMessage.SEVERITY_INFO);
         } catch (IllegalStateException ex) {
             alert(ex.getMessage(),FacesMessage.SEVERITY_ERROR);
@@ -416,6 +417,7 @@ public class MonitorOrdenPedido implements Serializable {
     }
 
     public void limpiar() {
+        
         idOrdenPedido = null;
         idCliente = null;
         idEstado = null;
@@ -426,6 +428,14 @@ public class MonitorOrdenPedido implements Serializable {
         cliente=null;
         estado=null;
         lstOrdenPedidoDet = null;
+        idSucursal = null;
+        tipoPedido=null;
+        numeroFactura=null;
+        serie = null;
+        idCaja = null;
+        pedidoActual = null;
+        
+          
     }
 
     public void limpiarDialogo() {
