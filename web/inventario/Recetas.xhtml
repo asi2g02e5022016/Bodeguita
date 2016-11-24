@@ -19,7 +19,7 @@ and open the template in the editor.
                 <p:menubar>
                     <p:menuitem value="Nuevo" update="forprincipal" 
                                 action="#{recetas.limpiarPantalla()}"
-                                icon="ui-icon-plus" immediate="true" />
+                                icon="ui-icon-plus" />
                     <p:menuitem value="Guardar" 
                                  update="forprincipal" 
                                 action="#{recetas.guaradarReceta()}"
@@ -31,24 +31,24 @@ and open the template in the editor.
                 </p:menubar>
                     <h:panelGrid columns="6" width="100%">
                         <h:outputLabel  value="No Receta : "/>
-                        <p:inputText value="#{recetas.receta.idreceta}" readonly="true" disabled="true"  />
+                        <p:inputText value="#{recetas.receta.idreceta}" readonly="true"  />
                          <h:outputLabel  value="Descricion "  />
-                         <p:inputText    value="#{recetas.descripcion}" required="true" disabled="#{!recetas.mostrarGuardar}"  /> 
+                         <p:inputText    value="#{recetas.descripcion}"  /> 
                         <h:outputLabel  value="Producto "  />
                         <h:panelGroup >
-                            <p:inputText value="#{recetas.productoPT}"  readonly="true" required="true" disabled="#{!recetas.mostrarGuardar}" />
+                        <p:inputText value="#{recetas.productoPT}"  readonly="true"  />
                         <p:commandButton rendered="#{recetas.mostrarGuardar}"   action="#{recetas.mostrarDialogProdusStoPT()}"
                                            id="iconOnly" 
-                                           icon="ui-icon-search" title="Icon Only" immediate="true" />
+                                           icon="ui-icon-search" title="Icon Only" />
                         </h:panelGroup>
                          <h:outputLabel  value="cantidad "  />
-                         <p:inputNumber   value="#{recetas.cantidadPT}" required="true" disabled="#{!recetas.mostrarGuardar}" /> 
+                         <p:inputNumber   value="#{recetas.cantidadPT}"  /> 
                         <h:outputLabel  value="fecha  "  />
-                        <p:inputText readonly="true"  value="#{recetas.receta.fechacreacion}" disabled="true" >
+                        <p:inputText readonly="true"  value="#{recetas.receta.fechacreacion}" >
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:inputText>
                          <h:outputLabel  value="Media  "  />
-                         <p:inputText readonly="true"  value="#{recetas.medidaProductoMP}" disabled="true"  />
+                         <p:inputText readonly="true"  value="#{recetas.medidaProductoMP}" />
                     </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable   id="tablaDetalle"
@@ -87,6 +87,13 @@ and open the template in the editor.
                             </f:facet>
                             <p:rowEditor />
                         </p:column>
+                           <p:column style="width:32px" headerText="- "   rendered="#{recetas.mostrarGuardar}">
+         
+                               <p:commandButton update="tablaDetalle"
+                                                       action="#{recetas.eliminarProducto(det)}"
+                                                        icon="ui-icon-close"  
+                                                      />
+                        </p:column>
                                                 <f:facet name="footer">
           
                         <h:commandLink>
@@ -121,8 +128,9 @@ and open the template in the editor.
                     <p:dataTable id="tablaProdd" 
                                  value="#{recetas.lstProducto}"
                                  emptyMessage=""
+                                 paginator="true"
                                   var="dpro" rowKey="#{dpro.idproducto}"       
-                                 selectionMode="single" rows="19"  >                        
+                                 selectionMode="single" rows="7"  >                        
                         <p:ajax event="rowSelect"  update="forprincipal"  process="@all"
                                 listener="#{recetas.onRowSelectProduc}"
                             />
@@ -166,6 +174,7 @@ and open the template in the editor.
                                  value="#{recetas.lstRecetaMon}"
                                  var="det"
                                  emptyMessage=""
+                                 selectionMode="single" 
                                  rowKey="#{det.idreceta}"
                                  rows="8"  >                        
                         <p:ajax event="rowSelect"  listener="#{recetas.onRowSelectMon}"
@@ -197,7 +206,7 @@ and open the template in the editor.
                                     icon="ui-icon-plus" />
                         <p:menuitem id="idBuscarProPT" value="Buscar" update="tablaProddPT"
                                     action="#{recetas.buscarProductoPT()}"
-                                    icon=" ui-icon-search" immediate="true" > 
+                                    icon=" ui-icon-search" > 
                         </p:menuitem>
                     </p:menubar>
                 </h:panelGrid>
@@ -213,8 +222,9 @@ and open the template in the editor.
                     <p:dataTable id="tablaProddPT" 
                                  emptyMessage=""
                                  value="#{recetas.lstProductoPT}"
-                                  var="dpro" rowKey="#{dpro.idproducto}"       
-                                 selectionMode="single" rows="19"  >                        
+                                  var="dpro" rowKey="#{dpro.idproducto}"      
+                                  paginator="true"
+                                 selectionMode="single" rows="5"  >                        
                         <p:ajax event="rowSelect"  update="forprincipal"  process="@all"
                                 listener="#{recetas.onRowSelectProducuctoPT}"
                             />

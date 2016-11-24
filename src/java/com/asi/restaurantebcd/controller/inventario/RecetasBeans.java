@@ -115,7 +115,7 @@ public class RecetasBeans implements Serializable{
                 return;
             }
             if (recetaDetaPT == null) {
-                alert("Debe elegir un produto PT", FacesMessage.SEVERITY_INFO);
+                alert("Debe elegor un produto PT", FacesMessage.SEVERITY_INFO);
                 return;
             }
             System.out.println("que paso...");
@@ -273,7 +273,19 @@ public class RecetasBeans implements Serializable{
         }
         
     }
-        
+            public void eliminarProducto(Recetadetalle p) {
+        try {
+            if (p != null) {
+                lstRecetaDetalle.remove(p);
+       
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Receta.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+
+    }
         
                 public void mostrarDialogMonitor() {
      RequestContext requestContext = RequestContext.getCurrentInstance();
