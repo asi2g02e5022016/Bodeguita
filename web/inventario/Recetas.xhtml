@@ -87,6 +87,13 @@ and open the template in the editor.
                             </f:facet>
                             <p:rowEditor />
                         </p:column>
+                           <p:column style="width:32px" headerText="- "   rendered="#{recetas.mostrarGuardar}">
+         
+                               <p:commandButton update="tablaDetalle"
+                                                       action="#{recetas.eliminarProducto(det)}"
+                                                        icon="ui-icon-close"  
+                                                      />
+                        </p:column>
                                                 <f:facet name="footer">
           
                         <h:commandLink>
