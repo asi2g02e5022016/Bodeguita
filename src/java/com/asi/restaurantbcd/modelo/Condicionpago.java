@@ -35,8 +35,7 @@ public class Condicionpago implements Serializable {
     @Column(name = "idcondicionpago")
     private Integer idcondicionpago;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+   
     @Column(name = "condicionpago")
     private String condicionpago;
 
