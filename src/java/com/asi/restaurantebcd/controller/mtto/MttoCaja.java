@@ -136,7 +136,7 @@ public class MttoCaja implements Serializable {
                this.sucursalConstructor = null;
               this.lstCaja = this.ejbBusqCaja.BuscarCaja();
             cj = null;
-              alert("Impuesto actualizado exitosamente.",
+              alert("Caja actualizada exitosamente.",
                         FacesMessage.SEVERITY_INFO);
            }
                    
