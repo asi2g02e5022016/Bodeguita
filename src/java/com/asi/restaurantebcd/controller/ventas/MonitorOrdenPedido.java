@@ -5,6 +5,7 @@
  */
 package com.asi.restaurantebcd.controller.ventas;
 
+import com.asi.restaurantbcd.modelo.Caja;
 import com.asi.restaurantbcd.modelo.Configuracion;
 import com.asi.restaurantbcd.modelo.Numerofiscal;
 import com.asi.restaurantbcd.modelo.Ordenpedido;
@@ -46,6 +47,34 @@ import org.primefaces.event.SelectEvent;
 @ViewScoped
 
 public class MonitorOrdenPedido implements Serializable {
+
+    /**
+     * @return the lstCaja
+     */
+    public List<Caja> getLstCaja() {
+        return lstCaja;
+    }
+
+    /**
+     * @param lstCaja the lstCaja to set
+     */
+    public void setLstCaja(List<Caja> lstCaja) {
+        this.lstCaja = lstCaja;
+    }
+
+    /**
+     * @return the idCaja
+     */
+    public Integer getIdCaja() {
+        return idCaja;
+    }
+
+    /**
+     * @param idCaja the idCaja to set
+     */
+    public void setIdCaja(Integer idCaja) {
+        this.idCaja = idCaja;
+    }
 
     /**
      * @return the pedidoActual
@@ -130,11 +159,14 @@ public class MonitorOrdenPedido implements Serializable {
     private Integer numeroFactura;
     private String serie;
     private Ordenpedido pedidoActual;
+    private Integer idCaja;
+    
 
     private List<Ordenpedido> lstOrdenPedido;
     private List<Ordenpedidodetalle> lstOrdenPedidoDet;
     private List<Sucursal> lstSucursal;
     private List<Numerofiscal> lstNumeroFiscal;
+    private List<Caja> lstCaja;
 
     private DataTable dtOrdenPedido = new DataTable();
 
@@ -331,7 +363,7 @@ public class MonitorOrdenPedido implements Serializable {
 
         public void facturar() {
         try {
-            ejbFactura.procesarFactura(pedidoActual, serie, numeroFactura);
+            ejbFactura.procesarFactura(pedidoActual, serie, numeroFactura, idCaja);
             alert("Factura creada satisfactoriamente",FacesMessage.SEVERITY_INFO);
         } catch (IllegalStateException ex) {
             alert(ex.getMessage(),FacesMessage.SEVERITY_ERROR);
@@ -406,6 +438,7 @@ public class MonitorOrdenPedido implements Serializable {
     public void onRowSelectPedido(SelectEvent event) {
         try {
             Ordenpedido op = (Ordenpedido) event.getObject();
+            pedidoActual = op;
             if (op != null) {
                 Sucursal su = new Sucursal();
                 idOrdenPedido = op.getOrdenpedidoPK().getIdordenpedido();
@@ -413,6 +446,7 @@ public class MonitorOrdenPedido implements Serializable {
                 su.setIdsucursal(idSucursal);
                 sucursal = ejbBuscarPedido.nombreSucursal(su);
                 lstNumeroFiscal = ejbFactura.numeroFiscalList(op.getSucursal());
+                lstCaja = ejbFactura.cajaList(op.getSucursal());
                 cliente = op.getIdcliente().getNombre() + " " + op.getIdcliente().getApellido();
                 estado = op.getIdestado().getEstado();
                 fechaPedido = op.getFechapedido();
