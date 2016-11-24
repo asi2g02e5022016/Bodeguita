@@ -164,7 +164,7 @@ public class MttoDepartamento implements Serializable{
                 Departamento imp = (Departamento) event.getObject();                
                  crud.guardarEntidad(imp);
                 
-                alert("Impuesto actualizado exitosamente.",
+                alert("Departamento actualizado exitosamente.",
                         FacesMessage.SEVERITY_INFO);
                 this.departamentoConstructor = null;
                 this.departamento = null;

@@ -72,7 +72,7 @@ public class GestorEmail implements GestorEmailLocal {
     /**
      * Objeto de tipo Session.
      */
-    @Resource(name = "mail/dbc")
+    @Resource(name = "mail/bdc")
     private Session mailSession;
     
     

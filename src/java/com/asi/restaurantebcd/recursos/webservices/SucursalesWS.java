@@ -5,8 +5,10 @@
  */
 package com.asi.restaurantebcd.recursos.webservices;
 
+import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantbcd.modelo.Sucursal;
 import com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal;
+import com.asi.restaurantebcd.negocio.base.CrudBDCLocal;
 import com.asi.restaurantebcd.negocio.util.ReponseWs;
 import com.asi.restaurantebcd.negocio.util.WsException;
 import com.google.gson.Gson;
@@ -35,6 +37,8 @@ import javax.ws.rs.core.Response;
  */
 @Path("/SucursalWS")
 public class SucursalesWS {
+
+    CrudBDCLocal crudBDC = lookupCrudBDCLocal();
 
     BusquedasSucursalLocal busquedasSucursal = lookupBusquedasSucursalLocal();
 
@@ -70,6 +74,14 @@ public class SucursalesWS {
             if (lstProduc == null || lstProduc.isEmpty()) {
                 throw new Exception("No se encontraron resultados.");
             }
+            for (Sucursal sucursal : lstProduc) {
+                Impuesto imp = lookupCrudBDCLocal()
+                        .buscarEntidad(Impuesto.class, Integer.parseInt("1"));
+                if (imp == null) {
+                    throw new Exception("No exist impuesto de iva");
+                }
+                sucursal.setIva(imp.getPorcentaje());
+            }
             String jsonRetu = 
                     new Gson().toJson(lstProduc,
                             new TypeToken<ArrayList<Sucursal>>() {}.getType());
@@ -100,6 +112,16 @@ public class SucursalesWS {
         try {
             javax.naming.Context c = new InitialContext();
             return (BusquedasSucursalLocal) c.lookup("java:global/RestaurantBDC/BusquedasSucursal!com.asi.restaurantebcd.negocio.base.BusquedasSucursalLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private CrudBDCLocal lookupCrudBDCLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (CrudBDCLocal) c.lookup("java:global/RestaurantBDC/CrudBDC!com.asi.restaurantebcd.negocio.base.CrudBDCLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

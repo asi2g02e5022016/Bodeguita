@@ -248,7 +248,7 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
                
                fdet.setIdproducto(pdet.getIdproducto());
                fdet.setCosto(pdet.getCosto());
-               fdet.setIva(pdet.getPrecio());
+               fdet.setIva(pdet.getIva());
                fdet.setPrecio(pdet.getPrecio());
                
                factDetalles.add(fdet);
@@ -287,7 +287,7 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
               }
         }
   
-   public void procesarFactura(Ordenpedido p, String serie, Integer numeroDocu) throws IllegalStateException, SecurityException, SystemException, NamingException{
+   public void procesarFactura(Ordenpedido p, String serie, Integer numeroDocu, Integer idCaja) throws IllegalStateException, SecurityException, SystemException, NamingException{
            
         try {
             Ordenpedido pedido = p;
@@ -300,7 +300,8 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
             
             factPk.setIdfactura(documento);
             factPk.setIdserie(serie);
-            factPk.setIdsucursal(pedido.getSucursal().getIdsucursal());
+            
+            factPk.setIdsucursal(pedido.getOrdenpedidoPK().getIdsucursal());
             
             factEnca.setFacturaencabezadoPK(factPk);
             
@@ -342,7 +343,7 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
                 
                 fdet.setIdproducto(pdet.getIdproducto());
                 fdet.setCosto(pdet.getCosto());
-                fdet.setIva(pdet.getPrecio());
+                fdet.setIva(pdet.getIva());
                 fdet.setPrecio(pdet.getPrecio());
                 
                 factDetalles.add(fdet);
@@ -364,7 +365,12 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
                    }
               }
             
+            factEnca.setIdcaja(new Caja(idCaja));
             ejbCrud.persistirEntidad(factEnca);
+            
+            pedido.setIdestado(new Estado(EstadoEnum.TERMINADO.getInteger()));
+            
+            ejbCrud.guardarEntidad(pedido);
             
         } catch (Exception ex) {
             Logger.getLogger(CrearFacturaEJB.class.getName()).log(Level.SEVERE, null, ex);
@@ -376,6 +382,15 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
              List<Numerofiscal> result;
              
              result = em.createQuery("select n from Numerofiscal n where n.idcaja.idsucursal = :s").setParameter("s", s).getResultList();
+             
+             return result;
+    }
+
+    @Override
+    public List<Caja> cajaList(Sucursal s) throws IllegalStateException, SecurityException, SystemException, NamingException {
+         List<Caja> result;
+             
+             result = em.createQuery("select c from Caja c where c.idsucursal = :s").setParameter("s", s).getResultList();
              
              return result;
     }

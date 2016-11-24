@@ -251,7 +251,7 @@ public class Facturaencabezado implements Serializable {
     public Double getSubTotal() {
        subTotal=Double.parseDouble("0");
         for(Facturadetalle fdet:this.getFacturadetalleList()){
-          subTotal=+ fdet.getPrecio();
+          subTotal=+ (fdet.getPrecio()*fdet.getCantidad());
         }
         return subTotal;
     }

@@ -35,8 +35,8 @@ public class Marcaproducto implements Serializable {
     @Column(name = "idmarcaproducto")
     private Integer idmarcaproducto;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    
+    
     @Column(name = "marcaproducto")
     private String marcaproducto;
 

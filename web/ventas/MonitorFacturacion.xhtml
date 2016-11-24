@@ -72,8 +72,8 @@ and open the template in the editor.
                         <p:column headerText="Precio">
                             <h:outputText value="#{det.precio}"  />
                         </p:column>
-                        <p:column headerText="Monto">
-                            <h:outputText value="#{det.costo}"  />
+                        <p:column headerText="Sub Total">
+                            <h:outputText value="#{det.precio*det.cantidad}"  />
                         </p:column>
                         <p:column headerText="IVA">
                             <h:outputText value="#{det.iva}"  />

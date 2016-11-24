@@ -121,9 +121,9 @@ public class PedidoOnline implements PedidoOnlineLocal {
                     throw new Exception("NO se encontro resultado de producto.");
                 }
                 pedDet.setIdproducto(pro);
-                pedDet.setIva(iva);
                 pedDet.setOrdenpedido(ped);
                 pedDet.setPrecio(pro.getPrecioventa());
+                pedDet.setIva((iva/100)*pedDet.getCantidadconfirmada()*pedDet.getPrecio());
                 lstDet.add(pedDet);
             }
         }

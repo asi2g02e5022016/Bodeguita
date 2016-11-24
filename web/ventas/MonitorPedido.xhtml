@@ -39,7 +39,16 @@ and open the template in the editor.
                         <h:outputLabel  value="Usuario"  />
                         <p:inputText readonly="true" value="#{monitorOrdenPedido.idUsuario}"/>
                         <h:outputLabel  value="Tipo Pedido:"  />
-                        <p:inputText readonly="true" value="#{monitorOrdenPedido.tipoPedido}"/>   
+                        <p:inputText readonly="true" value="#{monitorOrdenPedido.tipoPedido}"/>  
+                        <p:outputLabel  value="Caja:" for="lstCaja" rendered="#{monitorOrdenPedido.activarEnvioPOS}" />
+                        <p:selectOneMenu id="lstCaja" value="#{monitorOrdenPedido.idCaja}" 
+                                          required="true" 
+                                          requiredMessage="Número de caja requerido"
+                                         rendered="#{monitorOrdenPedido.activarEnvioPOS}"  >
+                            <f:selectItem itemLabel=""  />
+                            <f:selectItems value="#{monitorOrdenPedido.lstCaja}" 
+                                           var="cj" itemLabel="#{cj.caja}" itemValue="#{cj.idcaja}"/>	   							
+                        </p:selectOneMenu>  
                         <p:outputLabel  value="Serie:" for="lstSerie" rendered="#{monitorOrdenPedido.activarEnvioPOS}" />
                         <p:selectOneMenu id="lstSerie" value="#{monitorOrdenPedido.serie}" 
                                           required="true" 
@@ -82,8 +91,8 @@ and open the template in the editor.
                         <p:column headerText="Precio">
                             <h:outputText value="#{det.precio}"  />
                         </p:column>
-                        <p:column headerText="Costo">
-                            <h:outputText value="#{det.costo}"  />
+                         <p:column headerText="Sub Total">
+                            <h:outputText value="#{det.precio*det.cantidadconfirmada}"  />
                         </p:column>
                         <p:column headerText="IVA">
                             <h:outputText value="#{det.iva}"  />

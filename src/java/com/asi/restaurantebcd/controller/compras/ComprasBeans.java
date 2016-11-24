@@ -10,6 +10,7 @@ import com.asi.restaurantbcd.modelo.CompraPK;
 import com.asi.restaurantbcd.modelo.Compradetalle;
 import com.asi.restaurantbcd.modelo.CompradetallePK;
 import com.asi.restaurantbcd.modelo.Estado;
+import com.asi.restaurantbcd.modelo.Impuesto;
 import com.asi.restaurantbcd.modelo.Producto;
 import com.asi.restaurantbcd.modelo.Proveedor;
 import com.asi.restaurantbcd.modelo.Vwproductos;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -69,7 +71,7 @@ public class ComprasBeans implements  Serializable {
     private String nombreProveedor;
     private String descripcionProducto;
     private boolean mostrarCantConfirmada = false;
-    
+    private Double porventajeIVA;
     private Double cantidadSolic;
     private BigDecimal cantidadConfirmada;
     private Proveedor proveedor;
@@ -104,6 +106,15 @@ public class ComprasBeans implements  Serializable {
    
     //</editor-fold >
 
+    @PostConstruct
+    public void intit() {
+        try {
+            Impuesto imp = crud.buscarEntidad(Impuesto.class, Integer.parseInt("1"));
+            porventajeIVA =  imp.getPorcentaje() / 100;
+        } catch (Exception ex) {
+            Logger.getLogger(ComprasBeans.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
       //<editor-fold  defaultstate="collapsed" desc="Metodos principales" >
    /**
     * 
@@ -424,16 +435,16 @@ public class ComprasBeans implements  Serializable {
             compraDeta.setIdproducto(pro);
             compraDeta.setCantidadconfirmada(cantidadSolic);
             compraDeta.setCantidadsolicitada(cantidadSolic);
-            compraDeta.setPrecio(producto.getPrecioventa());
+            compraDeta.setPrecio(producto.getPreciocompra());
             compraDeta.setMonto(cantidadSolic * compraDeta.getPrecio());
-            Double totaliva = compraDeta.getMonto() * Double.valueOf("0.13");
+            Double totaliva = compraDeta.getMonto() * porventajeIVA;
             compraDeta.setIva(totaliva);
             compraDeta.setTotal(totaliva + compraDeta.getMonto());
             lstCompradeta.add(0, compraDeta);
             System.out.println("lstCompradeta.." +lstCompradeta);
             RequestContext requestContext = RequestContext.getCurrentInstance();
                 requestContext.execute("PF('dialogoProducto').hide();");
-        } catch (Exception ex) {
+       } catch (Exception ex) {
             ex.printStackTrace();
             Logger.getLogger(ComprasBeans.class.getName())
                     .log(Level.SEVERE, null, ex);
