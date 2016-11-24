@@ -20,12 +20,12 @@
                           statement-timeout-in-seconds="-1" steady-pool-size="8" 
                           validate-atmost-once-period-in-seconds="0" 
                           wrap-jdbc-objects="false">
-        <property name="serverName" value="localhost"/>
+        <property name="serverName" value="104.236.157.230"/>
         <property name="portNumber" value="3306"/>
         <property name="databaseName" value="ifbc"/>
-        <property name="User" value="root"/>
-        <property name="Password" value="root"/>  
-        <property name="URL" value="jdbc:mysql://localhost:3306/ifbc?zeroDateTimeBehavior=convertToNull"/>
+        <property name="User" value="rwezo"/>
+        <property name="Password" value="Rwezo123#"/>  
+        <property name="URL" value="jdbc:mysql://104.236.157.230:3306/ifbc?zeroDateTimeBehavior=convertToNull"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool> 
     <jdbc-resource enabled="true" jndi-name="jdbc/ifbc" object-type="user" pool-name="mysql_ifbc_rootPool"/>
