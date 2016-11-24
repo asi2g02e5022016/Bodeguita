@@ -474,13 +474,14 @@ public class MttoCliente implements Serializable {
                 this.usuarioCli = emp.getUsuario();
                 this.email = emp.getEmail();
                 this.vip = emp.isVip();
-                deshabilitarTxtContrasenia=true;
-                if ( vip == true /*usuarioCli == null || usuarioCli.isEmpty() == true || usuarioCli.length() == 0*/) {
+//                deshabilitarTxtContrasenia=true;
+                if ( vip == false /*usuarioCli == null || usuarioCli.isEmpty() == true || usuarioCli.length() == 0*/) {
                     deshabilitarTxtUsuario = false;
-                    usuarioCli = "";
-                    contrasenia = "";
+                    deshabilitarTxtContrasenia=false;                    
+                    
                 } else {
                     deshabilitarTxtUsuario = true;
+                    deshabilitarTxtContrasenia=true;
                 }
                 mostrarBtnGuardar = true;
             }
