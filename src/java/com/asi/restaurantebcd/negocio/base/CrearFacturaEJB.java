@@ -114,6 +114,7 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
               pedido.setOrdenpedidoPK(pedidoPk);
               pedido.setFechapedido(f.getFechaDocumento());
               pedido.setSucursal(sucursal);
+              pedido.setWeb(0);
               
               Cliente cliente;
               
