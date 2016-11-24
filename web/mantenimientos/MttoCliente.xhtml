@@ -18,75 +18,122 @@ and open the template in the editor.
                 <p:growl showDetail="true" showSummary="true" />
                 <p:panel id="basic" header="Mantenimiento de Clientes" style="width: 100%"  >
                     <p:menubar>
-                        <p:menuitem value="Nuevo" action="#{mttoCliente.limpiarpantalla()}" update="@all"
-                                    icon="ui-icon-plus"   />
-                        <p:menuitem value="Guardar" update="forprincipal" action="#{mttoCliente.guardarCliente()}"
-                                    icon="ui-icon-disk"  id="btnGuardar" disabled="false" />
-                                                
+                        <p:menuitem value="Nuevo" action="#{mttoCliente.nuevo()}" update="@all"
+                                    icon="ui-icon-plus"  immediate="true" />
+                        <p:menuitem value="Guardar" update="forprincipal" action="#{mttoCliente.insertarCliente()}"
+                                    icon="ui-icon-disk"  id="btnGuardar" />
+
                         <p:menuitem value="Buscar" update="forprincipal" action="#{mttoCliente.buscarCliente()}"
-                                    icon=" ui-icon-search" /> 
+                                    icon=" ui-icon-search" immediate="true" /> 
                     </p:menubar>
 
 
-                    <p:accordionPanel   binding="#{mttoCliente.formPanel}"  multiple="false" id="forPanel" activeIndex="" >
-                        <p:tab title="Ingresar cliente"  closable="true"   >
-                            <h:panelGrid columns="4"  >
-                                <h:outputLabel value ="Id empleado:"/>
-                                <p:inputText value ="#{mttoCliente.idCliente}"
-                                             readonly ="true" disabled="true" />
-                                <h:outputLabel value="Nombre:"/>
-                                <p:inputText value="#{mttoCliente.nomCliente}" />
-                                <h:outputLabel value="Apellido:"/>
-                                <p:inputText value="#{mttoCliente.apeCliente}"/>
-                                <h:outputLabel value="telefono:"/>
-                                <p:inputMask id="iTel" value="#{mttoCliente.telCliente}" mask="9999-9999"/>
-                                <h:outputLabel value="Direcciòn:"/>
-                                <p:inputTextarea rows="2" cols="20" value ="#{mttoCliente.dirCliente}" />
-                                <h:outputLabel value="DUI:"/>
-                                <p:inputMask id="iDui" value="#{mttoCliente.duiCliente}" mask="99999999-9" />
-                                <h:outputLabel value="NIT:"/>
-                                <p:inputMask id="iNit" value="#{mttoCliente.nitCliente}" mask="9999-999999-999-9"  />
-                                <h:outputLabel value="NRC:"/>
-                                <p:inputText id="iNcr" value="#{mttoCliente.nrcCliente}" />
-                            </h:panelGrid>
-                        </p:tab>
-                    </p:accordionPanel>
+                  <!--  <p:accordionPanel   binding="#{mttoCliente.formPanel}"  multiple="false" id="forPanel" activeIndex="" >
+                        <p:tab title="Ingresar cliente"  closable="true"   >-->
+                    <h:panelGrid columns="6"  width="100%" title="Ingresar cliente" id="forPanel" >
+                        <h:outputLabel value ="Id Cliente:"/>
+                        <p:inputText value ="#{mttoCliente.idCliente}"
+                                     readonly ="true" disabled="true" />
+                        <h:outputLabel value="Nombre:"/>
+                        <p:inputText value="#{mttoCliente.nomCliente}" required="true" />
+                        <h:outputLabel value="Apellido:"/>
+                        <p:inputText value="#{mttoCliente.apeCliente}" required="true" />
+                        <h:outputLabel value="telefono:"/>
+                        <p:inputMask id="iTel" value="#{mttoCliente.telCliente}" mask="9999-9999"/>
+                        <h:outputLabel value="Direcciòn:"/>
+                        <p:inputTextarea rows="2" cols="20" value ="#{mttoCliente.dirCliente}" required="true" />
+                        <h:outputLabel value="DUI:"/>
+                        <p:inputMask id="iDui" value="#{mttoCliente.duiCliente}" mask="99999999-9" />
+                        <h:outputLabel value="NIT:"/>
+                        <p:inputMask id="iNit" value="#{mttoCliente.nitCliente}" mask="9999-999999-999-9"  />
+                        <h:outputLabel value="NRC:"/>
+                        <p:inputText id="iNcr" value="#{mttoCliente.nrcCliente}" />
+                        <h:outputLabel value="Email:"/>
+                        <p:inputText id="txtEmail" value="#{mttoCliente.email}" />
+                        <h:outputLabel value="ClienteVIP:"/>
+                        <p:selectBooleanButton id="bbVIP" value="#{mttoCliente.vip}" 
+                                               onLabel="Si" offLabel="No">
+                            <p:ajax listener ="#{mttoCliente.mostrarCamposUsuario()}"  update=":forprincipal:txtUsuario" />
+                            <p:ajax update=":forprincipal:txtPwd" />
 
-                    <h:panelGrid>
+                        </p:selectBooleanButton>
+                        <h:outputLabel value="Usuario:"  />
+                        <p:inputText id="txtUsuario" value="#{mttoCliente.usuarioCli}" 
+                                     maxlength="100"  readonly ="#{mttoCliente.deshabilitarTxtUsuario}" />
+                        <h:outputLabel value="Contraseña"/>
+                        <p:password id="txtPwd" value="#{mttoCliente.contrasenia}"  
+                                    maxlength="100"   readonly ="#{mttoCliente.deshabilitarTxtContrasenia}"/>
+                        <h:outputLabel value="Exento:"/>
+                        <p:selectBooleanButton id="bbExcento" value="#{mttoCliente.exCliente}" 
+                                               onLabel="Si" offLabel="No"/>
+
+
+
+                        
+
+                    </h:panelGrid>
+                    
+                   <!-- <h:panelGrid id="frmUsuario" columns="6"  >
+                        <h:outputLabel value="ClienteVIP:"/>
+                        <p:selectBooleanButton id="bbVIP" value="#{mttoCliente.vip}" 
+                                               onLabel="Si" offLabel="No">
+                            <p:ajax listener ="#{mttoCliente.mostrarCamposUsuario()}"  update=":forprincipal:frmUsuario" />
+
+                        </p:selectBooleanButton>
+                        <h:outputLabel value="Usuario:"  />
+                        <p:inputText id="txtUsuario" value="#{mttoCliente.usuarioCli}" 
+                                     maxlength="100"  readonly ="#{mttoCliente.deshabilitarTxtUsuario}" />
+                        <h:outputLabel value="Contraseña"/>
+                        <p:password id="txtPwd" value="#{mttoCliente.contrasenia}"  
+                                    maxlength="100"   readonly ="#{mttoCliente.deshabilitarTxtContrasenia}"/>
+                    </h:panelGrid>-->
+                    <!-- </p:tab>
+                 </p:accordionPanel>-->
+
+                    <h:panelGrid id="pDtEmpleado" >
                         <p:dataTable id="tablaEmpleado" emptyMessage="" binding="#{mttoCliente.tablaCliente}"
                                      value="#{mttoCliente.listaCliente}"
                                      var="dimp" rowKey="#{dimp.idcliente}"
                                      selectionMode="single" rows="5" 
                                      editable="true" paginator="true" 
-                                     rowsPerPageTemplate="5" scrollable="true"
+                                     rowsPerPageTemplate="5" 
                                      >
-                            <p:ajax event="rowEdit" listener="#{mttoCliente.onSelect()}" update=":forprincipal:forPanel"   />
+                            <p:ajax event="rowEdit" listener="#{mttoCliente.onSelect()}" update=":forprincipal:forPanel"  />
+
                             <p:column headerText="Id"  style="align-content: center" >
                                 <h:outputText value="#{dimp.idcliente}"   />                                
                             </p:column>
-                            <p:column headerText="Nombres"  style=" align-content: center" filterBy="#{dimp.nombre}"  >
+                            <p:column headerText="Nombres"  style=" align-content: center" filterBy="#{dimp.nombre}" filterStyle="width:80%"  >
                                 <h:outputText value="#{dimp.nombre}"   />                                
                             </p:column>
-                            <p:column headerText="Apellidos" style=" align-content: center" filterBy="#{dimp.apellido}"  >
+                            <p:column headerText="Apellidos" style=" align-content: center" filterBy="#{dimp.apellido}" filterStyle="width:80%" >
                                 <h:outputText value="#{dimp.apellido}"  />                                
                             </p:column>
                             <p:column headerText="Telefono" style=" align-content: center"  >
                                 <h:outputText value="#{dimp.telefono}"  />                                
                             </p:column>
-                            <p:column headerText="Dirección" style="align-content: center" filterBy="#{dimp.direccion}"  >
+                            <p:column headerText="Dirección" style="align-content: center" filterBy="#{dimp.direccion}" filterStyle="width:80%"  >
                                 <h:outputText value="#{dimp.direccion}"  />                                
                             </p:column>
-                            <p:column headerText="DUI" style=" align-content: center" filterBy="#{dimp.dui}"  >
+                            <p:column headerText="DUI" style=" align-content: center" filterBy="#{dimp.dui}" filterStyle="width:80%" >
                                 <h:outputText value="#{dimp.dui}"  />                                
                             </p:column>
-                            <p:column headerText="NIT" style=" align-content: center" filterBy="#{dimp.nit}"  >
+                            <p:column headerText="NIT" style=" align-content: center" filterBy="#{dimp.nit}" filterStyle="width:80%"  >
                                 <h:outputText value="#{dimp.nit}"  />                                
                             </p:column>
-                            <p:column headerText="NRC" style=" align-content: center" filterBy="#{dimp.nrc}"  >
+                            <p:column headerText="NRC" style=" align-content: center" filterBy="#{dimp.nrc}" filterStyle="width:80%" >
                                 <h:outputText value="#{dimp.nrc}"  />                                
                             </p:column>
-                            
-                            
+                            <p:column headerText="Excento" style=" align-content: center" >
+                                <p:selectBooleanButton value="#{dimp.excento}" onLabel="Yes" offLabel="No" disabled="true" />                                                          
+                            </p:column>
+                            <p:column headerText="VIP" style=" align-content: center" >
+                                <p:selectBooleanButton value="#{dimp.vip}" onLabel="Yes" offLabel="No" disabled="true" />                                                          
+                            </p:column>
+                            <p:column headerText="Usuario" style=" align-content: center" filterBy="#{dimp.nrc}" filterStyle="width:80%" >
+                                <h:outputText value="#{dimp.usuario}"  />                                
+                            </p:column>
+
                             <p:column style=" align-content: center" headerText="Modificar" >
                                 <p:rowEditor     />
                             </p:column>
@@ -96,7 +143,6 @@ and open the template in the editor.
                                                    update="@all"  />
                             </p:column>
                         </p:dataTable>
-
                     </h:panelGrid>
                 </p:panel> 
             </h:form>

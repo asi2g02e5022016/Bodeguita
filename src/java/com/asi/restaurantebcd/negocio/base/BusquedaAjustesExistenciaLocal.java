@@ -40,19 +40,19 @@ public interface BusquedaAjustesExistenciaLocal {
      * @throws Exception Error generico.
      */
     public List<Ajustedetalle> buscarAjustesExistenciaDet() throws Exception;
-    
-       /**
+
+    /**
      * Obtiene lista de detalle de productos
      *
      * @return List detalle de ajuste.
      * @throws Exception Error generico.
      */
     public List<Producto> buscarProducto() throws Exception;
-    
-    
-     public Integer obtenerCorreltivoAjuste(Integer codsuc, Class clase, String identificador)
+
+    public Integer obtenerCorreltivoAjuste(Integer codsuc, Class clase, String identificador)
             throws Exception;
-     /*
+
+    /*
       * Metodo de busqueda de ajustes.
      * @param sucursal sucursal 
      * @param fechaInicia fecha inicial de ajuste.
@@ -60,5 +60,7 @@ public interface BusquedaAjustesExistenciaLocal {
      * @return
      * @throws Exception 
      */
-    
+
+    public String nombreSucursal(Sucursal suc) throws Exception;
+
 }

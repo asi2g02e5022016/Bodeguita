@@ -16,50 +16,68 @@ and open the template in the editor.
             <h:form id="forprincipal" >
 
                 <p:growl showDetail="true" showSummary="true" />
-                <p:panel id="basic" header="Mantenimiento número fiscal" style="width: 50%"  >
+                <p:panel id="basic" header="Mantenimiento número fiscal" >
                     <p:menubar>
-                        <p:menuitem value="Nuevo"  update="forprincipal" action="#{mttoNumeroFiscal.limpiarPantalla()}"
-                                    icon="ui-icon-plus" />
+                        <p:menuitem value="Nuevo"  update="forprincipal" action="#{mttoNumeroFiscal.nuevo()}"
+                                    icon="ui-icon-plus" immediate="true" />
                         <p:menuitem value="Guardar" update="forprincipal" action="#{mttoNumeroFiscal.guardarNumeroFiscal()}"  
-                                    icon="ui-icon-disk" />
+                                    icon="ui-icon-disk"   />
                         <p:menuitem value="Buscar" update="forprincipal" action="#{mttoNumeroFiscal.buscarNumeroFiscal()}"
-                                    icon=" ui-icon-search" />
+                                    icon=" ui-icon-search" immediate="true" />
                     </p:menubar>
 
-                    <p:accordionPanel binding="#{mttoNumeroFiscal.formPanel}" multiple="false" id="forPanel" activeIndex="">
-                        <p:tab title="Ingresar número fiscal"  closable="true"   >
-                            <h:panelGrid columns="2" width="100%">
-                                <h:outputLabel value="Serie: " />
-                                <p:inputText value="#{mttoNumeroFiscal.serie}" />
-                                <h:outputLabel value="Sucursal: "/>
-                                <p:selectOneMenu id="lstSucursal"  value ="#{mttoNumeroFiscal.codsucursal}" >
-                                    <f:selectItems value="#{mttoNumeroFiscal.lstSucsal}"
-                                                   var="suc" itemLabel="#{suc.sucursal}" itemValue="#{suc.idsucursal}"/>                                       
-                                </p:selectOneMenu> 
-                                <h:outputLabel value="Caja: "/>
-                                <p:selectOneMenu id="lstCaja"  value ="#{mttoNumeroFiscal.codcaja}" >
-                                    <f:selectItems value="#{mttoNumeroFiscal.lstCaja}"
-                                                   var="caj" itemLabel="#{caj.caja}" itemValue="#{caj.idcaja}"/>                                       
-                                </p:selectOneMenu> 
-                            </h:panelGrid>
-                        </p:tab>
-                    </p:accordionPanel>
-                    <h:panelGrid >
-                        <p:dataTable id="tablaNumeros" emptyMessage=""                                      
+                    <!--<p:accordionPanel binding="#{mttoNumeroFiscal.formPanel}" multiple="false" id="forPanel" activeIndex="">
+                        <p:tab title="Ingresar número fiscal"  closable="true"   >-->
+                    <h:panelGrid columns="6" width="100%" title="Número fiscal" id="pgForm" >
+
+                        <h:outputLabel value="Sucursal: "/>
+                        <p:selectOneMenu id="lstSucursal" value="#{mttoNumeroFiscal.codsucursal}" >
+                            <p:ajax listener="#{mttoNumeroFiscal.buscarCajaSuc}" update="lstCaja"  />
+                            <f:selectItems value="#{mttoNumeroFiscal.lstSucsal}" 
+                                           var="suc" itemLabel="#{suc.sucursal}" itemValue="#{suc.idsucursal}">   
+
+                            </f:selectItems>
+
+                        </p:selectOneMenu> 
+                        <h:outputLabel value="Caja: "/>
+                        <p:selectOneMenu id="lstCaja"  value ="#{mttoNumeroFiscal.codcaja}" >
+                            <f:selectItems value="#{mttoNumeroFiscal.lstCaja}"
+                                           var="caj" itemLabel="#{caj.caja}" itemValue="#{caj.idcaja}"/>                                       
+                        </p:selectOneMenu> 
+
+                        <h:outputLabel value="Tipo de documento: "/>
+                        <p:selectOneMenu id="cbTipoDoc"  value ="#{mttoNumeroFiscal.idTipodocumento}" >
+                            <f:selectItems value="#{mttoNumeroFiscal.lstTipoDoc}"
+                                           var="td" itemLabel="#{td.tipodocumento}" itemValue="#{td.idtipodocumento}"/>                                       
+                        </p:selectOneMenu> 
+                        <p:outputLabel value="Serie: " />
+                        <p:inputText value="#{mttoNumeroFiscal.serie}" required="true" />
+                        <p:outputLabel value="Correlativo inicial:"/>
+                        <p:inputNumber id="txtInicial" value="#{mttoNumeroFiscal.codinicial}" 
+                                       minValue="1" maxValue="999999" required="true" />
+                        <p:outputLabel value="Correlativo final:"/>
+                        <p:inputNumber id="txtFinal" value="#{mttoNumeroFiscal.codfinal}"
+                                   minValue="1" maxValue="999999"  required="true" />
+                        <p:outputLabel value="Correlativo actual:"/>
+                        <p:inputNumber id="txtActual" value="#{mttoNumeroFiscal.codactual}"
+                                    minValue="1" maxValue="999999"  required="true" />
+                    </h:panelGrid>
+
+                    <!--  </p:tab>
+                                        </p:accordionPanel>-->
+                    <h:panelGrid width="100%" >
+                        <p:dataTable id="tablaNumeros" emptyMessage="" binding="#{mttoNumeroFiscal.dtNumFiscal}"                                     
                                      value="#{mttoNumeroFiscal.lstNumFiscal}" 
                                      var="dpro" rowKey="#{dpro.idnumfiscal}"
                                      selectionMode="single" rows="3" 
                                      editable="true" paginator="true" 
-                                     rowsPerPageTemplate="3" scrollable="true"
-                                     scrollWidth="650" > 
-                            <p:ajax event="rowEdit" listener="#{mttoNumeroFiscal.actualizarNumeroFiscal}"     />
+                                     rowsPerPageTemplate="3" > 
+                            <p:ajax event="rowEdit" listener="#{mttoNumeroFiscal.onSelect}" update=":forprincipal:pgForm"     />
+                            
                             <p:ajax event="rowEditCancel" listener="#{mttoNumeroFiscal.eventoCancel}"     />
 
                             <p:column headerText="Id" width="5%">
                                 <h:outputText value="#{dpro.idnumfiscal}"  />
-                            </p:column>
-                            <p:column headerText="Serie" width="5%">
-                                <h:outputText value="#{dpro.serie}"  /> 
                             </p:column>
                             <p:column headerText="Sucursal" width="5%">
                                 <h:outputText value="#{dpro.idsucursal.sucursal}"  /> 
@@ -67,24 +85,35 @@ and open the template in the editor.
                             <p:column headerText="Caja" width="4%">
                                 <h:outputText value="#{dpro.idcaja.caja}"/>                                       
                             </p:column>
-                            <p:column headerText="Fec.Resolucion" width="4%">
-                                <h:outputText value="#{dpro.fecharesolusion}"/>                                       
+                            <p:column headerText="Caja" width="4%">
+                                <h:outputText value="#{dpro.idtipodocumento.tipodocumento}"/>                                       
+                            </p:column>                                                       
+                            <p:column headerText="Serie" width="5%">
+                                <h:outputText value="#{dpro.serie}"  /> 
+                            </p:column>                          
+                            
+                            
+                            <p:column headerText="Inicial" width="4%">
+                                <h:outputText value="#{dpro.codinicial}"/>                                       
                             </p:column>
-                            <p:column headerText="Baja" width="8%" style="text-align:center">
-                                <p:cellEditor >
-                                    <f:facet  name="output">
-                                        <p:calendar disabled="true" value="#{dpro.fechabaja}" pattern="dd-MM-yyyy" mask="true" />
-                                    </f:facet>
-                                    <f:facet  name="input">
-                                        <p:calendar disabled="false" value="#{dpro.fechabaja}" pattern="dd-MM-yyyy" mask="true" />   
-                                    </f:facet>
-                                </p:cellEditor> 
+                            <p:column headerText="Final" width="4%">
+                                <h:outputText value="#{dpro.codfinal}"/>                                       
                             </p:column>
+                            <p:column headerText="Actual" width="4%">
+                                <h:outputText value="#{dpro.codactual}"/>                                       
+                            </p:column>
+                            
 
                             <p:column  headerText="Modificar" width="2%" style="text-align:center">
                                 <p:rowEditor></p:rowEditor>  
                             </p:column>
 
+                            <p:column style="text-align: center" headerText="Eliminar">
+                                <p:commandButton   value="Eliminar" 
+                                                   action="#{mttoCliente.eliminarCliente()}"
+                                                   update="@all"  />
+                            </p:column>
+                            
                         </p:dataTable>
                     </h:panelGrid>                    
                 </p:panel>                

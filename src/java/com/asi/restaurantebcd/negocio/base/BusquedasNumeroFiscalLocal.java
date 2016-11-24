@@ -19,6 +19,7 @@ import javax.ejb.Local;
 public interface BusquedasNumeroFiscalLocal {
     public List <Numerofiscal> buscarNumeroFiscal () throws Exception;
     public List <Sucursal> buscarSucursal () throws Exception;
+    public List <Caja> buscarCaja (Sucursal sucursal) throws Exception;
     public List <Caja> buscarCaja () throws Exception;
     
 }

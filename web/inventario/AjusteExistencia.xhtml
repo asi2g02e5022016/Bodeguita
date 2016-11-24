@@ -17,19 +17,19 @@ and open the template in the editor.
                 <p:growl showDetail="true" showSummary="true" />
                 <p:menubar>
                     <p:menuitem value="Nuevo" update="@all" action="#{ajusteExistenciaBean.nuevo()}"
-                                icon="ui-icon-plus" />
+                                icon="ui-icon-plus" immediate="true" />
                     <p:menuitem value="Guardar" id="btnGuardarDat"
                                 update="forprincipal" 
-                                rendered="#{ajusteExistenciaBean.mostrarBtnGuardar}" 
+                                
                                 action="#{ajusteExistenciaBean.guardar()}" 
                                 icon="ui-icon-disk" />              
                     <p:menuitem value="Monitor"  actionListener ="#{ajusteExistenciaBean.mostrarDialogoAjustes()}"
-                                icon=" ui-icon-search" />
+                                icon=" ui-icon-search"  immediate="true" update=":forprincipal:dProducto"/>
                 </p:menubar>
-                <p:panel  id="apAjuste"  style="width: 50%" header="Ajuste de existencias">
+                <p:panel  id="apAjuste"  header="Ajuste de existencias">
 
-                    <h:panelGrid columns="4" width="80%" >
-                        <h:panelGrid id="encabezado" columns="4" width="100%">
+                    <h:panelGrid >
+                        <h:panelGrid id="encabezado" columns="6" >
                             <h:outputLabel value ="Id:"/>
                             <p:inputText value="#{ajusteExistenciaBean.idAjuste}" readonly="true" />
                             <h:outputLabel value ="Usuario:"/>
@@ -62,7 +62,7 @@ and open the template in the editor.
                                  selectionMode="single" rows="5" 
                                  editable="true" paginator="true" 
                                  rowsPerPageTemplate="5" scrollable="true"
-                                 scrollWidth="650" binding="#{ajusteExistenciaBean.dtDetAjuste}" >
+                                 binding="#{ajusteExistenciaBean.dtDetAjuste}" >
 
 
                         <p:column headerText="Id Producto" width="25"  style=" align-content: center"   visible="true" >
@@ -77,7 +77,7 @@ and open the template in the editor.
                         <p:column headerText="Costo unitario" width="150" style=" align-content: center"  >
                             <h:outputText value="#{dimp.costounitario}"  />                                
                         </p:column>
-                        <p:column style="width:50px; align-content: center" headerText="Eliminar">                               
+                        <p:column style="width:50px; align-content: center" headerText="Eliminar" visible="#{ajusteExistenciaBean.mostrarEliminar}">                               
 
                             <p:commandButton   value="Eliminar" 
                                                action="#{ajusteExistenciaBean.eliminarDetalle}"

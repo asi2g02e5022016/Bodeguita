@@ -35,7 +35,7 @@ public class Cliente implements Serializable {
     @Column(name = "idcliente")
     private Integer idcliente;
     @Basic(optional = false)
- 
+
     @Size(min = 1, max = 100)
     @Column(name = "nombre")
     private String nombre;
@@ -61,12 +61,20 @@ public class Cliente implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "dui")
     private String dui;
-        @Size(max = 100)
+    @Size(max = 100)
     @Column(name = "usuario")
     private String usuario;
     @Size(max = 100)
     @Column(name = "password")
     private String password;
+    @Size(max = 255)
+    @Column(name = "email")
+    private String email;
+    @Column(name = "vip")
+    private boolean vip;
+    @Column(name = "excento")
+    private boolean excento;
+
     public Cliente() {
     }
 
@@ -90,6 +98,14 @@ public class Cliente implements Serializable {
         this.idcliente = idcliente;
     }
 
+    public boolean isExcento() {
+        return excento;
+    }
+
+    public void setExcento(boolean excento) {
+        this.excento = excento;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -98,12 +114,28 @@ public class Cliente implements Serializable {
         this.nombre = nombre;
     }
 
+    public boolean isVip() {
+        return vip;
+    }
+
+    public void setVip(boolean vip) {
+        this.vip = vip;
+    }
+
     public String getApellido() {
         return apellido;
     }
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getDireccion() {
@@ -186,5 +218,5 @@ public class Cliente implements Serializable {
     public String toString() {
         return "com.asi.restaurantbcd.modelo.Cliente[ idcliente=" + idcliente + " ]";
     }
-    
+
 }

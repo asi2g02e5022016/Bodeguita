@@ -54,6 +54,9 @@ public class Numerofiscal implements Serializable {
     @JoinColumn(name = "idsucursal", referencedColumnName = "idsucursal")
     @ManyToOne
     private Sucursal idsucursal;
+    @JoinColumn(name = "idtipodocumento", referencedColumnName = "idtipodocumento")
+    @ManyToOne
+    private Tipodocumento idtipodocumento;
 
     public Numerofiscal() {
     }
@@ -117,6 +120,16 @@ public class Numerofiscal implements Serializable {
     public void setIdcaja(Caja idcaja) {
         this.idcaja = idcaja;
     }
+
+    public Tipodocumento getIdtipodocumento() {
+        return idtipodocumento;
+    }
+
+    public void setIdtipodocumento(Tipodocumento idtipodocumento) {
+        this.idtipodocumento = idtipodocumento;
+    }
+    
+    
 
     public Sucursal getIdsucursal() {
         return idsucursal;

@@ -115,4 +115,27 @@ public class BusquedaAjustesExistencia implements BusquedaAjustesExistenciaLocal
         return query.getResultList();
 
     }
+    
+    @Override
+    public String nombreSucursal(Sucursal suc) throws Exception {
+        try {
+            StringBuilder jpql = new StringBuilder();
+            jpql.append(" SELECT a.sucursal from Sucursal a WHERE 1 = 1 ");
+            if (suc != null) {
+                jpql.append(" AND a.idsucursal = :sucursal ");
+            }          
+            Query query = em.createQuery(jpql.toString());
+
+            // asignamos valores a los parametros del query 
+            if (suc != null) {
+                query.setParameter("sucursal", suc.getIdsucursal());
+            }           
+            return query.getResultList().toString();
+
+        } catch (NoResultException ne) {
+            return null;
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
 }

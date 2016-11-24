@@ -67,6 +67,8 @@ public class AjusteExistenciaBean implements Serializable {
     private boolean mostrarBtnGuardar = false;
     private boolean habilitarObservacion = true;
     private boolean mostrarBtnProductos = true;
+    private boolean mostrarEliminar = true;
+
     private String sucursal;
     // parametros de busqueda monitor
     private Date fechaIni;
@@ -102,6 +104,7 @@ public class AjusteExistenciaBean implements Serializable {
     private Ajuste constructorAjuste;
 
     //</editor-fold>
+    //<editor-fold  defaultstate="collapsed" desc="Metodos" >
     public void nuevo() throws Exception {
 
         idAjuste = null;
@@ -114,6 +117,8 @@ public class AjusteExistenciaBean implements Serializable {
         mostrarBtnProductos = false;
         sucursal = sesion.getSucursal().getSucursal();
         idAjuste = this.ejbBuscarAjuste.obtenerCorreltivoAjuste(sesion.getSucursal().getIdsucursal(), Ajuste.class, "idajuste");
+        mostrarEliminar = true;
+        observacion = null;
     }
 
     public void limpiar() {
@@ -128,7 +133,7 @@ public class AjusteExistenciaBean implements Serializable {
         idSucursal = null;
         sucursal = null;
         habilitarObservacion = false;
-
+        mostrarEliminar = true;
     }
 
     public void limpiarProducto() {
@@ -136,6 +141,7 @@ public class AjusteExistenciaBean implements Serializable {
     }
 
     public void mostrarDialogoAjustes() {
+        limpiar();
         System.out.print("entro al mostrar");
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("PF('dialogoMonAjustes').show();");
@@ -238,97 +244,119 @@ public class AjusteExistenciaBean implements Serializable {
         }
     }
 
-    public void ajustarExistencia() throws Exception {
-        if (lstAjusteDet != null) {
-            boolean carga;
-            Integer i = 0;
-            Double can = 0.0;
-            for (Ajustedetalle ajstDet : lstAjusteDet) {
-                 can = ajstDet.getCantidad();
-                i++;
-                if (ajstDet.getCantidad() > 0) {
-                    carga = false;
-                } else {
-                    carga = true;
-                    can= can*-1;
+    public void ajustarExistencia() {
+        try {
+            if (lstAjusteDet != null) {
+                boolean carga;
+                Integer i = 0;
+                Double can = 0.0;
+                for (Ajustedetalle ajstDet : lstAjusteDet) {
+                    can = ajstDet.getCantidad();
+                    i++;
+                    if (ajstDet.getCantidad() > 0) {
+                        carga = false;
+                    } else {
+                        carga = true;
+                        can = can * -1;
+                    }
+
+                    System.out.println("cantidad" + can);
+                    System.out.println("producto" + ajstDet.getIdproducto());
+                    System.out.println("usuario" + sesion.getUsuario());
+                    System.out.println("sucursal" + ajstDet.getCostounitario());
+                    System.out.println("Carga" + carga);
+
+                    ejbProInv.afectarExistencia(
+                            can,
+                            ajstDet.getIdproducto(),
+                            sesion.getUsuario(),
+                            sesion.getSucursal(),
+                            ajstDet.getCostounitario(),
+                            carga,
+                            false
+                    );
+                    can = 0.00;
                 }
-               
-                System.out.println("cantidad" + can);
-                System.out.println("producto" + ajstDet.getIdproducto());
-                System.out.println("usuario" + sesion.getUsuario());
-                System.out.println("sucursal" + ajstDet.getCostounitario());
-                System.out.println("Carga" + carga);
 
-                ejbProInv.afectarExistencia(
-                        can,
-                        ajstDet.getIdproducto(),
-                        sesion.getUsuario(),
-                        sesion.getSucursal(),
-                        ajstDet.getCostounitario(),
-                        carga,
-                        false                       
-                );
-                can=0.00;
             }
-
+        } catch (Exception ex) {
+            Logger.getLogger(AjusteExistenciaBean.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
         }
+
     }
 
     public void onRowSelectAjuste(SelectEvent event) {
-        System.out.print("entro");
-        Ajuste ajt = (Ajuste) event.getObject();
-        System.out.print(ajt);
-        if (ajt != null) {
-            idAjuste = ajt.getAjustePK().getIdajuste();
-            idSucursal = ajt.getAjustePK().getIdsucursal();
-            fechaCreacion = ajt.getFechacreacion();
-            observacion = ajt.getObservacion();
-            idUsuarioCrea = ajt.getIdusuariocrea();
-            lstAjusteDet = ajt.getAjustedetalleList();
-            mostrarBtnGuardar = false;
-            lstAjusteEnc = null;
-            fechaIni = null;
-            fechaFin = null;
-            RequestContext requestContext = RequestContext.getCurrentInstance();
-            requestContext.execute("PF('dialogoMonAjustes').hide()");
+        try {
+            System.out.print("entro");
+            Ajuste ajt = (Ajuste) event.getObject();
+            System.out.print(ajt);
+            if (ajt != null) {
+                idAjuste = ajt.getAjustePK().getIdajuste();
+                idSucursal = ajt.getAjustePK().getIdsucursal();
+                Sucursal su = new Sucursal();
+                su.setIdsucursal(idSucursal);
+                sucursal = ejbBuscarAjuste.nombreSucursal(su);
+                fechaCreacion = ajt.getFechacreacion();
+                observacion = ajt.getObservacion();
+                idUsuarioCrea = ajt.getIdusuariocrea();
+                lstAjusteDet = ajt.getAjustedetalleList();
+                mostrarBtnGuardar = false;
+                lstAjusteEnc = null;
+                fechaIni = null;
+                fechaFin = null;
+                mostrarEliminar = false;
+                RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoMonAjustes').hide()");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(AjusteExistenciaBean.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
         }
     }
 
     public void onRowSelectProducto(SelectEvent event) {
-        if (cantidad != null && cantidad != 0) {
-            Double precioVenta;
-            Producto pro = (Producto) event.getObject();
-            if (pro != null) {
-                consturctorAjusteDet = new Ajustedetalle();
-                consturctorAjusteDet.setIdproducto(pro);
-                consturctorAjusteDet.setCantidad(cantidad);
-                precioVenta=pro.getPreciocompra();
-                
-                consturctorAjusteDet.setCostounitario(pro.getPreciocompra());
-                if (consturctorAjusteDet != null) {
-                    if (lstAjusteDet == null) {
-                        lstAjusteDet = new ArrayList<>();
-                    }
-                    lstAjusteDet.add(consturctorAjusteDet);
+        try {
+            if (cantidad != null && cantidad != 0) {
+                Double precioVenta;
+                Producto pro = (Producto) event.getObject();
+                if (pro != null) {
+                    consturctorAjusteDet = new Ajustedetalle();
+                    consturctorAjusteDet.setIdproducto(pro);
+                    consturctorAjusteDet.setCantidad(cantidad);
+                    precioVenta = pro.getPreciocompra();
+
+                    consturctorAjusteDet.setCostounitario(pro.getPreciocompra());
+                    if (consturctorAjusteDet != null) {
+                        if (lstAjusteDet == null) {
+                            lstAjusteDet = new ArrayList<>();
+                        }
+                        lstAjusteDet.add(consturctorAjusteDet);
 //                   
-                } else {
-                    alert("Error por favor comunicarse con el administrador de sistemas.",
-                            FacesMessage.SEVERITY_INFO);
+                    } else {
+                        alert("Error por favor comunicarse con el administrador de sistemas.",
+                                FacesMessage.SEVERITY_INFO);
+                    }
+
                 }
+                limpiarProducto();
+                RequestContext requestContext = RequestContext.getCurrentInstance();
+                requestContext.execute("PF('dialogoProducto').hide();");
 
+            } else if (cantidad == 0 || cantidad == null) {
+                alert("La cantidad de productosno puede ser cero.",
+                        FacesMessage.SEVERITY_INFO);
+            } else {
+                alert("Ingresar la cantidad de productos que desea ajustar.",
+                        FacesMessage.SEVERITY_INFO);
             }
-            limpiarProducto();
-            RequestContext requestContext = RequestContext.getCurrentInstance();
-            requestContext.execute("PF('dialogoProducto').hide();");
-
-        } else if (cantidad == 0) {
-            alert("La cantidad de productosno puede ser cero.",
-                    FacesMessage.SEVERITY_INFO);
-        } else {
-            alert("Ingresar la cantidad de productos que desea ajustar.",
-                    FacesMessage.SEVERITY_INFO);
+        } catch (Exception ex) {
+            Logger.getLogger(AjusteExistenciaBean.class.getName()).log(
+                    Level.SEVERE, null, ex);
+            alert(ex.getMessage(), FacesMessage.SEVERITY_INFO);
         }
-
     }
 
     public void mostrarProducto() {
@@ -368,8 +396,17 @@ public class AjusteExistenciaBean implements Serializable {
                 "Mensaje", mensaje.toString());
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
+    //</editor-fold>
 
     //<editor-fold  defaultstate="collapsed" desc="Getter y Setter" >
+    public boolean isMostrarEliminar() {
+        return mostrarEliminar;
+    }
+
+    public void setMostrarEliminar(boolean mostrarEliminar) {
+        this.mostrarEliminar = mostrarEliminar;
+    }
+
     public Integer getIdAjuste() {
         return idAjuste;
     }
