@@ -62,8 +62,10 @@ public class OrdenProduccionBeans implements Serializable {
     private List <Ordenproduccion> lstOrdenProd;
      private List <Ordenproducciondetalle> lstOrdenProdDetalle;
       private Receta receta;
+       private Recetadetalle recetadetaPT;
     private List <Receta> lstReceta;
     private String descripcionReceta;
+      private Producto proPT;
     private String producoPT;
     private String medidaPT;
 
@@ -121,11 +123,12 @@ public class OrdenProduccionBeans implements Serializable {
             ordenProd.setIdestado(est);
              
             int corel = 0;
+            Double cts = Double.valueOf("0");
+//            List <Ordenproducciondetalle> lstTemp = new ArrayList<>();
+//            lstTemp.addAll(lstOrdenProdDetalle);
             for (Ordenproducciondetalle det : lstOrdenProdDetalle) {
                 
-                if (true) {
-                    
-                }
+                cts =  cts + det.getCostounitario();
                 corel++;
                     OrdenproducciondetallePK idPK = new OrdenproducciondetallePK();
                     idPK.setIdSucursal(idOrdenPK.getIdsucursal());
@@ -135,13 +138,35 @@ public class OrdenProduccionBeans implements Serializable {
                     det.setOrdenproduccion(ordenProd);
                   
             }
+//            corel++;
+//            OrdenproducciondetallePK idPK = new OrdenproducciondetallePK();
+//            idPK.setIdSucursal(idOrdenPK.getIdsucursal());
+//            idPK.setIdordenproduccion(idOrdenPK.getIdordenproduccion());
+//            idPK.setIdordenproducciondetalle(corel);
+//            Ordenproducciondetalle det = new Ordenproducciondetalle();
+//            det.setOrdenproducciondetallePK(idPK);
+//            det.setOrdenproduccion(ordenProd);
+//            det.setCantidadconfirmada(cantidadArealizar * recetadetaPT.getCantidad());
+//             det.setSalida(Integer.parseInt("0"));
+//              det.setCostounitario(cts);
+//              det.setIdproducto(proPT);
+//              lstTemp.add(det);
+//              System.out.println("lstTemp.." +lstTemp);
             ordenProd.setOrdenproducciondetalleList(lstOrdenProdDetalle);
             ordenProd.setSucursal(sesion.getSucursal());
             ordenProd.setIdusuario(sesion.getUsuario());
+            System.out.println("ordenProd.." +ordenProd);
             transaccionesInventario.guardarOrdenCompra(ordenProd);
+  
             alert("La orden fue ejecutada exitosamente.", FacesMessage.SEVERITY_INFO);
             guardar = false;
+                      ejbProInv.afectarExistencia(
+                    recetadetaPT.getCantidad(), 
+                    proPT,
+                    sesion.getUsuario(), sesion.getSucursal(),
+                    cts, false, false);
         } catch (Exception ex) {
+            ex.printStackTrace();
               guardar = false;
             Logger.getLogger(OrdenProduccionBeans.class.getName())
                     .log(Level.SEVERE, null, ex); 
@@ -248,8 +273,10 @@ public class OrdenProduccionBeans implements Serializable {
                     Producto prod = crud.buscarEntidad(Producto.class,
                         recDeta.getRecetadetallePK().getIdproducto());
                     producoPT =  prod.getProducto();
+                    proPT = prod;
                     medidaPT =  prod.getIdmedida().getMedida();
                     descripcionReceta = receta.getDescripcion();
+                    recetadetaPT = recDeta;
                     
                     
                 }

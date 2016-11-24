@@ -54,7 +54,8 @@ public class TransaccionesInventario implements TransaccionesInventarioLocal {
             }
             for (Ordenproducciondetalle 
                     object : ordenPro.getOrdenproducciondetalleList()) {
-                if(object.getCantidadconfirmada() == 1){
+                System.out.println("object.." +object);
+//                if(object.getSalida() == 1){
                     
               
                 ExistenciaPK idPKExis = new ExistenciaPK();
@@ -68,18 +69,19 @@ public class TransaccionesInventario implements TransaccionesInventarioLocal {
                 ejbProInv.afectarExistencia(object.getCantidadconfirmada(),
                         object.getIdproducto(), ordenPro.getIdusuario(),
                         ordenPro.getSucursal(), 
-                        object.getCostounitario(), true, false);
-                     } else {
-                  ejbProInv.afectarExistencia(object.getCantidadconfirmada(),
-                        object.getIdproducto(), ordenPro.getIdusuario(),
-                        ordenPro.getSucursal(), 
-                        object.getCostounitario(), false, false);  
-                  }
+                        object.getCostounitario(),true, false);
+//                     } else {
+//                  ejbProInv.afectarExistencia(object.getCantidadconfirmada(),
+//                        object.getIdproducto(), ordenPro.getIdusuario(),
+//                        ordenPro.getSucursal(), 
+//                        object.getCostounitario(), false, false);  
+//                  }
             }
      
             crudBDC.guardarEntidad(ordenPro);
             utx.commit();
         } catch (Exception e) {
+            e.printStackTrace();
             if (utx.getStatus() != Status.STATUS_NO_TRANSACTION) {
                 utx.rollback();
             }

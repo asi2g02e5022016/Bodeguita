@@ -99,7 +99,7 @@ and open the template in the editor.
                   <h:panelGrid >
                       <p:dataTable value="#{ordenProduccionBeans.lstReceta}"
                                  id="tablaCompras"
-                                 var="dcompra"   rowKey="#{dcompra.idreceta}"
+                                 var="dcompra" paginator="true"  rowKey="#{dcompra.idreceta}"
                                  selectionMode="single"  rows="10"  >                        
                         <p:ajax event="rowSelect" update="forprincipal"
                                 listener="#{ordenProduccionBeans.onRowSelectCompra}" process="@all"  
@@ -128,9 +128,9 @@ and open the template in the editor.
                 </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable value="#{ordenProduccionBeans.lstOrdenProd}"
-                                 emptyMessage=""  id="tablaC"
+                                 emptyMessage=""  id="tablaC" paginator="true"
                                  var="de"  rowKey="#{de.ordenproduccionPK}"
-                                 selectionMode="single"  rows="19"  >          
+                                 selectionMode="single"  rows="7"  >          
                         
                         <p:ajax event="rowSelect" update="forprincipal"
                                 listener="#{ordenProduccionBeans.onRowSelectMonito}" process="@all"  

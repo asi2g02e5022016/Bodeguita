@@ -319,6 +319,7 @@ public class RecetasBeans implements Serializable{
                     Producto p = crudBDC.buscarEntidad(Producto.class,
                             recetadetalle.getRecetadetallePK().getIdproducto());
                    recetadetalle.setProducto(p);
+                   recetadetalle.setSalida(1);
                 lstRecetaDetalle.add(recetadetalle);
                 } else {
                     Producto p = crudBDC.buscarEntidad(Producto.class,

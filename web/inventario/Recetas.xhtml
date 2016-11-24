@@ -51,7 +51,7 @@ and open the template in the editor.
                          <p:inputText readonly="true"  value="#{recetas.medidaProductoMP}" />
                     </h:panelGrid>
                 <h:panelGrid >
-                    <p:dataTable   id="tablaDetalle"
+                    <p:dataTable   id="tablaDetalle" paginator="true"
                         var="det" value="#{recetas.lstRecetaDetalle}"
                         emptyMessage=""  
                         rowKey="#{det.recetadetallePK.idproducto}"
@@ -128,8 +128,9 @@ and open the template in the editor.
                     <p:dataTable id="tablaProdd" 
                                  value="#{recetas.lstProducto}"
                                  emptyMessage=""
-                                  var="dpro" rowKey="#{dpro.idproducto}" 
-                                  selectionMode="single" rows="10"  paginator="true" paginatorPosition="top">                        
+                                 paginator="true"
+                                  var="dpro" rowKey="#{dpro.idproducto}"       
+                                 selectionMode="single" rows="7"  >                        
                         <p:ajax event="rowSelect"  update="forprincipal"  process="@all"
                                 listener="#{recetas.onRowSelectProduc}"
                             />
@@ -173,10 +174,10 @@ and open the template in the editor.
                                  value="#{recetas.lstRecetaMon}"
                                  var="det"
                                  emptyMessage=""
+                                 paginator="true"
                                  selectionMode="single" 
                                  rowKey="#{det.idreceta}"
-                                 rows="8"  
-                                 paginator="true" paginatorPosition="top">                        
+                                 rows="8"  >                        
                         <p:ajax event="rowSelect"  listener="#{recetas.onRowSelectMon}"
                                 update="forprincipal" process="@all"  
                             />
