@@ -69,7 +69,7 @@ and open the template in the editor.
                             <h:outputText value="#{det.idproducto.producto}" />
                         </p:column>
                           <p:column headerText="medida">
-                              <h:outputText value="#{det.idproducto.idmedida.idmedida}" />
+                              <h:outputText value="#{det.idproducto.idmedida.medida}" />
                         </p:column>
 
                         <p:column headerText="Cantidad">
@@ -89,6 +89,9 @@ and open the template in the editor.
                                     icon=" ui-icon-search" > 
                         </p:menuitem>
                     </p:menubar>
+                </h:panelGrid>
+                <h:panelGrid columns="2" width="100%"  >
+                    
                 </h:panelGrid>
                   <h:panelGrid >
                       <p:dataTable value="#{ordenProduccionBeans.lstReceta}"

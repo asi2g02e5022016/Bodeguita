@@ -54,19 +54,29 @@ public class TransaccionesInventario implements TransaccionesInventarioLocal {
             }
             for (Ordenproducciondetalle 
                     object : ordenPro.getOrdenproducciondetalleList()) {
+                if(object.getCantidadconfirmada() == 1){
+                    
+              
                 ExistenciaPK idPKExis = new ExistenciaPK();
                 idPKExis.setIdproducto(object.getIdproducto().getIdproducto());
                 idPKExis.setIdsucursal(object.getOrdenproducciondetallePK().getIdSucursal());
                 Existencia exis = crudBDC.buscarEntidad(Existencia.class, idPKExis);
                 if (exis == null) {
-                    throw new Exception("El articulo no tiene existencia.");
+                    throw new Exception("El articulo " +object.getIdproducto().getProducto()
+                            + "no tiene existencia.");
                 }
                 ejbProInv.afectarExistencia(object.getCantidadconfirmada(),
                         object.getIdproducto(), ordenPro.getIdusuario(),
                         ordenPro.getSucursal(), 
-                        object.getCostounitario(), false, false);
-                
+                        object.getCostounitario(), true, false);
+                     } else {
+                  ejbProInv.afectarExistencia(object.getCantidadconfirmada(),
+                        object.getIdproducto(), ordenPro.getIdusuario(),
+                        ordenPro.getSucursal(), 
+                        object.getCostounitario(), false, false);  
+                  }
             }
+     
             crudBDC.guardarEntidad(ordenPro);
             utx.commit();
         } catch (Exception e) {

@@ -209,6 +209,7 @@ public class OrdenProduccionBeans implements Serializable {
                 Producto prod = crud.buscarEntidad(Producto.class,
                         recDeta.getRecetadetallePK().getIdproducto());
                 detaOP.setIdproducto(prod);
+                detaOP.setSalida(1);
                 lstOrdenProdDetalle.add(detaOP);
                 } else {
                     Producto prod = crud.buscarEntidad(Producto.class,
