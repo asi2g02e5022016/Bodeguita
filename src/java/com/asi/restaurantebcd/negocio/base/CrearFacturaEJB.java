@@ -273,10 +273,25 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
                    if(fdet.getIdproducto().getIdreceta()==null){
                    ejbInventario.afectarExistencia(new Double(fdet.getCantidad()), fdet.getIdproducto() , fdet.getFacturaencabezado().getIdusuario(), fdet.getFacturaencabezado().getOrdenpedido().getSucursal(), new Double(fdet.getCosto()),true,false);
                    }else {
+                      Double entrada=1D; 
+                       for(Recetadetalle rdet: fdet.getIdproducto().getIdreceta().getRecetadetalleList()){
+                         if(rdet.getSalida()==0){
+                           entrada = rdet.getCantidad();
+                         } 
+                          System.out.println("producto entrada: "  + fdet.getIdproducto().getProducto());
+                          System.out.println("entrada: " + entrada);
+                       }
+                       
                      for(Recetadetalle rdet: fdet.getIdproducto().getIdreceta().getRecetadetalleList()){
-
-                         ejbInventario.afectarExistencia(new Double(fdet.getCantidad()*rdet.getCantidad()), rdet.getProducto() , fdet.getFacturaencabezado().getIdusuario(), fdet.getFacturaencabezado().getOrdenpedido().getSucursal(), new Double(rdet.getProducto().getPreciocompra()),true,false);
+                         if(rdet.getSalida()==1){
+                         Producto prd = ejbCrud.buscarEntidad(Producto.class, new Integer(rdet.getRecetadetallePK().getIdproducto()));
+                         System.out.println("producto salida: " + prd.getProducto());
+                         Double salida = (rdet.getCantidad()/entrada)*fdet.getCantidad();
+                         System.out.println("Salida: " + salida);
+                         ejbInventario.afectarExistencia(salida, prd , fdet.getFacturaencabezado().getIdusuario(), fdet.getFacturaencabezado().getOrdenpedido().getSucursal(), new Double(prd.getPreciocompra()),true,false);
+                         }
                      }
+                       
                    }
               }
               
@@ -360,8 +375,24 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
                    if(fdet.getIdproducto().getIdreceta()==null){
                    ejbInventario.afectarExistencia(new Double(fdet.getCantidad()), fdet.getIdproducto() , fdet.getFacturaencabezado().getIdusuario(), fdet.getFacturaencabezado().getOrdenpedido().getSucursal(), new Double(fdet.getCosto()),true,false);
                    }else {
+                       
+                      Double entrada=1D; 
+                       for(Recetadetalle rdet: fdet.getIdproducto().getIdreceta().getRecetadetalleList()){
+                         if(rdet.getSalida()==0){
+                           entrada = rdet.getCantidad();
+                         } 
+                          System.out.println("producto entrada: "  + fdet.getIdproducto().getProducto());
+                          System.out.println("entrada: " + entrada);
+                       }
+                       
                      for(Recetadetalle rdet: fdet.getIdproducto().getIdreceta().getRecetadetalleList()){
-                         ejbInventario.afectarExistencia(new Double(fdet.getCantidad()*rdet.getCantidad()), rdet.getProducto() , fdet.getFacturaencabezado().getIdusuario(), fdet.getFacturaencabezado().getOrdenpedido().getSucursal(), new Double(rdet.getProducto().getPreciocompra()),true,false);
+                         if(rdet.getSalida()==1){
+                         Producto prd = ejbCrud.buscarEntidad(Producto.class, new Integer(rdet.getRecetadetallePK().getIdproducto()));
+                         System.out.println("producto salida: " + prd.getProducto());
+                         Double salida = (rdet.getCantidad()/entrada)*fdet.getCantidad();
+                         System.out.println("Salida: " + salida);
+                         ejbInventario.afectarExistencia(salida, prd , fdet.getFacturaencabezado().getIdusuario(), fdet.getFacturaencabezado().getOrdenpedido().getSucursal(), new Double(prd.getPreciocompra()),true,false);
+                         }
                      }
                    }
               }
@@ -392,6 +423,18 @@ public class CrearFacturaEJB implements CrearFacturaEJBLocal {
          List<Caja> result;
              
              result = em.createQuery("select c from Caja c where c.idsucursal = :s").setParameter("s", s).getResultList();
+             
+             return result;
+    }
+
+    @Override
+    public List<Numerofiscal> numeroFiscalList(Sucursal s, Integer tipoDocumento) throws IllegalStateException, SecurityException, SystemException, NamingException {
+             
+        List<Numerofiscal> result;
+             
+             result = em.createQuery("select n from Numerofiscal n where n.idcaja.idsucursal = :s and n.idtipodocumento.idtipodocumento = :i")
+                     .setParameter("s", s)
+                     .setParameter("i", tipoDocumento).getResultList();
              
              return result;
     }

@@ -455,7 +455,7 @@ public class MonitorOrdenPedido implements Serializable {
                 idSucursal = op.getOrdenpedidoPK().getIdsucursal();
                 su.setIdsucursal(idSucursal);
                 sucursal = ejbBuscarPedido.nombreSucursal(su);
-                lstNumeroFiscal = ejbFactura.numeroFiscalList(op.getSucursal());
+                lstNumeroFiscal = ejbFactura.numeroFiscalList(op.getSucursal(), 1);
                 lstCaja = ejbFactura.cajaList(op.getSucursal());
                 cliente = op.getIdcliente().getNombre() + " " + op.getIdcliente().getApellido();
                 estado = op.getIdestado().getEstado();

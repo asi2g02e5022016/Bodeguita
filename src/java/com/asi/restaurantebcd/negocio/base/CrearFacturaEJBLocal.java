@@ -28,5 +28,7 @@ public interface CrearFacturaEJBLocal {
     
     public List<Numerofiscal> numeroFiscalList(Sucursal s) throws IllegalStateException, SecurityException, SystemException, NamingException;
     
+    public List<Numerofiscal> numeroFiscalList(Sucursal s, Integer tipoDocumento) throws IllegalStateException, SecurityException, SystemException, NamingException;
+    
     public List<Caja> cajaList(Sucursal s) throws IllegalStateException, SecurityException, SystemException, NamingException;
 }
