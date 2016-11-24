@@ -6,6 +6,8 @@
 package com.asi.restaurantebcd.controller.inventario;
 
 import com.asi.restaurantbcd.modelo.Estado;
+import com.asi.restaurantbcd.modelo.Existencia;
+import com.asi.restaurantbcd.modelo.ExistenciaPK;
 import com.asi.restaurantbcd.modelo.Ordenproduccion;
 import com.asi.restaurantbcd.modelo.OrdenproduccionPK;
 import com.asi.restaurantbcd.modelo.Ordenproducciondetalle;
@@ -64,6 +66,7 @@ public class OrdenProduccionBeans implements Serializable {
     private String descripcionReceta;
     private String producoPT;
     private String medidaPT;
+
     
     
      @EJB
@@ -81,7 +84,7 @@ public class OrdenProduccionBeans implements Serializable {
     @Resource
     private javax.transaction.UserTransaction utx;
     private Double cantidadArealizar;
-    
+    private boolean guardar = false;
     
     
     
@@ -93,6 +96,7 @@ public class OrdenProduccionBeans implements Serializable {
         this.lstOrdenProdDetalle = null;
         this.lstReceta = null;
         this.ordenProd = null;
+        guardar = true;
     } 
     /**
      * 
@@ -136,7 +140,9 @@ public class OrdenProduccionBeans implements Serializable {
             ordenProd.setIdusuario(sesion.getUsuario());
             transaccionesInventario.guardarOrdenCompra(ordenProd);
             alert("La orden fue ejecutada exitosamente.", FacesMessage.SEVERITY_INFO);
+            guardar = false;
         } catch (Exception ex) {
+              guardar = false;
             Logger.getLogger(OrdenProduccionBeans.class.getName())
                     .log(Level.SEVERE, null, ex); 
             alert("Error: " + ex.getMessage(), FacesMessage.SEVERITY_ERROR);
@@ -169,7 +175,6 @@ public class OrdenProduccionBeans implements Serializable {
            public void buscarRecetas() {
              Query q = em.createNamedQuery("Receta.findAll");
         lstReceta = q.getResultList();
-               System.out.println("lstReceta.. " +lstReceta);
         if (lstReceta == null){
             alert("No se encontraron resultado.", FacesMessage.SEVERITY_WARN);
             return;
@@ -197,19 +202,47 @@ public class OrdenProduccionBeans implements Serializable {
             System.out.println("receta.." +receta);
             if (receta == null) {
                 alert("La receta es obligatorio.", FacesMessage.SEVERITY_ERROR);
+                 guardar = false;
+                return;
+            }
+            if (cantidadArealizar == null ||  cantidadArealizar == 0) {
+             alert("La cantidad a realizar  es obligatorio.", 
+                     FacesMessage.SEVERITY_ERROR);
+              guardar = false;
                 return;
             }
             List <Recetadetalle> lstDet = buscarDetallesRecetas(receta.getIdreceta());            
             lstOrdenProdDetalle = new ArrayList<>();
+            System.out.println("lstDet.. " +lstDet);
             for (Recetadetalle recDeta : lstDet) {
+                System.out.println("recDeta.getSalida().. " + recDeta.getSalida());
                 if (recDeta.getSalida() == 1) {
-                Ordenproducciondetalle detaOP = new Ordenproducciondetalle();
-                detaOP.setCantidadconfirmada(recDeta.getCantidad().doubleValue());
-                detaOP.setCostounitario(recDeta.getCantidad().doubleValue());
-                Producto prod = crud.buscarEntidad(Producto.class,
+                    ExistenciaPK idP = new ExistenciaPK();
+                    idP.setIdproducto(recDeta.getRecetadetallePK().getIdproducto());
+                    idP.setIdsucursal(sesion.getSucursal().getIdsucursal());
+                                 Producto prod = crud.buscarEntidad(Producto.class,
                         recDeta.getRecetadetallePK().getIdproducto());
+                                 System.out.println( "pro.. "+ prod.getProducto());
+                    Existencia exi = crud.buscarEntidad(Existencia.class, idP);
+                    if (exi == null || exi.getValor() <=0) {
+                          alert("El producto " + prod.getProducto()
+                                  + " no posee existencia", 
+                     FacesMessage.SEVERITY_ERROR);
+                          guardar = false;
+                return;
+                    }
+                    if (exi.getCostounitario()  <=0 ) {
+                  alert("El articulo no posee costo en su existencia", 
+                     FacesMessage.SEVERITY_ERROR);
+                   guardar = false;
+                return;
+                    }
+                Ordenproducciondetalle detaOP = new Ordenproducciondetalle();
+                detaOP.setCantidadconfirmada(recDeta.getCantidad() * cantidadArealizar);
+                    System.out.println("detaOP.getCantidadconfirmada() .. " +detaOP.getCantidadconfirmada() );
+                detaOP.setCostounitario(exi.getCostounitario() *detaOP.getCantidadconfirmada() );
+
                 detaOP.setIdproducto(prod);
-                detaOP.setSalida(1);
                 lstOrdenProdDetalle.add(detaOP);
                 } else {
                     Producto prod = crud.buscarEntidad(Producto.class,
@@ -218,12 +251,14 @@ public class OrdenProduccionBeans implements Serializable {
                     medidaPT =  prod.getIdmedida().getMedida();
                     descripcionReceta = receta.getDescripcion();
                     
+                    
                 }
             }
             
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoRecetas').hide();");
         } catch (Exception ex) {
+             guardar = false;
             Logger.getLogger(OrdenProduccionBeans.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -236,8 +271,11 @@ public class OrdenProduccionBeans implements Serializable {
             
             lstOrdenProdDetalle = new ArrayList<>();
             for (Ordenproducciondetalle det : ordenProd.getOrdenproducciondetalleList()) {
-                
-                lstOrdenProdDetalle.add(det);
+                if (det.getSalida() == 1) {
+                    lstOrdenProdDetalle.add(det);
+                } else {
+                    cantidadArealizar = det.getCantidadconfirmada();
+                }
             }
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('dialogoMonitor').hide();");
@@ -338,14 +376,21 @@ public class OrdenProduccionBeans implements Serializable {
         this.medidaPT = medidaPT;
     }
 
+    public Double getCantidadArealizar() {
+        return cantidadArealizar;
+    }
 
+    public void setCantidadArealizar(Double cantidadArealizar) {
+        this.cantidadArealizar = cantidadArealizar;
+    }
 
+    public boolean isGuardar() {
+        return guardar;
+    }
+
+    public void setGuardar(boolean guardar) {
+        this.guardar = guardar;
+    }
    
-    
-    
-    
-    
-    
-    
    
 }

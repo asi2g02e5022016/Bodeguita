@@ -22,6 +22,7 @@ and open the template in the editor.
                  
                      <p:menuitem value="Guardar" action="#{ordenProduccionBeans.guardarOrden()}"
                                    update="forprincipal" 
+                                   rendered="#{ordenProduccionBeans.guardar}"
                                 icon="ui-icon-disk" />
                          <p:menuitem value="Monitor" 
                                      action="#{ordenProduccionBeans.mostrarDialogMonirOT()}"
@@ -37,7 +38,7 @@ and open the template in the editor.
                                <h:panelGroup >
                                    <p:inputText readonly="true" value="#{ordenProduccionBeans.descripcionReceta}"   />
                         
-                        <p:commandButton    action="#{ordenProduccionBeans.mostrarDialogRecetas()}"
+                        <p:commandButton  rendered="#{ordenProduccionBeans.guardar}"   action="#{ordenProduccionBeans.mostrarDialogRecetas()}"
                                            id="iconOnly" 
                                            icon="ui-icon-search" title="Icon Only" />
                        </h:panelGroup>  
@@ -58,9 +59,9 @@ and open the template in the editor.
                         <p:inputText  readonly="true" 
                                       value="#{ordenProduccionBeans.ordenProd.sucursal.sucursal}"   />
         
-                        <h:outputLabel  value="Estado "  />
+                        <h:outputLabel  value="Cantidad a prepara "  />
                         <p:inputText  readonly="true"
-                                      value="#{ordenProduccionBeans.ordenProd.idestado.estado}"   />         
+                                      value="#{ordenProduccionBeans.cantidadArealizar}"   />         
                     </h:panelGrid>
                 <h:panelGrid >
                     <p:dataTable value="#{ordenProduccionBeans.lstOrdenProdDetalle}"
@@ -90,9 +91,11 @@ and open the template in the editor.
                         </p:menuitem>
                     </p:menubar>
                 </h:panelGrid>
-                <h:panelGrid columns="2" width="100%"  >
-                    
-                </h:panelGrid>
+                                   <h:panelGrid columns="2" width="100%"  >
+                  <h:outputLabel  value="Cantidad a preparar "  />
+                  <p:inputNumber
+                                      value="#{ordenProduccionBeans.cantidadArealizar}"   />  
+                   </h:panelGrid>
                   <h:panelGrid >
                       <p:dataTable value="#{ordenProduccionBeans.lstReceta}"
                                  id="tablaCompras"
@@ -104,7 +107,7 @@ and open the template in the editor.
                         <p:column  headerText="Numero" >
                             <h:outputText value="#{dcompra.idreceta}" />
                         </p:column>
-                              <p:column  headerText="Numero" >
+                              <p:column  headerText="Descripcion " >
                              <h:outputText value="#{dcompra.descripcion}" />
                         </p:column>
                     </p:dataTable>
@@ -136,7 +139,9 @@ and open the template in the editor.
                             <h:outputText value="#{de.ordenproduccionPK.idordenproduccion}"  />
                         </p:column>
                         <p:column headerText="fecha"  >
-                            <h:outputText value="#{de.fechapedido}"  />
+                            <h:outputText value="#{de.fechapedido}"  > 
+                                <f:convertDateTime  pattern="dd/MM/yyyy"/>
+                            </h:outputText>
                         </p:column>
                          <p:column headerText="sucursal"  >
                              <h:outputText value="#{de.sucursal.sucursal}"  />
