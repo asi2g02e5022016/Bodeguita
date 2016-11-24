@@ -158,7 +158,7 @@ public class MttoPiso implements Serializable {
 //                this.pisoConstructor.setIdcompania(sucursalConstructor);
 //                System.out.println(this.pisoConstructor);
                 crud.guardarEntidad(imp);
-                alert("Impuesto actualizado exitosamente.",
+                alert("Piso actualizado exitosamente.",
                         FacesMessage.SEVERITY_INFO);
                 this.pisoConstructor = null;
                 this.sucursalConstructor = null;
