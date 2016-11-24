@@ -128,9 +128,8 @@ and open the template in the editor.
                     <p:dataTable id="tablaProdd" 
                                  value="#{recetas.lstProducto}"
                                  emptyMessage=""
-                                 paginator="true"
-                                  var="dpro" rowKey="#{dpro.idproducto}"       
-                                 selectionMode="single" rows="7"  >                        
+                                  var="dpro" rowKey="#{dpro.idproducto}" 
+                                  selectionMode="single" rows="10"  paginator="true" paginatorPosition="top">                        
                         <p:ajax event="rowSelect"  update="forprincipal"  process="@all"
                                 listener="#{recetas.onRowSelectProduc}"
                             />
@@ -176,7 +175,8 @@ and open the template in the editor.
                                  emptyMessage=""
                                  selectionMode="single" 
                                  rowKey="#{det.idreceta}"
-                                 rows="8"  >                        
+                                 rows="8"  
+                                 paginator="true" paginatorPosition="top">                        
                         <p:ajax event="rowSelect"  listener="#{recetas.onRowSelectMon}"
                                 update="forprincipal" process="@all"  
                             />
