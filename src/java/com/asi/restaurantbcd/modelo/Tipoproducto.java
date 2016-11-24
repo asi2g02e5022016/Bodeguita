@@ -38,8 +38,8 @@ public class Tipoproducto implements Serializable {
     @Column(name = "idtipoproducto")
     private Integer idtipoproducto;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    
+    
     @Column(name = "tipoproducto")
     private String tipoproducto;
 
