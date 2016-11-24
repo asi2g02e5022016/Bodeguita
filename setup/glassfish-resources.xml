@@ -41,6 +41,7 @@
     <property name="mail-smtp-port" value="25"/>
     <property name="mail-smtp-user" value="noreply@bodeguitadelcerdito.com"/>
     <property name="mail-smtp-starttls-enable" value="false"/>
+    
   </mail-resource>
 </resources>
 

@@ -35,6 +35,8 @@ public class Ordenproducciondetalle implements Serializable {
     private Double cantidadconfirmada;
     @Column(name = "costounitario")
     private Double costounitario;
+        @Column(name = "salida")
+    private Integer salida;
     @JoinColumns({
         @JoinColumn(name = "idordenproduccion", referencedColumnName = "idordenproduccion", insertable = false, updatable = false),
         @JoinColumn(name = "idSucursal", referencedColumnName = "idsucursal", insertable = false, updatable = false)})
@@ -89,6 +91,14 @@ public class Ordenproducciondetalle implements Serializable {
 
     public void setIdproducto(Producto idproducto) {
         this.idproducto = idproducto;
+    }
+
+    public Integer getSalida() {
+        return salida;
+    }
+
+    public void setSalida(Integer salida) {
+        this.salida = salida;
     }
 
     
