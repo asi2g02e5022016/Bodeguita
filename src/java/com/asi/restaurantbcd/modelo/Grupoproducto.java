@@ -41,12 +41,11 @@ public class Grupoproducto implements Serializable {
     @Column(name = "idgrupoproducto")
     private Integer idgrupoproducto;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+  
     @Column(name = "grupoproducto")
     private String grupoproducto;
     @Basic(optional = false)
-    @NotNull
+  
     @Column(name = "nivel")
     private int nivel;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idgrupoproducto")
